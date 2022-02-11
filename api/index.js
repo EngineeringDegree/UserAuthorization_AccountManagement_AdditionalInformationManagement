@@ -10,6 +10,9 @@ const http = require('http')
 const mongoose = require('mongoose')
 const config = require('config')
 
+// Own modules imports
+const sockets = require('./api/sockets/sockets')
+
 // Express and socketio initialization for http and https requests
 var app = express()
 var server = https.createServer({
@@ -18,8 +21,8 @@ var server = https.createServer({
     ca: ''
 }, app)
 var serverNotSecure = http.createServer(app)
-var io = socketio(server)
 var ioNotSecure = socketio(serverNotSecure)
+var io = socketio(server)
 
 // Checking if private key of the server is present
 if (!config.get('PrivateKey')) {
@@ -35,6 +38,10 @@ mongoose.connect('mongodb://localhost/MythWars', { useNewUrlParser: true,  useUn
 // Use Cors and parse all requests to be a json string
 app.use(cors())
 app.use(express.json())
+
+// Websocket endpoints initialization
+sockets(io)
+sockets(ioNotSecure)
 
 // Run servers
 

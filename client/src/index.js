@@ -1,11 +1,21 @@
+// Other modules imports
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
 
-import App from './components/App'
+// Import reducers
+import reducers from './reducers'
 
-ReactDOM.render(
-  <React.StrictMode>
+// Own components imports
+import { App } from './components/App'
+
+// Create store for asking API 
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore)
+
+// Initialize app with reducers
+ReactDOM.render( 
+<Provider store={createStoreWithMiddleware(reducers)}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+</ Provider>, document.getElementById('root'))
