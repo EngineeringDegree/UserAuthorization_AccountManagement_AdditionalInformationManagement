@@ -9,6 +9,7 @@
   "author": "Maciej Madejczyk",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.0",
     "config": "^3.3.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

@@ -48,7 +48,15 @@ sockets(io)
 sockets(ioNotSecure)
 
 // Routes
+
+// Get
 app.use('/', mainPage)
+
+// Post
+
+// Put
+
+// Patch
 
 // Run servers
 
