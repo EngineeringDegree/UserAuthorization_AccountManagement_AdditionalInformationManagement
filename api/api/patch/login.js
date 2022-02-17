@@ -35,7 +35,7 @@ router.patch('/', async (req, res) => {
         return res.status(401).send({status: 'BAD DATA', code: 401})
     }
 
-    return res.status(400).send({status: 'USER FOUND', code: 400})
+    return res.status(400).send({status: 'USER NOT FOUND', code: 404})
 })
 
 function validate(req) {
