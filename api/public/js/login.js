@@ -25,7 +25,7 @@ function signIn(){
         url: "/patch/login",
         data: stringifiedObject,
         success: function(res){
-            console.log(res)
+
         },
         error: function (xhr, ajaxOptions, thrownError) {
 
