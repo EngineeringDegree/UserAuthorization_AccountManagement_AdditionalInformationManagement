@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({status: 'BAD DATA', code: 400})
     }
 
-    if(req.body.password != req.body.repeatPasword){
+    if(req.body.password != req.body.repeatPassword){
         return res.status(400).send({status: 'PASSWORDS DO NOT MATCH', code: 400})
     }
 
@@ -54,6 +54,8 @@ async function sendConfirmationEmail(data){
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log(error)
+        } else {
+            console.log(info)
         }
     })
 }
@@ -103,7 +105,7 @@ function validate(req) {
         email: Joi.string().email().max(100).required(),
         username: Joi.string().max(50).required(),
         password: Joi.string().required(),
-        repeatPasword: Joi.string().required()
+        repeatPassword: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

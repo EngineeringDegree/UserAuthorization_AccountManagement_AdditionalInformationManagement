@@ -16,7 +16,7 @@ function signUp(){
         email: getEmailValue(),
         username: getUsernameValue(),
         password: getPasswordValue(),
-        repeatPasword: getRepeatPasswordValue()
+        repeatPassword: getRepeatPasswordValue()
     }
 
     if(postObject.email == ""){
@@ -35,7 +35,7 @@ function signUp(){
         return
     }
 
-    if(postObject.password != postObject.repeatPasword){
+    if(postObject.password != postObject.repeatPassword){
         return
     }
 
@@ -48,7 +48,6 @@ function signUp(){
     }
 
     var stringifiedObject = JSON.stringify(postObject)
-
     $.ajax({
         type: "POST",
         url: "/post/register",
