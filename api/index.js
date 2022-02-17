@@ -13,7 +13,15 @@ const config = require('config')
 
 // Own modules imports
 const sockets = require('./api/sockets/sockets')
-const mainPage = require('./api/get/mainPage')
+
+// Get middleware
+const mainPageView = require('./api/get/mainPageView')
+const signInView = require('./api/get/signInView')
+const error404View = require('./api/get/error404View')
+const logoutView = require('./api/get/logoutView')
+
+// Post middleware
+const register = require('./api/post/register')
 
 // Express and socketio initialization for http and https requests
 var app = express()
@@ -50,13 +58,19 @@ sockets(ioNotSecure)
 // Routes
 
 // Get
-app.use('/', mainPage)
+app.use('/', mainPageView)
+app.use('/sign-in', signInView)
+app.use('/logout', logoutView)
 
 // Post
+app.use('/post/register', register)
 
 // Put
 
 // Patch
+
+// Other endpoints
+app.use('*', error404View)
 
 // Run servers
 
