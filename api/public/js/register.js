@@ -13,9 +13,9 @@ function init(){
  */
 function signUp(){
     var postObject = {
-        email: getEmailValue(),
+        email: getEmailRegisterValue(),
         username: getUsernameValue(),
-        password: getPasswordValue(),
+        password: getPasswordRegisterValue(),
         repeatPassword: getRepeatPasswordValue()
     }
 
@@ -63,7 +63,7 @@ function signUp(){
     })
 }
 
-function getEmailValue(){
+function getEmailRegisterValue(){
     return $('#email-register').val()
 }
 
@@ -71,7 +71,7 @@ function getUsernameValue(){
     return $('#username-register').val()
 }
 
-function getPasswordValue(){
+function getPasswordRegisterValue(){
     return $('#password-register').val()
 }
 

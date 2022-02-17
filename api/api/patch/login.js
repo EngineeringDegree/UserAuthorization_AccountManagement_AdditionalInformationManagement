@@ -12,7 +12,7 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({status: 'BAD DATA', code: 400})
     }
 
-    let user = await User.findOne({ 'email': { $regex : new RegExp(req.body.email, 'i') } })
+    let user = await User.findOne({ email: req.body.email })
 
     if(user){
         var pass = await bcrypt.compare(req.body.password, user.password)
@@ -35,7 +35,7 @@ router.patch('/', async (req, res) => {
         return res.status(401).send({status: 'BAD DATA', code: 401})
     }
 
-    return res.status(400).send({status: 'USER NOT FOUND', code: 404})
+    return res.status(404).send({status: 'USER NOT FOUND', code: 404})
 })
 
 function validate(req) {

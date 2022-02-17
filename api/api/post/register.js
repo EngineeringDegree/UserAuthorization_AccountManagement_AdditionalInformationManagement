@@ -19,8 +19,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({status: 'PASSWORDS DO NOT MATCH', code: 400})
     }
 
-    let user = await User.findOne({ 'email': { $regex : new RegExp(req.body.email, 'i') } })
-    
+    let user = await User.findOne({ email: req.body.email })
     if(!user){
         var data
         if(await User.countDocuments() == 0){

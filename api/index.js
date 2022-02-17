@@ -20,6 +20,7 @@ const signInView = require('./api/get/signInView')
 const error404View = require('./api/get/error404View')
 const logoutView = require('./api/get/logoutView')
 const confirmAccountView = require('./api/get/confirmAccountView')
+const checkIfLoggedIn = require('./api/get/checkIfLoggedIn')
 
 // Patch middleware
 const login = require('./api/patch/login')
@@ -66,6 +67,7 @@ app.use('/', mainPageView)
 app.use('/sign-in', signInView)
 app.use('/logout', logoutView)
 app.use('/authorize', confirmAccountView)
+app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 
 // Patch
 app.use('/patch/login', login)
