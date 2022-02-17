@@ -16,9 +16,35 @@ function signUp(){
         email: getEmailValue(),
         username: getUsernameValue(),
         password: getPasswordValue(),
-        repeatPasword: getRepeatPasswordValue(),
-        terms: getTermsValue(),
-        privacy: getPrivacyValue(),
+        repeatPasword: getRepeatPasswordValue()
+    }
+
+    if(postObject.email == ""){
+        return
+    }
+
+    if(!validateEmail(postObject.email)){
+        return
+    }
+
+    if(postObject.username == ""){
+        return
+    }
+
+    if(postObject.password == ""){
+        return
+    }
+
+    if(postObject.password != postObject.repeatPasword){
+        return
+    }
+
+    if(!getTermsValue()){
+        return
+    }
+
+    if(!getPrivacyValue()){
+        return
     }
 
     var stringifiedObject = JSON.stringify(postObject)
@@ -28,7 +54,7 @@ function signUp(){
         url: "/post/register",
         data: stringifiedObject,
         success: function(res){
-
+            console.log(res)
         },
         error: function (xhr, ajaxOptions, thrownError) {
 
@@ -60,4 +86,8 @@ function getTermsValue(){
 
 function getPrivacyValue(){
     return $('#privacy')[0].checked
+}
+
+function validateEmail(email){
+    return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 }
