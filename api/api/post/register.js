@@ -6,6 +6,7 @@ const Joi = require('joi')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
 const salt = 10
 
 router.post('/', async (req, res) => {
@@ -35,14 +36,33 @@ router.post('/', async (req, res) => {
 })
 
 async function sendConfirmationEmail(data){
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.CONFIRMATION_EMAIL,
+            pass: process.env.CONFIRMATION_EMAIL_PASSWORD
+        }
+    })
 
+    var mailOptions = {
+        from: process.env.CONFIRMATION_EMAIL,
+        to: data.email,
+        subject: `${process.env.GAME_NAME} email confirmation`,
+        html: `<p>Please confirm your email by clicking this <a href="${process.env.SERVER_ADDRESS}authorize?email=${data.email}&accessToken=${data.accessToken}">link</a>.</p>`
+    }
+      
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error)
+        }
+    })
 }
 
 async function putAdmin(body){
     var pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
     const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d' })
-    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d'})
+    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
     var newUser = new User(_.pick({
         username: body.username,
         email: body.email, 
@@ -62,7 +82,7 @@ async function putUser(body){
     var pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
     const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d' })
-    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d'})
+    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
     var newUser = new User(_.pick({
         username: body.username,
         email: body.email, 

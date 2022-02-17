@@ -19,6 +19,7 @@ const mainPageView = require('./api/get/mainPageView')
 const signInView = require('./api/get/signInView')
 const error404View = require('./api/get/error404View')
 const logoutView = require('./api/get/logoutView')
+const confirmAccountView = require('./api/get/confirmAccountView')
 
 // Post middleware
 const register = require('./api/post/register')
@@ -61,6 +62,7 @@ sockets(ioNotSecure)
 app.use('/', mainPageView)
 app.use('/sign-in', signInView)
 app.use('/logout', logoutView)
+app.use('/authorize', confirmAccountView)
 
 // Post
 app.use('/post/register', register)

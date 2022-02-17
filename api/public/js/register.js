@@ -54,7 +54,7 @@ function signUp(){
         url: "/post/register",
         data: stringifiedObject,
         success: function(res){
-            console.log(res)
+
         },
         error: function (xhr, ajaxOptions, thrownError) {
 
