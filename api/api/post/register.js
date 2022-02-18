@@ -101,7 +101,7 @@ async function putUser(body){
 
 function validate(req) {
     const schema = Joi.object({
-        email: Joi.string().email().max(100).required(),
+        email: Joi.string().email().required(),
         username: Joi.string().max(50).required(),
         password: Joi.string().required(),
         repeatPassword: Joi.string().required()

@@ -44,7 +44,7 @@ router.patch('/', async (req, res) => {
 
 function validate(req) {
     const schema = Joi.object({
-        email: Joi.string().email().max(100).required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required()
     })
     const validation = schema.validate(req)
