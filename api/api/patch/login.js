@@ -17,14 +17,18 @@ router.patch('/', async (req, res) => {
     if(user){
         var pass = await bcrypt.compare(req.body.password, user.password)
         if(pass){
+            var refreshTokens = user.refreshToken
+            var tokens = user.token
             const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), {expiresIn: '60d' })
             const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), {expiresIn: '1h' })
+            refreshTokens.push(refreshToken)
+            tokens.push(token)
             const filter = {
                 _id: user._id
             }
             const update = {
-                refreshToken: refreshToken,
-                token: token
+                refreshToken: refreshTokens,
+                token: tokens
             }
 
             await User.updateOne(filter, update)

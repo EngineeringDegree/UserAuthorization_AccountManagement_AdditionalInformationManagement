@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     if(user){
         var check = checkToken(user.token, req.query.token)
         if(!check){
-            check = await askNewToken(user.refreshToken, req.query.refreshToken, user._id)
+            check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
             if(check){
                 return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check})
             }

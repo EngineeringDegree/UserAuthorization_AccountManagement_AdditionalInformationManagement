@@ -3,12 +3,14 @@ const config = require('config')
 const { User } = require('../models/user')
 
 var checkToken = (userToken, token) => {
-    var check = jwt.verify(userToken, config.get('PrivateKey'), (e)=>{
+    var check = jwt.verify(token, config.get('PrivateKey'), (e)=>{
         return e
     })
     if(check == null){
-        if(userToken == token){
-            return true
+        for(var i = userToken.length - 1; i >= 0; i--){
+            if(userToken[i] == token){
+                return true
+            }
         }
         return false
     }else{
@@ -16,15 +18,17 @@ var checkToken = (userToken, token) => {
     }
 }
 
-var askNewToken = async (refreshToken, userRefreshToken, user) => {
-    if(checkToken(refreshToken, userRefreshToken)){
+var askNewToken = async (userRefreshToken, refreshToken, user) => {
+    if(checkToken(userRefreshToken, refreshToken)){
         if(user){
-            const token = jwt.sign({ _id: user }, config.get('PrivateKey'), {expiresIn: '1h' })
+            var tokens = user.token
+            const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), {expiresIn: '1h' })
+            tokens.push(token)
             const filter = {
-                _id: user
+                _id: user._id
             }
             const update = {
-                token: token
+                token: tokens
             }
             const result = await User.updateOne(filter, update)
             return token

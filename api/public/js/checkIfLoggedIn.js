@@ -5,7 +5,7 @@ function init(){
         type: "GET",
         url: `/get/checkIfLoggedIn?email=${email}&token=${token}&refreshToken=${refreshToken}`,
         success: function(res){
-            
+
         },
         error: function (xhr, ajaxOptions, thrownError) {
 
