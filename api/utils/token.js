@@ -2,6 +2,12 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 const { User } = require('../models/user')
 
+/**
+ * Check if tokens are valid and match each other
+ * @param {array} userToken array of user tokens
+ * @param {string} token token sent from user to server
+ * @returns 
+ */
 var checkToken = (userToken, token) => {
     var check = jwt.verify(token, config.get('PrivateKey'), (e)=>{
         return e
@@ -18,6 +24,13 @@ var checkToken = (userToken, token) => {
     }
 }
 
+/**
+ * 
+ * @param {Array} userRefreshToken array of refreshToken taken from database. 
+ * @param {String} refreshToken refreshToken sent from user
+ * @param {Object} user user model from database 
+ * @returns 
+ */
 var askNewToken = async (userRefreshToken, refreshToken, user) => {
     if(checkToken(userRefreshToken, refreshToken)){
         if(user){

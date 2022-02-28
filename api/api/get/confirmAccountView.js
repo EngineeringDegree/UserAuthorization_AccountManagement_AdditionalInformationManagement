@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const { User } = require('../../models/user')
 
+/*
+Middleware which sends address confirmed page with proper information to user. 
+This middleware verify that user owns email.
+*/
 router.get('/', async (req, res) => {
     var data
     let user = await User.findOne({ email: req.query.email })

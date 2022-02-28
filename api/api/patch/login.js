@@ -6,6 +6,7 @@ const config = require('config')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 
+// Middleware for login user
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
@@ -42,6 +43,11 @@ router.patch('/', async (req, res) => {
     return res.status(404).send({status: 'USER NOT FOUND', code: 404})
 })
 
+/**
+ * Validates data sent by user to log in
+ * @param {object} req contains email and password of user which want to log in
+ * @returns nothing if there is no error, error if there is something wrong
+ */
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),

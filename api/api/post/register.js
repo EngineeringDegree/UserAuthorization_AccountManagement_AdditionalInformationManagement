@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const salt = 10
 
+// Middleware to registration
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
@@ -34,6 +35,10 @@ router.post('/', async (req, res) => {
     }
 })
 
+/**
+ * Sends an email to newly registered user
+ * @param {object} data contains email and authorization token 
+ */
 async function sendConfirmationEmail(data){
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -59,6 +64,11 @@ async function sendConfirmationEmail(data){
     })
 }
 
+/**
+ * Puts new admin account to database
+ * @param {object} body contains user email, username and password to hash 
+ * @returns object with status, code, tokens, username and email
+ */
 async function putAdmin(body){
     var pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
@@ -79,6 +89,11 @@ async function putAdmin(body){
     return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email}
 }
 
+/**
+ * Puts new user account to database
+ * @param {object} body contains user email, username and password to hash 
+ * @returns object with status, code, tokens, username and email
+ */
 async function putUser(body){
     var pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
@@ -99,6 +114,11 @@ async function putUser(body){
     return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email}
 }
 
+/**
+ * Validates data sent by user
+ * @param {object} req object with email, username, password and repeatPassword
+ * @returns nothin if validation is passed and error if somethin is wrong
+ */
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
