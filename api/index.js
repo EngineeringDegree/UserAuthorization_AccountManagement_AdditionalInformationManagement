@@ -31,9 +31,9 @@ const register = require('./api/post/register')
 // Express and socketio initialization for http and https requests
 var app = express()
 var server = https.createServer({
-    key: '',
-    cert: '',
-    ca: ''
+    key: process.env.KEY,
+    cert: process.env.CERT,
+    ca: process.env.CA
 }, app)
 var serverNotSecure = http.createServer(app)
 var ioNotSecure = socketio(serverNotSecure)
