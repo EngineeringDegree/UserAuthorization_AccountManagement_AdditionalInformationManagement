@@ -9,6 +9,7 @@ const path = require('path')
 const https = require('https')
 const http = require('http')
 const mongoose = require('mongoose')
+const fs = require('fs')
 const config = require('config')
 
 // Own modules imports
