@@ -46,7 +46,7 @@ if (!config.get('PrivateKey')) {
 }
 
 // Connect to database
-mongoose.connect('mongodb://localhost/MythWars', { useNewUrlParser: true,  useUnifiedTopology: true})
+mongoose.connect(`mongodb://localhost/${process.env.DATABASE_NAME}`, { useNewUrlParser: true,  useUnifiedTopology: true})
 .then(() => console.log('Now connected to MongoDB!'))
 .catch(err => console.error('Something went wrong', err))
 
