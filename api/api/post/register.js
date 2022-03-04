@@ -1,12 +1,13 @@
 const express = require('express')
+const config = require('config')
 const router = express.Router()
-const { User } = require('../../models/user')
 const _ = require('lodash')
 const Joi = require('joi')
 const jwt = require('jsonwebtoken')
-const config = require('config')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
+const { User } = require('../../models/user')
+
 const salt = 10
 
 // Middleware to registration

@@ -34,15 +34,10 @@ var app = express()
 
 // Comment on the server this snippet and uncomment below one
 var server = https.createServer({
-    key: '',
-    cert: '',
-    ca: ''
+    key: fs.readFileSync(process.env.KEY, 'utf8'),
+    cert: fs.readFileSync(process.env.CERT, 'utf8'),
+    ca: fs.readFileSync(process.env.CA, 'utf8')
 }, app)
-// var server = https.createServer({
-//     key: fs.readFileSync(process.env.KEY, 'utf8'),
-//     cert: fs.readFileSync(process.env.CERT, 'utf8'),
-//     ca: fs.readFileSync(process.env.CA, 'utf8')
-// }, app)
 
 var serverNotSecure = http.createServer(app)
 var ioNotSecure = socketio(serverNotSecure)

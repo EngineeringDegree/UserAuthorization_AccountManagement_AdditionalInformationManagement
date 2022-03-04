@@ -1,3 +1,5 @@
+const disconnect = require('../../utils/socket_disconnect')
+
 /**
  * Function which contains endpoints logic for websockets
  * @param {socket object} io - contains websocket server initialization 
@@ -10,9 +12,7 @@ var sockets = (io) => {
         /**
          * Fires when socket disconnects
          */
-        socket.on('disconnecting', () => {
-
-        })
+        socket.on('disconnecting', disconnect.bind(null, socket))
     })
 }
 
