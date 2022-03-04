@@ -1,9 +1,16 @@
 $(document).ready(init())
 
+/**
+ * Initializes on button click event
+ */
 function init(){
     $('#sign-in').on('click',  signIn)
 }
 
+/**
+ * Sends login signal to backend
+ * @returns none 
+ */
 function signIn(){
     var postObject = {
         email: getEmailValue(),
@@ -35,10 +42,18 @@ function signIn(){
     })
 }
 
+/**
+ * Gets email value from input
+ * @returns email input value
+ */
 function getEmailValue(){
     return $('#email-login').val()
 }
 
+/**
+ * Gets password value from input
+ * @returns password input value
+ */
 function getPasswordValue(){
     return $('#password-login').val()
 }

@@ -12,7 +12,9 @@ var sockets = (io) => {
         /**
          * Fires when socket disconnects
          */
-        socket.on('disconnecting', disconnect.bind(null, socket))
+        socket.on('disconnecting', ()=>{
+            disconnect(io, socket)
+        })
     })
 }
 
