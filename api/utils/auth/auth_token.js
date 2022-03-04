@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const config = require('config')
-const { User } = require('../models/user')
+const { User } = require('../../models/user')
 
 /**
  * Check if tokens are valid and match each other

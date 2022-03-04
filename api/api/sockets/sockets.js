@@ -1,4 +1,4 @@
-const disconnect = require('../../utils/socket_disconnect')
+const disconnect = require('../../utils/socket/socket_disconnect')
 
 /**
  * Function which contains endpoints logic for websockets
