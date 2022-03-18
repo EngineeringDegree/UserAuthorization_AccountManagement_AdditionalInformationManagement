@@ -12,6 +12,7 @@ function init(){
  * Sends ajax request to backend or shows user he has error
  */
 function signUp(){
+    var checkIfNotValid = false
     var postObject = {
         email: getEmailRegisterValue(),
         username: getUsernameValue(),
@@ -20,30 +21,48 @@ function signUp(){
     }
 
     if(postObject.email == ""){
-        return
+        checkIfNotValid = true
+
+        emailEmptyError()
     }
 
     if(!validateEmail(postObject.email)){
-        return
+        checkIfNotValid = true
+
+        mustBeAnEmail()
     }
 
     if(postObject.username == ""){
-        return
+        checkIfNotValid = true
+
+        usernameEmptyError()
     }
 
     if(postObject.password == ""){
-        return
+        checkIfNotValid = true
+
+        passwordEmptyError()
     }
 
     if(postObject.password != postObject.repeatPassword){
-        return
+        checkIfNotValid = true
+
+        repeatPasswordEmptyError()
     }
 
     if(!getTermsValue()){
-        return
+        checkIfNotValid = true
+
+        tickTerms()
     }
 
     if(!getPrivacyValue()){
+        checkIfNotValid = true
+
+        tickPrivacy()
+    }
+
+    if(checkIfNotValid){
         return
     }
 
@@ -53,10 +72,16 @@ function signUp(){
         url: "/post/register",
         data: stringifiedObject,
         success: function(res){
+            window.localStorage.setItem('accessToken', res.accessToken)
+            window.localStorage.setItem('token', res.token)
+            window.localStorage.setItem('refreshToken', res.refreshToken)
+            window.localStorage.setItem('email', res.email)
+            window.localStorage.setItem('username', res.username)
 
+            window.location.pathname = '/registered'
         },
         error: function (xhr, ajaxOptions, thrownError) {
-
+            showRegisterError(thrownError)
         },
         dataType: "json",
         contentType : "application/json"
@@ -109,6 +134,63 @@ function getTermsValue(){
  */
 function getPrivacyValue(){
     return $('#privacy')[0].checked
+}
+
+/**
+ * It shows user empty field communicate
+ */
+ function emailEmptyError(){
+
+}
+
+/**
+ * It shows user empty username field communicate
+ */
+ function usernameEmptyError(){
+
+}
+
+/**
+ * It shows user empty password field communicate
+ */
+function passwordEmptyError(){
+
+}
+
+/**
+ * It shows user empty repeat password field communicate
+ */
+ function repeatPasswordEmptyError(){
+
+}
+
+/**
+ * It shows user that he needs to tick terms
+ */
+ function tickTerms(){
+
+}
+
+/**
+ * It shows user that he needs to tick privacy
+ */
+ function tickPrivacy(){
+
+}
+
+/**
+ * It shows user that email field must be an email
+ */
+function mustBeAnEmail(){
+
+}
+
+/**
+ * This function shows user why his request didn't went through
+ * @param {error object} err returned from the server error object
+ */
+function showRegisterError(err){
+
 }
 
 /**

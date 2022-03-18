@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/metaTags') %>
-    <%- include('../partials/favicon') %>
+    <%- include('../partials/tags/metaTags') %>
+    <%- include('../partials/tags/favicon') %>
     <title>Ninergames</title>
-    <%- include('../partials/mainLinks') %>
+    <%- include('../partials/links/mainLinks') %>
 </head>
 <body>
-    <%- include('../partials/menu') %>
+    <%- include('../partials/components/menu') %>
     <%= text %>
-    <%- include('../partials/footer') %>
+    <%- include('../partials/components/footer') %>
+
+    <%- include('../partials/links/authorize') %>
 </body>
 </html>
