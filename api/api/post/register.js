@@ -42,7 +42,9 @@ router.post('/', async (req, res) => {
  */
 async function sendConfirmationEmail(data){
     var transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: process.env.EMAIL_SERVICE_ADDRESS,
+        port: process.env.EMAIL_SERVICE_PORT,
+        secure: true,
         auth: {
             user: process.env.CONFIRMATION_EMAIL,
             pass: process.env.CONFIRMATION_EMAIL_PASSWORD

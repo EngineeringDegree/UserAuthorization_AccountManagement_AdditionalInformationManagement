@@ -51,7 +51,7 @@ if (!config.get('PrivateKey')) {
 }
 
 // Connect to database
-mongoose.connect(`mongodb://localhost/${process.env.DATABASE_NAME}`, { useNewUrlParser: true,  useUnifiedTopology: true})
+mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true,  useUnifiedTopology: true})
 .then(() => console.log('Now connected to MongoDB!'))
 .catch(err => console.error('Something went wrong', err))
 
