@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { User } = require('../../models/user')
+const { User } = require('../../../models/user')
 
 /*
 Middleware which sends address confirmed page with proper information to user. 

@@ -1,7 +1,7 @@
 $(document).ready(init())
 
 /**
- * Function which sends signal to backend to check if user is logged in and hides menu properly.
+ * Function which sends signal to backend to check if user is logged in and hides menu properly. It returns if user is an admin.
  */
 function init(){
     var loggedIn = document.getElementsByClassName('logged-in')
@@ -20,7 +20,7 @@ function init(){
     if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')){
         $.ajax({
             type: "GET",
-            url: `/get/checkIfLoggedIn?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`,
+            url: `/get/admin/checkIfLoggedIn?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`,
             success: function(res){
                 if(window.location.pathname == '/sign-in'){
                     window.location.pathname = '/'
@@ -33,8 +33,6 @@ function init(){
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 logOut()
-    
-                window.localStorage.clear()
             },
             dataType: "json",
             contentType : "application/json"
@@ -47,6 +45,7 @@ function init(){
      * Hides linkes which shouldn't be visible if user is logged out
      */
     function logOut(){
+        window.localStorage.clear()
         for(let i = 0; i < loggedIn.length; i++){
             loggedIn[i].classList.add('d-none')
         }
@@ -54,7 +53,6 @@ function init(){
         for(let i = 0; i < loggedIn.length; i++){
             loggedOut[i].classList.remove('d-none')
         }
-
         window.location.pathname = "/logout"
     }
     

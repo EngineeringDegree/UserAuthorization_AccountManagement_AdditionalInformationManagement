@@ -4,7 +4,7 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
-const { User } = require('../../models/user')
+const { User } = require('../../../models/user')
 
 // Middleware for login user
 router.patch('/', async (req, res) => {

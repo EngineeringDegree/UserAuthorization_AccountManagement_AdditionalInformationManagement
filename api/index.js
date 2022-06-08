@@ -16,19 +16,25 @@ const config = require('config')
 const sockets = require('./api/sockets/sockets')
 
 // Get middleware
-const mainPageView = require('./api/get/mainPageView')
-const signInView = require('./api/get/signInView')
-const error404View = require('./api/get/error404View')
-const logoutView = require('./api/get/logoutView')
-const confirmAccountView = require('./api/get/confirmAccountView')
-const registeredView = require('./api/get/registeredView')
-const checkIfLoggedIn = require('./api/get/checkIfLoggedIn')
+const mainPageView = require('./api/get/user/mainPageView')
+const signInView = require('./api/get/user/signInView')
+const error404View = require('./api/get/user/error404View')
+const logoutView = require('./api/get/user/logoutView')
+const confirmAccountView = require('./api/get/user/confirmAccountView')
+const registeredView = require('./api/get/user/registeredView')
+const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
+const profileView = require('./api/get/user/profileView')
+const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
+const manageView = require('./api/get/admin/manageView')
+const manageCardView = require('./api/get/admin/manageCardView')
+const manageMapView = require('./api/get/admin/manageMapView')
 
 // Patch middleware
-const login = require('./api/patch/login')
+const login = require('./api/patch/user/login')
 
 // Post middleware
-const register = require('./api/post/register')
+const register = require('./api/post/user/register')
+const { profile } = require('console')
 
 // Express and socketio initialization for http and https requests
 var app = express()
@@ -73,7 +79,12 @@ app.use('/sign-in', signInView)
 app.use('/logout', logoutView)
 app.use('/authorize', confirmAccountView)
 app.use('/registered', registeredView)
+app.use('/profile', profileView)
 app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
+app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
+app.use('/manage', manageView)
+app.use('/manage/card', manageCardView)
+app.use('/manage/map', manageMapView)
 
 // Patch
 app.use('/patch/login', login)

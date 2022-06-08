@@ -6,7 +6,8 @@ const Joi = require('joi')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
-const { User } = require('../../models/user')
+const { User } = require('../../../models/user')
+const { EmailLog } = require('../../../models/email_logs')
 
 const salt = 10
 
@@ -60,11 +61,27 @@ async function sendConfirmationEmail(data){
       
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            console.log(error)
+            putEmailLog(error, "error")
         } else {
-            console.log(info)
+            putEmailLog(info, "success")
         }
     })
+}
+
+/**
+ * Saves log if email has error or not to database
+ * @param {object} body to save in database
+ * @param {string} status if email was sended
+ */
+async function putEmailLog(body, status){
+    const currentDate = new Date(); 
+    const timestamp = currentDate. getTime();
+    var newLog = new EmailLog(_.pick({
+        message: body,
+        status: status, 
+        timestamp: timestamp
+    }, ['message', 'status', 'timestamp']))
+    await newLog.save()
 }
 
 /**
