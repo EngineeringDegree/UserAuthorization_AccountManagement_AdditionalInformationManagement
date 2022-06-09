@@ -28,12 +28,16 @@ const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
 const manageView = require('./api/get/admin/manageView')
 const manageCardView = require('./api/get/admin/manageCardView')
 const manageMapView = require('./api/get/admin/manageMapView')
+const getMaps = require('./api/get/admin/getMaps')
+const getCards = require('./api/get/admin/getCards')
 
 // Patch middleware
 const login = require('./api/patch/user/login')
 
 // Post middleware
 const register = require('./api/post/user/register')
+
+// Put middleware
 
 // Express and socketio initialization for http and https requests
 var app = express()
@@ -83,7 +87,9 @@ app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 app.use('/manage', manageView)
 app.use('/manage/card', manageCardView)
+app.use('/manage/get/card', getCards)
 app.use('/manage/map', manageMapView)
+app.use('/manage/get/map', getMaps)
 
 // Patch
 app.use('/patch/login', login)
