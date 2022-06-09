@@ -3,7 +3,7 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 
 /*
-Middleware which sends address confirmed page with proper information to user. 
+Middleware which sends address confirmed page with proper information to user and with breadcrumbs. 
 This middleware verify that user owns email.
 */
 router.get('/', async (req, res) => {

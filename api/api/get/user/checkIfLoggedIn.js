@@ -5,7 +5,7 @@ const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 
 /*
 This middleware checks if user has good credentials on his side.
-If this is the case returns proper info to him and if needed generates new token for him.
+If this is the case returns proper info to him and if needed generates new token for him and sends info if user is admin.
 If opposite happens there is sent signal to user which indicates logout action from frontend.
 User sends to this middleware email, token, refreshToken. 
 */
