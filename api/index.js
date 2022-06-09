@@ -34,7 +34,6 @@ const login = require('./api/patch/user/login')
 
 // Post middleware
 const register = require('./api/post/user/register')
-const { profile } = require('console')
 
 // Express and socketio initialization for http and https requests
 var app = express()
