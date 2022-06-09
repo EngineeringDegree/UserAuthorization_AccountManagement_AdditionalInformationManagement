@@ -1,0 +1,7 @@
+<% for(var i = 0; i < breadcrumb.length; i++) { %>
+    <% if(breadcrumb[i].currentPage){ %>
+        <%= breadcrumb[i].text %>
+    <% } else { %>
+        <a href="<%= breadcrumb[i].link %>"><%= breadcrumb[i].text %></a>
+    <% } %>
+<% } %>

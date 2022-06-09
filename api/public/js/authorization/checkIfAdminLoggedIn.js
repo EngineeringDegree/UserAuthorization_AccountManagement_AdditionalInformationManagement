@@ -50,7 +50,7 @@ function init(){
             loggedIn[i].classList.add('d-none')
         }
     
-        for(let i = 0; i < loggedIn.length; i++){
+        for(let i = 0; i < loggedOut.length; i++){
             loggedOut[i].classList.remove('d-none')
         }
         window.location.pathname = "/logout"
@@ -64,7 +64,7 @@ function init(){
             loggedIn[i].classList.remove('d-none')
         }
     
-        for(let i = 0; i < loggedIn.length; i++){
+        for(let i = 0; i < loggedOut.length; i++){
             loggedOut[i].classList.add('d-none')
         }
     }

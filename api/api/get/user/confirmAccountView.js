@@ -7,7 +7,17 @@ Middleware which sends address confirmed page with proper information to user.
 This middleware verify that user owns email.
 */
 router.get('/', async (req, res) => {
-    var data
+    var data, breadcrumb = [
+        {
+            currentPage: false,
+            text: 'Home',
+            link: '/'
+        },
+        {
+            currentPage: true,
+            text: 'Email Confirmation'
+        }
+    ]
     let user = await User.findOne({ email: req.query.email })
     if(user){
         if(req.query.accessToken == user.accessToken){
@@ -38,7 +48,7 @@ router.get('/', async (req, res) => {
         }
     }
 
-    return res.status(200).render('pages/confirm', data)
+    return res.status(200).render('pages/confirm', { data: data, breadcrumb: breadcrumb })
 })
 
 module.exports = router

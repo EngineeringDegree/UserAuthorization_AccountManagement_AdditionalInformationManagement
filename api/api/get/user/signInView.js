@@ -3,7 +3,18 @@ const router = express.Router()
 
 // Middleware which sends signin page
 router.get('/', async (req, res) => {
-    return res.status(200).render('pages/signin')
+    var breadcrumb = [
+        {
+            currentPage: false,
+            text: 'Home',
+            link: '/'
+        },
+        {
+            currentPage: true,
+            text: 'Sign In'
+        }
+    ]
+    return res.status(200).render('pages/signin', { breadcrumb: breadcrumb })
 })
 
 module.exports = router

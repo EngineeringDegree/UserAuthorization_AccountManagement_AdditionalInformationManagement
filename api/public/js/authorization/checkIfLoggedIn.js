@@ -13,7 +13,7 @@ function init(){
     }
 
     if(window.location.pathname == '/registered'){
-        logIn()
+        logIn(false)
         return
     }
 
@@ -29,12 +29,10 @@ function init(){
                 if(res.token){
                     window.localStorage.setItem("token", res.token)
                 }
-                logIn()
+                logIn(res.admin)
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 logOut()
-    
-                window.localStorage.clear()
             },
             dataType: "json",
             contentType : "application/json"
@@ -47,26 +45,31 @@ function init(){
      * Hides linkes which shouldn't be visible if user is logged out
      */
     function logOut(){
+        window.localStorage.clear()
         for(let i = 0; i < loggedIn.length; i++){
             loggedIn[i].classList.add('d-none')
         }
     
-        for(let i = 0; i < loggedIn.length; i++){
+        for(let i = 0; i < loggedOut.length; i++){
             loggedOut[i].classList.remove('d-none')
         }
-
-        window.location.pathname = "/logout"
     }
     
     /**
      * Hides linkes which shouldn't be visible if user is logged in
+     * @param {boolean} admin contains if user is an admin
      */
-    function logIn(){
+    function logIn(admin = false){
         for(let i = 0; i < loggedIn.length; i++){
+            if(loggedIn[i].classList.contains('admin')){
+                if(!admin){
+                    continue
+                }
+            }
             loggedIn[i].classList.remove('d-none')
         }
     
-        for(let i = 0; i < loggedIn.length; i++){
+        for(let i = 0; i < loggedOut.length; i++){
             loggedOut[i].classList.add('d-none')
         }
     }
