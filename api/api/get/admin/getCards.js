@@ -39,62 +39,32 @@ router.get('/', async (req, res) => {
 var getCards = async (records, cardName, page) => {
     var cards = [], returnedCards = []
     var pages = 1
-    if(cardName.trim() == ''){
-        cards = await Card.find({})
-        if(cards.length > records){
-            pages = Math.ceil(cards.length/records)
-            if(page > pages){
+    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}})
+    if(cards.length > records){
+        pages = Math.ceil(cards.length/records)
+        if(page > pages){
+            cards.length = records
+            returnedCards = cards
+            page = 1
+        }else{
+            if(page == 1){
                 cards.length = records
                 returnedCards = cards
-                page = 1
             }else{
-                if(page == 1){
-                    cards.length = records
-                    returnedCards = cards
+                if(page < pages){
+                    for(let i = 0; i < records; i++){
+                        returnedCards.push(cards[i + (records * (page - 1))])
+                    }
                 }else{
-                    if(page < pages){
-                        for(let i = 0; i < records; i++){
-                            returnedCards.push(cards[i + (records * (page - 1))])
-                        }
-                    }else{
-                        for(let i = (page - 1) * records; i < cards.length; i++){
-                            returnedCards.push(cards[i])
-                        }
+                    for(let i = (page - 1) * records; i < cards.length; i++){
+                        returnedCards.push(cards[i])
                     }
                 }
             }
-        }else{
-            returnedCards = cards
-            page = 1
         }
-    } else {
-        cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}})
-        if(cards.length > records){
-            pages = Math.ceil(cards.length/records)
-            if(page > pages){
-                cards.length = records
-                returnedCards = cards
-                page = 1
-            }else{
-                if(page == 1){
-                    cards.length = records
-                    returnedCards = cards
-                }else{
-                    if(page < pages){
-                        for(let i = 0; i < records; i++){
-                            returnedCards.push(cards[i + (records * (page - 1))])
-                        }
-                    }else{
-                        for(let i = (page - 1) * records; i < cards.length; i++){
-                            returnedCards.push(cards[i])
-                        }
-                    }
-                }
-            }
-        }else{
-            returnedCards = cards
-            page = 1
-        }
+    }else{
+        returnedCards = cards
+        page = 1
     }
     return { cards: returnedCards, pages: pages, page: page }
 }

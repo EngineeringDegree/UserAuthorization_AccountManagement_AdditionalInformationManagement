@@ -39,62 +39,32 @@ router.get('/', async (req, res) => {
 var getMaps = async (records, mapName, page) => {
     var maps = [], returnedMaps = []
     var pages = 1
-    if(mapName.trim() == ''){
-        maps = await Map.find({})
-        if(maps.length > records){
-            pages = Math.ceil(maps.length/records)
-            if(page > pages){
+    maps = await Map.find({ "name": { "$regex": mapName, "$options": "i"}})
+    if(maps.length > records){
+        pages = Math.ceil(maps.length/records)
+        if(page > pages){
+            maps.length = records
+            returnedMaps = maps
+            page = 1
+        }else{
+            if(page == 1){
                 maps.length = records
                 returnedMaps = maps
-                page = 1
             }else{
-                if(page == 1){
-                    maps.length = records
-                    returnedMaps = maps
+                if(page < pages){
+                    for(let i = 0; i < records; i++){
+                        returnedMaps.push(maps[i + (records * (page - 1))])
+                    }
                 }else{
-                    if(page < pages){
-                        for(let i = 0; i < records; i++){
-                            returnedMaps.push(maps[i + (records * (page - 1))])
-                        }
-                    }else{
-                        for(let i = (page - 1) * records; i < maps.length; i++){
-                            returnedMaps.push(maps[i])
-                        }
+                    for(let i = (page - 1) * records; i < maps.length; i++){
+                        returnedMaps.push(maps[i])
                     }
                 }
             }
-        }else{
-            returnedMaps = maps
-            page = 1
         }
-    } else {
-        maps = await Map.find({ "name": { "$regex": mapName, "$options": "i"}})
-        if(maps.length > records){
-            pages = Math.ceil(maps.length/records)
-            if(page > pages){
-                maps.length = records
-                returnedMaps = maps
-                page = 1
-            }else{
-                if(page == 1){
-                    maps.length = records
-                    returnedMaps = maps
-                }else{
-                    if(page < pages){
-                        for(let i = 0; i < records; i++){
-                            returnedMaps.push(maps[i + (records * (page - 1))])
-                        }
-                    }else{
-                        for(let i = (page - 1) * records; i < maps.length; i++){
-                            returnedMaps.push(maps[i])
-                        }
-                    }
-                }
-            }
-        }else{
-            returnedMaps = maps
-            page = 1
-        }
+    }else{
+        returnedMaps = maps
+        page = 1
     }
     return { maps: returnedMaps, pages: pages, page: page }
 }
