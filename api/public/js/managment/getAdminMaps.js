@@ -90,6 +90,7 @@ function init(){
      * @param {integer} p to which page should be changed 
      */
      function setPage(e){
+        e.preventDefautl()
         page = e.currentTarget.pageNum
         sendRequest()
     }
@@ -116,11 +117,12 @@ function init(){
                     element.textContent = i + 1
                     pagesDisplay.appendChild(element)
                 }else{
-                    let element = document.createElement('button')
+                    let element = document.createElement('a')
                     element.textContent = i + 1
                     element.classList.add('clickable')
                     element.addEventListener('click', setPage ,false)
                     element.pageNum = i + 1
+                    element.href = "#"
                     pagesDisplay.appendChild(element)
                 }
             }
