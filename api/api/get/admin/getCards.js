@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 })
 
 /**
- * Gets cards using parameters
+ * Gets cards using parameters. Default sorted by name descending. To ascend use -1.
  * @param {integer} records how much cards should be displayed at once
  * @param {string} cardName card string to search for in name
  * @param {integer} page page from which records should be displayed
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 var getCards = async (records, cardName, page) => {
     var cards = [], returnedCards = []
     var pages = 1
-    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}}).sort("name")
+    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}}).sort({"name": 1})
     if(cards.length > records){
         pages = Math.ceil(cards.length/records)
         if(page > pages){
