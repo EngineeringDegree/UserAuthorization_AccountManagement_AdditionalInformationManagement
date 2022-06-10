@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
  * @param {integer} records how much cards should be displayed at once
  * @param {string} cardName card string to search for in name
  * @param {integer} page page from which records should be displayed
- * @returns 
+ * @returns {object} with returned cards, count of pages and current page
  */
 var getCards = async (records, cardName, page) => {
     var cards = [], returnedCards = []

@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
  * @param {integer} records how much maps should be displayed at once
  * @param {string} mapName map string to search for in name
  * @param {integer} page page from which records should be displayed
- * @returns 
+ * @returns {object} with returned cards, count of pages and current page
  */
 var getMaps = async (records, mapName, page) => {
     var maps = [], returnedMaps = []
