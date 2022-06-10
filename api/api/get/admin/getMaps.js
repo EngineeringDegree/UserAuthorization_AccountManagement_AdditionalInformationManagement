@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 var getMaps = async (records, mapName, page) => {
     var maps = [], returnedMaps = []
     var pages = 1
-    maps = await Map.find({ "name": { "$regex": mapName, "$options": "i"}})
+    maps = await Map.find({ "name": { "$regex": mapName, "$options": "i"}}).sort("name")
     if(maps.length > records){
         pages = Math.ceil(maps.length/records)
         if(page > pages){

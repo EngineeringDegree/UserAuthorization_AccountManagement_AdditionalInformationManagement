@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 var getCards = async (records, cardName, page) => {
     var cards = [], returnedCards = []
     var pages = 1
-    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}})
+    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i"}}).sort("name")
     if(cards.length > records){
         pages = Math.ceil(cards.length/records)
         if(page > pages){
