@@ -61,7 +61,7 @@ function init(){
             if(mapName && records){
                 $.ajax({
                     type: "GET",
-                    url: `/manage/get/map?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&mapName=${mapName.value}&page=${page}`,
+                    url: `/manage/get/maps?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&mapName=${mapName.value}&page=${page}`,
                     success: function(res){
                         console.log(res)
                         if(res.token){

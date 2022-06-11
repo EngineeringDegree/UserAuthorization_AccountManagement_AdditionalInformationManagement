@@ -61,7 +61,7 @@ function init(){
             if(cardName && records){
                 $.ajax({
                     type: "GET",
-                    url: `/manage/get/card?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&cardName=${cardName.value}&page=${page}`,
+                    url: `/manage/get/cards?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&cardName=${cardName.value}&page=${page}`,
                     success: function(res){
                         console.log(res)
                         if(res.token){
@@ -158,29 +158,3 @@ function init(){
         }
     }
 }
-
-// if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')){
-//     $.ajax({
-//         type: "GET",
-//         url: `/get/admin/checkIfLoggedIn?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`,
-//         success: function(res){
-//             if(window.location.pathname == '/sign-in'){
-//                 window.location.pathname = '/'
-//                 return
-//             }
-//             if(res.token){
-//                 window.localStorage.setItem("token", res.token)
-//             }
-//             logIn()
-//         },
-//         error: function (xhr, ajaxOptions, thrownError) {
-//             logOut()
-//         },
-//         dataType: "json",
-//         contentType : "application/json"
-//     })
-// }else{
-//     logOut()
-// }  
-
-
