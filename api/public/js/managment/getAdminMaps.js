@@ -63,7 +63,6 @@ function init(){
                     type: "GET",
                     url: `/manage/get/maps?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&mapName=${mapName.value}&page=${page}`,
                     success: function(res){
-                        console.log(res)
                         if(res.token){
                             window.localStorage.setItem("token", res.token)
                         }
@@ -107,7 +106,16 @@ function init(){
             pagesDisplay.innerHTML = ''
             for(let i = 0; i < records.length; i++){
                 let element = document.createElement('div')
-                element.textContent = records[i].name
+                let link = document.createElement('a')
+                link.textContent = records[i].name
+                link.href = `/manage/map/modify?mapId=${records[i]._id}`
+                element.appendChild(link)
+                maps.appendChild(element)
+            }
+
+            if(records.length == 0){
+                let element = document.createElement('div')
+                element.textContent = "Nothing to see here!"
                 maps.appendChild(element)
             }
 
