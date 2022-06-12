@@ -32,7 +32,10 @@ function init(){
                 logIn(res.admin)
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                logOut()
+                if(xhr.responseJSON.action == "LOGOUT"){
+                    logOut()
+                    return
+                }
             },
             dataType: "json",
             contentType : "application/json"
