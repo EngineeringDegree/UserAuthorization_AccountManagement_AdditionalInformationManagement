@@ -3,6 +3,7 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 const { Map } = require('../../../models/map')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
+const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 
 /*
 This middleware sends maps according to parameters if user is admin
@@ -11,6 +12,9 @@ router.get('/', async (req, res) => {
     let user = await User.findOne({ email: req.query.email })
     if(user){
         if(user.admin){
+            if(checkIfBanned(user)){
+                return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+            }
             var check = checkToken(user.token, req.query.token)
             if(!check){
                 check = await askNewToken(user.refreshToken, req.query.refreshToken, user)

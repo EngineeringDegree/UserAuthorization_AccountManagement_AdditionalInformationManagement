@@ -37,9 +37,13 @@ const modifyMapView = require('./api/get/admin/modifyMapView')
 
 // Patch middleware
 const login = require('./api/patch/user/login')
+const modifyCard = require('./api/patch/admin/modifyCard')
+const modifyMap = require('./api/patch/admin/modifyMap')
 
 // Post middleware
 const register = require('./api/post/user/register')
+const addCard = require('./api/post/admin/addCard')
+const addMap = require('./api/post/admin/addMap')
 
 // Put middleware
 
@@ -101,9 +105,13 @@ app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 
 // Patch
 app.use('/patch/login', login)
+app.use('/patch/admin/modify/card', modifyCard)
+app.use('/patch/admin/modify/map', modifyMap)
 
 // Post
 app.use('/post/register', register)
+app.use('/post/admin/add/card', addCard)
+app.use('/post/admin/add/map', addMap)
 
 // Put
 

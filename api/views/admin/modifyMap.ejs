@@ -12,8 +12,8 @@
     <%- include('../partials/components/breadcrumb') %>
     <%- include('../partials/components/footer') %>
     
-    Map ID: <input id="map-id" value="<%= map._id %>" />
-    Map Name: <input id="map-name" value="<%= map.name %>" />
+   <input id="map-id" type="hidden" value="<%= map._id %>" />
+    Map Name: <input id="map-name" type="text" value="<%= map.name %>" />
 
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/modifyMap') %>

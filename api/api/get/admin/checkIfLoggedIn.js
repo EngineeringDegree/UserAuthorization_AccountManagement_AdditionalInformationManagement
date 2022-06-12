@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
+const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 
 /*
 This middleware checks if user has good credentials on his side.
@@ -12,6 +13,9 @@ User sends to this middleware email, token, refreshToken. Works for admin.
 router.get('/', async (req, res) => {
     let user = await User.findOne({ email: req.query.email })
     if(user){
+        if(checkIfBanned(user)){
+            return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+        }
         if(user.admin){
             var check = checkToken(user.token, req.query.token)
             if(!check){

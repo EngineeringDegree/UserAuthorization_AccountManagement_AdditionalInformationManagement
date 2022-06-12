@@ -12,8 +12,8 @@
     <%- include('../partials/components/breadcrumb') %>
     <%- include('../partials/components/footer') %>
 
-    Card ID: <input id="card-id" value="<%= card._id %>" />
-    Card Name: <input id="card-name" value="<%= card.name %>" />
+    <input id="card-id" type="hidden" value="<%= card._id %>" />
+    Card Name: <input id="card-name" type="text" value="<%= card.name %>" />
     
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/modifyCard') %>
