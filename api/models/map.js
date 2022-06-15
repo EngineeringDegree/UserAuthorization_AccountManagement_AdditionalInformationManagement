@@ -5,12 +5,32 @@ const Map = mongoose.model('Map', new mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    size: {
+        type: String,
+        required: true
+    },
+    image: {
+        type: String,
+        required: true
+    },
+    fields: {
+        type: Array,
+        required: true
+    },
+    startingPositions: {
+        type: Array,
+        required: true
     }
 }))
  
 function validateMap(map) {
     const schema = Joi.object({
-        name: Joi.string().required()
+        name: Joi.string().required(),
+        size: Joi.string().required(),
+        image: Joi.string().required(),
+        fields: Joi.array().required(),
+        startingPositions: Joi.array().required()
     })
     const validation = schema.validate(map)
     return validation
