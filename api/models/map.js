@@ -21,6 +21,10 @@ const Map = mongoose.model('Map', new mongoose.Schema({
     startingPositions: {
         type: Array,
         required: true
+    },
+    readyToUse: {
+        type: Boolean,
+        required: true
     }
 }))
  
@@ -30,7 +34,8 @@ function validateMap(map) {
         size: Joi.string().required(),
         image: Joi.string().required(),
         fields: Joi.array().required(),
-        startingPositions: Joi.array().required()
+        startingPositions: Joi.array().required(),
+        readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(map)
     return validation

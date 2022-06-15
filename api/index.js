@@ -67,8 +67,7 @@ if (!config.get('PrivateKey')) {
     process.exit(1)
 }
 
-// Connect to database and turn sanitize on to prevent inputing malicious pieces on code from user
-mongoose.set('sanitizeFilter', true)
+// Connect to database
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true,  useUnifiedTopology: true})
 .then(() => console.log('Now connected to MongoDB!'))
 .catch(err => console.error('Something went wrong', err))
