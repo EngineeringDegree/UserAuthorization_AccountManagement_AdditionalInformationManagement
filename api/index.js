@@ -43,6 +43,7 @@ const modifyMapView = require('./api/get/admin/modifyMapView')
 const login = require('./api/patch/user/login')
 const modifyCard = require('./api/patch/admin/modifyCard')
 const modifyMap = require('./api/patch/admin/modifyMap')
+const banUser = require('./api/patch/admin/banUser')
 
 // Post middleware
 const register = require('./api/post/user/register')
@@ -115,6 +116,7 @@ app.use('/users/user', getUserView)
 app.use('/patch/login', login)
 app.use('/patch/admin/modify/card', modifyCard)
 app.use('/patch/admin/modify/map', modifyMap)
+app.use('/patch/user/ban', banUser)
 
 // Post
 app.use('/post/register', register)

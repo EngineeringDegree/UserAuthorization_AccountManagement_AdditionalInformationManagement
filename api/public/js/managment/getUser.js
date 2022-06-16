@@ -109,6 +109,10 @@ function init(){
             user.appendChild(element)
         }
 
+        var btn = document.getElementById(userInfo.id)
+        if(btn){
+            btn.addEventListener('click', banUser, false)
+        }
     }
 
     /**

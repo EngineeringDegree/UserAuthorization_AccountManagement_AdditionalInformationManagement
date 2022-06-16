@@ -113,6 +113,10 @@ function init(){
                     element.appendChild(createBanUtility(records[i].id))
                 }
                 users.appendChild(element)
+                var btn = document.getElementById(records[i].id)
+                if(btn){
+                    btn.addEventListener('click', banUser, false)
+                }
             }
 
             if(records.length == 0){
