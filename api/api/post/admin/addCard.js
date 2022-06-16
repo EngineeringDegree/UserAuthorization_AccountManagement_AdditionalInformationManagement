@@ -11,7 +11,7 @@ const { Card } = require('../../../models/card')
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUT'})
     }
 
     let user = await User.findOne({ email: req.body.email })
@@ -24,12 +24,12 @@ router.post('/', async (req, res) => {
             if(!check){
                 check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
                 if(check){
-                    await createCard(req.body.name)
+                    await createCard(req.body)
                     return res.status(200).send({status: 'CARD CREATED', code: 200, token: check})
                 }
                 return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
             }
-            await createCard(req.body.name)
+            await createCard(req.body)
             return res.status(200).send({status: 'CARD CREATED', code: 200})
         }
         return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
@@ -40,12 +40,21 @@ router.post('/', async (req, res) => {
 
 /**
  * Save card with following arguments
- * @param {string} name of card to save 
+ * @param {object} card to save 
  */
-async function createCard(name){
+async function createCard(card){
     var newCard = new Card(_.pick({
-        name: name
-    }, ['name']))
+        name: card.name,
+        image: card.image,
+        type: card.type,
+        nation: card.nation,
+        resources: card.resources,
+        attack: card.attack,
+        defense: card.defense,
+        mobility: card.mobility,
+        effects: card.effects,
+        readyToUse: true
+    }, ['name', 'image', 'type', 'nation', 'resources', 'attack', 'defense', 'mobility', 'effects', 'readyToUse']))
     await newCard.save()
 }
 
@@ -59,7 +68,15 @@ async function createCard(name){
         email: Joi.string().email().required(),
         name: Joi.string().min(1).required(),
         token: Joi.string().required(),
-        refreshToken: Joi.string().required()
+        refreshToken: Joi.string().required(),
+        image: Joi.string().required(),
+        type: Joi.array().required(),
+        nation: Joi.array().required(),
+        resources: Joi.number().required(),
+        attack: Joi.number().required(),
+        defense: Joi.number().required(),
+        mobility: Joi.number().required(),
+        effects: Joi.array().required(),
     })
     const validation = schema.validate(req)
     return validation

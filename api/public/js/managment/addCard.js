@@ -14,34 +14,40 @@ function init(){
  * Sends requests with user details and card details to save to backend
  */
 function sendRequest(){
-    if(checkName($('#name').val())){
-        var postObject = {
-            email: window.localStorage.getItem('email'),
-            token: window.localStorage.getItem('token'),
-            refreshToken: window.localStorage.getItem('refreshToken'),
-            name: $('#name').val()
-        }
-        var stringifiedObject = JSON.stringify(postObject)
+    var postObject = {
+        email: window.localStorage.getItem('email'),
+        token: window.localStorage.getItem('token'),
+        refreshToken: window.localStorage.getItem('refreshToken'),
+        name: $('#name').val(),
+        image: $('#image').val(),
+        type: [$('#type').val()],
+        nation: [$('#nation').val()],
+        resources: $('#resources').val(),
+        attack: $('#attack').val(),
+        defense: $('#defense').val(),
+        mobility: $('#mobility').val(),
+        effects: [$('#effects').val()]
+    }
+    var stringifiedObject = JSON.stringify(postObject)
 
-        $.ajax({
-            type: "POST",
-            data: stringifiedObject,
-            url: '/post/admin/add/card',
-            success: function(res){
-                if(res.token){
-                    window.localStorage.setItem("token", res.token)
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if(xhr.responseJSON.action == "LOGOUT"){
-                    logOut()
-                    return
-                }
-            },
-            dataType: "json",
-            contentType : "application/json"
-        })
-    } 
+    $.ajax({
+        type: "POST",
+        data: stringifiedObject,
+        url: '/post/admin/add/card',
+        success: function(res){
+            if(res.token){
+                window.localStorage.setItem("token", res.token)
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if(xhr.responseJSON.action == "LOGOUT"){
+                logOut()
+                return
+            }
+        },
+        dataType: "json",
+        contentType : "application/json"
+    })
 }
 
 function logOut(){
