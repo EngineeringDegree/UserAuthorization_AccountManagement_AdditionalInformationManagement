@@ -10,7 +10,7 @@ const { Map } = require('../../../models/map')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
     }
 
     let user = await User.findOne({ email: req.body.email })
@@ -33,7 +33,12 @@ router.patch('/', async (req, res) => {
                         _id: map._id
                     }
                     const update = {
-                        name: req.body.name
+                        name: req.body.name,
+                        size: req.body.size,
+                        image: req.body.image,
+                        fields: req.body.fields,
+                        startingPositions: req.body.startingPositions,
+                        readyToUse: req.body.readyToUse
                     }
         
                     await Map.updateOne(filter, update)
@@ -45,7 +50,12 @@ router.patch('/', async (req, res) => {
                 _id: map._id
             }
             const update = {
-                name: req.body.name
+                name: req.body.name,
+                size: req.body.size,
+                image: req.body.image,
+                fields: req.body.fields,
+                startingPositions: req.body.startingPositions,
+                readyToUse: req.body.readyToUse
             }
 
             await Map.updateOne(filter, update)
@@ -68,7 +78,12 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         id: Joi.string().min(1).required(),
-        name: Joi.string().min(1).required()
+        name: Joi.string().min(1).required(),
+        size: Joi.string().required(),
+        image: Joi.string().required(),
+        fields: Joi.array().required(),
+        startingPositions: Joi.array().required(),
+        readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(req)
     return validation

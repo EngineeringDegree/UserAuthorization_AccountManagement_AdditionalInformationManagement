@@ -14,6 +14,20 @@
 
     <input id="card-id" type="hidden" value="<%= card._id %>" />
     Card Name: <input id="card-name" type="text" value="<%= card.name %>" />
+    Image: <input id="card-image" type="text" value="<%= card.image %>" />
+    Type: <input id="card-type" type="text" value="<%= card.type[0] %>" />
+    Nation: <input id="card-nation" type="text" value="<%= card.nation[0] %>" />
+    Resources: <input id="card-resources" type="text" value="<%= card.resources %>" />
+    Attack: <input id="card-attack" type="text" value="<%= card.attack %>" />
+    Defense: <input id="card-defense" type="text" value="<%= card.defense %>" />
+    Mobility: <input id="card-mobility" type="text" value="<%= card.mobility %>" />
+    Effects: <input id="card-effects" type="text" value="<%= card.effects[0] %>" />
+    <% if(card.readyToUse) { %>
+        Ready to use: <input id="card-ready" type="checkbox" checked />
+    <% } else { %>
+        Ready to use: <input id="card-ready" type="checkbox" />
+    <% } %>
+        
     
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/modifyCard') %>

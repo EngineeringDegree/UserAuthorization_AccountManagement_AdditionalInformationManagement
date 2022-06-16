@@ -14,6 +14,15 @@
     
    <input id="map-id" type="hidden" value="<%= map._id %>" />
     Map Name: <input id="map-name" type="text" value="<%= map.name %>" />
+    Map Size: <input id="map-size" type="text" value="<%= map.size %>" />
+    Map Image: <input id="map-image" type="text" value="<%= map.image %>" />
+    Map Fields: <input id="map-fields" type="text" value="<%= map.fields[0] %>" />
+    Map Starting Positions: <input id="map-starting" type="text" value="<%= map.startingPositions[0] %>" />
+    <% if(map.readyToUse) { %>
+        Ready to use: <input id="map-ready" type="checkbox" checked />
+    <% } else { %>
+        Ready to use: <input id="map-ready" type="checkbox" />
+    <% } %>
 
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/modifyMap') %>

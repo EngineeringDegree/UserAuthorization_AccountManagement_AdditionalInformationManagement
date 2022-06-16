@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
 
     breadcrumb.push({
         currentPage: true,
-        text: `Modify ${map.name} Map`
+        text: `Modify ${map._id} Map`
     })
     return res.status(200).render('admin/modifyMap', { breadcrumb: breadcrumb, map: map })
 })

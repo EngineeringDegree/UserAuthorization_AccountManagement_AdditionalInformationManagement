@@ -11,7 +11,7 @@ const { Card } = require('../../../models/card')
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUT'})
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
     }
 
     let user = await User.findOne({ email: req.body.email })

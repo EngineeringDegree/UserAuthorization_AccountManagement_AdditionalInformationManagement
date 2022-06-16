@@ -9,7 +9,7 @@ const { User } = require('../../../models/user')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
     }
     let user = await User.findOne({ email: req.body.email })
     if(user){
