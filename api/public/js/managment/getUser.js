@@ -23,7 +23,7 @@ function init(){
                         if(res.token){
                             window.localStorage.setItem("token", res.token)
                         }
-                        displayReturnedInfo({ username: res.username,  email: res.email, admin: res.admin, confirmed: res.confirmed}, res.action == 'DISPLAY USER INFO AND BANHAMMER', res.action == 'DISPLAY USER INFO AND EDIT FORM')
+                        displayReturnedInfo({ username: res.username,  email: res.email, admin: res.admin, confirmed: res.confirmed, id: res.id }, res.action == 'DISPLAY USER INFO AND BANHAMMER', res.action == 'DISPLAY USER INFO AND EDIT FORM')
                         
                         logIn()
                     },
@@ -81,9 +81,6 @@ function init(){
             }
             element.appendChild(confirmed)
 
-            if(admin){
-                element.appendChild(createBanUtility())
-            }
             user.appendChild(element)
         } else {
             let username = document.createElement('p')
@@ -107,7 +104,7 @@ function init(){
             element.appendChild(confirmed)
     
             if(admin){
-                element.appendChild(createBanUtility())
+                element.appendChild(createBanUtility(userInfo.id))
             }
             user.appendChild(element)
         }

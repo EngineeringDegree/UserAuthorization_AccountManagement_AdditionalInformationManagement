@@ -110,7 +110,7 @@ function init(){
                 link.href = `/users/user?userId=${records[i].id}`
                 element.appendChild(link)
                 if(admin){
-                    element.appendChild(createBanUtility())
+                    element.appendChild(createBanUtility(records[i].id))
                 }
                 users.appendChild(element)
             }
