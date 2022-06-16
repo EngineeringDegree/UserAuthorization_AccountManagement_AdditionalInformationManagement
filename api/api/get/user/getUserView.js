@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
         text: `${user.username}`
     })
 
-    return res.status(200).render('pages/user', { breadcrumb: breadcrumb, username: user.username, id: user._id, email: user.email, confirmed: user.confirmed, admin: user.admin })
+    return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: user._id })
 })
 
 module.exports = router

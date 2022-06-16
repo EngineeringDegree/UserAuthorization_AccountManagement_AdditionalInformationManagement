@@ -90,7 +90,7 @@ function init(){
 
     /**
      * Sets page to current page
-     * @param {integer} p to which page should be changed 
+     * @param {integer} e element of DOM which holds pageNum property 
      */
     function setPage(e){
         e.preventDefault()

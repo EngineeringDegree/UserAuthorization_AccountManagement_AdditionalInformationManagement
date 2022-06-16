@@ -1,3 +1,8 @@
+/**
+ * Check if user has ban
+ * @param {User} user object model
+ * @returns if user has ban
+ */
 var checkIfBanned = (user) => {
     var newDate = new Date()
     newDate = newDate.getTime()

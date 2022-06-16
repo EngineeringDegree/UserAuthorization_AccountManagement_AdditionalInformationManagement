@@ -5,31 +5,22 @@ $(document).ready(init())
  */
 function init(){
     var timeoutId, timeoutTime = 1000, page = 1
+
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
-
-    if(window.location.pathname == '/logout'){
-        logOut()
-        return
-    }
-
-    if(window.location.pathname == '/registered'){
-        logIn()
-        return
-    }
 
     var records = document.getElementById('records-per-page')
     if(records){
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
-    var mapName = document.getElementById('map-name')
-    if(mapName){
-        mapName.addEventListener('keyup', mapNameChanged, false)
+    var username = document.getElementById('username')
+    if(username){
+        username.addEventListener('keyup', usernameChanged, false)
     }
 
     var pagesDisplay = document.getElementById('pages')
-    var maps = document.getElementById('maps')
+    var users = document.getElementById('users')
 
     sendRequest()
 
@@ -43,7 +34,7 @@ function init(){
     /**
      * Initialize 1 second timer to send request if nothing changes
      */
-    function mapNameChanged(){
+    function usernameChanged(){
         if(timeoutId){
             clearTimeout(timeoutId)
         }
@@ -54,22 +45,25 @@ function init(){
     }
 
     /**
-     * Sends request for map with current choosen parameters
+     * Sends request for card with current choosen parameters
      */
     function sendRequest(){
         if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')){
-            if(mapName && records){
+            if(username && records){
                 $.ajax({
                     type: "GET",
-                    url: `/manage/get/maps?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&mapName=${mapName.value}&page=${page}`,
+                    url: `/get/users?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&username=${username.value}&page=${page}`,
                     success: function(res){
                         if(res.token){
                             window.localStorage.setItem("token", res.token)
                         }
-                        if(res.page){
-                            page = res.page
+
+                        if(res.users.page){
+                            page = res.users.page
                         }
-                        displayReturnedInfo(res.maps, res.page, res.pages)
+
+                        displayReturnedInfo(res.users.users, res.users.page, res.users.pages, res.action == 'USERS FOUND AND SHOW BANHAMMER')
+                        
                         logIn()
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -91,6 +85,7 @@ function init(){
      * Sets page to current page
      * @param {integer} e element of DOM which holds pageNum property 
      */
+
     function setPage(e){
         e.preventDefault()
         page = e.currentTarget.pageNum
@@ -102,24 +97,28 @@ function init(){
      * @param {array} records array of returned records
      * @param {integer} page page which is displayed right now
      * @param {integer} pages how much pages to display
+     * @param {boolean} admin if user is an admin
      */
-     function displayReturnedInfo(records, page, pages){
-        if(maps && pagesDisplay){
-            maps.innerHTML = ''
+    function displayReturnedInfo(records, page, pages, admin){
+        if(users && pagesDisplay){
+            users.innerHTML = ''
             pagesDisplay.innerHTML = ''
             for(let i = 0; i < records.length; i++){
                 let element = document.createElement('div')
                 let link = document.createElement('a')
-                link.textContent = records[i].name
-                link.href = `/manage/map/modify?mapId=${records[i]._id}`
+                link.textContent = records[i].username
+                link.href = `/users/user?userId=${records[i].id}`
                 element.appendChild(link)
-                maps.appendChild(element)
+                if(admin){
+                    element.appendChild(createBanUtility())
+                }
+                users.appendChild(element)
             }
 
             if(records.length == 0){
                 let element = document.createElement('div')
                 element.textContent = "Nothing to see here!"
-                maps.appendChild(element)
+                users.appendChild(element)
             }
 
             for(let i = 0; i < pages; i++){
@@ -168,6 +167,3 @@ function init(){
         }
     }
 }
-
-
-

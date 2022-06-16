@@ -19,19 +19,19 @@ router.get('/', async (req, res) => {
             if(check){
                 var users = await getUsers(req)
                 if(user.admin){
-                    return res.status(200).send({ status: "USERS FOUND AND SHOW BANHAMMER", token: check, users: users })
+                    return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", token: check, users: users })
                 }
 
-                return res.status(200).send({ status: "USERS FOUND", token: check, users: users })
+                return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", token: check, users: users })
             }
             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
         }
         var users = await getUsers(req)
         if(user.admin){
-            return res.status(200).send({ status: "USERS FOUND AND SHOW BANHAMMER", users: users })
+            return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", users: users })
         }
 
-        return res.status(200).send({ status: "USERS FOUND", users: users })
+        return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", users: users })
     }
 
     return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'}) 
