@@ -52,6 +52,7 @@ router.get('/', async (req, res) => {
         currentPage: true,
         text: `Modify ${card.name} Card`
     })
+    
     return res.status(200).render('admin/modifyCard', { breadcrumb: breadcrumb, card: card })
 })
 
