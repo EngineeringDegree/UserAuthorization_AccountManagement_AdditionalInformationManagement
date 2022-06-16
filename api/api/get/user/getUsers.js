@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         if(!check){
             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
             if(check){
-                var users = getUsers(req)
+                var users = await getUsers(req)
                 if(user.admin){
                     return res.status(200).send({ status: "USERS FOUND AND SHOW BANHAMMER", token: check, users: users })
                 }
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
             }
             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
         }
-        var users = getUsers(req)
+        var users = await getUsers(req)
         if(user.admin){
             return res.status(200).send({ status: "USERS FOUND AND SHOW BANHAMMER", users: users })
         }
@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
  * @param {object} req of query parameters
  * @returns object containing user info, page and avaiable pages
  */
-var getUsers = (req) => {
+var getUsers = async (req) => {
     var users = [], allUsers = []
     var pages = 1, page = 1, records = 50, username = ''
     if(req.query.page){

@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
             if(check){
                 var userToFind = await User.findOne({ _id: req.query.id })
                 if(userToFind){
-                    if(user._id == userToFind._id){
+                    if(user.email == userToFind.email){
                         return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email })
                     }
 
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
         }
         var userToFind = await User.findOne({ _id: req.query.id })
         if(userToFind){
-            if(user._id == userToFind._id){
+            if(user.email == userToFind.email){
                 return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', username: userToFind.username, id: userToFind._id, email: userToFind.email })
             }
 
