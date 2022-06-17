@@ -72,6 +72,7 @@ function signUp(){
         url: "/post/register",
         data: stringifiedObject,
         success: function(res){
+            window.localStorage.setItem('userId', res.id)
             window.localStorage.setItem('accessToken', res.accessToken)
             window.localStorage.setItem('token', res.token)
             window.localStorage.setItem('refreshToken', res.refreshToken)

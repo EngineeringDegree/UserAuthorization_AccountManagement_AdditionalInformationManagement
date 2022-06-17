@@ -34,7 +34,7 @@ router.patch('/', async (req, res) => {
 
             await User.updateOne(filter, update)
 
-            return res.status(200).send({status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username})
+            return res.status(200).send({status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id})
         }
         
         return res.status(401).send({status: 'BAD DATA', code: 401})

@@ -106,7 +106,7 @@ async function putAdmin(body){
         bans: []
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email}
+    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id}
 }
 
 /**
@@ -131,7 +131,7 @@ async function putUser(body){
         bans: []
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email}
+    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id}
 }
 
 /**

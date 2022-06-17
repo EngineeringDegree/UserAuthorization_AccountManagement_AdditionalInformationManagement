@@ -48,6 +48,7 @@ function signIn(){
         url: "/patch/login",
         data: stringifiedObject,
         success: function(res){
+            window.localStorage.setItem('userId', res.id)
             window.localStorage.setItem('token', res.token)
             window.localStorage.setItem('refreshToken', res.refreshToken)
             window.localStorage.setItem('email', res.email)
