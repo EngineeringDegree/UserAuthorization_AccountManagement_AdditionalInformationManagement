@@ -78,7 +78,10 @@ function sendBanRequest(id, value, reason){
             
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            window.location.pathname = '/logout'
+            if(xhr.responseJSON.action == "LOGOUT"){
+                window.location.pathname = '/logout'
+                return
+            }
         },
         dataType: "json",
         contentType : "application/json"

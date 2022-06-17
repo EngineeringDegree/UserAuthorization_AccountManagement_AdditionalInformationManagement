@@ -64,10 +64,12 @@ function init(){
         if(owner){
             let username = document.createElement('input')
             username.value = userInfo.username
+            username.addEventListener('keydown', usernameChanged, false)
             element.appendChild(username)
-
+            
             let email = document.createElement('input')
             email.value = userInfo.email
+            email.addEventListener('keydown', emailChanged, false)
             element.appendChild(email)
 
             if(userInfo.admin){
@@ -90,16 +92,21 @@ function init(){
             let email = document.createElement('p')
             email.textContent = userInfo.email
             element.appendChild(email)
-    
+            
+            if(admin){
+                admin.disabled = false
+                confirmed.disabled = false
+                admin.addEventListener('mousedown', adminChanged, false)
+                confirmed.addEventListener('mousedown', confirmedChanged, false)
+            }
+
             if(userInfo.admin){
                 admin.checked = true
-                admin.disabled = false
             }
             element.appendChild(admin)
     
             if(userInfo.confirmed){
                 confirmed.checked = true
-                confirmed.disabled = false
             }
             element.appendChild(confirmed)
     
