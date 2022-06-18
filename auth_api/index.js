@@ -1,0 +1,84 @@
+// Imports without needed variable
+require('dotenv').config()
+
+// Imports with needed variable
+const express = require('express')
+const cors = require("cors")
+const https = require('https')
+const http = require('http')
+const mongoose = require('mongoose')
+const fs = require('fs')
+const config = require('config')
+
+// Get middleware
+const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
+const getUsers = require('./api/get/user/getUsers')
+const getUser = require('./api/get/user/getUser')
+const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
+
+// Patch middleware
+const login = require('./api/patch/user/login')
+const banUser = require('./api/patch/admin/banUser')
+const changeUserUsername = require('./api/patch/user/changeUserUsername')
+
+// Post middleware
+const register = require('./api/post/user/register')
+
+// Put middleware
+
+// Express and socketio initialization for http and https requests
+var app = express()
+
+// Comment on the server this snippet and uncomment below one
+var server = https.createServer({
+    key: fs.readFileSync(process.env.KEY, 'utf8'),
+    cert: fs.readFileSync(process.env.CERT, 'utf8'),
+    ca: fs.readFileSync(process.env.CA, 'utf8')
+}, app)
+
+var serverNotSecure = http.createServer(app)
+
+// Checking if private key of the server is present
+if (!config.get('PrivateKey')) {
+    console.error('FATAL ERROR: PrivateKey is not defined.')
+    process.exit(1)
+}
+
+// Connect to database
+mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true,  useUnifiedTopology: true})
+.then(() => console.log('Now connected to MongoDB!'))
+.catch(err => console.error('Something went wrong', err))
+
+// Use Cors and parse all requests to be a json string, use public folder as static files, set view engine to ejs   
+app.use(cors())
+app.use(express.json())
+
+// Routes
+
+// Get
+app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
+app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
+app.use('/get/users', getUsers)
+app.use('/get/user', getUser)
+
+// Patch
+app.use('/patch/login', login)
+app.use('/patch/user/ban', banUser)
+app.use('/patch/user/username', changeUserUsername)
+
+// Post
+app.use('/post/register', register)
+
+// Put
+
+// Other endpoints
+
+// Run servers
+
+// HTTPS
+const PORT = process.env.PORT
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+
+//HTTP
+const PORT_NOT_SECURE = process.env.PORT_NOT_SECURE
+serverNotSecure.listen(PORT_NOT_SECURE, () => console.log(`Server running on port ${PORT_NOT_SECURE}`))

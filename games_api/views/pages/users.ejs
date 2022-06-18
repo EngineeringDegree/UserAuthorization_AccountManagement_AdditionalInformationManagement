@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/tags/metaTags') %>
+    <%- include('../partials/tags/favicon') %>
+    <title>Ninergames</title>
+    <%- include('../partials/links/mainLinks') %>
+</head>
+<body>
+    <%- include('../partials/noscript/noscript') %>
+    <%- include('../partials/components/menu') %>
+    <%- include('../partials/components/breadcrumb') %>
+    <%- include('../partials/components/footer') %>
+
+    <input id="username" type="text" />
+
+    <select id="records-per-page">
+        <option value="50">50</option>
+        <option value="20">20</option>
+        <option value="10">10</option>
+    </select>
+
+    <div id="users"></div>
+    <div id="pages"></div>
+    
+    <%- include('../partials/links/authorizationServer') %>
+    <%- include('../partials/links/authorize') %>
+    <%- include('../partials/links/banUtil') %>
+    <%- include('../partials/links/getUsers') %>
+    <%- include('../partials/links/assignUserId') %>
+</body>
+</html>

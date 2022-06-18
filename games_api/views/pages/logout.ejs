@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/tags/metaTags') %>
+    <%- include('../partials/tags/favicon') %>
+    <title>Logged out</title>
+    <%- include('../partials/links/mainLinks') %>
+</head>
+<body>
+    <%- include('../partials/noscript/noscript') %>
+    <%- include('../partials/components/menu') %>
+    <%- include('../partials/components/breadcrumb') %>
+    <%- include('../partials/components/footer') %>
+    
+    <%- include('../partials/links/authorizationServer') %>
+    <%- include('../partials/links/authorize') %>
+    <%- include('../partials/links/assignUserId') %>
+    <script src="/js/authorization/logout.js"></script>
+</body>
+</html>
