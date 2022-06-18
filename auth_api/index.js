@@ -4,6 +4,7 @@ require('dotenv').config()
 // Imports with needed variable
 const express = require('express')
 const cors = require("cors")
+const path = require('path')
 const https = require('https')
 const http = require('http')
 const mongoose = require('mongoose')
@@ -55,6 +56,8 @@ mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true
 // Use Cors and parse all requests to be a json string, use public folder as static files, set view engine to ejs   
 app.use(cors())
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')))
+app.set('view engine', 'ejs')
 
 // Routes
 

@@ -23,9 +23,9 @@ function init(){
                         if(res.token){
                             window.localStorage.setItem("token", res.token)
                         }
-                        displayReturnedInfo({ username: res.username,  email: res.email, admin: res.admin, confirmed: res.confirmed, id: res.id }, res.action == 'DISPLAY USER INFO AND BANHAMMER', res.action == 'DISPLAY USER INFO AND EDIT FORM')
+                        displayReturnedInfo({ username: res.username,  email: res.email, admin: res.admin, confirmed: res.confirmed, id: res.id }, res.isAdmin, res.action == 'DISPLAY USER INFO AND EDIT FORM')
                         
-                        logIn()
+                        logIn(res.isAdmin)
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         if(xhr.responseJSON.action == "LOGOUT"){
@@ -45,10 +45,10 @@ function init(){
     /**
      * Creates dom element for user profile
      * @param {object} userInfo with username, email, admin and confirmed properties 
-     * @param {boolean} admin if user is an admin and shoul attach banhammer as well
+     * @param {boolean} isAdmin if user is an admin and shoul attach banhammer as well
      * @param {boolean} owner if user is an owner of this account 
      */
-    function displayReturnedInfo(userInfo, admin, owner){
+    function displayReturnedInfo(userInfo, isAdmin, owner){
         if(!user){
             return    
         }
@@ -93,7 +93,7 @@ function init(){
             email.textContent = userInfo.email
             element.appendChild(email)
             
-            if(admin){
+            if(isAdmin){
                 admin.disabled = false
                 confirmed.disabled = false
                 admin.addEventListener('mousedown', adminChanged, false)
@@ -110,7 +110,7 @@ function init(){
             }
             element.appendChild(confirmed)
     
-            if(admin){
+            if(isAdmin){
                 element.appendChild(createBanUtility(userInfo.id))
             }
             user.appendChild(element)
@@ -140,8 +140,13 @@ function init(){
     /**
      * Hides linkes which shouldn't be visible if user is logged in
      */
-    function logIn(){
+    function logIn(admin = false){
         for(let i = 0; i < loggedIn.length; i++){
+            if(loggedIn[i].classList.contains('admin')){
+                if(!admin){
+                    continue
+                }
+            }
             loggedIn[i].classList.remove('d-none')
         }
     

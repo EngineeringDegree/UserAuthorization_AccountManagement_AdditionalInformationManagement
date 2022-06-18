@@ -29,7 +29,7 @@ function init(){
                 if(res.token){
                     window.localStorage.setItem("token", res.token)
                 }
-                logIn()
+                logIn(res.admin)
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 if(xhr.responseJSON.action == "LOGOUT"){
@@ -62,8 +62,13 @@ function init(){
     /**
      * Hides linkes which shouldn't be visible if user is logged in
      */
-    function logIn(){
+    function logIn(admin = false){
         for(let i = 0; i < loggedIn.length; i++){
+            if(loggedIn[i].classList.contains('admin')){
+                if(!admin){
+                    continue
+                }
+            }
             loggedIn[i].classList.remove('d-none')
         }
     

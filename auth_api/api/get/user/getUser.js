@@ -20,14 +20,14 @@ router.get('/', async (req, res) => {
                 var userToFind = await User.findOne({ _id: req.query.id })
                 if(userToFind){
                     if(user.email == userToFind.email){
-                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                     }
 
                     if(user.admin){
-                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                     }
 
-                    return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+                    return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                 }
                 return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
             }
@@ -36,13 +36,13 @@ router.get('/', async (req, res) => {
         var userToFind = await User.findOne({ _id: req.query.id })
         if(userToFind){
             if(user.email == userToFind.email){
-                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
             }
 
             if(user.admin){
-                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
             }
-            return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin })
+            return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
         }
         return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
     }

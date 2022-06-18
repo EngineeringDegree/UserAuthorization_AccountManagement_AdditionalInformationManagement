@@ -44,8 +44,7 @@ router.get('/', async (req, res) => {
             status: 'USER NOT FOUND'
         }
     }
-
-    return res.status(data.code).send(data)
+    return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
 })
 
 module.exports = router
