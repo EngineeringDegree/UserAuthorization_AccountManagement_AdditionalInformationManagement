@@ -107,7 +107,11 @@ auth_api/config/default.json
 auth_api/config/custom-environment-variables.json
 auth_api/key.pem
 auth_api/cert.pem
-clash_of_myths_api/config/default.json
-clash_of_myths_api/config/custom-environment-variables.json
-clash_of_myths_api/key.pem
-clash_of_myths_api/cert.pem
+game_api/config/default.json
+game_api/config/custom-environment-variables.json
+game_api/key.pem
+game_api/cert.pem
+common_games_api/config/default.json
+common_games_api/config/custom-environment-variables.json
+common_games_api/key.pem
+common_games_api/cert.pem
