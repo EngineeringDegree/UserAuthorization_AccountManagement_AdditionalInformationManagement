@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 const { User } = require('../../../models/user')
+const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 
 // Middleware for login user
 router.patch('/', async (req, res) => {
@@ -14,8 +15,11 @@ router.patch('/', async (req, res) => {
     }
 
     let user = await User.findOne({ email: req.body.email })
-
     if(user){
+        if(checkIfBanned(user)){
+            return res.status(401).send({status: 'USER IS BANNED', code: 401})
+        }
+
         var pass = await bcrypt.compare(req.body.password, user.password)
         if(pass){
             var refreshTokens = user.refreshToken

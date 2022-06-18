@@ -2,35 +2,26 @@ const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
+const axios = require('axios')
 const { Card } = require('../../../models/card')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
-    // const { error } = validate(req.body)
-    // if (error) {
-    //     return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
-    // }
+    const { error } = validate(req.body)
+    if (error) {
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
+    }
 
-    // let user = await User.findOne({ email: req.body.email })
-    // if(user){
-    //     if(user.admin){
-    //         if(checkIfBanned(user)){
-    //             return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
-    //         }
-    //         var check = checkToken(user.token, req.body.token)
-    //         if(!check){
-    //             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
-    //             if(check){
-    //                 await createCard(req.body)
-    //                 return res.status(200).send({status: 'CARD CREATED', code: 200, token: check})
-    //             }
-    //             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-    //         }
-    //         await createCard(req.body)
-    //         return res.status(200).send({status: 'CARD CREATED', code: 200})
-    //     }
-    //     return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-    // }
+    try{
+        var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
+    }catch(e){
+        return res.status(e.response.data.code).send({status: e.response.data.status, code: e.response.data.code, action: e.response.data.action})
+    }
+    
+    if(user.data){
+        await createCard(req.body)
+        return res.status(200).send({status: 'CARD CREATED', code: 200, token: user.data.token})
+    }
 
     return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})
 })

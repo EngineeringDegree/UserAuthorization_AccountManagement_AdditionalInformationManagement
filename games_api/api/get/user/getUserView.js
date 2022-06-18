@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const axios = require('axios')
 
 /*
 Middleware which sends user specified in parameter. 
@@ -27,8 +28,7 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        // ask for user._id authorization server
-        var user = await User.findOne({ _id: req.query.userId })
+        var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
     } catch(e){
         breadcrumb.push({
             currentPage: true,
@@ -37,17 +37,17 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if(!user){
+    if(!user.data.userReturned){
         breadcrumb.push({
             currentPage: true,
-            text: 'Card not found'
+            text: 'User not found'
         })
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
     breadcrumb.push({
         currentPage: true,
-        text: `${user.username}`
+        text: `${user.data.username}`
     })
 
     return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: req.query.userId })

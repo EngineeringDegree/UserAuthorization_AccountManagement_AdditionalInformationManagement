@@ -10,8 +10,7 @@
     <%- include('../partials/noscript/noscript') %>
     <%- include('../partials/components/menu') %>
     <%- include('../partials/components/breadcrumb') %>
-    <%- include('../partials/components/footer') %>
-
+    
     <label>
         Map Name
         <input id="name" type="text" />
@@ -33,7 +32,9 @@
         <input id="starting-positions" type="text" />
     </label>
     <button id="add-btn">Add Map</button>
+    <%- include('../partials/components/footer') %>
 
+    <%- include('../partials/links/authorizationServer') %>
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/addMap') %>
     <%- include('../partials/links/assignUserId') %>

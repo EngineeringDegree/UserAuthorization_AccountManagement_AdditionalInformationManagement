@@ -10,8 +10,7 @@
     <%- include('../partials/noscript/noscript') %>
     <%- include('../partials/components/menu') %>
     <%- include('../partials/components/breadcrumb') %>
-    <%- include('../partials/components/footer') %>
-
+    
     <label>
         Card Name
         <input id="name" type="text" />
@@ -49,7 +48,9 @@
         <input id="effects" type="text" />
     </label>
     <button id="add-btn">Add Card</button>
+    <%- include('../partials/components/footer') %>
 
+    <%- include('../partials/links/authorizationServer') %>
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/addCard') %>
     <%- include('../partials/links/assignUserId') %>

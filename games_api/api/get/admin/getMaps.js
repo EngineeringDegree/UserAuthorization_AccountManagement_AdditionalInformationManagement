@@ -1,31 +1,22 @@
 const express = require('express')
 const router = express.Router()
+const axios = require('axios')
 const { Map } = require('../../../models/map')
 
 /*
 This middleware sends maps according to parameters if user is admin
 */
 router.get('/', async (req, res) => {
-    // let user = await User.findOne({ email: req.query.email })
-    // if(user){
-    //     if(user.admin){
-    //         if(checkIfBanned(user)){
-    //             return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
-    //         }
-    //         var check = checkToken(user.token, req.query.token)
-    //         if(!check){
-    //             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
-    //             if(check){
-    //                 var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
-    //                 return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check, maps: maps.maps, pages: maps.pages, page: maps.page})
-    //             }
-    //             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-    //         }
-    //         var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
-    //         return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', maps: maps.maps, pages: maps.pages, page: maps.page})
-    //     }
-    //     return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-    // }
+    try{
+        var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.query.email}&token=${req.query.token}&refreshToken=${req.query.refreshToken}`)
+    }catch(e){
+        return res.status(e.response.data.code).send({status: e.response.data.status, code: e.response.data.code, action: e.response.data.action})
+    }
+
+    if(user.data){
+        var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
+        return res.status(200).send({status: 'MAP LISTED', code: 200, action: 'LOGIN', token: user.data.token, maps: maps.maps, pages: maps.pages, page: maps.page})
+    }
 
     return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})
 })

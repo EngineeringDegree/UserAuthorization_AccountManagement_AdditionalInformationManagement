@@ -10,8 +10,7 @@
     <%- include('../partials/noscript/noscript') %>
     <%- include('../partials/components/menu') %>
     <%- include('../partials/components/breadcrumb') %>
-    <%- include('../partials/components/footer') %>
-
+    
     <input id="card-id" type="hidden" value="<%= card._id %>" />
     Card Name: <input id="card-name" type="text" value="<%= card.name %>" />
     Image: <input id="card-image" type="text" value="<%= card.image %>" />
@@ -27,8 +26,9 @@
     <% } else { %>
         Ready to use: <input id="card-ready" type="checkbox" />
     <% } %>
+    <%- include('../partials/components/footer') %>
         
-    
+    <%- include('../partials/links/authorizationServer') %>
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/modifyCard') %>
     <%- include('../partials/links/assignUserId') %>

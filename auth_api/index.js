@@ -12,9 +12,12 @@ const config = require('config')
 
 // Get middleware
 const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
+const checkIfUserExists = require('./api/get/user/checkIfUserExists')
 const getUsers = require('./api/get/user/getUsers')
 const getUser = require('./api/get/user/getUser')
+const authorizeAccount = require('./api/get/user/authorize')
 const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
+const checkIfHasAdminPremisions = require('./api/get/admin/checkIfUserHasAdminPremisions')
 
 // Patch middleware
 const login = require('./api/patch/user/login')
@@ -58,8 +61,11 @@ app.use(express.json())
 // Get
 app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
+app.use('/get/admin/premisions', checkIfHasAdminPremisions)
 app.use('/get/users', getUsers)
 app.use('/get/user', getUser)
+app.use('/get/user/exist', checkIfUserExists)
+app.use('/authorize', authorizeAccount)
 
 // Patch
 app.use('/patch/login', login)

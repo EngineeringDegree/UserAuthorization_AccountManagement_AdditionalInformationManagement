@@ -12,6 +12,7 @@
     "aproba": "^2.0.0",
     "are-we-there-yet": "^2.0.0",
     "array-flatten": "^1.1.1",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
     "cors": "^2.8.5",

@@ -10,20 +10,21 @@
     <%- include('../partials/noscript/noscript') %>
     <%- include('../partials/components/menu') %>
     <%- include('../partials/components/breadcrumb') %>
-    <%- include('../partials/components/footer') %>
     <a href="/manage/card/add">Add card</a>
-
+    
     <input id="card-name" type="text" />
-
+    
     <select id="records-per-page">
         <option value="50">50</option>
         <option value="20">20</option>
         <option value="10">10</option>
     </select>
-
+    
     <div id="cards"></div>
     <div id="pages"></div>
+    <%- include('../partials/components/footer') %>
 
+    <%- include('../partials/links/authorizationServer') %>
     <%- include('../partials/links/authorizeAdmin') %>
     <%- include('../partials/links/getAdminCards') %>
     <%- include('../partials/links/assignUserId') %>

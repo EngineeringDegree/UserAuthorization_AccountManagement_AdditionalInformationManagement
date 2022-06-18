@@ -14,7 +14,7 @@ function init(){
      * Sends request for card with current choosen parameters
      */
     function sendRequest(){
-        if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')){
+        if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
             if(userId){
                 $.ajax({
                     type: "GET",
