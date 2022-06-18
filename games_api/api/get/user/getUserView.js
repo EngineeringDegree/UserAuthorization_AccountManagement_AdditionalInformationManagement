@@ -27,12 +27,12 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        // ask for user authorization server
+        // ask for user._id authorization server
         var user = await User.findOne({ _id: req.query.userId })
     } catch(e){
         breadcrumb.push({
             currentPage: true,
-            text: 'Card not found'
+            text: 'User not found'
         })
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
         text: `${user.username}`
     })
 
-    return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: user._id })
+    return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: req.query.userId })
 })
 
 module.exports = router

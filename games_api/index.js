@@ -36,7 +36,6 @@ const modifyCardView = require('./api/get/admin/modifyCardView')
 const modifyMapView = require('./api/get/admin/modifyMapView')
 
 // Patch middleware
-const login = require('./api/patch/user/login')
 const modifyCard = require('./api/patch/admin/modifyCard')
 const modifyMap = require('./api/patch/admin/modifyMap')
 

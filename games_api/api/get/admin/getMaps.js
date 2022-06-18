@@ -1,33 +1,31 @@
 const express = require('express')
 const router = express.Router()
 const { Map } = require('../../../models/map')
-const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
-const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 
 /*
 This middleware sends maps according to parameters if user is admin
 */
 router.get('/', async (req, res) => {
-    let user = await User.findOne({ email: req.query.email })
-    if(user){
-        if(user.admin){
-            if(checkIfBanned(user)){
-                return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
-            }
-            var check = checkToken(user.token, req.query.token)
-            if(!check){
-                check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
-                if(check){
-                    var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
-                    return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check, maps: maps.maps, pages: maps.pages, page: maps.page})
-                }
-                return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-            }
-            var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
-            return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', maps: maps.maps, pages: maps.pages, page: maps.page})
-        }
-        return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-    }
+    // let user = await User.findOne({ email: req.query.email })
+    // if(user){
+    //     if(user.admin){
+    //         if(checkIfBanned(user)){
+    //             return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+    //         }
+    //         var check = checkToken(user.token, req.query.token)
+    //         if(!check){
+    //             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
+    //             if(check){
+    //                 var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
+    //                 return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check, maps: maps.maps, pages: maps.pages, page: maps.page})
+    //             }
+    //             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
+    //         }
+    //         var maps = await getMaps(req.query.records, req.query.mapName, req.query.page)
+    //         return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', maps: maps.maps, pages: maps.pages, page: maps.page})
+    //     }
+    //     return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
+    // }
 
     return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})
 })

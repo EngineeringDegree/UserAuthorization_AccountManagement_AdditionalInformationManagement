@@ -7,8 +7,7 @@ function init(){
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
     var user = document.getElementById('user-profile')
-    const urlParams = new URLSearchParams(window.location.search)
-    const id = urlParams.get('myParam')
+    var userId = document.getElementById('user-id')
     sendRequest()
 
     /**
@@ -16,10 +15,10 @@ function init(){
      */
     function sendRequest(){
         if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')){
-            if(id){
+            if(userId){
                 $.ajax({
                     type: "GET",
-                    url: `${AUTHORIZATION_SERVER}/get/user?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&id=${id}`,
+                    url: `${AUTHORIZATION_SERVER}/get/user?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&id=${userId.value}`,
                     success: function(res){
                         if(res.token){
                             window.localStorage.setItem("token", res.token)
