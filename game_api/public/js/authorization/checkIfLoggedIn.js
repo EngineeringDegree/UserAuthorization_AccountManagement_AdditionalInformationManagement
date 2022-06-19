@@ -12,11 +12,6 @@ function init(){
         return
     }
 
-    if(window.location.pathname == '/registered'){
-        logIn(false)
-        return
-    }
-
     if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
         $.ajax({
             type: "GET",
@@ -29,6 +24,7 @@ function init(){
                 if(res.token){
                     window.localStorage.setItem("token", res.token)
                 }
+
                 logIn(res.admin)
             },
             error: function (xhr, ajaxOptions, thrownError) {

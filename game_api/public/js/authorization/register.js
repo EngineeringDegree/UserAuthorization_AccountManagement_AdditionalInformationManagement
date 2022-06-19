@@ -78,7 +78,7 @@ function signUp(){
             window.localStorage.setItem('refreshToken', res.refreshToken)
             window.localStorage.setItem('email', res.email)
             window.localStorage.setItem('username', res.username)
-
+            
             window.location.pathname = '/registered'
         },
         error: function (xhr, ajaxOptions, thrownError) {
