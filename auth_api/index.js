@@ -17,6 +17,10 @@ const checkIfUserExists = require('./api/get/user/checkIfUserExists')
 const getUsers = require('./api/get/user/getUsers')
 const getUser = require('./api/get/user/getUser')
 const authorizeAccount = require('./api/get/user/authorize')
+const mainView = require('./api/get/views/index')
+const error404View = require('./api/get/views/error404')
+const signInView = require('./api/get/views/signInView')
+const registeredView = require('./api/get/views/registeredView')
 const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
 const checkIfHasAdminPremisions = require('./api/get/admin/checkIfUserHasAdminPremisions')
 
@@ -62,6 +66,9 @@ app.set('view engine', 'ejs')
 // Routes
 
 // Get
+app.use('/', mainView)
+app.use('/sign-in', signInView)
+app.use('/registered', registeredView)
 app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 app.use('/get/admin/premisions', checkIfHasAdminPremisions)
@@ -81,6 +88,7 @@ app.use('/post/register', register)
 // Put
 
 // Other endpoints
+app.use('*', error404View)
 
 // Run servers
 

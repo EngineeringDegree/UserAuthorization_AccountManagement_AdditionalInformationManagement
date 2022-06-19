@@ -103,15 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
-auth_api/config/default.json
-auth_api/config/custom-environment-variables.json
-auth_api/key.pem
-auth_api/cert.pem
-game_api/config/default.json
-game_api/config/custom-environment-variables.json
-game_api/key.pem
-game_api/cert.pem
-common_games_api/config/default.json
-common_games_api/config/custom-environment-variables.json
-common_games_api/key.pem
-common_games_api/cert.pem
+*.pem
+
+auth_api/config/
+game_api/config/
+common_card_games_api/config/
