@@ -69,6 +69,7 @@ function init(){
                         if(res.page){
                             page = res.page
                         }
+                        
                         displayReturnedInfo(res.maps, res.page, res.pages)
                         logIn()
                     },
@@ -145,8 +146,8 @@ function init(){
      */
     function logOut(){
         window.localStorage.clear()
-        for(let i = 0; i < loggedIn.length; i++){
-            loggedIn[i].classList.add('d-none')
+        for(let i = 0; i < loggedIn.length; i){
+            loggedIn[i].remove()
         }
     
         for(let i = 0; i < loggedOut.length; i++){
@@ -163,8 +164,8 @@ function init(){
             loggedIn[i].classList.remove('d-none')
         }
     
-        for(let i = 0; i < loggedOut.length; i++){
-            loggedOut[i].classList.add('d-none')
+        for(let i = 0; i < loggedOut.length; i){
+            loggedOut[i].remove()
         }
     }
 }

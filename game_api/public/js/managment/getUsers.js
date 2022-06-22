@@ -64,7 +64,7 @@ function init(){
 
                         displayReturnedInfo(res.users.users, res.users.page, res.users.pages, res.action == 'USERS FOUND AND SHOW BANHAMMER')
                         
-                        logIn(res.admin)
+                        logIn(res.action == 'USERS FOUND AND SHOW BANHAMMER')
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         if(xhr.responseJSON.action == "LOGOUT"){
@@ -148,8 +148,8 @@ function init(){
      */
     function logOut(){
         window.localStorage.clear()
-        for(let i = 0; i < loggedIn.length; i++){
-            loggedIn[i].classList.add('d-none')
+        for(let i = 0; i < loggedIn.length; i){
+            loggedIn[i].remove()
         }
     
         for(let i = 0; i < loggedOut.length; i++){
@@ -162,17 +162,19 @@ function init(){
      * Hides linkes which shouldn't be visible if user is logged in
      */
     function logIn(admin = false){
-        for(let i = 0; i < loggedIn.length; i++){
+        for(let i = 0; i < loggedIn.length; i){
             if(loggedIn[i].classList.contains('admin')){
                 if(!admin){
+                    loggedIn[i].remove()
                     continue
                 }
             }
             loggedIn[i].classList.remove('d-none')
+            i++
         }
     
-        for(let i = 0; i < loggedOut.length; i++){
-            loggedOut[i].classList.add('d-none')
+        for(let i = 0; i < loggedOut.length; i){
+            loggedOut[i].remove()
         }
     }
 }
