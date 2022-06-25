@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const Joi = require('joi')
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
@@ -8,6 +9,11 @@ const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 Middleware which sends users specified in parameters. 
 */
 router.get('/', async (req, res) => {
+    const { error } = validate(req.query)
+    if (error) {
+        return res.status(400).send({status: 'BAD DATA', code: 400 })
+    }
+
     let user = await User.findOne({ email: req.query.email })
     if(user){
         if(checkIfBanned(user)){
@@ -118,6 +124,24 @@ var getUsers = async (req) => {
     }
 
     return { users: users, pages: pages, page: page }
+}
+
+/**
+ * Validates data sent by user
+ * @param {object} req object
+ * @returns nothin if validation is passed and error if somethin is wrong
+ */
+ function validate(req) {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        token: Joi.string().required(),
+        refreshToken: Joi.string().required(),
+        records: Joi.number().required(),
+        username: Joi.string().allow(null, ''),
+        page: Joi.number().required()
+    })
+    const validation = schema.validate(req)
+    return validation
 }
 
 module.exports = router

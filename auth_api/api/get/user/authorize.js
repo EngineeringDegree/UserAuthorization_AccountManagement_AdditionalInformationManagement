@@ -1,4 +1,5 @@
 const express = require('express')
+const Joi = require('joi')
 const router = express.Router()
 const { User } = require('../../../models/user')
 
@@ -6,6 +7,16 @@ const { User } = require('../../../models/user')
 Checks if user exists
 */
 router.get('/', async (req, res) => {
+    const { error } = validate(req.query)
+    if (error) {
+        data = {
+            text: 'Bad data',
+            code: 400,
+            status: 'BAD DATA'
+        }
+        return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
+    }
+
     var data
     let user = await User.findOne({ 'email': { $regex : new RegExp(req.query.email, 'i') } })
     if(user){
@@ -46,5 +57,19 @@ router.get('/', async (req, res) => {
     }
     return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
 })
+
+/**
+ * Validates data sent by user
+ * @param {object} req object
+ * @returns nothin if validation is passed and error if somethin is wrong
+ */
+ function validate(req) {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        accessToken: Joi.string().required()
+    })
+    const validation = schema.validate(req)
+    return validation
+}
 
 module.exports = router
