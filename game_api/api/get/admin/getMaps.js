@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const Joi = require('joi')
 const axios = require('axios')
 const { Map } = require('../../../models/map')
 
@@ -7,6 +8,11 @@ const { Map } = require('../../../models/map')
 This middleware sends maps according to parameters if user is admin
 */
 router.get('/', async (req, res) => {
+    const { error } = validate(req.query)
+    if (error) {
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+    }
+
     try{
         var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.query.email}&token=${req.query.token}&refreshToken=${req.query.refreshToken}`)
     }catch(e){
@@ -59,6 +65,24 @@ var getMaps = async (records, mapName, page) => {
         page = 1
     }
     return { maps: returnedMaps, pages: pages, page: page }
+}
+
+/**
+ * Validates data sent by user
+ * @param {object} req object
+ * @returns nothin if validation is passed and error if somethin is wrong
+ */
+ function validate(req) {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        token: Joi.string().required(),
+        refreshToken: Joi.string().required(),
+        records: Joi.number().required(),
+        mapName: Joi.string().allow(null, ''),
+        page: Joi.number().required()
+    })
+    const validation = schema.validate(req)
+    return validation
 }
 
 module.exports = router

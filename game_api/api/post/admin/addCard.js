@@ -48,7 +48,7 @@ async function createCard(card){
 
 /**
  * Validates data sent by user
- * @param {object} req object with email, name, token and refreshToken
+ * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
  function validate(req) {

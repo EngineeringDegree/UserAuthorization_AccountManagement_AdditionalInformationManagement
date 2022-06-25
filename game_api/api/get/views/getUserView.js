@@ -1,11 +1,17 @@
 const express = require('express')
 const router = express.Router()
+const Joi = require('joi')
 const axios = require('axios')
 
 /*
 Middleware which sends user specified in parameter. 
 */
 router.get('/', async (req, res) => {
+    const { error } = validate(req.query)
+    if (error) {
+        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+    }
+
     var breadcrumb = [
         {
             currentPage: false,
@@ -52,5 +58,18 @@ router.get('/', async (req, res) => {
 
     return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: req.query.userId })
 })
+
+/**
+ * Validates data sent by user
+ * @param {object} req object
+ * @returns nothin if validation is passed and error if somethin is wrong
+ */
+ function validate(req) {
+    const schema = Joi.object({
+        userId: Joi.string().required(),
+    })
+    const validation = schema.validate(req)
+    return validation
+}
 
 module.exports = router

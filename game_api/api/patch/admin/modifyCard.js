@@ -47,7 +47,7 @@ router.patch('/', async (req, res) => {
 
 /**
  * Validates data sent by user to log in
- * @param {object} req contains email, token, refreshToken of user which want to edit and id and name (new one) of card to edit
+ * @param {object} req
  * @returns nothing if there is no error, error if there is something wrong
  */
 function validate(req) {
