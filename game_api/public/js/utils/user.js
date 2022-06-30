@@ -63,4 +63,5 @@ function confirmedChanged(e){
  */
 function askForNewPassword(e){
     console.log(e)
+    // patch request
 }
