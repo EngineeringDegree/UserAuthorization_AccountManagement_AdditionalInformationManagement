@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
+const _ = require('lodash')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
 
 // Middleware for changing user username
@@ -23,14 +25,24 @@ router.patch('/', async (req, res) => {
         if(!check){
             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
             if(check){
-                await changeUserUsername(user._id, req.body.newUsername)
-                return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername, token: check })
+                var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
+                if(alreadyExists) {
+                    return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
+                }
+
+                sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
+                return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail, token: check })
             }
             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
         }
         
-        await changeUserUsername(user._id, req.body.newUsername)
-        return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername })
+        var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
+        if(alreadyExists) {
+            return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
+        }
+
+        sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
+        return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: "LOGOUT" })
@@ -39,22 +51,30 @@ router.patch('/', async (req, res) => {
 /**
  * Changes user username to username variable value
  * @param {string} id of user to alter
- * @param {string} username new username of an user 
+ * @param {string} email new email of an user 
  */
-async function changeUserUsername(id, username){
+async function changeUserEmail(id, email){
+    let user = await User.findOne({ email: email })
+
+    if(user){
+        return true
+    }
+    
     const filter = {
         _id: id
     }
     const update = {
-        username: username
+        email: email,
+        confirmed: false
     }
 
     await User.updateOne(filter, update)
+    return false
 }
 
 /**
  * Validates data sent by user to change his username
- * @param {object} req contains email tokens and new username
+ * @param {object} req object
  * @returns nothing if there is no error, error if there is something wrong
  */
 function validate(req) {
@@ -62,7 +82,7 @@ function validate(req) {
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
-        newUsername: Joi.string().required()
+        newEmail: Joi.string().email().required()
     })
     const validation = schema.validate(req)
     return validation

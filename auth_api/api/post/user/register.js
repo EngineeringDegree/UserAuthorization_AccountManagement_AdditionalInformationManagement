@@ -5,10 +5,8 @@ const _ = require('lodash')
 const Joi = require('joi')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
+const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
-const { EmailLog } = require('../../../models/email_logs')
-
 const salt = 10
 
 // Middleware to registration
@@ -36,53 +34,6 @@ router.post('/', async (req, res) => {
         return res.status(400).send({status: 'USER FOUND', code: 400})
     }
 })
-
-/**
- * Sends an email to newly registered user
- * @param {object} data contains email and authorization token 
- */
-async function sendConfirmationEmail(data){
-    var transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_SERVICE_ADDRESS,
-        port: process.env.EMAIL_SERVICE_PORT,
-        secure: true,
-        auth: {
-            user: process.env.CONFIRMATION_EMAIL,
-            pass: process.env.CONFIRMATION_EMAIL_PASSWORD
-        }
-    })
-
-    var mailOptions = {
-        from: process.env.CONFIRMATION_EMAIL,
-        to: data.email,
-        subject: `${process.env.GAME_NAME} email confirmation`,
-        html: `<p>Please confirm your email by clicking this <a href="${process.env.SERVER_ADDRESS}authorize?email=${data.email}&accessToken=${data.accessToken}">link</a>.</p>`
-    }
-      
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            putEmailLog(error, "error")
-        } else {
-            putEmailLog(info, "success")
-        }
-    })
-}
-
-/**
- * Saves log if email has error or not to database
- * @param {object} body to save in database
- * @param {string} status if email was sended
- */
-async function putEmailLog(body, status){
-    const currentDate = new Date(); 
-    const timestamp = currentDate. getTime();
-    var newLog = new EmailLog(_.pick({
-        message: body,
-        status: status, 
-        timestamp: timestamp
-    }, ['message', 'status', 'timestamp']))
-    await newLog.save()
-}
 
 /**
  * Puts new admin account to database

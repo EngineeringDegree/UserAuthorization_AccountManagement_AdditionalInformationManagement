@@ -60,6 +60,7 @@ function init(){
         var confirmed = document.createElement('input')
         confirmed.type = 'checkbox'
         confirmed.disabled = true
+        confirmed.id = 'confirmed'
 
         if(owner){
             let username = document.createElement('input')
@@ -69,7 +70,7 @@ function init(){
             
             let email = document.createElement('input')
             email.value = userInfo.email
-            email.addEventListener('keydown', emailChanged, false)
+            email.addEventListener('blur', emailChanged, false)
             element.appendChild(email)
             
             let password = document.createElement('button')
@@ -89,6 +90,8 @@ function init(){
         if(isAdmin){
             admin.disabled = false
             confirmed.disabled = false
+            admin.userId = userInfo.id
+            confirmed.userId = userInfo.id
             admin.addEventListener('mousedown', adminChanged, false)
             confirmed.addEventListener('mousedown', confirmedChanged, false)
         }
