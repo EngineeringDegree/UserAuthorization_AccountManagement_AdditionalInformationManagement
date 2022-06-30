@@ -56,3 +56,11 @@ function confirmedChanged(e){
         console.log(e.target.value)
     }, changePropagationTime)
 }
+
+/**
+ * Ask for new password
+ * @param {DOMElement} e button which was clicked 
+ */
+function askForNewPassword(e){
+    console.log(e)
+}

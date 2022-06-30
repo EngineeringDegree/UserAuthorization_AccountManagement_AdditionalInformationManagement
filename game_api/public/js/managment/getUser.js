@@ -45,7 +45,7 @@ function init(){
     /**
      * Creates dom element for user profile
      * @param {object} userInfo with username, email, admin and confirmed properties 
-     * @param {boolean} isAdmin if user is an admin and shoul attach banhammer as well
+     * @param {boolean} isAdmin if user is an admin and should attach banhammer as well
      * @param {boolean} owner if user is an owner of this account 
      */
     function displayReturnedInfo(userInfo, isAdmin, owner){
@@ -71,19 +71,11 @@ function init(){
             email.value = userInfo.email
             email.addEventListener('keydown', emailChanged, false)
             element.appendChild(email)
-
-            if(userInfo.admin){
-                admin.checked = true
-            }
-            element.appendChild(admin)
-
             
-            if(userInfo.confirmed){
-                confirmed.checked = true
-            }
-            element.appendChild(confirmed)
-
-            user.appendChild(element)
+            let password = document.createElement('button')
+            password.textContent = 'Change Password'
+            password.addEventListener('click', askForNewPassword, false)
+            element.appendChild(password)
         } else {
             let username = document.createElement('p')
             username.textContent = userInfo.username
@@ -92,29 +84,29 @@ function init(){
             let email = document.createElement('p')
             email.textContent = userInfo.email
             element.appendChild(email)
-            
-            if(isAdmin){
-                admin.disabled = false
-                confirmed.disabled = false
-                admin.addEventListener('mousedown', adminChanged, false)
-                confirmed.addEventListener('mousedown', confirmedChanged, false)
-            }
-
-            if(userInfo.admin){
-                admin.checked = true
-            }
-            element.appendChild(admin)
-    
-            if(userInfo.confirmed){
-                confirmed.checked = true
-            }
-            element.appendChild(confirmed)
-    
-            if(isAdmin){
-                element.appendChild(createBanUtility(userInfo.id))
-            }
-            user.appendChild(element)
         }
+
+        if(isAdmin){
+            admin.disabled = false
+            confirmed.disabled = false
+            admin.addEventListener('mousedown', adminChanged, false)
+            confirmed.addEventListener('mousedown', confirmedChanged, false)
+        }
+
+        if(userInfo.admin){
+            admin.checked = true
+        }
+        element.appendChild(admin)
+
+        if(userInfo.confirmed){
+            confirmed.checked = true
+        }
+        element.appendChild(confirmed)
+
+        if(isAdmin){
+            element.appendChild(createBanUtility(userInfo.id))
+        }
+        user.appendChild(element)
 
         var btn = document.getElementById(userInfo.id)
         if(btn){
