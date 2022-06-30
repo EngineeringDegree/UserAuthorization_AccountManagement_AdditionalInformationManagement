@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
-const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
+const bcrypt = require('bcrypt')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
@@ -20,29 +20,18 @@ router.patch('/', async (req, res) => {
         if(checkIfBanned(user)){
             return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
         }
-
-        var check = checkToken(user.token, req.body.token)
-        if(!check){
-            check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
-            if(check){
-                var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
-                if(alreadyExists) {
-                    return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
-                }
-
-                sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
-                return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail, token: check })
-            }
-            return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
-        }
         
-        var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
-        if(alreadyExists) {
-            return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
-        }
+        var pass = await bcrypt.compare(req.body.password, user.password)
+        if(pass){
+            var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
+            if(alreadyExists) {
+                return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
+            }
 
-        sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
-        return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
+            sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
+            return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
+        }
+        return res.status(401).send({status: 'PASSWORD NOT MATCH', code: 401})
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: "LOGOUT" })
@@ -80,9 +69,8 @@ async function changeUserEmail(id, email){
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
-        token: Joi.string().required(),
-        refreshToken: Joi.string().required(),
-        newEmail: Joi.string().email().required()
+        newEmail: Joi.string().email().required(),
+        password: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

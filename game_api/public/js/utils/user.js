@@ -47,15 +47,15 @@ function usernameChanged(e){
 
 /**
  * Sets up timeout to send request which changes user email
- * @param {DOMElement} e which was modified 
  */
-function emailChanged(e){
-    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
+function emailChanged(){
+    var email = document.getElementById('email')
+    var password = document.getElementById('password')
+    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER && email && password){
         var patchObject = {
             email: window.localStorage.getItem('email'),
-            token: window.localStorage.getItem('token'),
-            refreshToken: window.localStorage.getItem('refreshToken'),
-            newEmail: e.target.value
+            newEmail: email.value,
+            password: password.value
         }
         var stringifiedObject = JSON.stringify(patchObject)
 

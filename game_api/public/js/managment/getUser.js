@@ -70,8 +70,18 @@ function init(){
             
             let email = document.createElement('input')
             email.value = userInfo.email
-            email.addEventListener('blur', emailChanged, false)
+            email.id = 'email'
             element.appendChild(email)
+
+            let pass = document.createElement('input')
+            pass.type = 'password'
+            pass.id = 'password'
+            element.appendChild(pass)
+
+            let sendEmail = document.createElement('button')
+            sendEmail.textContent = 'Change Email'
+            sendEmail.addEventListener('click', emailChanged, false)
+            element.appendChild(sendEmail)
             
             let password = document.createElement('button')
             password.textContent = 'Change Password'
