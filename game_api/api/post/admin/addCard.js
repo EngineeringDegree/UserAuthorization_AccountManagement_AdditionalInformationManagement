@@ -41,8 +41,9 @@ async function createCard(card){
         defense: card.defense,
         mobility: card.mobility,
         effects: card.effects,
-        readyToUse: true
-    }, ['name', 'image', 'type', 'nation', 'resources', 'attack', 'defense', 'mobility', 'effects', 'readyToUse']))
+        readyToUse: true,
+        description: card.description
+    }, ['name', 'image', 'type', 'nation', 'resources', 'attack', 'defense', 'mobility', 'effects', 'readyToUse', 'description']))
     await newCard.save()
 }
 
@@ -65,6 +66,7 @@ async function createCard(card){
         defense: Joi.number().required(),
         mobility: Joi.number().required(),
         effects: Joi.array().required(),
+        description: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

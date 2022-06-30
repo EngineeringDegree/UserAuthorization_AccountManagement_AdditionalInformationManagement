@@ -37,8 +37,9 @@ async function createMap(map){
         image: map.image,
         fields: map.fields,
         startingPositions: map.startingPositions,
-        readyToUse: true
-    }, ['name', 'size', 'image', 'fields', 'startingPositions', 'readyToUse']))
+        readyToUse: true,
+        description: map.description
+    }, ['name', 'size', 'image', 'fields', 'startingPositions', 'readyToUse', 'description']))
     await newMap.save()
 }
 
@@ -56,7 +57,8 @@ async function createMap(map){
         size: Joi.string().required(),
         image: Joi.string().required(),
         fields: Joi.array().required(),
-        startingPositions: Joi.array().required()
+        startingPositions: Joi.array().required(),
+        description: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

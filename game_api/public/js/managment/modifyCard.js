@@ -50,6 +50,11 @@ function init(){
         effects.addEventListener('keyup', anythingChanged, false)
     }
 
+    var description = document.getElementById('card-description')
+    if(description){
+        description.addEventListener('keyup', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('card-ready')
     if(readyToUse){
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -87,7 +92,8 @@ function sendRequest(){
         mobility: $('#card-mobility').val(),
         effects: [$('#card-effects').val()],
         readyToUse: $('#card-ready').is(":checked"),
-        id: $('#card-id').val()
+        id: $('#card-id').val(),
+        description: $('#card-description').val()
     }
     var stringifiedObject = JSON.stringify(postObject)
 

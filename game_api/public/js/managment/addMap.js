@@ -22,7 +22,8 @@ function sendRequest(){
         size: $('#size').val(),
         image: $('#image').val(),
         fields: [$('#fields').val()],
-        startingPositions: [$('#starting-positions').val()]
+        startingPositions: [$('#starting-positions').val()],
+        description: $('#description').val()
     }
     var stringifiedObject = JSON.stringify(postObject)
 

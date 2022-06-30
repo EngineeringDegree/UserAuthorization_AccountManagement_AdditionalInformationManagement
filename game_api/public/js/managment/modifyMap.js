@@ -30,6 +30,11 @@ function init(){
         starting.addEventListener('keyup', anythingChanged, false)
     }
 
+    var description = document.getElementById('map-description')
+    if(description){
+        description.addEventListener('keyup', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('map-ready')
     if(readyToUse){
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -63,7 +68,8 @@ function sendRequest(){
         fields: [$('#map-fields').val()],
         startingPositions: [$('#map-starting').val()],
         readyToUse: $('#map-ready').is(":checked"),
-        id: $('#map-id').val()
+        id: $('#map-id').val(),
+        description: $('#map-description').val()
     }
     var stringifiedObject = JSON.stringify(postObject)
 

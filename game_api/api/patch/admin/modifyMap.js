@@ -29,7 +29,8 @@ router.patch('/', async (req, res) => {
                 image: req.body.image,
                 fields: req.body.fields,
                 startingPositions: req.body.startingPositions,
-                readyToUse: req.body.readyToUse
+                readyToUse: req.body.readyToUse,
+                description: req.body.description
             }
     
             await Map.updateOne(filter, update)
@@ -57,7 +58,8 @@ function validate(req) {
         image: Joi.string().required(),
         fields: Joi.array().required(),
         startingPositions: Joi.array().required(),
-        readyToUse: Joi.boolean().required()
+        readyToUse: Joi.boolean().required(),
+        description: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation
