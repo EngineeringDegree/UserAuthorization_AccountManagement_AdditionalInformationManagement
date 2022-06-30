@@ -17,8 +17,12 @@ router.patch('/', async (req, res) => {
         return res.status(e.response.data.code).send({status: e.response.data.status, code: e.response.data.code, action: e.response.data.action})
     }
 
-    let card = await Card.findOne({ _id: req.body.id })
     if(user.data){
+        try{
+            var card = await Card.findOne({ _id: req.body.id })
+        } catch(e){
+            return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
+        }
         if(card){
             const filter = {
                 _id: card._id

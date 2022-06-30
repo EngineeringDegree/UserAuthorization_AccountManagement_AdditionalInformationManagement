@@ -17,8 +17,12 @@ router.patch('/', async (req, res) => {
         return res.status(e.response.data.code).send({status: e.response.data.status, code: e.response.data.code, action: e.response.data.action})
     }
 
-    let map = await Map.findOne({ _id: req.body.id })
     if(user.data){
+        try{
+            var map = await Map.findOne({ _id: req.body.id })
+        } catch(e){
+            return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
+        }
         if(map){
             const filter = {
                 _id: map._id

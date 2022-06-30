@@ -22,7 +22,7 @@ router.patch('/', async (req, res) => {
             if(!check){
                 check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
                 if(check){
-                    let userToBan = await User.findOne({ id: req.body.id })
+                    let userToBan = await User.findOne({ _id: req.body.id })
                     if(userToBan){
                         const filter = {
                             _id: userToBan._id

@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     }
 
     var data
-    let user = await User.findOne({ 'email': { $regex : new RegExp(req.query.email, 'i') } })
+    let user = await User.findOne({ email: req.query.email })
     if(user){
         if(req.query.accessToken == user.accessToken){
             if(!user.confirmed){
