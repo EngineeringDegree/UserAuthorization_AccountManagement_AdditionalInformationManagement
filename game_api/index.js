@@ -31,8 +31,11 @@ const addCardView = require('./api/get/views/addCardView')
 const addMapView = require('./api/get/views/addMapView')
 const modifyCardView = require('./api/get/views/modifyCardView')
 const modifyMapView = require('./api/get/views/modifyMapView')
+const playView = require('./api/get/views/playView')
 const getMaps = require('./api/get/admin/getMaps')
 const getCards = require('./api/get/admin/getCards')
+const getUserDecks = require('./api/get/game/getDecks')
+const getUserDeck = require('./api/get/game/getDeck')
 
 // Patch middleware
 const modifyCard = require('./api/patch/admin/modifyCard')
@@ -83,6 +86,7 @@ sockets(ioNotSecure)
 
 // Get
 app.use('/', mainPageView)
+app.use('/play', playView)
 app.use('/sign-in', signInView)
 app.use('/logout', logoutView)
 app.use('/registered', registeredView)
@@ -98,6 +102,8 @@ app.use('/users', getUsersView)
 app.use('/users/user', getUserView)
 app.use('/manage/get/cards', getCards)
 app.use('/manage/get/maps', getMaps)
+app.use('/get/user/decks', getUserDecks)
+app.use('/get/user/deck', getUserDeck)
 
 // Patch
 app.use('/patch/admin/modify/card', modifyCard)
