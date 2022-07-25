@@ -11,7 +11,7 @@ function init(){
     sendRequest()
 
     /**
-     * Sends request for card with current choosen parameters
+     * Sends request for user with current choosen parameters
      */
     function sendRequest(){
         if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
