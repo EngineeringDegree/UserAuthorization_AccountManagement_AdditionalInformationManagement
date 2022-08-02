@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
         sendConfirmationEmail(data)
         return res.status(200).send(data)
     }else{
-        return res.status(400).send({status: 'USER FOUND', code: 400})
+        return res.status(400).send({ status: 'USER FOUND', code: 400 })
     }
 })
 
@@ -55,10 +55,10 @@ async function putAdmin(body){
         confirmed: false,
         admin: true,
         bans: [],
-        money: []
-    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'money']))
+        funds: 0
+    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id}
+    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 
 /**
@@ -81,10 +81,10 @@ async function putUser(body){
         confirmed: false,
         admin: false,
         bans: [],
-        money: []
-    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'money']))
+        funds: 0
+    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id}
+    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 
 /**

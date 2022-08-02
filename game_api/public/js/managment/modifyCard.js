@@ -57,7 +57,7 @@ function init(){
 
     var readyToUse = document.getElementById('card-ready')
     if(readyToUse){
-        readyToUse.addEventListener('mousedown', anythingChanged, false)
+        readyToUse.addEventListener('change', anythingChanged, false)
     }
 }
 

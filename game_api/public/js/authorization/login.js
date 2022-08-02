@@ -84,21 +84,21 @@ function getPasswordValue(){
  * It shows user empty field communicate
  */
 function emailEmptyError(){
-
+    alert('Email empty')
 }
 
 /**
  * It shows user empty password field communicate
  */
 function passwordEmptyError(){
-
+    alert('Password empty')
 }
 
 /**
  * It shows user that email field must be an email
  */
 function mustBeAnEmail(){
-
+    alert('Value must be an email')
 }
 
 /**
@@ -106,7 +106,7 @@ function mustBeAnEmail(){
  * @param {error object} err returned from the server error object
  */
  function showLoginError(err){
-
+    alert('Something went wrong ' + err)
 }
 
 /**

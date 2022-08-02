@@ -55,20 +55,3 @@ function logOut(){
     window.localStorage.clear()
     window.location.pathname = "/logout"
 }
-
-/**
- * checks if name of the card is valid to use
- * @param {string} name card name
- * @returns 
- */
-function checkName(name){
-    if(!name){
-        return false
-    }
-
-    if(name.trim() == ""){
-        return false
-    }
-
-    return true
-}

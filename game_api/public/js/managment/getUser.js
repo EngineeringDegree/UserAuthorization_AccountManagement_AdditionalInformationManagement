@@ -102,8 +102,8 @@ function init(){
             confirmed.disabled = false
             admin.userId = userInfo.id
             confirmed.userId = userInfo.id
-            admin.addEventListener('mousedown', adminChanged, false)
-            confirmed.addEventListener('mousedown', confirmedChanged, false)
+            admin.addEventListener('change', adminChanged, false)
+            confirmed.addEventListener('change', confirmedChanged, false)
         }
 
         if(userInfo.admin){

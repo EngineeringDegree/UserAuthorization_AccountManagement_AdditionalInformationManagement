@@ -57,19 +57,19 @@ function sendChangePasswordRequest() {
  * Passwords do not match error
  */
 function passwordsNotMatch(){
-
+    alert('Password do not match')
 }
 
 /**
  * Password change wasn't success
  */
 function showPasswordChangeError(){
-
+    alert('Something went wrong')
 }
 
 /**
  * Displayed password changed
  */
 function passwordChanged() {
-
+    alert('Password changed')
 }

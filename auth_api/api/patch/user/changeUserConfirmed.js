@@ -5,7 +5,7 @@ const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
 
-// Middleware for changing user username
+// Middleware for changing user confirmation status
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
@@ -13,7 +13,6 @@ router.patch('/', async (req, res) => {
     }
 
     let user = await User.findOne({ email: req.body.email })
-
     if(user){
         if(checkIfBanned(user)){
             return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})

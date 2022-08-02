@@ -39,8 +39,9 @@ const User = mongoose.model('User', new mongoose.Schema({
     bans: {
         type: Array
     },
-    money: {
-        type: Array
+    funds: {
+        type: Number,
+        required: true
     }
 }))
  
@@ -52,10 +53,10 @@ function validateUser(user) {
         token: Joi.array().required(),
         refreshToken: Joi.array().required(),
         accessToken: Joi.string().required(),
-        confirmed: Joi.Boolean().required(),
-        admin: Joi.Boolean().required(),
-        bans: Joi.Array(),
-        money: Joi.Array()
+        confirmed: Joi.boolean().required(),
+        admin: Joi.boolean().required(),
+        bans: Joi.array(),
+        funds: Joi.number().required()
     })
     const validation = schema.validate(user)
     return validation

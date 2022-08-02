@@ -26,11 +26,11 @@ router.get('/', async (req, res) => {
         if(!check){
             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
             if(check){
-                return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check, admin: user.admin })
+                return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check, admin: user.admin, funds: user.funds })
             }
             return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
         }
-        return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', admin: user.admin })
+        return res.status(200).send({status: 'USER LOGGED IN', code: 200, action: 'LOGIN', admin: user.admin, funds: user.funds })
     }
 
     return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})

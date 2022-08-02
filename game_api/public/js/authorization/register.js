@@ -141,49 +141,49 @@ function getPrivacyValue(){
  * It shows user empty field communicate
  */
  function emailEmptyError(){
-
+    alert('Email is empty')
 }
 
 /**
  * It shows user empty username field communicate
  */
  function usernameEmptyError(){
-
+    alert('Username is empty')
 }
 
 /**
  * It shows user empty password field communicate
  */
 function passwordEmptyError(){
-
+    alert('Password is empty')
 }
 
 /**
  * It shows user empty repeat password field communicate
  */
  function repeatPasswordEmptyError(){
-
+    alert('Repeat password is empty')
 }
 
 /**
  * It shows user that he needs to tick terms
  */
  function tickTerms(){
-
+    alert('You need to agree to terms and conditions')
 }
 
 /**
  * It shows user that he needs to tick privacy
  */
  function tickPrivacy(){
-
+    alert('You need to agree  to privacy policy')
 }
 
 /**
  * It shows user that email field must be an email
  */
 function mustBeAnEmail(){
-
+    alert('Email field value must be an email')
 }
 
 /**
@@ -191,7 +191,7 @@ function mustBeAnEmail(){
  * @param {error object} err returned from the server error object
  */
 function showRegisterError(err){
-
+    alert('Something went wrong ' + err)
 }
 
 /**
