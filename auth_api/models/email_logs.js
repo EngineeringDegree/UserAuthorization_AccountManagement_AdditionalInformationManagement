@@ -15,7 +15,7 @@ const EmailLog = mongoose.model('EmailLog', new mongoose.Schema({
         required: true
     }
 }))
- 
+
 function validateEmailLog(email) {
     const schema = Joi.object({
         message: Joi.object().required(),
@@ -25,6 +25,6 @@ function validateEmailLog(email) {
     const validation = schema.validate(email)
     return validation
 }
- 
+
 exports.EmailLog = EmailLog
 exports.validateEmailLog = validateEmailLog

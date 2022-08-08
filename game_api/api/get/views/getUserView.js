@@ -9,7 +9,7 @@ Middleware which sends user specified in parameter.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
     var breadcrumb = [
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
         }
     ]
 
-    if(!req.query.userId){
+    if (!req.query.userId) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
     try {
         var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
-    } catch(e){
+    } catch (e) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if(!user.data.userReturned){
+    if (!user.data.userReturned) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -64,7 +64,7 @@ router.get('/', async (req, res) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         userId: Joi.string().required(),
     })

@@ -31,7 +31,7 @@ const Map = mongoose.model('Map', new mongoose.Schema({
         required: true
     }
 }))
- 
+
 function validateMap(map) {
     const schema = Joi.object({
         name: Joi.string().required(),
@@ -45,6 +45,6 @@ function validateMap(map) {
     const validation = schema.validate(map)
     return validation
 }
- 
+
 exports.Map = Map
 exports.validate = validateMap

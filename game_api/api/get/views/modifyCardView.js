@@ -7,7 +7,7 @@ const { Card } = require('../../../models/card')
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
     var breadcrumb = [
@@ -28,17 +28,7 @@ router.get('/', async (req, res) => {
         }
     ]
 
-    if(!req.query.cardId){
-        breadcrumb.push({
-            currentPage: true,
-            text: 'Card not found'
-        })
-        return res.status(404).render('admin/cardNotFound', { breadcrumb: breadcrumb })
-    }
-    
-    try {
-        var card = await Card.findOne({ _id: req.query.cardId })
-    } catch(e){
+    if (!req.query.cardId) {
         breadcrumb.push({
             currentPage: true,
             text: 'Card not found'
@@ -46,7 +36,17 @@ router.get('/', async (req, res) => {
         return res.status(404).render('admin/cardNotFound', { breadcrumb: breadcrumb })
     }
 
-    if(!card){
+    try {
+        var card = await Card.findOne({ _id: req.query.cardId })
+    } catch (e) {
+        breadcrumb.push({
+            currentPage: true,
+            text: 'Card not found'
+        })
+        return res.status(404).render('admin/cardNotFound', { breadcrumb: breadcrumb })
+    }
+
+    if (!card) {
         breadcrumb.push({
             currentPage: true,
             text: 'Card not found'
@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
         currentPage: true,
         text: `Modify ${card._id} Card`
     })
-    
+
     return res.status(200).render('admin/modifyCard', { breadcrumb: breadcrumb, card: card })
 })
 
@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         cardId: Joi.string().required(),
     })

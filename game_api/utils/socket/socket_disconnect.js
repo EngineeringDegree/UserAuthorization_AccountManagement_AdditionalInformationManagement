@@ -4,7 +4,7 @@
  * @param {object} socket which lost connection/disconnected 
  */
 var disconnect = (io, socket) => {
-    
+
 }
 
 module.exports = disconnect

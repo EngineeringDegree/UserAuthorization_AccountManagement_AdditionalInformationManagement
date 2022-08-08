@@ -6,8 +6,8 @@
 var checkIfBanned = (user) => {
     var newDate = new Date()
     newDate = newDate.getTime()
-    for(let i = user.bans.length - 1; i >= 0; i--){
-        if(user.bans[i].to > newDate){
+    for (let i = user.bans.length - 1; i >= 0; i--) {
+        if (user.bans[i].to > newDate) {
             return true
         }
     }

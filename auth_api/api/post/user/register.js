@@ -13,24 +13,24 @@ const salt = 10
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
-    if(req.body.password != req.body.repeatPassword){
-        return res.status(400).send({status: 'PASSWORDS DO NOT MATCH', code: 400})
+    if (req.body.password != req.body.repeatPassword) {
+        return res.status(400).send({ status: 'PASSWORDS DO NOT MATCH', code: 400 })
     }
 
     let user = await User.findOne({ email: req.body.email })
-    if(!user){
+    if (!user) {
         var data
-        if(await User.countDocuments() == 0){
+        if (await User.countDocuments() == 0) {
             data = await putAdmin(req.body)
-        }else{
+        } else {
             data = await putUser(req.body)
         }
         sendConfirmationEmail(data)
         return res.status(200).send(data)
-    }else{
+    } else {
         return res.status(400).send({ status: 'USER FOUND', code: 400 })
     }
 })
@@ -40,14 +40,14 @@ router.post('/', async (req, res) => {
  * @param {object} body contains user email, username and password to hash 
  * @returns object with status, code, tokens, username and email
  */
-async function putAdmin(body){
+async function putAdmin(body) {
     var pass = await bcrypt.hash(body.password, salt)
-    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
-    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d' })
+    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
+    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
     const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
     var newUser = new User(_.pick({
         username: body.username,
-        email: body.email, 
+        email: body.email,
         password: pass,
         token: [token],
         refreshToken: [refreshToken],
@@ -58,7 +58,7 @@ async function putAdmin(body){
         funds: 0
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 
 /**
@@ -66,14 +66,14 @@ async function putAdmin(body){
  * @param {object} body contains user email, username and password to hash 
  * @returns object with status, code, tokens, username and email
  */
-async function putUser(body){
+async function putUser(body) {
     var pass = await bcrypt.hash(body.password, salt)
-    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '1h' })
-    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), {expiresIn: '60d' })
+    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
+    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
     const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
     var newUser = new User(_.pick({
         username: body.username,
-        email: body.email, 
+        email: body.email,
         password: pass,
         token: [token],
         refreshToken: [refreshToken],
@@ -84,7 +84,7 @@ async function putUser(body){
         funds: 0
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     await newUser.save()
-    return {status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 
 /**

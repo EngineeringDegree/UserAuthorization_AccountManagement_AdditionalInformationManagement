@@ -44,7 +44,7 @@ const User = mongoose.model('User', new mongoose.Schema({
         required: true
     }
 }))
- 
+
 function validateUser(user) {
     const schema = Joi.object({
         username: Joi.string().max(50).required(),
@@ -61,6 +61,6 @@ function validateUser(user) {
     const validation = schema.validate(user)
     return validation
 }
- 
+
 exports.User = User
 exports.validate = validateUser

@@ -3,19 +3,19 @@ $(document).ready(init())
 /**
  * Initialization function for all actions
  */
-function init(){
+function init() {
     var timeoutId, timeoutTime = 1000, page = 1
 
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
 
     var records = document.getElementById('records-per-page')
-    if(records){
+    if (records) {
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
     var username = document.getElementById('username')
-    if(username){
+    if (username) {
         username.addEventListener('keyup', usernameChanged, false)
     }
 
@@ -27,15 +27,15 @@ function init(){
     /**
      * Makes get requests with choosen options
      */
-    function recordsPerPageChanged(){
+    function recordsPerPageChanged() {
         sendRequest()
     }
 
     /**
      * Initialize 1 second timer to send request if nothing changes
      */
-    function usernameChanged(){
-        if(timeoutId){
+    function usernameChanged() {
+        if (timeoutId) {
             clearTimeout(timeoutId)
         }
 
@@ -47,38 +47,38 @@ function init(){
     /**
      * Sends request for card with current choosen parameters
      */
-    function sendRequest(){
-        if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
-            if(username && records){
+    function sendRequest() {
+        if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
+            if (username && records) {
                 $.ajax({
                     type: "GET",
                     url: `${AUTHORIZATION_SERVER}/get/users?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&username=${username.value}&page=${page}`,
-                    success: function(res){
-                        if(res.token){
+                    success: function (res) {
+                        if (res.token) {
                             window.localStorage.setItem("token", res.token)
                         }
 
-                        if(res.users.page){
+                        if (res.users.page) {
                             page = res.users.page
                         }
 
                         displayReturnedInfo(res.users.users, res.users.page, res.users.pages, res.action == 'USERS FOUND AND SHOW BANHAMMER')
-                        
+
                         logIn(res.action == 'USERS FOUND AND SHOW BANHAMMER')
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        if(xhr.responseJSON.action == "LOGOUT"){
+                        if (xhr.responseJSON.action == "LOGOUT") {
                             logOut()
                             return
                         }
                     },
                     dataType: "json",
-                    contentType : "application/json"
+                    contentType: "application/json"
                 })
             }
-        }else{
+        } else {
             logOut()
-        }   
+        }
     }
 
     /**
@@ -86,7 +86,7 @@ function init(){
      * @param {integer} e element of DOM which holds pageNum property 
      */
 
-    function setPage(e){
+    function setPage(e) {
         e.preventDefault()
         page = e.currentTarget.pageNum
         sendRequest()
@@ -99,42 +99,42 @@ function init(){
      * @param {integer} pages how much pages to display
      * @param {boolean} admin if user is an admin
      */
-    function displayReturnedInfo(records, page, pages, admin){
-        if(users && pagesDisplay){
+    function displayReturnedInfo(records, page, pages, admin) {
+        if (users && pagesDisplay) {
             users.innerHTML = ''
             pagesDisplay.innerHTML = ''
-            for(let i = 0; i < records.length; i++){
+            for (let i = 0; i < records.length; i++) {
                 let element = document.createElement('div')
                 let link = document.createElement('a')
                 link.textContent = records[i].username
                 link.href = `/users/user?userId=${records[i].id}`
                 element.appendChild(link)
-                if(admin){
+                if (admin) {
                     element.appendChild(createBanUtility(records[i].id))
                 }
                 users.appendChild(element)
                 var btn = document.getElementById(records[i].id)
-                if(btn){
+                if (btn) {
                     btn.addEventListener('click', banUser, false)
                 }
             }
 
-            if(records.length == 0){
+            if (records.length == 0) {
                 let element = document.createElement('div')
                 element.textContent = "Nothing to see here!"
                 users.appendChild(element)
             }
 
-            for(let i = 0; i < pages; i++){
-                if(i + 1 == page){
+            for (let i = 0; i < pages; i++) {
+                if (i + 1 == page) {
                     let element = document.createElement('div')
                     element.textContent = i + 1
                     pagesDisplay.appendChild(element)
-                }else{
+                } else {
                     let element = document.createElement('a')
                     element.textContent = i + 1
                     element.classList.add('clickable')
-                    element.addEventListener('click', setPage ,false)
+                    element.addEventListener('click', setPage, false)
                     element.pageNum = i + 1
                     element.href = "#"
                     pagesDisplay.appendChild(element)
@@ -146,25 +146,25 @@ function init(){
     /**
      * Hides linkes which shouldn't be visible if user is logged out
      */
-    function logOut(){
+    function logOut() {
         window.localStorage.clear()
-        for(let i = 0; i < loggedIn.length; i){
+        for (let i = 0; i < loggedIn.length; i) {
             loggedIn[i].remove()
         }
-    
-        for(let i = 0; i < loggedOut.length; i++){
+
+        for (let i = 0; i < loggedOut.length; i++) {
             loggedOut[i].classList.remove('d-none')
         }
         window.location.pathname = "/logout"
     }
-    
+
     /**
      * Hides linkes which shouldn't be visible if user is logged in
      */
-    function logIn(admin = false){
-        for(let i = 0; i < loggedIn.length; i){
-            if(loggedIn[i].classList.contains('admin')){
-                if(!admin){
+    function logIn(admin = false) {
+        for (let i = 0; i < loggedIn.length; i) {
+            if (loggedIn[i].classList.contains('admin')) {
+                if (!admin) {
                     loggedIn[i].remove()
                     continue
                 }
@@ -172,8 +172,8 @@ function init(){
             loggedIn[i].classList.remove('d-none')
             i++
         }
-    
-        for(let i = 0; i < loggedOut.length; i){
+
+        for (let i = 0; i < loggedOut.length; i) {
             loggedOut[i].remove()
         }
     }

@@ -23,7 +23,7 @@ const Deck = mongoose.model('Deck', new mongoose.Schema({
         required: true
     }
 }))
- 
+
 function validateDeck(deck) {
     const schema = Joi.object({
         name: Joi.string().required(),
@@ -35,6 +35,6 @@ function validateDeck(deck) {
     const validation = schema.validate(deck)
     return validation
 }
- 
+
 exports.Deck = Deck
 exports.validate = validateDeck

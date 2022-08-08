@@ -11,27 +11,27 @@ const { User } = require('../../../models/user')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.body.email })
 
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
-        
+
         var pass = await bcrypt.compare(req.body.password, user.password)
-        if(pass){
+        if (pass) {
             var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
-            if(alreadyExists) {
+            if (alreadyExists) {
                 return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
             }
 
             sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
             return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
         }
-        return res.status(401).send({status: 'PASSWORD NOT MATCH', code: 401})
+        return res.status(401).send({ status: 'PASSWORD NOT MATCH', code: 401 })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: "LOGOUT" })
@@ -42,13 +42,13 @@ router.patch('/', async (req, res) => {
  * @param {string} id of user to alter
  * @param {string} email new email of an user 
  */
-async function changeUserEmail(id, email){
+async function changeUserEmail(id, email) {
     let user = await User.findOne({ email: email })
 
-    if(user){
+    if (user) {
         return true
     }
-    
+
     const filter = {
         _id: id
     }

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../partials/tags/metaTags') %>
-    <%- include('../partials/tags/favicon') %>
-    <title>Ninergames</title>
-    <%- include('../partials/links/mainLinks') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
 </head>
+
 <body>
     <%- include('../partials/noscript/noscript') %>
-    <%- include('../partials/components/menu') %>
-    <%- include('../partials/components/breadcrumb') %>
-    <div>
-        <a href="/manage/card">Manage Cards</a>
-        <a href="/manage/map">Manage Maps</a>
-    </div>
-    <%- include('../partials/components/footer') %>
-    
-    <%- include('../partials/links/authorizationServer') %>
-    <%- include('../partials/links/authorizeAdmin') %>
-    <%- include('../partials/links/assignUserId') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+                <div>
+                    <a href="/manage/card">Manage Cards</a>
+                    <a href="/manage/map">Manage Maps</a>
+                </div>
+                <%- include('../partials/components/footer') %>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/assignUserId') %>
 </body>
+
 </html>

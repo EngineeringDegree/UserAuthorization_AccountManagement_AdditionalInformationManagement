@@ -11,21 +11,21 @@ const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.body.email })
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
         }
 
         var pass = await bcrypt.compare(req.body.password, user.password)
-        if(pass){
+        if (pass) {
             var refreshTokens = user.refreshToken
             var tokens = user.token
-            const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), {expiresIn: '60d' })
-            const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), {expiresIn: '1h' })
+            const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '60d' })
+            const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
             refreshTokens.push(refreshToken)
             tokens.push(token)
             const filter = {
@@ -38,13 +38,13 @@ router.patch('/', async (req, res) => {
 
             await User.updateOne(filter, update)
 
-            return res.status(200).send({status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
+            return res.status(200).send({ status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
         }
-        
-        return res.status(401).send({status: 'BAD DATA', code: 401})
+
+        return res.status(401).send({ status: 'BAD DATA', code: 401 })
     }
 
-    return res.status(404).send({status: 'USER NOT FOUND', code: 404})
+    return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
 })
 
 /**

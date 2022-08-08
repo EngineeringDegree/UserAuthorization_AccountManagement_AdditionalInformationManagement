@@ -3,15 +3,15 @@ $(document).ready(init())
 /**
  * Initial function of registering new account which attaches signUp handler to button
  */
-function init(){
+function init() {
     // On sign up button click do signUp logic
-    $('#sign-up').on('click',  signUp)
+    $('#sign-up').on('click', signUp)
 }
 
 /**
  * Sends ajax request to backend or shows user he has error
  */
-function signUp(){
+function signUp() {
     var checkIfNotValid = false
     var postObject = {
         email: getEmailRegisterValue(),
@@ -20,49 +20,49 @@ function signUp(){
         repeatPassword: getRepeatPasswordValue()
     }
 
-    if(postObject.email == ""){
+    if (postObject.email == "") {
         checkIfNotValid = true
 
         emailEmptyError()
     }
 
-    if(!validateEmail(postObject.email)){
+    if (!validateEmail(postObject.email)) {
         checkIfNotValid = true
 
         mustBeAnEmail()
     }
 
-    if(postObject.username == ""){
+    if (postObject.username == "") {
         checkIfNotValid = true
 
         usernameEmptyError()
     }
 
-    if(postObject.password == ""){
+    if (postObject.password == "") {
         checkIfNotValid = true
 
         passwordEmptyError()
     }
 
-    if(postObject.password != postObject.repeatPassword){
+    if (postObject.password != postObject.repeatPassword) {
         checkIfNotValid = true
 
         repeatPasswordEmptyError()
     }
 
-    if(!getTermsValue()){
+    if (!getTermsValue()) {
         checkIfNotValid = true
 
         tickTerms()
     }
 
-    if(!getPrivacyValue()){
+    if (!getPrivacyValue()) {
         checkIfNotValid = true
 
         tickPrivacy()
     }
 
-    if(checkIfNotValid){
+    if (checkIfNotValid) {
         return
     }
 
@@ -71,21 +71,21 @@ function signUp(){
         type: "POST",
         url: `${AUTHORIZATION_SERVER}/post/register`,
         data: stringifiedObject,
-        success: function(res){
+        success: function (res) {
             window.localStorage.setItem('userId', res.id)
             window.localStorage.setItem('accessToken', res.accessToken)
             window.localStorage.setItem('token', res.token)
             window.localStorage.setItem('refreshToken', res.refreshToken)
             window.localStorage.setItem('email', res.email)
             window.localStorage.setItem('username', res.username)
-            
+
             window.location.pathname = '/registered'
         },
         error: function (xhr, ajaxOptions, thrownError) {
             showRegisterError(thrownError)
         },
         dataType: "json",
-        contentType : "application/json"
+        contentType: "application/json"
     })
 }
 
@@ -93,7 +93,7 @@ function signUp(){
  * Gets email value from input
  * @returns email input value
  */
-function getEmailRegisterValue(){
+function getEmailRegisterValue() {
     return $('#email-register').val()
 }
 
@@ -101,7 +101,7 @@ function getEmailRegisterValue(){
  * Gets username value from input
  * @returns username input value
  */
-function getUsernameValue(){
+function getUsernameValue() {
     return $('#username-register').val()
 }
 
@@ -109,7 +109,7 @@ function getUsernameValue(){
  * Gets password value from input
  * @returns password input value
  */
-function getPasswordRegisterValue(){
+function getPasswordRegisterValue() {
     return $('#password-register').val()
 }
 
@@ -117,7 +117,7 @@ function getPasswordRegisterValue(){
  * Get repeat password value from input
  * @returns repeat password input value
  */
-function getRepeatPasswordValue(){
+function getRepeatPasswordValue() {
     return $('#password-repeat-register').val()
 }
 
@@ -125,7 +125,7 @@ function getRepeatPasswordValue(){
  * Get if terms and conditions input is checked
  * @returns if terms input is checked 
  */
-function getTermsValue(){
+function getTermsValue() {
     return $('#terms')[0].checked
 }
 
@@ -133,56 +133,56 @@ function getTermsValue(){
  * Get if privacy policy input is checked
  * @returns if privacy policy is checked
  */
-function getPrivacyValue(){
+function getPrivacyValue() {
     return $('#privacy')[0].checked
 }
 
 /**
  * It shows user empty field communicate
  */
- function emailEmptyError(){
+function emailEmptyError() {
     alert('Email is empty')
 }
 
 /**
  * It shows user empty username field communicate
  */
- function usernameEmptyError(){
+function usernameEmptyError() {
     alert('Username is empty')
 }
 
 /**
  * It shows user empty password field communicate
  */
-function passwordEmptyError(){
+function passwordEmptyError() {
     alert('Password is empty')
 }
 
 /**
  * It shows user empty repeat password field communicate
  */
- function repeatPasswordEmptyError(){
+function repeatPasswordEmptyError() {
     alert('Repeat password is empty')
 }
 
 /**
  * It shows user that he needs to tick terms
  */
- function tickTerms(){
+function tickTerms() {
     alert('You need to agree to terms and conditions')
 }
 
 /**
  * It shows user that he needs to tick privacy
  */
- function tickPrivacy(){
+function tickPrivacy() {
     alert('You need to agree  to privacy policy')
 }
 
 /**
  * It shows user that email field must be an email
  */
-function mustBeAnEmail(){
+function mustBeAnEmail() {
     alert('Email field value must be an email')
 }
 
@@ -190,7 +190,7 @@ function mustBeAnEmail(){
  * This function shows user why his request didn't went through
  * @param {error object} err returned from the server error object
  */
-function showRegisterError(err){
+function showRegisterError(err) {
     alert('Something went wrong ' + err)
 }
 
@@ -199,6 +199,6 @@ function showRegisterError(err){
  * @param {string} email email string to be validated
  * @returns if string is an email (true of false)
  */
-function validateEmail(email){
+function validateEmail(email) {
     return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 }

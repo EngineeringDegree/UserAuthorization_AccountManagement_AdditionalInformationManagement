@@ -4,59 +4,59 @@ $(document).ready(init())
 /**
  * Adds event listener to input
  */
-function init(){
+function init() {
     var cardName = document.getElementById('card-name')
-    if(cardName){
+    if (cardName) {
         cardName.addEventListener('keyup', anythingChanged, false)
     }
 
     var image = document.getElementById('card-image')
-    if(image){
+    if (image) {
         image.addEventListener('keyup', anythingChanged, false)
     }
 
     var type = document.getElementById('card-type')
-    if(type){
+    if (type) {
         type.addEventListener('keyup', anythingChanged, false)
     }
 
     var nation = document.getElementById('card-nation')
-    if(nation){
+    if (nation) {
         nation.addEventListener('keyup', anythingChanged, false)
     }
 
     var resources = document.getElementById('card-resources')
-    if(resources){
+    if (resources) {
         resources.addEventListener('keyup', anythingChanged, false)
     }
 
     var attack = document.getElementById('card-attack')
-    if(attack){
+    if (attack) {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
     var defense = document.getElementById('card-defense')
-    if(defense){
+    if (defense) {
         defense.addEventListener('keyup', anythingChanged, false)
     }
 
     var mobility = document.getElementById('card-mobility')
-    if(mobility){
+    if (mobility) {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
     var effects = document.getElementById('card-effects')
-    if(effects){
+    if (effects) {
         effects.addEventListener('keyup', anythingChanged, false)
     }
 
     var description = document.getElementById('card-description')
-    if(description){
+    if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
     var readyToUse = document.getElementById('card-ready')
-    if(readyToUse){
+    if (readyToUse) {
         readyToUse.addEventListener('change', anythingChanged, false)
     }
 }
@@ -64,8 +64,8 @@ function init(){
 /** 
  * Send request on something changed after 1 second
  */
-function anythingChanged(){
-    if(timeoutId){
+function anythingChanged() {
+    if (timeoutId) {
         clearTimeout(timeoutId)
     }
 
@@ -77,7 +77,7 @@ function anythingChanged(){
 /**
  * Sends requests with user details and card details to patch on backend
  */
-function sendRequest(){
+function sendRequest() {
     var postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
@@ -101,28 +101,28 @@ function sendRequest(){
         type: "PATCH",
         data: stringifiedObject,
         url: '/patch/admin/modify/card',
-        success: function(res){
-            if(res.token){
+        success: function (res) {
+            if (res.token) {
                 window.localStorage.setItem("token", res.token)
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            if(xhr.responseJSON.action == "GO TO CARDS"){
+            if (xhr.responseJSON.action == "GO TO CARDS") {
                 window.location.pathname = '/manage/card'
                 return
             }
 
-            if(xhr.responseJSON.action == "LOGOUT"){
+            if (xhr.responseJSON.action == "LOGOUT") {
                 logOut()
                 return
             }
         },
         dataType: "json",
-        contentType : "application/json"
+        contentType: "application/json"
     })
 }
 
-function logOut(){
+function logOut() {
     window.localStorage.clear()
     window.location.pathname = "/logout"
 }

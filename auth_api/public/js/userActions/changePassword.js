@@ -3,9 +3,9 @@ $(document).ready(init())
 /**
  * Initialize listener for button
  */
-function init(){
+function init() {
     var el = document.getElementById('send-change-password')
-    if(el){
+    if (el) {
         el.addEventListener('click', sendChangePasswordRequest, false)
     }
 }
@@ -20,11 +20,11 @@ function sendChangePasswordRequest() {
     const urlParams = new URLSearchParams(queryString)
     const email = urlParams.get('email')
     const accessToken = urlParams.get('accessToken')
-    if(elPass && elRepPass && email && accessToken){
+    if (elPass && elRepPass && email && accessToken) {
         var pass = elPass.value
         var repPass = elRepPass.value
 
-        if(pass != repPass){
+        if (pass != repPass) {
             passwordsNotMatch()
             return
         }
@@ -33,22 +33,22 @@ function sendChangePasswordRequest() {
             password: pass,
             repeatPassword: repPass,
             email: email,
-            accessToken: accessToken 
+            accessToken: accessToken
         }
         var stringifiedObject = JSON.stringify(postObject)
-    
+
         $.ajax({
             type: "PATCH",
             url: `/patch/user/password`,
             data: stringifiedObject,
-            success: function(res){
+            success: function (res) {
                 passwordChanged()
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 showPasswordChangeError()
             },
             dataType: "json",
-            contentType : "application/json"
+            contentType: "application/json"
         })
     }
 }
@@ -56,14 +56,14 @@ function sendChangePasswordRequest() {
 /**
  * Passwords do not match error
  */
-function passwordsNotMatch(){
+function passwordsNotMatch() {
     alert('Password do not match')
 }
 
 /**
  * Password change wasn't success
  */
-function showPasswordChangeError(){
+function showPasswordChangeError() {
     alert('Something went wrong')
 }
 

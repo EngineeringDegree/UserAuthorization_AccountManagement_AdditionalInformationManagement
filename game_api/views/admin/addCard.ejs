@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../partials/tags/metaTags') %>
-    <%- include('../partials/tags/favicon') %>
-    <title>Ninergames</title>
-    <%- include('../partials/links/mainLinks') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
 </head>
+
 <body>
     <%- include('../partials/noscript/noscript') %>
-    <%- include('../partials/components/menu') %>
-    <%- include('../partials/components/breadcrumb') %>
-    
-    <label>
-        Card Name
-        <input id="name" type="text" />
-    </label>
-    <label>
-        Image
-        <input id="image" type="text" />
-    </label>
-    <label>
-        Type
-        <input id="type" type="text" />
-    </label>
-    <label>
-        Nation
-        <input id="nation" type="text" />
-    </label>
-    <label>
-        Resources
-        <input id="resources" type="text" />
-    </label>
-    <label>
-        Attack
-        <input id="attack" type="text" />
-    </label>
-    <label>
-        Defense
-        <input id="defense" type="text" />
-    </label>
-    <label>
-        Mobility
-        <input id="mobility" type="text" />
-    </label>
-    <label>
-        Effects
-        <input id="effects" type="text" />
-    </label>
-    <label>
-        Description
-        <input id="description" type="text" />
-    </label>
-    <button id="add-btn">Add Card</button>
-    <%- include('../partials/components/footer') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
 
-    <%- include('../partials/links/authorizationServer') %>
-    <%- include('../partials/links/authorizeAdmin') %>
-    <%- include('../partials/links/addCard') %>
-    <%- include('../partials/links/assignUserId') %>
+                <label>
+                    Card Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Image
+                    <input id="image" type="text" />
+                </label>
+                <label>
+                    Type
+                    <input id="type" type="text" />
+                </label>
+                <label>
+                    Nation
+                    <input id="nation" type="text" />
+                </label>
+                <label>
+                    Resources
+                    <input id="resources" type="text" />
+                </label>
+                <label>
+                    Attack
+                    <input id="attack" type="text" />
+                </label>
+                <label>
+                    Defense
+                    <input id="defense" type="text" />
+                </label>
+                <label>
+                    Mobility
+                    <input id="mobility" type="text" />
+                </label>
+                <label>
+                    Effects
+                    <input id="effects" type="text" />
+                </label>
+                <label>
+                    Description
+                    <input id="description" type="text" />
+                </label>
+                <button id="add-btn">Add Card</button>
+                <%- include('../partials/components/footer') %>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addCard') %>
+                                <%- include('../partials/links/assignUserId') %>
 </body>
+
 </html>

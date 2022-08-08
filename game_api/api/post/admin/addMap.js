@@ -9,28 +9,28 @@ const { Map } = require('../../../models/map')
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP'})
+        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try{
+    try {
         var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    }catch(e){
-        return res.status(e.response.data.code).send({status: e.response.data.status, code: e.response.data.code, action: e.response.data.action})
-    }
-    
-    if(user.data){
-        await createMap(req.body)
-        return res.status(200).send({status: 'MAP CREATED', code: 200, token: user.data.token})
+    } catch (e) {
+        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
     }
 
-    return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})
+    if (user.data) {
+        await createMap(req.body)
+        return res.status(200).send({ status: 'MAP CREATED', code: 200, token: user.data.token })
+    }
+
+    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
 })
 
 /**
  * Save map with following arguments
  * @param {object} map to save 
  */
-async function createMap(map){
+async function createMap(map) {
     var newMap = new Map(_.pick({
         name: map.name,
         size: map.size,
@@ -48,7 +48,7 @@ async function createMap(map){
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         name: Joi.string().min(1).required(),

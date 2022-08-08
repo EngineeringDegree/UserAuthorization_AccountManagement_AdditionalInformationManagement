@@ -3,41 +3,41 @@ $(document).ready(init())
 /**
  * Initializes on button click event
  */
-function init(){
-    $('#sign-in').on('click',  signIn)
+function init() {
+    $('#sign-in').on('click', signIn)
 }
 
 /**
  * Sends login signal to backend
  * @returns none 
  */
-function signIn(){
+function signIn() {
     var checkIfNotValid = false
     var postObject = {
         email: getEmailValue(),
         password: getPasswordValue()
     }
 
-    
-    if(postObject.email == ""){
+
+    if (postObject.email == "") {
         checkIfNotValid = true
 
         emailEmptyError()
     }
 
-    if(!validateEmail(postObject.email)){
+    if (!validateEmail(postObject.email)) {
         checkIfNotValid = true
 
         mustBeAnEmail()
     }
 
-    if(postObject.password == ""){
+    if (postObject.password == "") {
         checkIfNotValid = true
 
         passwordEmptyError()
     }
 
-    if(checkIfNotValid){
+    if (checkIfNotValid) {
         return
     }
 
@@ -47,7 +47,7 @@ function signIn(){
         type: "PATCH",
         url: `${AUTHORIZATION_SERVER}/patch/login`,
         data: stringifiedObject,
-        success: function(res){
+        success: function (res) {
             window.localStorage.setItem('userId', res.id)
             window.localStorage.setItem('token', res.token)
             window.localStorage.setItem('refreshToken', res.refreshToken)
@@ -60,7 +60,7 @@ function signIn(){
             showLoginError(thrownError)
         },
         dataType: "json",
-        contentType : "application/json"
+        contentType: "application/json"
     })
 }
 
@@ -68,7 +68,7 @@ function signIn(){
  * Gets email value from input
  * @returns email input value
  */
-function getEmailValue(){
+function getEmailValue() {
     return $('#email-login').val()
 }
 
@@ -76,28 +76,28 @@ function getEmailValue(){
  * Gets password value from input
  * @returns password input value
  */
-function getPasswordValue(){
+function getPasswordValue() {
     return $('#password-login').val()
 }
 
 /**
  * It shows user empty field communicate
  */
-function emailEmptyError(){
+function emailEmptyError() {
     alert('Email empty')
 }
 
 /**
  * It shows user empty password field communicate
  */
-function passwordEmptyError(){
+function passwordEmptyError() {
     alert('Password empty')
 }
 
 /**
  * It shows user that email field must be an email
  */
-function mustBeAnEmail(){
+function mustBeAnEmail() {
     alert('Value must be an email')
 }
 
@@ -105,7 +105,7 @@ function mustBeAnEmail(){
  * This function shows user why his request didn't went through
  * @param {error object} err returned from the server error object
  */
- function showLoginError(err){
+function showLoginError(err) {
     alert('Something went wrong ' + err)
 }
 
@@ -114,7 +114,7 @@ function mustBeAnEmail(){
  * @param {string} email email string to be validated
  * @returns if string is an email (true of false)
  */
- function validateEmail(email){
+function validateEmail(email) {
     return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 }
 

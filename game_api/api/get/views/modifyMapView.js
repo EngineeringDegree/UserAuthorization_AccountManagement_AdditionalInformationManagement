@@ -7,7 +7,7 @@ const { Map } = require('../../../models/map')
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400, action: 'LOGOUT'})
+        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
     var breadcrumb = [
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
         }
     ]
 
-    if(!req.query.mapId){
+    if (!req.query.mapId) {
         breadcrumb.push({
             currentPage: true,
             text: 'Map not found'
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
 
     try {
         var map = await Map.findOne({ _id: req.query.mapId })
-    } catch(e){
+    } catch (e) {
         breadcrumb.push({
             currentPage: true,
             text: 'Map not found'
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('admin/mapNotFound', { breadcrumb: breadcrumb })
     }
 
-    if(!map){
+    if (!map) {
         breadcrumb.push({
             currentPage: true,
             text: 'Map not found'
@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         mapId: Joi.string().required(),
     })

@@ -10,21 +10,21 @@ const salt = 10
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.body.email })
 
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
         }
 
-        if(req.body.password != req.body.repeatPassword){
+        if (req.body.password != req.body.repeatPassword) {
             return res.status(400).send({ status: "PASSWORDS DO NOT MATCH", code: 400 })
         }
 
-        if(user.accessToken == req.body.accessToken){
+        if (user.accessToken == req.body.accessToken) {
             await changeUserPassword(user._id, req.body.password)
             return res.status(200).send({ status: "PASSWORD CHANGED", code: 200 })
         }
@@ -40,7 +40,7 @@ router.patch('/', async (req, res) => {
  * @param {string} id of user to alter
  * @param {string} password password to hash and save
  */
-async function changeUserPassword(id, password){
+async function changeUserPassword(id, password) {
     var pass = await bcrypt.hash(password, salt)
     const filter = {
         _id: id

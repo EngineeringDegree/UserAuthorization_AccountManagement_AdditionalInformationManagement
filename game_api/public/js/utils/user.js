@@ -5,13 +5,13 @@ var changePropagationTime = 1000, uChangeId
  * Sets up timeout to send request which changes user username
  * @param {DOMElement} e which was modified 
  */
-function usernameChanged(e){
-    if(uChangeId){
+function usernameChanged(e) {
+    if (uChangeId) {
         clearTimeout(uChangeId)
     }
 
-    uChangeId = setTimeout(() => {        
-        if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
+    uChangeId = setTimeout(() => {
+        if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
             var patchObject = {
                 email: window.localStorage.getItem('email'),
                 token: window.localStorage.getItem('token'),
@@ -24,34 +24,34 @@ function usernameChanged(e){
                 type: "PATCH",
                 url: `${AUTHORIZATION_SERVER}/patch/user/username`,
                 data: stringifiedObject,
-                success: function(res){
+                success: function (res) {
                     window.localStorage.setItem('username', res.username)
-                    if(res.token) {
+                    if (res.token) {
                         window.localStorage.setItem('token', res.token)
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    if(xhr.responseJSON.action == "LOGOUT"){
+                    if (xhr.responseJSON.action == "LOGOUT") {
                         logOut()
                         return
                     }
                 },
                 dataType: "json",
-                contentType : "application/json"
+                contentType: "application/json"
             })
-        }else{
+        } else {
             logOut()
-        } 
+        }
     }, changePropagationTime)
 }
 
 /**
  * Sets up timeout to send request which changes user email
  */
-function emailChanged(){
+function emailChanged() {
     var email = document.getElementById('email')
     var password = document.getElementById('password')
-    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER && email && password){
+    if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER && email && password) {
         var patchObject = {
             email: window.localStorage.getItem('email'),
             newEmail: email.value,
@@ -63,41 +63,41 @@ function emailChanged(){
             type: "PATCH",
             url: `${AUTHORIZATION_SERVER}/patch/user/email`,
             data: stringifiedObject,
-            success: function(res){
+            success: function (res) {
                 window.localStorage.setItem('email', res.email)
-                if(res.token) {
+                if (res.token) {
                     window.localStorage.setItem('token', res.token)
                 }
 
                 var confirmed = document.getElementById('confirmed')
-                if(confirmed){
+                if (confirmed) {
                     confirmed.checked = false
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                if(xhr.responseJSON.action == "LOGOUT"){
+                if (xhr.responseJSON.action == "LOGOUT") {
                     logOut()
                     return
                 }
 
-                if(xhr.responseJSON.status == "EMAIL ALREADY REGISTERED"){
+                if (xhr.responseJSON.status == "EMAIL ALREADY REGISTERED") {
                     console.log("Email already taken")
                 }
             },
             dataType: "json",
-            contentType : "application/json"
+            contentType: "application/json"
         })
-    }else{
+    } else {
         logOut()
-    } 
+    }
 }
 
 /**
  * Sets up timeout to send request which changes user to an admin
  * @param {DOMElement} e which was modified 
  */
-function adminChanged(e){
-    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
+function adminChanged(e) {
+    if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
         var patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
@@ -111,31 +111,31 @@ function adminChanged(e){
             type: "PATCH",
             url: `${AUTHORIZATION_SERVER}/patch/user/admin`,
             data: stringifiedObject,
-            success: function(res){
-                if(res.token) {
+            success: function (res) {
+                if (res.token) {
                     window.localStorage.setItem('token', res.token)
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                if(xhr.responseJSON.action == "LOGOUT"){
+                if (xhr.responseJSON.action == "LOGOUT") {
                     logOut()
                     return
                 }
             },
             dataType: "json",
-            contentType : "application/json"
+            contentType: "application/json"
         })
-    }else{
+    } else {
         logOut()
-    } 
+    }
 }
 
 /**
  * Sets up timeout to send request which changes user confirmation account status
  * @param {DOMElement} e which was modified 
  */
-function confirmedChanged(e){
-    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
+function confirmedChanged(e) {
+    if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
         var patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
@@ -149,30 +149,30 @@ function confirmedChanged(e){
             type: "PATCH",
             url: `${AUTHORIZATION_SERVER}/patch/user/confirmed`,
             data: stringifiedObject,
-            success: function(res){
-                if(res.token) {
+            success: function (res) {
+                if (res.token) {
                     window.localStorage.setItem('token', res.token)
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                if(xhr.responseJSON.action == "LOGOUT"){
+                if (xhr.responseJSON.action == "LOGOUT") {
                     logOut()
                     return
                 }
             },
             dataType: "json",
-            contentType : "application/json"
+            contentType: "application/json"
         })
-    }else{
+    } else {
         logOut()
-    } 
+    }
 }
 
 /**
  * Ask backend for sending email to change a password
  */
-function askForNewPassword(){
-    if(window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER){
+function askForNewPassword() {
+    if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
         var patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
@@ -184,39 +184,39 @@ function askForNewPassword(){
             type: "PATCH",
             url: `${AUTHORIZATION_SERVER}/patch/user/askPassword`,
             data: stringifiedObject,
-            success: function(res){
-                if(res.token) {
+            success: function (res) {
+                if (res.token) {
                     window.localStorage.setItem('token', res.token)
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                if(xhr.responseJSON.action == "LOGOUT"){
+                if (xhr.responseJSON.action == "LOGOUT") {
                     logOut()
                     return
                 }
             },
             dataType: "json",
-            contentType : "application/json"
+            contentType: "application/json"
         })
-    }else{
+    } else {
         logOut()
-    } 
+    }
 }
 
 /**
  * Logout function
  */
-function logOut(){
+function logOut() {
     window.localStorage.clear()
 
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
 
-    for(let i = 0; i < loggedIn.length; i){
+    for (let i = 0; i < loggedIn.length; i) {
         loggedIn[i].remove()
     }
 
-    for(let i = 0; i < loggedOut.length; i++){
+    for (let i = 0; i < loggedOut.length; i++) {
         loggedOut[i].classList.remove('d-none')
     }
 

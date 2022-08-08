@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../partials/tags/metaTags') %>
-    <%- include('../partials/tags/favicon') %>
-    <title>Ninergames</title>
-    <%- include('../partials/links/mainLinks') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
 </head>
+
 <body>
     <%- include('../partials/noscript/noscript') %>
-    <%- include('../partials/components/menu') %>
-    <%- include('../partials/components/breadcrumb') %>
-    
-    <label>
-        Map Name
-        <input id="name" type="text" />
-    </label>
-    <label>
-        Size
-        <input id="size" type="text" />
-    </label>
-    <label>
-        Image
-        <input id="image" type="text" />
-    </label>
-    <label>
-        Fields
-        <input id="fields" type="text" />
-    </label>
-    <label>
-        Starting Positions
-        <input id="starting-positions" type="text" />
-    </label>
-    <label>
-        Description
-        <input id="description" type="text" />
-    </label>
-    <button id="add-btn">Add Map</button>
-    <%- include('../partials/components/footer') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
 
-    <%- include('../partials/links/authorizationServer') %>
-    <%- include('../partials/links/authorizeAdmin') %>
-    <%- include('../partials/links/addMap') %>
-    <%- include('../partials/links/assignUserId') %>
+                <label>
+                    Map Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Size
+                    <input id="size" type="text" />
+                </label>
+                <label>
+                    Image
+                    <input id="image" type="text" />
+                </label>
+                <label>
+                    Fields
+                    <input id="fields" type="text" />
+                </label>
+                <label>
+                    Starting Positions
+                    <input id="starting-positions" type="text" />
+                </label>
+                <label>
+                    Description
+                    <input id="description" type="text" />
+                </label>
+                <button id="add-btn">Add Map</button>
+                <%- include('../partials/components/footer') %>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addMap') %>
+                                <%- include('../partials/links/assignUserId') %>
 </body>
+
 </html>

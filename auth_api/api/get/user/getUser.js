@@ -11,49 +11,49 @@ Middleware which sends users specified in parameters.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.query.email })
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
         var check = checkToken(user.token, req.query.token)
-        if(!check){
+        if (!check) {
             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
-            if(check){
+            if (check) {
                 var userToFind = await User.findOne({ _id: req.query.id })
-                if(userToFind){
-                    if(user.email == userToFind.email){
-                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+                if (userToFind) {
+                    if (user.email == userToFind.email) {
+                        return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                     }
 
-                    if(user.admin){
-                        return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+                    if (user.admin) {
+                        return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                     }
 
-                    return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+                    return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                 }
                 return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
             }
-            return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
+            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
         var userToFind = await User.findOne({ _id: req.query.id })
-        if(userToFind){
-            if(user.email == userToFind.email){
-                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+        if (userToFind) {
+            if (user.email == userToFind.email) {
+                return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND EDIT FORM', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
             }
 
-            if(user.admin){
-                return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+            if (user.admin) {
+                return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO AND BANHAMMER', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
             }
-            return res.status(200).send({status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
+            return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
         }
         return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
     }
 
-    return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'})
+    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
 })
 
 /**
@@ -61,7 +61,7 @@ router.get('/', async (req, res) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         id: Joi.string().required(),
         email: Joi.string().email().required(),

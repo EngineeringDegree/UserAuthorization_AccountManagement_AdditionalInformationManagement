@@ -57,9 +57,9 @@ if (!config.get('PrivateKey')) {
 }
 
 // Connect to database
-mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true,  useUnifiedTopology: true})
-.then(() => console.log('Now connected to MongoDB!'))
-.catch(err => console.error('Something went wrong', err))
+mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Now connected to MongoDB!'))
+    .catch(err => console.error('Something went wrong', err))
 
 // Use Cors and parse all requests to be a json string, use public folder as static files, set view engine to ejs   
 app.use(cors())

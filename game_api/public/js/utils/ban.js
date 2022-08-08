@@ -3,9 +3,9 @@
  * @param {string} id of the user to ban
  * @returns {DOMElement} which is ban utility for admin
  */
-function createBanUtility(id){
+function createBanUtility(id) {
     let util = document.createElement('div')
-    
+
     let select = document.createElement('select')
     select.id = id + '-select'
 
@@ -21,12 +21,12 @@ function createBanUtility(id){
     option.value = 7
     option.text = '7 days'
     select.appendChild(option)
-    
+
     option = document.createElement('option')
     option.value = 31
     option.text = '1 Month'
     select.appendChild(option)
-    
+
     option = document.createElement('option')
     option.value = 182
     option.text = '6 Months'
@@ -59,7 +59,7 @@ function createBanUtility(id){
  * @param {integer} value of days how long ban will last
  * @param {string} reason of ban
  */
-function sendBanRequest(id, value, reason){
+function sendBanRequest(id, value, reason) {
     var postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
@@ -74,17 +74,17 @@ function sendBanRequest(id, value, reason){
         type: "PATCH",
         data: stringifiedObject,
         url: `${AUTHORIZATION_SERVER}/patch/user/ban`,
-        success: function(res){
-            
+        success: function (res) {
+
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            if(xhr.responseJSON.action == "LOGOUT"){
+            if (xhr.responseJSON.action == "LOGOUT") {
                 window.location.pathname = '/logout'
                 return
             }
         },
         dataType: "json",
-        contentType : "application/json"
+        contentType: "application/json"
     })
 }
 
@@ -95,8 +95,8 @@ function sendBanRequest(id, value, reason){
 function banUser(e) {
     var select = document.getElementById(e.target.id + '-select')
     var reason = document.getElementById(e.target.id + '-reason')
-    if(select && reason){
-        if(select.value.trim() != '' && reason.value.trim() != ''){
+    if (select && reason) {
+        if (select.value.trim() != '' && reason.value.trim() != '') {
             sendBanRequest(e.target.id, select.value, reason.value)
         }
     }

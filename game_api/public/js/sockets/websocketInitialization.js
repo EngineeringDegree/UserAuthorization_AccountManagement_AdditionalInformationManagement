@@ -4,6 +4,6 @@
 var socket
 $(document).ready(init())
 
-function init(){
+function init() {
     socket = io()
 }

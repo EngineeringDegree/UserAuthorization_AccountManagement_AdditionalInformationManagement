@@ -11,36 +11,36 @@ Middleware which sends users specified in parameters.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.query.email })
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
         var check = checkToken(user.token, req.query.token)
-        if(!check){
+        if (!check) {
             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
-            if(check){
+            if (check) {
                 var users = await getUsers(req)
-                if(user.admin){
+                if (user.admin) {
                     return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", token: check, users: users })
                 }
 
                 return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", token: check, users: users })
             }
-            return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
+            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
         var users = await getUsers(req)
-        if(user.admin){
+        if (user.admin) {
             return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", users: users })
         }
 
         return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", users: users })
     }
 
-    return res.status(404).send({status: 'USER NOT FOUND', code: 404, action: 'LOGOUT'}) 
+    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
 })
 
 /**
@@ -51,26 +51,26 @@ router.get('/', async (req, res) => {
 var getUsers = async (req) => {
     var users = [], allUsers = []
     var pages = 1, page = 1, records = 50, username = ''
-    if(req.query.page){
+    if (req.query.page) {
         page = req.query.page
     }
 
-    if(req.query.records){
+    if (req.query.records) {
         records = req.query.records
     }
 
-    if(req.query.username){
+    if (req.query.username) {
         username = req.query.username
     }
 
-    allUsers = await User.find({ "username": { "$regex": username, "$options": "i"}}).sort({"username": 1})
-    if(allUsers.length > records){
-        pages = Math.ceil(allUsers.length/records)
-        if(page > pages){
-            for(let i = 0; i < allUsers.length; i++){
-                if(i < records){
+    allUsers = await User.find({ "username": { "$regex": username, "$options": "i" } }).sort({ "username": 1 })
+    if (allUsers.length > records) {
+        pages = Math.ceil(allUsers.length / records)
+        if (page > pages) {
+            for (let i = 0; i < allUsers.length; i++) {
+                if (i < records) {
                     users.push({
-                        username: allUsers[i].username, 
+                        username: allUsers[i].username,
                         id: allUsers[i]._id
                     })
                 } else {
@@ -78,45 +78,45 @@ var getUsers = async (req) => {
                 }
             }
             page = 1
-        }else{
-            if(page == 1){
-                if(page < pages){
-                    for(let i = 0; i < records; i++){
+        } else {
+            if (page == 1) {
+                if (page < pages) {
+                    for (let i = 0; i < records; i++) {
                         users.push({
-                            username: allUsers[i].username, 
+                            username: allUsers[i].username,
                             id: allUsers[i]._id
                         })
                     }
-                }else{
-                    for(let i = (page - 1) * records; i < allUsers.length; i++){
+                } else {
+                    for (let i = (page - 1) * records; i < allUsers.length; i++) {
                         users.push({
-                            username: allUsers[i].username, 
+                            username: allUsers[i].username,
                             id: allUsers[i]._id
                         })
                     }
                 }
-            }else{
-                if(page < pages){
-                    for(let i = 0; i < records; i++){
+            } else {
+                if (page < pages) {
+                    for (let i = 0; i < records; i++) {
                         users.push({
                             username: allUsers[i + (records * (page - 1))].username,
                             id: allUsers[i + (records * (page - 1))]._id
                         })
                     }
-                }else{
-                    for(let i = (page - 1) * records; i < allUsers.length; i++){
+                } else {
+                    for (let i = (page - 1) * records; i < allUsers.length; i++) {
                         users.push({
-                            username: allUsers[i].username, 
+                            username: allUsers[i].username,
                             id: allUsers[i]._id
                         })
                     }
                 }
             }
         }
-    }else{
-        for(let i = 0; i < allUsers.length; i++){
+    } else {
+        for (let i = 0; i < allUsers.length; i++) {
             users.push({
-                username: allUsers[i].username, 
+                username: allUsers[i].username,
                 id: allUsers[i]._id
             })
         }
@@ -131,7 +131,7 @@ var getUsers = async (req) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         token: Joi.string().required(),

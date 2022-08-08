@@ -9,26 +9,26 @@ const { User } = require('../../../models/user')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({status: 'BAD DATA', code: 400})
+        return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
     let user = await User.findOne({ email: req.body.email })
 
-    if(user){
-        if(checkIfBanned(user)){
-            return res.status(401).send({status: 'USER IS BANNED', code: 401, action: 'LOGOUT'})
+    if (user) {
+        if (checkIfBanned(user)) {
+            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
 
         var check = checkToken(user.token, req.body.token)
-        if(!check){
+        if (!check) {
             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
-            if(check){
+            if (check) {
                 await changeUserUsername(user._id, req.body.newUsername)
                 return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername, token: check })
             }
-            return res.status(401).send({status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT'})
+            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
-        
+
         await changeUserUsername(user._id, req.body.newUsername)
         return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername })
     }
@@ -41,7 +41,7 @@ router.patch('/', async (req, res) => {
  * @param {string} id of user to alter
  * @param {string} username new username of an user 
  */
-async function changeUserUsername(id, username){
+async function changeUserUsername(id, username) {
     const filter = {
         _id: id
     }

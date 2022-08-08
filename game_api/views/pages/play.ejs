@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../partials/tags/metaTags') %>
-    <%- include('../partials/tags/favicon') %>
-    <title>Ninergames</title>
-    <%- include('../partials/links/mainLinks') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
 </head>
+
 <body>
     <%- include('../partials/noscript/noscript') %>
-    <%- include('../partials/components/menu') %>
-    <%- include('../partials/components/breadcrumb') %>
-    <%- include('../partials/components/footer') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+                <%- include('../partials/components/footer') %>
 
-    <div id="user-deck"></div>
-    
-    <%- include('../partials/links/authorizationServer') %>
-    <%- include('../partials/links/authorize') %>
-    <%- include('../partials/links/assignUserId') %>
-    <%- include('../partials/links/getUserDecks') %>
+                    <div id="user-deck"></div>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorize') %>
+                            <%- include('../partials/links/assignUserId') %>
+                                <%- include('../partials/links/getUserDecks') %>
 </body>
+
 </html>

@@ -47,7 +47,7 @@ const Card = mongoose.model('Card', new mongoose.Schema({
         required: true
     }
 }))
- 
+
 function validateCard(card) {
     const schema = Joi.object({
         name: Joi.string().required(),
@@ -65,6 +65,6 @@ function validateCard(card) {
     const validation = schema.validate(card)
     return validation
 }
- 
+
 exports.Card = Card
 exports.validate = validateCard

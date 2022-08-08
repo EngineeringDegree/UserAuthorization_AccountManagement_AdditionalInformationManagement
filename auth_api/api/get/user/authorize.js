@@ -19,14 +19,14 @@ router.get('/', async (req, res) => {
 
     var data
     let user = await User.findOne({ email: req.query.email })
-    if(user){
-        if(req.query.accessToken == user.accessToken){
-            if(!user.confirmed){
+    if (user) {
+        if (req.query.accessToken == user.accessToken) {
+            if (!user.confirmed) {
                 const filter = {
                     _id: user._id
                 }
                 const update = {
-                    confirmed : true
+                    confirmed: true
                 }
                 const result = await User.updateOne(filter, update)
                 data = {
@@ -34,21 +34,21 @@ router.get('/', async (req, res) => {
                     code: 200,
                     status: 'ACCOUNT CONFIRMED'
                 }
-            }else{
+            } else {
                 data = {
                     text: 'Address already confirmed',
                     code: 400,
                     status: 'ACCOUNT ALREADY CONFIRMED'
                 }
             }
-        }else{
+        } else {
             data = {
                 text: 'Bad token',
                 code: 400,
                 status: 'BAD TOKEN'
             }
         }
-    }else {
+    } else {
         data = {
             text: 'User not found',
             code: 404,
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
  * @param {object} req object
  * @returns nothin if validation is passed and error if somethin is wrong
  */
- function validate(req) {
+function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         accessToken: Joi.string().required()
