@@ -38,7 +38,8 @@ router.patch('/', async (req, res) => {
                 mobility: req.body.mobility,
                 effects: req.body.effects,
                 readyToUse: req.body.readyToUse,
-                description: req.body.description
+                description: req.body.description,
+                basicDeck: req.body.basicDeck
             }
 
             await Card.updateOne(filter, update)
@@ -71,7 +72,8 @@ function validate(req) {
         mobility: Joi.number().required(),
         effects: Joi.array().required(),
         readyToUse: Joi.boolean().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        basicDeck: Joi.number().required()
     })
     const validation = schema.validate(req)
     return validation

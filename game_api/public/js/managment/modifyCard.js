@@ -59,6 +59,11 @@ function init() {
     if (readyToUse) {
         readyToUse.addEventListener('change', anythingChanged, false)
     }
+
+    var basicDeck = document.getElementById('card-basic-deck')
+    if (basicDeck) {
+        basicDeck.addEventListener('change', anythingChanged, false)
+    }
 }
 
 /** 
@@ -93,7 +98,8 @@ function sendRequest() {
         effects: [$('#card-effects').val()],
         readyToUse: $('#card-ready').is(":checked"),
         id: $('#card-id').val(),
-        description: $('#card-description').val()
+        description: $('#card-description').val(),
+        basicDeck: $('#card-basic-deck').val()
     }
     var stringifiedObject = JSON.stringify(postObject)
 

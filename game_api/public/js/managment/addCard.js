@@ -27,7 +27,8 @@ function sendRequest() {
         defense: $('#defense').val(),
         mobility: $('#mobility').val(),
         effects: [$('#effects').val()],
-        description: $('#description').val()
+        description: $('#description').val(),
+        basicDeck: $('#basic-deck').val()
     }
     var stringifiedObject = JSON.stringify(postObject)
 

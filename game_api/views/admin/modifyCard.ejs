@@ -24,6 +24,8 @@
                 Mobility: <input id="card-mobility" type="text" value="<%= card.mobility %>" />
                 Effects: <input id="card-effects" type="text" value="<%= card.effects[0] %>" />
                 Description: <input id="card-description" type="text" value="<%= card.description %>" />
+                Basic Deck (Count of cards in basic deck): <input id="card-basic-deck" type="text"
+                    value="<%= card.basicDeck %>" />
                 <% if(card.readyToUse) { %>
                     Ready to use: <input id="card-ready" type="checkbox" checked />
                     <% } else { %>
