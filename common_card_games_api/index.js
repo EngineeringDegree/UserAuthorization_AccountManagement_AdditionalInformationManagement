@@ -9,16 +9,18 @@ const http = require('http')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const config = require('config')
+const e = require('express')
 
 // Express and socketio initialization for http and https requests
 var app = express()
 
-// Comment on the server this snippet and uncomment below one
-var server = https.createServer({
-    key: fs.readFileSync(process.env.KEY, 'utf8'),
-    cert: fs.readFileSync(process.env.CERT, 'utf8'),
-    ca: fs.readFileSync(process.env.CA, 'utf8')
-}, app)
+if (process.env.MODE == "live") {
+    var server = https.createServer({
+        key: fs.readFileSync(process.env.KEY, 'utf8'),
+        cert: fs.readFileSync(process.env.CERT, 'utf8'),
+        ca: fs.readFileSync(process.env.CA, 'utf8')
+    }, app)
+}
 
 var serverNotSecure = http.createServer(app)
 
@@ -40,8 +42,10 @@ app.use(express.json())
 // Run servers
 
 // HTTPS
-const PORT = process.env.PORT
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+if (process.env.MODE == "live") {
+    const PORT = process.env.PORT
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+}
 
 //HTTP
 const PORT_NOT_SECURE = process.env.PORT_NOT_SECURE

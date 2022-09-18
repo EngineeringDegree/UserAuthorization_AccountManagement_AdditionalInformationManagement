@@ -50,16 +50,21 @@ const addMap = require('./api/post/admin/addMap')
 // Express and socketio initialization for http and https requests
 var app = express()
 
-// Comment on the server this snippet and uncomment below one
-var server = https.createServer({
-    key: fs.readFileSync(process.env.KEY, 'utf8'),
-    cert: fs.readFileSync(process.env.CERT, 'utf8'),
-    ca: fs.readFileSync(process.env.CA, 'utf8')
-}, app)
+if (process.env.MODE == "live") {
+    var server = https.createServer({
+        key: fs.readFileSync(process.env.KEY, 'utf8'),
+        cert: fs.readFileSync(process.env.CERT, 'utf8'),
+        ca: fs.readFileSync(process.env.CA, 'utf8')
+    }, app)
+}
 
 var serverNotSecure = http.createServer(app)
 var ioNotSecure = socketio(serverNotSecure)
-var io = socketio(server)
+
+if (process.env.MODE == "live") {
+    var io = socketio(server)
+}
+
 
 // Checking if private key of the server is present
 if (!config.get('PrivateKey')) {
@@ -79,7 +84,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('view engine', 'ejs')
 
 // Websocket endpoints initialization
-sockets(io)
+if (process.env.MODE == "live") {
+    sockets(io)
+}
 sockets(ioNotSecure)
 
 // Routes
@@ -121,9 +128,10 @@ app.use('*', error404View)
 // Run servers
 
 // HTTPS
-const PORT = process.env.PORT
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-
+if (process.env.MODE == "live") {
+    const PORT = process.env.PORT
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+}
 //HTTP
 const PORT_NOT_SECURE = process.env.PORT_NOT_SECURE
 serverNotSecure.listen(PORT_NOT_SECURE, () => console.log(`Server running on port ${PORT_NOT_SECURE}`))
