@@ -6,6 +6,7 @@
         <%- include('../partials/tags/favicon') %>
             <title>Ninergames</title>
             <%- include('../partials/links/mainLinks') %>
+                <%- include('../partials/links/userUtil') %>
 </head>
 
 <body>
@@ -13,15 +14,12 @@
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
                 <%- include('../partials/components/footer') %>
-
-                    <div id="user-deck">
-                        <select id="your-decks"></select>
+                    <div id="user-packs">
+                        <%- include('../partials/components/listPacksToOpen') %>
                     </div>
-
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorize') %>
                             <%- include('../partials/links/assignUserId') %>
-                                <%- include('../partials/links/getUserDecks') %>
 </body>
 
 </html>

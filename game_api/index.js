@@ -32,6 +32,8 @@ const addMapView = require('./api/get/views/addMapView')
 const modifyCardView = require('./api/get/views/modifyCardView')
 const modifyMapView = require('./api/get/views/modifyMapView')
 const playView = require('./api/get/views/playView')
+const packsView = require('./api/get/views/packsView')
+const shopView = require('./api/get/views/shopView')
 const getMaps = require('./api/get/admin/getMaps')
 const getCards = require('./api/get/admin/getCards')
 const getUserDecks = require('./api/get/game/getDecks')
@@ -40,6 +42,7 @@ const getUserDeck = require('./api/get/game/getDeck')
 // Patch middleware
 const modifyCard = require('./api/patch/admin/modifyCard')
 const modifyMap = require('./api/patch/admin/modifyMap')
+const openPack = require('./api/patch/user/openPack')
 
 // Post middleware
 const addCard = require('./api/post/admin/addCard')
@@ -107,6 +110,8 @@ app.use('/manage/card/modify', modifyCardView)
 app.use('/manage/map/modify', modifyMapView)
 app.use('/users', getUsersView)
 app.use('/users/user', getUserView)
+app.use('/packs', packsView)
+app.use('/shop', shopView)
 app.use('/manage/get/cards', getCards)
 app.use('/manage/get/maps', getMaps)
 app.use('/get/user/decks', getUserDecks)
@@ -115,6 +120,7 @@ app.use('/get/user/deck', getUserDeck)
 // Patch
 app.use('/patch/admin/modify/card', modifyCard)
 app.use('/patch/admin/modify/map', modifyMap)
+app.use('/patch/user/packs', openPack)
 
 // Post
 app.use('/post/admin/add/card', addCard)

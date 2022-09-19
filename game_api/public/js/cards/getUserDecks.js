@@ -15,10 +15,27 @@ function init() {
                 if (res.token) {
                     window.localStorage.setItem("token", res.token)
                 }
-                console.log(res)
 
+                var select = document.getElementById('your-decks')
+                if (select) {
+                    for (let i = 0; i < res.length; i++) {
+                        var opt = document.createElement('option')
+                        opt.value = res[i].name
+                        opt.innerHTML = res[i].name
+                        select.appendChild(opt)
+                    }
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.responseJSON.token) {
+                    window.localStorage.setItem("token", xhr.responseJSON.token)
+                }
+
+                if (xhr.responseJSON.action == 'REDIRECT TO PACKS PAGE') {
+                    alert('We detected that you do not have any cards and decks yet. We generated few welcome packs just for you. In order to play you need to create your first deck. We will redirect you right now to page where you can open your packs and generate basic deck for you.')
+                    window.location.href = '/packs?userId=' + window.localStorage.getItem('userId')
+                }
+
                 if (xhr.responseJSON.action == "LOGOUT") {
                     logOut()
                     return

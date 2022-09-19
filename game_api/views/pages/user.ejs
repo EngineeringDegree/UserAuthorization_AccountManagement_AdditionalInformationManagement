@@ -15,6 +15,7 @@
 
                 <input id="user-id" type="hidden" value="<%= id %>" />
                 <div id="user-profile"></div>
+                <div id="user-cards"></div>
                 <%- include('../partials/components/footer') %>
 
                     <%- include('../partials/links/authorizationServer') %>
@@ -23,6 +24,7 @@
                                 <%- include('../partials/links/userUtil') %>
                                     <%- include('../partials/links/getUser') %>
                                         <%- include('../partials/links/assignUserId') %>
+                                            <%- include('../partials/links/getUserCards') %>
 </body>
 
 </html>

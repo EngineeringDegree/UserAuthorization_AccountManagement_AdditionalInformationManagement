@@ -1,0 +1,12 @@
+<% for(var i=0; i < packs.length; i++) { %>
+    <div class="card w-33" id="pack-<%= packs[i]._id %>">
+        <h2>
+            <%= packs[i].packName %>
+        </h2>
+        <p>
+            <%= packs[i].nation %>
+        </p>
+        <button id="<%= packs[i]._id %>" class="btn own-btn open-pack-buttons">Open</button>
+    </div>
+    <% } %>
+        <%- include('../links/openPack') %>

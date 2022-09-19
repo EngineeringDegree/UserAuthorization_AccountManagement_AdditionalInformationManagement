@@ -2,21 +2,15 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
+const { Pack } = require('../../../models/packs')
 
-/*
-Middleware which sends user specified in parameter. 
-*/
+// Middleware which sends packs page with breadcrumbs
 router.get('/', async (req, res) => {
     var breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
             link: '/'
-        },
-        {
-            currentPage: false,
-            text: 'Users',
-            link: '/users'
         }
     ]
 
@@ -63,7 +57,8 @@ router.get('/', async (req, res) => {
         text: `${user.data.username}`
     })
 
-    return res.status(200).render('pages/user', { breadcrumb: breadcrumb, id: req.query.userId })
+    var userPacks = await Pack.find({ owner: user.data.email, used: false }).select('_id nation packName')
+    return res.status(200).render('pages/packs', { breadcrumb: breadcrumb, packs: userPacks })
 })
 
 /**
@@ -78,5 +73,6 @@ function validate(req) {
     const validation = schema.validate(req)
     return validation
 }
+
 
 module.exports = router

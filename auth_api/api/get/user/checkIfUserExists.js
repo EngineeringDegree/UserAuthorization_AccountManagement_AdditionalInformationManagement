@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     try {
         let user = await User.findOne({ _id: req.query.id })
         if (user) {
-            return res.status(200).send({ status: 'USER FOUND', code: 200, userReturned: true, username: user.username })
+            return res.status(200).send({ status: 'USER FOUND', code: 200, userReturned: true, username: user.username, email: user.email })
         }
     } catch (e) {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })
