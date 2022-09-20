@@ -38,8 +38,7 @@ function openPack(e) {
                     el.remove()
                 }
 
-                alert(res)
-                // show cards obtained
+                showResult(res.cards)
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 if (xhr.responseJSON.token) {
@@ -62,4 +61,12 @@ function openPack(e) {
     } else {
         logOut()
     }
+}
+
+/**
+ * Shows obtained cards on the screen
+ * @param {object} cards cards object which was opened
+ */
+function showResult(cards) {
+    console.log(cards)
 }

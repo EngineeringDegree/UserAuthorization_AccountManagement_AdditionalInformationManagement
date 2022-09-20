@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     }
 
     if (user.data) {
-        var decks = await Deck.find({ owner: req.query.email })
+        var decks = await Deck.find({ owner: req.query.email }).select('_id name nation strength')
         if (decks.length == 0) {
             var packs = await Pack.find({ owner: req.query.email })
             if (packs.length == 0) {
@@ -32,21 +32,19 @@ router.get('/', async (req, res) => {
 
                 return res.status(303).send({ status: 'OPEN PACKS FIRST', action: 'REDIRECT TO PACKS PAGE', code: 303 })
             }
+            if (user.data.token) {
+                return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', token: user.data.token, code: 303 })
+            }
 
+            return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
         }
-
-        if (user.data.token) {
-            return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', token: user.data.token, code: 303 })
-        }
-
-        return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
     }
 
     if (user.data.token) {
-        return res.status(200).send({ status: 'OK', token: user.data.token, code: 200 })
+        return res.status(200).send({ status: 'OK', token: user.data.token, code: 200, decks: decks })
     }
 
-    return res.status(200).send({ status: 'OK', code: 200 })
+    return res.status(200).send({ status: 'OK', code: 200, decks: decks })
 })
 
 async function createInvitationalGift(owner) {

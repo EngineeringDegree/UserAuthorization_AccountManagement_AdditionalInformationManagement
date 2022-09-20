@@ -20,8 +20,7 @@ function init() {
                     if (res.token) {
                         window.localStorage.setItem("token", res.token)
                     }
-                    console.log(res)
-                    // Display result on screen
+                    showResult(res.cards)
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     if (xhr.responseJSON.action == "LOGOUT") {
@@ -37,6 +36,13 @@ function init() {
         }
     }
 
+    /**
+     * Shows all user cards on the screen
+     * @param {object} cards cards object which user has
+     */
+    function showResult(cards) {
+        console.log(cards)
+    }
 
     /**
      * Hides linkes which shouldn't be visible if user is logged out

@@ -18,10 +18,10 @@ function init() {
 
                 var select = document.getElementById('your-decks')
                 if (select) {
-                    for (let i = 0; i < res.length; i++) {
+                    for (let i = 0; i < res.decks.length; i++) {
                         var opt = document.createElement('option')
-                        opt.value = res[i].name
-                        opt.innerHTML = res[i].name
+                        opt.value = res.decks[i]._id
+                        opt.innerHTML = `${res.decks[i].name} ${res.decks[i].nation} ${res.decks[i].strength}`
                         select.appendChild(opt)
                     }
                 }
@@ -32,7 +32,7 @@ function init() {
                 }
 
                 if (xhr.responseJSON.action == 'REDIRECT TO PACKS PAGE') {
-                    alert('We detected that you do not have any cards and decks yet. We generated few welcome packs just for you. In order to play you need to create your first deck. We will redirect you right now to page where you can open your packs and generate basic deck for you.')
+                    alert('We detected that you do not have any decks yet. We generated welcome pack just for you. In order to play you need to create your first deck. We will redirect you right now to page where you can open your packs and generate basic deck for you.')
                     window.location.href = '/packs?userId=' + window.localStorage.getItem('userId')
                 }
 
