@@ -38,15 +38,21 @@ router.get('/', async (req, res) => {
 
             return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
         }
+
+        if (user.data.token) {
+            return res.status(200).send({ status: 'OK', token: user.data.token, code: 200, decks: decks })
+        }
+
+        return res.status(200).send({ status: 'OK', code: 200, decks: decks })
     }
 
-    if (user.data.token) {
-        return res.status(200).send({ status: 'OK', token: user.data.token, code: 200, decks: decks })
-    }
-
-    return res.status(200).send({ status: 'OK', code: 200, decks: decks })
+    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
 })
 
+/**
+ * Generates welcome pack
+ * @param {string} owner email of owner of new pack
+ */
 async function createInvitationalGift(owner) {
     var cards = await Card.find({ basicDeck: { $gt: 0 } }).select('_id basicDeck')
     var newPack = new Pack(_.pick({

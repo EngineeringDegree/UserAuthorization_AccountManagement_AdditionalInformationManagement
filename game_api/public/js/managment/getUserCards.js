@@ -41,7 +41,35 @@ function init() {
      * @param {object} cards cards object which user has
      */
     function showResult(cards) {
-        console.log(cards)
+        for (let i = 0; i < cards.length; i++) {
+            $.ajax({
+                type: "GET",
+                url: `/get/card?id=${cards[i]._id}&quantity=${cards[i].quantity}`,
+                success: function (res) {
+                    if (res.token) {
+                        window.localStorage.setItem("token", res.token)
+                    }
+
+                    var cardsContainer = document.getElementById('user-cards')
+                    if (cardsContainer) {
+                        let card = document.createElement('div')
+                        card.className = 'card'
+                        let data = document.createElement('p')
+                        data.textContent = `${res.card.name} ${res.card.description} ${res.card.attack} ${res.card.defense} ${res.card.mobility} ${res.quantity}`
+                        card.appendChild(data)
+                        cardsContainer.appendChild(card)
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.responseJSON.action == "LOGOUT") {
+                        logOut()
+                        return
+                    }
+                },
+                dataType: "json",
+                contentType: "application/json"
+            })
+        }
     }
 
     /**
