@@ -155,8 +155,9 @@ async function generateBasicDecks(owner, cards) {
             nation: nationCards[nationCards.length - 1].nation,
             cards: nationCards[nationCards.length - 1].cards.concat(allNationCards.cards),
             strength: nationCards[nationCards.length - 1].strength + allNationCards.strength,
-            name: `${nationCards[nationCards.length - 1].nation} Starter Deck`
-        }, ['owner', 'nation', 'cards', 'strength', 'name']))
+            name: `${nationCards[nationCards.length - 1].nation} Starter Deck`,
+            deleted: false
+        }, ['owner', 'nation', 'cards', 'strength', 'name', 'deleted']))
         await newDeck.save()
         nationCards.pop()
     } while (nationCards.length != 0)

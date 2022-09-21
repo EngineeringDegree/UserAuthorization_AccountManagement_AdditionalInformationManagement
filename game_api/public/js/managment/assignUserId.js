@@ -8,4 +8,9 @@ if (window.localStorage.getItem("userId")) {
     if (packsEl) {
         packsEl.href = `/packs?userId=${window.localStorage.getItem("userId")}`
     }
+
+    var decksEl = document.getElementById('my-decks-menu')
+    if (decksEl) {
+        decksEl.href = `/decks?userId=${window.localStorage.getItem("userId")}`
+    }
 }

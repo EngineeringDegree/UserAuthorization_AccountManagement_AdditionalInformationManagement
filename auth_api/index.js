@@ -22,6 +22,7 @@ const error404View = require('./api/get/views/error404')
 const changePasswordView = require('./api/get/views/changePasswordView')
 const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
 const checkIfHasAdminPremisions = require('./api/get/admin/checkIfUserHasAdminPremisions')
+const isOwner = require('./api/get/user/isOwner')
 
 // Patch middleware
 const login = require('./api/patch/user/login')
@@ -80,6 +81,7 @@ app.use('/get/users', getUsers)
 app.use('/get/user', getUser)
 app.use('/get/user/exist', checkIfUserExists)
 app.use('/authorize', authorizeAccount)
+app.use('/get/user/isOwner', isOwner)
 
 // Patch
 app.use('/patch/login', login)

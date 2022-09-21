@@ -12,12 +12,9 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
+                <div id="user-deck">
+                </div>
                 <%- include('../partials/components/footer') %>
-
-                    <div id="user-deck">
-                        <select id="your-decks"></select>
-                    </div>
-
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorize') %>
                             <%- include('../partials/links/getUserDecks') %>

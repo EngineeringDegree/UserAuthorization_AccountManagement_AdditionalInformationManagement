@@ -16,14 +16,17 @@ function init() {
                     window.localStorage.setItem("token", res.token)
                 }
 
-                var select = document.getElementById('your-decks')
-                if (select) {
+                var div = document.getElementById('user-deck')
+                if (div) {
+                    var select = document.createElement('select')
+                    select.id = 'user-decks'
                     for (let i = 0; i < res.decks.length; i++) {
                         var opt = document.createElement('option')
                         opt.value = res.decks[i]._id
                         opt.innerHTML = `${res.decks[i].name} ${res.decks[i].nation} ${res.decks[i].strength}`
                         select.appendChild(opt)
                     }
+                    div.appendChild(select)
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
                     return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
                 }
-                return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
+                return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
             }
             return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
             }
             return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY USER INFO', username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
         }
-        return res.status(404).send({ status: "USER NOT FOUND", action: "GO TO USERS" })
+        return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

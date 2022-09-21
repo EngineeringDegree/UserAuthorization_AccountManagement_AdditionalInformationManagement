@@ -12,19 +12,12 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-
-                <input id="user-id" type="hidden" value="<%= id %>" />
-                <div id="user-profile"></div>
-                <div id="user-cards"></div>
-                <div id="to-user-decks"></div>
+                <div id="user-decks">
+                    <%- include('../partials/components/listDecksToEdit') %>
+                </div>
                 <%- include('../partials/components/footer') %>
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorize') %>
-                            <%- include('../partials/links/banUtil') %>
-                                <%- include('../partials/links/userUtil') %>
-                                    <%- include('../partials/links/getUser') %>
-                                        <%- include('../partials/links/getUserCards') %>
-                                            <%- include('../partials/links/ownProfilePage') %>
 </body>
 
 </html>
