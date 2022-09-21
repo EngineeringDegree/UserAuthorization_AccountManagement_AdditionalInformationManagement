@@ -14,10 +14,12 @@
             <%- include('../partials/components/breadcrumb') %>
                 <div id="user-decks">
                     <%- include('../partials/components/listDecksToEdit') %>
+                        <%- include('../partials/components/createNewDeckButton') %>
                 </div>
                 <%- include('../partials/components/footer') %>
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorize') %>
+                            <%- include('../partials/links/checkIfOwnerByID') %>
 </body>
 
 </html>

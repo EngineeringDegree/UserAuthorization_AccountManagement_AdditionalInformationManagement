@@ -13,4 +13,9 @@ if (window.localStorage.getItem("userId")) {
     if (decksEl) {
         decksEl.href = `/decks?userId=${window.localStorage.getItem("userId")}`
     }
+
+    var redirection = document.getElementById('create-new-deck-button')
+    if (redirection) {
+        redirection.href = `/decks/new?userId=${window.localStorage.getItem("userId")}`
+    }
 }
