@@ -49,6 +49,7 @@ const modifyCard = require('./api/patch/admin/modifyCard')
 const modifyMap = require('./api/patch/admin/modifyMap')
 const openPack = require('./api/patch/user/openPack')
 const deleteDeck = require('./api/patch/user/deleteDeck')
+const editDeck = require('./api/patch/user/editDeck')
 
 // Post middleware
 const addCard = require('./api/post/admin/addCard')
@@ -133,6 +134,7 @@ app.use('/get/card', getCardInfo)
 app.use('/patch/admin/modify/card', modifyCard)
 app.use('/patch/admin/modify/map', modifyMap)
 app.use('/patch/user/packs', openPack)
+app.use('/patch/deck/edit', editDeck)
 app.use('/decks/remove', deleteDeck)
 
 // Post

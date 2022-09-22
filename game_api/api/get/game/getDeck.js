@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     if (user.data) {
         var deck = await Deck.findOne({ _id: req.query.id })
         if (deck) {
-            if (deck.owner == req.body.email) {
+            if (deck.owner == req.query.email) {
                 if (user.data.token) {
                     return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: user.data.token })
                 }

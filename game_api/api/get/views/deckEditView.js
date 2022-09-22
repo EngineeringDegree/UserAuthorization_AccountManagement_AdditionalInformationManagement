@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
-const { UserCard } = require('../../../models/user_cards')
-const { Card } = require('../../../models/card')
 
 // Middleware which sends deck add page with breadcrumbs
 router.get('/', async (req, res) => {
@@ -69,9 +67,6 @@ router.get('/', async (req, res) => {
                 currentPage: true,
                 text: 'Edit Deck'
             })
-            var userCards = await UserCard.findOne({ owner: req.query.email })
-            var cards = userCards.cards
-
 
             return res.status(200).render('pages/editDeck', { breadcrumb: breadcrumb })
         }
@@ -91,6 +86,7 @@ router.get('/', async (req, res) => {
  */
 function validate(req) {
     const schema = Joi.object({
+        deckId: Joi.string().required(),
         userId: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),

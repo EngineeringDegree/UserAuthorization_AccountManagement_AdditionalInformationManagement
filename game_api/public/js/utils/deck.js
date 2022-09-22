@@ -64,7 +64,7 @@ function editDeck(deck) {
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: deck.name,
         nation: deck.nation,
-        cards: deck.cards,
+        cards: deck.cards.cardsPrepared,
         id: deck.id
     }
     var stringifiedObject = JSON.stringify(patchObject)

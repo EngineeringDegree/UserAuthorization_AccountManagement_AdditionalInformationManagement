@@ -5,6 +5,8 @@ const Joi = require('joi')
 const axios = require('axios')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
+const { UserCard } = require('../../../models/user_cards')
+const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 
 // Middleware for creating a deck
 router.post('/', async (req, res) => {
@@ -21,16 +23,21 @@ router.post('/', async (req, res) => {
 
     if (user.data) {
         var strength = 0
+        var userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
             var card = await Card.findOne({ _id: req.body.cards[i]._id, readyToUse: true })
-            if (card.nation.includes(req.body.nation) || card.nation[0] == 'All') {
-                if (card) {
-                    strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * req.body.cards[i].quantity)
+            if (checkIfUserHasCard(card, userCards)) {
+                if (card.nation.includes(req.body.nation) || card.nation[0] == 'All') {
+                    if (card) {
+                        strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * req.body.cards[i].quantity)
+                    } else {
+                        return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
+                    }
                 } else {
-                    return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
+                    return res.status(401).send({ status: 'SOME CARDS DOES NOT BELONG TO NATION YOU WANT TO USE A DECK FOR', code: 401, action: 'RELOAD' })
                 }
             } else {
-                return res.status(401).send({ status: 'SOME CARDS DOES NOT BELONG TO NATION YOU WANT TO USE A DECK FOR', code: 401, action: 'RELOAD' })
+                return res.status(401).send({ status: 'USER DOES NOT HAVE THIS CARD', code: 401, action: 'RELOAD' })
             }
 
         }

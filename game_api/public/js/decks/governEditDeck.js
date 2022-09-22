@@ -4,15 +4,37 @@ $(document).ready(init())
  * Adds listeners
  */
 function init() {
-    var currentDeck = 0
-    var currentDecksByNations = []
-    $("#my-nation-to-create-deck-from > option").each(function () {
-        currentDecksByNations.push({ name: makeid(8), nation: this.value, cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: '' })
-    })
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    var deck = { name: '', nation: '', cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: urlParams.get('deckId') }
     var userCards = []
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
-    sendRequest()
+    if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
+        $.ajax({
+            type: "GET",
+            url: `/get/user/deck?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&id=${deck.id}`,
+            success: function (res) {
+                if (res.token) {
+                    window.localStorage.setItem("token", res.token)
+                }
+                deck.name = res.deck.name
+                deck.nation = res.deck.nation
+                deck.strength = res.deck.strength
+                deck.cards.cardsPrepared = res.deck.cards
+                sendRequest()
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.responseJSON)
+                if (xhr.responseJSON.action == "LOGOUT") {
+                    window.location.pathname = '/logout'
+                    return
+                }
+            },
+            dataType: "json",
+            contentType: "application/json"
+        })
+    } else {
+        window.location.pathname = '/logout'
+    }
 
     /**
      * Sends request for user with current choosen parameters
@@ -26,16 +48,45 @@ function init() {
                     if (res.token) {
                         window.localStorage.setItem("token", res.token)
                     }
-
                     userCards = res.cards
-                    changeNationDeck()
-                    $('#my-nation-to-create-deck-from').on('change', changeNationDeck)
                     $('#save-deck').on('click', saveNationDeck)
                     $('#name').on('keyup', editNameFront)
+
+                    var cardsToDisplay = []
+                    for (let i = 0; i < userCards.length; i++) {
+                        if (userCards[i].card.nation[0] == 'All') {
+                            cardsToDisplay.push({ card: userCards[i].card, quantity: userCards[i].quantity })
+                            continue
+                        }
+
+                        for (let j = 0; j < userCards[i].card.nation.length; j++) {
+                            if (userCards[i].card.nation[j] == deck.nation) {
+                                cardsToDisplay.push({ card: userCards[i].card, quantity: userCards[i].quantity })
+                                break
+                            }
+                        }
+                    }
+
+                    userCards = cardsToDisplay
+
+                    for (let i = 0; i < userCards.length; i++) {
+                        for (let j = 0; j < deck.cards.cardsPrepared.length; j++) {
+                            if (deck.cards.cardsPrepared[j]._id == userCards[i].card._id) {
+                                deck.cards.cardsDisplayed.push({
+                                    _id: userCards[i].card._id,
+                                    name: userCards[i].card.name,
+                                    strength: userCards[i].card.attack + userCards[i].card.defense + userCards[i].card.effects.length + userCards[i].card.mobility + userCards[i].card.type.length,
+                                    quantity: userCards[i].quantity
+                                })
+                            }
+                        }
+                    }
+                    displayDeck(deck)
+                    displayCards(userCards, deck.cards.cardsPrepared)
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     if (xhr.responseJSON.action == "LOGOUT") {
-                        logOut()
+                        window.location.pathname = '/logout'
                         return
                     }
                 },
@@ -43,7 +94,7 @@ function init() {
                 contentType: "application/json"
             })
         } else {
-            logOut()
+            window.location.pathname = '/logout'
         }
     }
 
@@ -56,38 +107,7 @@ function init() {
             return
         }
 
-        addDeck(currentDecksByNations[currentDeck])
-    }
-
-    /**
-     * Shows current choosen deck
-     */
-    function changeNationDeck() {
-        var value = $('#my-nation-to-create-deck-from').val()
-        for (let i = 0; i < currentDecksByNations.length; i++) {
-            if (currentDecksByNations[i].nation == value) {
-                currentDeck = i
-                displayDeck(currentDecksByNations[i])
-                break
-            }
-        }
-
-        var cardsToDisplay = []
-        for (let i = 0; i < userCards.length; i++) {
-            if (userCards[i].card.nation[0] == 'All') {
-                cardsToDisplay.push({ card: userCards[i].card, quantity: userCards[i].quantity })
-                continue
-            }
-
-            for (let j = 0; j < userCards[i].card.nation.length; j++) {
-                if (userCards[i].card.nation[j] == value) {
-                    cardsToDisplay.push({ card: userCards[i].card, quantity: userCards[i].quantity })
-                    break
-                }
-            }
-        }
-
-        displayCards(cardsToDisplay, currentDecksByNations[currentDeck].cards.cardsPrepared)
+        editDeck(deck)
     }
 
     /**
@@ -178,8 +198,8 @@ function init() {
         var quantity = $(`#${e.target.id}-quantity`).val()
         var name = $(`#${e.target.id}-name`).text()
         var strength = $(`#${e.target.id}-strength`).val()
-        var cardsPrepared = currentDecksByNations[currentDeck].cards.cardsPrepared
-        var cardsDisplayed = currentDecksByNations[currentDeck].cards.cardsDisplayed
+        var cardsPrepared = deck.cards.cardsPrepared
+        var cardsDisplayed = deck.cards.cardsDisplayed
         var cardAlreadyInDeck = false
         var placeInCards = -1
         for (let i = 0; i < cardsPrepared.length; i++) {
@@ -193,48 +213,33 @@ function init() {
 
         if (!cardAlreadyInDeck) {
             cardsPrepared.push({ _id: e.target.id, quantity: quantity })
-            currentDecksByNations[currentDeck].cards.cardsPrepared = cardsPrepared
+            deck.cards.cardsPrepared = cardsPrepared
             cardsDisplayed.push({ _id: e.target.id, quantity: quantity, name: name, strength: strength })
-            currentDecksByNations[currentDeck].cards.cardsDisplayed = cardsDisplayed
+            deck.cards.cardsDisplayed = cardsDisplayed
             var strengthSum = 0
             for (let i = 0; i < cardsDisplayed.length; i++) {
                 strengthSum += cardsDisplayed[i].strength * cardsDisplayed[i].quantity
             }
-            currentDecksByNations[currentDeck].strength = strengthSum
-            displayDeck(currentDecksByNations[currentDeck])
+            deck.strength = strengthSum
+            displayDeck(deck)
             return
         }
 
-        currentDecksByNations[currentDeck].cards.cardsPrepared = cardsPrepared
+        deck.cards.cardsPrepared = cardsPrepared
         cardsDisplayed[placeInCards].quantity = quantity
-        currentDecksByNations[currentDeck].cards.cardsDisplayed = cardsDisplayed
+        deck.cards.cardsDisplayed = cardsDisplayed
         var strengthSum = 0
         for (let i = 0; i < cardsDisplayed.length; i++) {
             strengthSum += cardsDisplayed[i].strength * cardsDisplayed[i].quantity
         }
-        currentDecksByNations[currentDeck].strength = strengthSum
-        displayDeck(currentDecksByNations[currentDeck])
+        deck.strength = strengthSum
+        displayDeck(deck)
     }
 
     /**
      * Alters the deck name element
      */
     function editNameFront() {
-        currentDecksByNations[currentDeck].name = $('#name').val()
-    }
-
-    /**
-     * Hides linkes which shouldn't be visible if user is logged out
-     */
-    function logOut() {
-        window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
-        window.location.pathname = "/logout"
+        deck.name = $('#name').val()
     }
 }
