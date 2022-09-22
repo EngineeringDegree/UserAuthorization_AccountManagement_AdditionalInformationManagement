@@ -18,26 +18,29 @@ router.patch('/', async (req, res) => {
     }
 
     if (user.data) {
-        var deck = await Deck.findOne({ _id: req.body.deckId })
-        if (deck) {
-            if (deck.owner == req.body.email) {
-                const filter = {
-                    _id: deck._id
-                }
-                const update = {
-                    deleted: true
+        var decks = await Deck.find({ owner: req.body.email, deleted: false })
+        if (decks.length > 1) {
+            var deck = await Deck.findOne({ _id: req.body.deckId })
+            if (deck) {
+                if (deck.owner == req.body.email) {
+                    const filter = {
+                        _id: deck._id
+                    }
+                    const update = {
+                        deleted: true
+                    }
+
+                    await Deck.updateOne(filter, update)
+                    var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
+                    return res.status(200).send({ status: 'DECK REMOVED', code: 200, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
                 }
 
-                await Deck.updateOne(filter, update)
-                var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
-                return res.status(200).send({ status: 'DECK REMOVED', code: 200, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
+                return res.status(401).send({ status: 'YOU ARE NOT AN OWNER', code: 404, action: 'REDIRECT TO MAIN SCREEN' })
             }
-
-            return res.status(401).send({ status: 'YOU ARE NOT AN OWNER', code: 404, action: 'REDIRECT TO MAIN SCREEN' })
         }
 
         var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
-        return res.status(404).send({ status: 'DECK NOT FOUND', code: 404, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
+        return res.status(401).send({ status: 'DECK NOT FOUND, YOU CANNOT DELETE IT', code: 404, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

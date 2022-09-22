@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     }
 
     if (user.data) {
-        var decks = await Deck.find({ owner: req.query.email }).select('_id name nation strength')
+        var decks = await Deck.find({ owner: req.query.email, deleted: false }).select('_id name nation strength')
         if (decks.length == 0) {
             var packs = await Pack.find({ owner: req.query.email })
             if (packs.length == 0) {

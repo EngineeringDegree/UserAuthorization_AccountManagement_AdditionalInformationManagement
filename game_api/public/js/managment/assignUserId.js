@@ -16,6 +16,6 @@ if (window.localStorage.getItem("userId")) {
 
     var redirection = document.getElementById('create-new-deck-button')
     if (redirection) {
-        redirection.href = `/decks/new?userId=${window.localStorage.getItem("userId")}`
+        redirection.href = `/decks/new?userId=${window.localStorage.getItem("userId")}&email=${window.localStorage.getItem("email")}&token=${window.localStorage.getItem("token")}&refreshToken=${window.localStorage.getItem("refreshToken")}`
     }
 }

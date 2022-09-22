@@ -42,6 +42,7 @@ const getUserDecks = require('./api/get/game/getDecks')
 const getUserDeck = require('./api/get/game/getDeck')
 const getUserCards = require('./api/get/game/getUserCards')
 const getCardInfo = require('./api/get/game/getCardInfo')
+const getUserCardsInfo = require('./api/get/game/getUserCardsInfo')
 
 // Patch middleware
 const modifyCard = require('./api/patch/admin/modifyCard')
@@ -52,6 +53,7 @@ const deleteDeck = require('./api/patch/user/deleteDeck')
 // Post middleware
 const addCard = require('./api/post/admin/addCard')
 const addMap = require('./api/post/admin/addMap')
+const addDeck = require('./api/post/user/addDeck')
 
 // Put middleware
 
@@ -124,6 +126,7 @@ app.use('/manage/get/maps', getMaps)
 app.use('/get/user/decks', getUserDecks)
 app.use('/get/user/deck', getUserDeck)
 app.use('/get/user/cards', getUserCards)
+app.use('/get/user/cards/info', getUserCardsInfo)
 app.use('/get/card', getCardInfo)
 
 // Patch
@@ -135,6 +138,7 @@ app.use('/decks/remove', deleteDeck)
 // Post
 app.use('/post/admin/add/card', addCard)
 app.use('/post/admin/add/map', addMap)
+app.use('/post/deck/new', addDeck)
 
 // Put
 

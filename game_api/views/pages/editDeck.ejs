@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+                <div id="deck-data">
+                    Edit deck data
+                    <div id="cards-in-deck">
+                        <div id="nation">
+
+                        </div>
+                        <div>
+                            <input id="name" type="text" />
+                        </div>
+                        <div id="strength">
+
+                        </div>
+                        <div id="cards-inside">
+
+                        </div>
+                    </div>
+                    <div id="displaying-cards">
+
+                    </div>
+                    <button id="save-deck">Save Deck</button>
+                </div>
+                <%- include('../partials/components/footer') %>
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorize') %>
+</body>
+
+</html>

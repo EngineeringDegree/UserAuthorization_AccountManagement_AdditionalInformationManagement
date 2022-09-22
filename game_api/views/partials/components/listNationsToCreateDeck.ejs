@@ -1,0 +1,11 @@
+<% if(nations.length> 0) { %>
+    <select id="my-nation-to-create-deck-from">
+        <% for(var i=0; i < nations.length; i++) { %>
+            <option value="<%= nations[i] %>">
+                <%= nations[i] %>
+            </option>
+            <% } %>
+    </select>
+    <% } %>
+        <%- include('../links/deckUtil') %>
+            <script src="/js/decks/governAddDeck.js"></script>
