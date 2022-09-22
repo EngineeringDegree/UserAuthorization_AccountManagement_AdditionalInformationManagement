@@ -76,7 +76,7 @@ function init() {
                                     _id: userCards[i].card._id,
                                     name: userCards[i].card.name,
                                     strength: userCards[i].card.attack + userCards[i].card.defense + userCards[i].card.effects.length + userCards[i].card.mobility + userCards[i].card.type.length,
-                                    quantity: userCards[i].quantity
+                                    quantity: deck.cards.cardsPrepared[j].quantity
                                 })
                             }
                         }
