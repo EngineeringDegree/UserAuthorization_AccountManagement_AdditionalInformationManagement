@@ -16,20 +16,16 @@
 
                 <input id="map-name" type="text" />
 
-                <select id="records-per-page">
-                    <option value="50">50</option>
-                    <option value="20">20</option>
-                    <option value="10">10</option>
-                </select>
+                <%- include('../partials/components/recordsPerPage') %>
 
-                <div id="maps"></div>
-                <div id="pages"></div>
-                <%- include('../partials/components/footer') %>
+                    <div id="maps"></div>
+                    <div id="pages"></div>
+                    <%- include('../partials/components/footer') %>
 
-                    <%- include('../partials/links/authorizationServer') %>
-                        <%- include('../partials/links/authorizeAdmin') %>
-                            <%- include('../partials/links/getAdminMaps') %>
-                                <%- include('../partials/links/assignUserId') %>
+                        <%- include('../partials/links/authorizationServer') %>
+                            <%- include('../partials/links/authorizeAdmin') %>
+                                <%- include('../partials/links/getAdminMaps') %>
+                                    <%- include('../partials/links/assignUserId') %>
 </body>
 
 </html>

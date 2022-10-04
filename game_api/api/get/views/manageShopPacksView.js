@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { Shop_Pack } = require('../../../models/shop_pack')
 
-// Middleware which sends shop page with breadcrumbs
+// Middleware which sends shop packs page with breadcrumbs
 router.get('/', async (req, res) => {
     var breadcrumb = [
         {
@@ -11,13 +10,18 @@ router.get('/', async (req, res) => {
             link: '/'
         },
         {
+            currentPage: false,
+            text: 'Manage',
+            link: '/manage'
+        },
+        {
             currentPage: true,
-            text: 'Shop'
+            text: 'Shop Packs'
         }
     ]
 
-    var packs = await Shop_Pack.find({ readyToUse: true })
-    return res.status(200).render('pages/shop', { breadcrumb: breadcrumb, packs: packs })
+
+    return res.status(200).render('admin/manageShopPacks', { breadcrumb: breadcrumb })
 })
 
 module.exports = router

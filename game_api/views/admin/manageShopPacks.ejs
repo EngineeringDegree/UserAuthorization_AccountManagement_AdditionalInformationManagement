@@ -12,20 +12,15 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-                <a href="/manage/card/add">Add card</a>
+                <a href="/manage/shopPacks/add">Add Shop Pack</a>
 
-                <input id="card-name" type="text" />
-
+                <input id="shop-pack-name" type="text" />
                 <%- include('../partials/components/recordsPerPage') %>
-
                     <div id="cards"></div>
                     <div id="pages"></div>
                     <%- include('../partials/components/footer') %>
-
                         <%- include('../partials/links/authorizationServer') %>
                             <%- include('../partials/links/authorizeAdmin') %>
-                                <%- include('../partials/links/getAdminCards') %>
-                                    <%- include('../partials/links/assignUserId') %>
 </body>
 
 </html>
