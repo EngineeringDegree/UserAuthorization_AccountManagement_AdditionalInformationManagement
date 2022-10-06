@@ -12,15 +12,28 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-                <div>
-                    <a href="/manage/card">Manage Cards</a>
-                    <a href="/manage/map">Manage Maps</a>
-                    <a href="/manage/shopPacks">Manage Shop Packs</a>
-                </div>
+                <label>
+                    Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Nation
+                    <input id="nation" type="text" />
+                </label>
+                <label>
+                    Cards Count
+                    <input id="cardsCount" type="text" />
+                </label>
+                <label>
+                    Price
+                    <input id="price" type="text" />
+                </label>
+                <button id="add-btn">Add Card</button>
                 <%- include('../partials/components/footer') %>
 
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addShopPack') %>
 </body>
 
 </html>

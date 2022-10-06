@@ -33,6 +33,7 @@ const changeUserEmail = require('./api/patch/user/changeUserEmail')
 const changeUserAdmin = require('./api/patch/user/changeUserAdmin')
 const changeUserConfirmed = require('./api/patch/user/changeUserConfirmed')
 const changeUserPassword = require('./api/patch/user/changeUserPassword')
+const buy = require('./api/patch/user/buy')
 
 // Post middleware
 const register = require('./api/post/user/register')
@@ -92,6 +93,7 @@ app.use('/patch/user/admin', changeUserAdmin)
 app.use('/patch/user/confirmed', changeUserConfirmed)
 app.use('/patch/user/askPassword', askNewUserPassword)
 app.use('/patch/user/password', changeUserPassword)
+app.use('/patch/user/funds', buy)
 
 // Post
 app.use('/post/register', register)

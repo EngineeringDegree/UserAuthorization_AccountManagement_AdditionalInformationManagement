@@ -1,0 +1,7 @@
+<% for(let i=0; i < packs.length; i++) { %>
+    <div>
+        <%=packs[i].name %>
+            <button id="<%= packs[i]._id %>" class="btn own-btn buy-pack-buttons">Buy This One</button>
+    </div>
+    <% } %>
+        <%- include('../links/buyPack') %>

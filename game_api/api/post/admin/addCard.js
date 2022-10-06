@@ -41,7 +41,7 @@ async function createCard(card) {
         defense: card.defense,
         mobility: card.mobility,
         effects: card.effects,
-        readyToUse: true,
+        readyToUse: false,
         description: card.description,
         basicDeck: card.basicDeck
     }, ['name', 'image', 'type', 'nation', 'resources', 'attack', 'defense', 'mobility', 'effects', 'readyToUse', 'description', 'basicDeck']))

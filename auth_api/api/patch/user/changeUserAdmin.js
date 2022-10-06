@@ -7,7 +7,6 @@ const { User } = require('../../../models/user')
 
 // Middleware for changing user username
 router.patch('/', async (req, res) => {
-    console.log(req.body)
     const { error } = validate(req.body)
     if (error) {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })

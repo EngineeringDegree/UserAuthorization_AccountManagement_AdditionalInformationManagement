@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
 const { Card } = require('../../../models/card')
+const { filterAsset } = require('../../../utils/filter/filter')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -20,52 +21,12 @@ router.get('/', async (req, res) => {
     }
 
     if (user.data) {
-        var cards = await getCards(req.query.records, req.query.cardName, req.query.page)
-        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: user.data.token, cards: cards.cards, pages: cards.pages, page: cards.page })
+        var cards = await filterAsset(req.query.records, req.query.cardName, req.query.page, Card)
+        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
 })
-
-/**
- * Gets cards using parameters. Default sorted by name descending. To ascend use -1.
- * @param {integer} records how much cards should be displayed at once
- * @param {string} cardName card string to search for in name
- * @param {integer} page page from which records should be displayed
- * @returns {object} with returned cards, count of pages and current page
- */
-var getCards = async (records, cardName, page) => {
-    var cards = [], returnedCards = []
-    var pages = 1
-    cards = await Card.find({ "name": { "$regex": cardName, "$options": "i" } }).sort({ "name": 1 })
-    if (cards.length > records) {
-        pages = Math.ceil(cards.length / records)
-        if (page > pages) {
-            cards.length = records
-            returnedCards = cards
-            page = 1
-        } else {
-            if (page == 1) {
-                cards.length = records
-                returnedCards = cards
-            } else {
-                if (page < pages) {
-                    for (let i = 0; i < records; i++) {
-                        returnedCards.push(cards[i + (records * (page - 1))])
-                    }
-                } else {
-                    for (let i = (page - 1) * records; i < cards.length; i++) {
-                        returnedCards.push(cards[i])
-                    }
-                }
-            }
-        }
-    } else {
-        returnedCards = cards
-        page = 1
-    }
-    return { cards: returnedCards, pages: pages, page: page }
-}
 
 /**
  * Validates data sent by user

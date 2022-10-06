@@ -6,11 +6,15 @@ const Shop_Pack = mongoose.model('Shop_Pack', new mongoose.Schema({
         type: Number,
         required: true
     },
+    price: {
+        type: Number,
+        required: true
+    },
     nation: {
         type: String,
         required: true
     },
-    packName: {
+    name: {
         type: String,
         required: true
     },
@@ -23,8 +27,9 @@ const Shop_Pack = mongoose.model('Shop_Pack', new mongoose.Schema({
 function validatePack(pack) {
     const schema = Joi.object({
         cardsCount: Joi.number().required(),
+        price: Joi.number().required(),
         nation: Joi.string().required(),
-        packName: Joi.string().required(),
+        name: Joi.string().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(pack)

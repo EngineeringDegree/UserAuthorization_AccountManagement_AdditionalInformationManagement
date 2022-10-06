@@ -3,7 +3,7 @@ const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
 const axios = require('axios')
-const { Map } = require('../../../models/map')
+const { Shop_Pack } = require('../../../models/shop_pack')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     }
 
     if (user.data) {
-        await createMap(req.body)
+        await createPack(req.body)
         return res.status(200).send({ status: 'MAP CREATED', code: 200, token: user.data.token })
     }
 
@@ -28,37 +28,33 @@ router.post('/', async (req, res) => {
 
 /**
  * Save map with following arguments
- * @param {object} map to save 
+ * @param {object} pack to save 
  */
-async function createMap(map) {
-    var newMap = new Map(_.pick({
-        name: map.name,
-        size: map.size,
-        image: map.image,
-        fields: map.fields,
-        startingPositions: map.startingPositions,
-        readyToUse: false,
-        description: map.description
-    }, ['name', 'size', 'image', 'fields', 'startingPositions', 'readyToUse', 'description']))
-    await newMap.save()
+async function createPack(pack) {
+    var newPack = new Shop_Pack(_.pick({
+        name: pack.name,
+        cardsCount: pack.cardsCount,
+        nation: pack.nation,
+        price: pack.price,
+        readyToUse: false
+    }, ['name', 'cardsCount', 'nation', 'price', 'readyToUse']))
+    await newPack.save()
 }
 
 /**
  * Validates data sent by user
  * @param {object} req object
- * @returns nothin if validation is passed and error if somethin is wrong
+ * @returns nothing if validation is passed and error if somethin is wrong
  */
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
-        name: Joi.string().min(1).required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
-        size: Joi.string().required(),
-        image: Joi.string().required(),
-        fields: Joi.array().required(),
-        startingPositions: Joi.array().required(),
-        description: Joi.string().required()
+        name: Joi.string().min(1).required(),
+        cardsCount: Joi.number().required(),
+        price: Joi.number().required(),
+        nation: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation
