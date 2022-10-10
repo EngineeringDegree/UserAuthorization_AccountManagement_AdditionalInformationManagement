@@ -14,6 +14,8 @@ const config = require('config')
 
 // Own modules imports
 const sockets = require('./api/sockets/sockets')
+const { checkIfUrlNeedsSockets } = require('./utils/socket/socket_checkIfUrlNeedSocket')
+const { startMatchmaking } = require('./utils/matchmaking/matchmaking')
 
 // Get middleware
 const mainPageView = require('./api/get/views/mainPageView')
@@ -62,8 +64,12 @@ const addMap = require('./api/post/admin/addMap')
 const addShopPack = require('./api/post/admin/addShopPack')
 const addDeck = require('./api/post/user/addDeck')
 const buyPack = require('./api/post/user/buyPack')
+const findGame = require('./api/post/game/find')
 
 // Put middleware
+
+// Delete middleware
+const cancelSearch = require('./api/delete/game/cancel')
 
 // Express and socketio initialization for http and https requests
 var app = express()
@@ -82,7 +88,6 @@ var ioNotSecure = socketio(serverNotSecure)
 if (process.env.MODE == "live") {
     var io = socketio(server)
 }
-
 
 // Checking if private key of the server is present
 if (!config.get('PrivateKey')) {
@@ -108,6 +113,20 @@ if (process.env.MODE == "live") {
 sockets(ioNotSecure)
 
 // Routes
+app.use(function (req, res, next) {
+    var originalUrl = req.originalUrl.split('?')
+    if (originalUrl.length > 0) {
+        if (checkIfUrlNeedsSockets(originalUrl[0])) {
+            if (process.env.MODE == "live") {
+                res.locals.io = io
+            }
+
+            res.locals.ioNotSecure = ioNotSecure
+        }
+    }
+
+    next()
+})
 
 // Get
 app.use('/', mainPageView)
@@ -155,13 +174,18 @@ app.use('/post/admin/add/map', addMap)
 app.use('/post/admin/add/shopPack', addShopPack)
 app.use('/post/deck/new', addDeck)
 app.use('/post/user/packs', buyPack)
+app.use('/find/game', findGame)
 
 // Put
+
+// Delete
+app.use('/cancel/game', cancelSearch)
 
 // Other endpoints
 app.use('*', error404View)
 
 // Run servers
+startMatchmaking(io, ioNotSecure)
 
 // HTTPS
 if (process.env.MODE == "live") {

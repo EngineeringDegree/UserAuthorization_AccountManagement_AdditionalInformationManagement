@@ -6,6 +6,7 @@ const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { UserCard } = require('../../../models/user_cards')
 const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
+const { maxCountOfCards } = require('../../../utils/deck/maxCountOfCards')
 
 // Middleware for deleteing decks
 router.patch('/', async (req, res) => {
@@ -24,6 +25,13 @@ router.patch('/', async (req, res) => {
         var deck = await Deck.findOne({ _id: req.body.id, deleted: false })
         if (deck) {
             var strength = 0
+            var q = 0
+            for (let i = 0; i < req.body.cards.length; i++) {
+                q += req.body.cards[i].quantity
+            }
+            if (q > maxCountOfCards) {
+                return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
+            }
             var userCards = await UserCard.findOne({ owner: req.body.email })
             for (let i = 0; i < req.body.cards.length; i++) {
                 var card = await Card.findOne({ _id: req.body.cards[i]._id, readyToUse: true })
