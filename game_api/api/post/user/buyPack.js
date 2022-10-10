@@ -22,64 +22,68 @@ router.post('/', async (req, res) => {
     }
 
     if (user.data) {
-        var pack = await Shop_Pack.findOne({ _id: req.body.id })
-        if (pack) {
-            try {
-                var patchObject = {
-                    email: req.body.email,
-                    token: req.body.token,
-                    refreshToken: req.body.refreshToken,
-                    price: pack.price
-                }
+        if (user.data.confirmed) {
+            var pack = await Shop_Pack.findOne({ _id: req.body.id })
+            if (pack) {
+                try {
+                    var patchObject = {
+                        email: req.body.email,
+                        token: req.body.token,
+                        refreshToken: req.body.refreshToken,
+                        price: pack.price
+                    }
 
-                var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
-            } catch (e) {
-                return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-            }
-            if (funds.data) {
-                var cards = await Card.find({ readyToUse: true })
-                var cardsToUse = []
-                if (pack.nation != "All") {
-                    for (let i = 0; i < cards.length; i++) {
-                        for (let j = 0; j < cards[i].nation.length; j++) {
-                            if (cards[i].nation[j] == pack.nation || cards[i].nation[j] == 'All') {
-                                cardsToUse.push(cards[i])
+                    var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
+                } catch (e) {
+                    return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                }
+                if (funds.data) {
+                    var cards = await Card.find({ readyToUse: true })
+                    var cardsToUse = []
+                    if (pack.nation != "All") {
+                        for (let i = 0; i < cards.length; i++) {
+                            for (let j = 0; j < cards[i].nation.length; j++) {
+                                if (cards[i].nation[j] == pack.nation || cards[i].nation[j] == 'All') {
+                                    cardsToUse.push(cards[i])
+                                    break
+                                }
+                            }
+                        }
+                    } else {
+                        cardsToUse = cards
+                    }
+
+                    var cardsChoosen = []
+
+                    for (let i = 0; i < pack.cardsCount; i++) {
+                        var el = selectRandomElementFromArray(cardsToUse.length)
+                        var card = cardsToUse[el]
+                        var alreadyIn = false
+                        for (let j = 0; j < cardsChoosen.length; j++) {
+                            if (cardsChoosen[j]._id.equals(card._id)) {
+                                alreadyIn = true
+                                cardsChoosen[j].basicDeck += 1
                                 break
                             }
                         }
-                    }
-                } else {
-                    cardsToUse = cards
-                }
 
-                var cardsChoosen = []
-
-                for (let i = 0; i < pack.cardsCount; i++) {
-                    var el = selectRandomElementFromArray(cardsToUse.length)
-                    var card = cardsToUse[el]
-                    var alreadyIn = false
-                    for (let j = 0; j < cardsChoosen.length; j++) {
-                        if (cardsChoosen[j]._id.equals(card._id)) {
-                            alreadyIn = true
-                            cardsChoosen[j].basicDeck += 1
-                            break
+                        if (!alreadyIn) {
+                            cardsChoosen.push({
+                                _id: card._id,
+                                basicDeck: 1
+                            })
                         }
                     }
+                    await createPack(cardsChoosen, req.body.email, pack.nation, pack.name)
 
-                    if (!alreadyIn) {
-                        cardsChoosen.push({
-                            _id: card._id,
-                            basicDeck: 1
-                        })
-                    }
+                    return res.status(200).send({ status: 'PACK BOUGHT', code: 200 })
                 }
-                await createPack(cardsChoosen, req.body.email, pack.nation, pack.name)
-
-                return res.status(200).send({ status: 'PACK BOUGHT', code: 200 })
+                return res.status(400).send({ status: 'INSUFFICIENT FUNDS', code: 400, action: 'INSUFFICIENT FUNDS POPUP' })
             }
-            return res.status(400).send({ status: 'INSUFFICIENT FUNDS', code: 400, action: 'INSUFFICIENT FUNDS POPUP' })
+
+            return res.status(404).send({ status: 'SHOP PACK NOT FOUND', code: 404 })
         }
-        return res.status(404).send({ status: 'SHOP PACK NOT FOUND', code: 404 })
+        return res.status(401).send({ status: 'ACCOUNT NOT CONFIRMED', code: 401 })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
