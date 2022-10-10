@@ -1,4 +1,4 @@
-var matchmakeTimeCheck = 5000
+const matchmakeTimeCheck = 5000
 var playersToMatchmake = []
 
 /**
