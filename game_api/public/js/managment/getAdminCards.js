@@ -1,10 +1,10 @@
+var timeoutId, timeoutTime = 1000, page = 1
 $(document).ready(init())
 
 /**
  * Initialization function for all actions
  */
 function init() {
-    var timeoutId, timeoutTime = 1000, page = 1
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
 
@@ -16,6 +16,11 @@ function init() {
     if (window.location.pathname == '/registered') {
         logIn()
         return
+    }
+
+    var pageListener = document.getElementById('pageListener')
+    if (pageListener) {
+        pageListener.addEventListener('change', sendRequest, false)
     }
 
     var records = document.getElementById('records-per-page')
@@ -71,7 +76,7 @@ function init() {
                             page = res.page
                         }
 
-                        displayReturnedInfo(res.cards, res.page, res.pages)
+                        displayReturnedInfo(res.cards, res.page, res.pages, cards, pagesDisplay, 'cardId', 'card')
                         logIn()
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -86,59 +91,6 @@ function init() {
             }
         } else {
             logOut()
-        }
-    }
-
-    /**
-     * Sets page to current page
-     * @param {integer} e element of DOM which holds pageNum property 
-     */
-    function setPage(e) {
-        e.preventDefault()
-        page = e.currentTarget.pageNum
-        sendRequest()
-    }
-
-    /**
-     * 
-     * @param {array} records array of returned records
-     * @param {integer} page page which is displayed right now
-     * @param {integer} pages how much pages to display
-     */
-    function displayReturnedInfo(records, page, pages) {
-        if (cards && pagesDisplay) {
-            cards.innerHTML = ''
-            pagesDisplay.innerHTML = ''
-            for (let i = 0; i < records.length; i++) {
-                let element = document.createElement('div')
-                let link = document.createElement('a')
-                link.textContent = records[i].name
-                link.href = `/manage/card/modify?cardId=${records[i]._id}`
-                element.appendChild(link)
-                cards.appendChild(element)
-            }
-
-            if (records.length == 0) {
-                let element = document.createElement('div')
-                element.textContent = "Nothing to see here!"
-                cards.appendChild(element)
-            }
-
-            for (let i = 0; i < pages; i++) {
-                if (i + 1 == page) {
-                    let element = document.createElement('div')
-                    element.textContent = i + 1
-                    pagesDisplay.appendChild(element)
-                } else {
-                    let element = document.createElement('a')
-                    element.textContent = i + 1
-                    element.classList.add('clickable')
-                    element.addEventListener('click', setPage, false)
-                    element.pageNum = i + 1
-                    element.href = "#"
-                    pagesDisplay.appendChild(element)
-                }
-            }
         }
     }
 

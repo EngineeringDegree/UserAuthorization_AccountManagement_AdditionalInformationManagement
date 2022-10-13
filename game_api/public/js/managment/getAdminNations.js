@@ -28,13 +28,13 @@ function init() {
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
-    var packName = document.getElementById('shop-pack-name')
-    if (packName) {
-        packName.addEventListener('keyup', packNameChanged, false)
+    var nationName = document.getElementById('nation-name')
+    if (nationName) {
+        nationName.addEventListener('keyup', nationNameChanged, false)
     }
 
     var pagesDisplay = document.getElementById('pages')
-    var packs = document.getElementById('packs')
+    var nations = document.getElementById('nations')
 
     sendRequest()
 
@@ -48,7 +48,7 @@ function init() {
     /**
      * Initialize 1 second timer to send request if nothing changes
      */
-    function packNameChanged() {
+    function nationNameChanged() {
         if (timeoutId) {
             clearTimeout(timeoutId)
         }
@@ -59,23 +59,24 @@ function init() {
     }
 
     /**
-     * Sends request for map with current choosen parameters
+     * Sends request for card with current choosen parameters
      */
     function sendRequest() {
         if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
-            if (packName && records) {
+            if (nationName && records) {
                 $.ajax({
                     type: "GET",
-                    url: `/manage/get/shopPacks?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&packName=${packName.value}&page=${page}`,
+                    url: `/manage/get/nations?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}&records=${records.value}&nationName=${nationName.value}&page=${page}`,
                     success: function (res) {
                         if (res.token) {
                             window.localStorage.setItem("token", res.token)
                         }
+
                         if (res.page) {
                             page = res.page
                         }
 
-                        displayReturnedInfo(res.packs, res.page, res.pages, packs, pagesDisplay, 'packId', 'shopPack')
+                        displayReturnedInfo(res.nations, res.page, res.pages, nations, pagesDisplay, 'nationId', 'nation')
                         logIn()
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -121,6 +122,3 @@ function init() {
         }
     }
 }
-
-
-

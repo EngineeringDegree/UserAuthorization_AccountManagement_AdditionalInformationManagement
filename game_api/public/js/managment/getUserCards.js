@@ -6,6 +6,8 @@ $(document).ready(init())
 function init() {
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
     sendRequest()
 
     /**
@@ -13,6 +15,10 @@ function init() {
      */
     function sendRequest() {
         if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
+            if (window.localStorage.getItem('userId') != urlParams.get('userId')) {
+                return
+            }
+
             $.ajax({
                 type: "GET",
                 url: `/get/user/cards?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`,
@@ -73,7 +79,7 @@ function init() {
     }
 
     /**
-     * Hides linkes which shouldn't be visible if user is logged out
+     * Hides links which shouldn't be visible if user is logged out
      */
     function logOut() {
         window.localStorage.clear()

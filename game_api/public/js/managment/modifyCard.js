@@ -104,9 +104,9 @@ function sendRequest() {
     var stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
-        type: "PATCH",
+        type: "PUT",
         data: stringifiedObject,
-        url: '/patch/admin/modify/card',
+        url: '/put/admin/modify/card',
         success: function (res) {
             if (res.token) {
                 window.localStorage.setItem("token", res.token)

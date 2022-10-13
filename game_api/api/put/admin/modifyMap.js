@@ -2,13 +2,12 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
-const { Shop_Pack } = require('../../../models/shop_pack')
+const { Map } = require('../../../models/map')
 
-// Middleware for patching shop packs
-router.patch('/', async (req, res) => {
+// Middleware for patching map
+router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        console.log(error)
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
@@ -20,25 +19,26 @@ router.patch('/', async (req, res) => {
 
     if (user.data) {
         try {
-            var pack = await Shop_Pack.findOne({ _id: req.body.id })
+            var map = await Map.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
-        if (pack) {
+        if (map) {
             const filter = {
-                _id: pack._id
+                _id: map._id
             }
             const update = {
                 name: req.body.name,
-                nation: req.body.nation,
-                price: req.body.price,
+                size: req.body.size,
+                image: req.body.image,
                 fields: req.body.fields,
-                cardsCount: req.body.cardsCount,
-                readyToUse: req.body.readyToUse
+                startingPositions: req.body.startingPositions,
+                readyToUse: req.body.readyToUse,
+                description: req.body.description
             }
 
-            await Shop_Pack.updateOne(filter, update)
-            return res.status(200).send({ status: 'SHOP PACK MODIFIED', code: 200, token: user.data.token })
+            await Map.updateOne(filter, update)
+            return res.status(200).send({ status: 'MAP MODIFIED', code: 200, token: user.data.token })
         }
         return res.status(404).send({ status: 'MAP NOT FOUND', code: 404, action: 'GO TO MAPS' })
     }
@@ -47,7 +47,7 @@ router.patch('/', async (req, res) => {
 })
 
 /**
- * Validates data sent by user to modify shop pack
+ * Validates data sent by user to log in
  * @param {object} req
  * @returns nothing if there is no error, error if there is something wrong
  */
@@ -58,10 +58,12 @@ function validate(req) {
         refreshToken: Joi.string().required(),
         id: Joi.string().min(1).required(),
         name: Joi.string().min(1).required(),
-        nation: Joi.string().required(),
-        price: Joi.number().required(),
-        cardsCount: Joi.number().required(),
-        readyToUse: Joi.boolean().required()
+        size: Joi.string().required(),
+        image: Joi.string().required(),
+        fields: Joi.array().required(),
+        startingPositions: Joi.array().required(),
+        readyToUse: Joi.boolean().required(),
+        description: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

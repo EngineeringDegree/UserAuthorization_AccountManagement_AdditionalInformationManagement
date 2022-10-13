@@ -12,17 +12,17 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-                <a href="/manage/shopPacks/add">Add Shop Pack</a>
+                <a href="/manage/effects/add">Add Effect</a>
 
-                <input id="shop-pack-name" type="text" />
+                <input id="effect-name" type="text" />
                 <%- include('../partials/components/recordsPerPage') %>
-                    <div id="packs"></div>
+                    <div id="effects"></div>
                     <div id="pages"></div>
                     <%- include('../partials/components/footer') %>
                         <%- include('../partials/links/authorizationServer') %>
                             <%- include('../partials/links/authorizeAdmin') %>
                                 <%- include('../partials/links/listingUtil') %>
-                                    <%- include('../partials/links/getAdminShopPacks') %>
+                                    <%- include('../partials/links/getAdminEffects') %>
 </body>
 
 </html>

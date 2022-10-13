@@ -8,8 +8,8 @@ const { UserCard } = require('../../../models/user_cards')
 const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 const { maxCountOfCards } = require('../../../utils/deck/maxCountOfCards')
 
-// Middleware for deleteing decks
-router.patch('/', async (req, res) => {
+// Middleware for editing decks
+router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })

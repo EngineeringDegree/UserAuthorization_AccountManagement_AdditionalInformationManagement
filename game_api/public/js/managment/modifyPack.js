@@ -62,9 +62,9 @@ function sendRequest() {
     var stringifiedObject = JSON.stringify(patchObject)
 
     $.ajax({
-        type: "PATCH",
+        type: "PUT",
         data: stringifiedObject,
-        url: '/patch/admin/modify/shopPack',
+        url: '/put/admin/modify/shopPack',
         success: function (res) {
             if (res.token) {
                 window.localStorage.setItem("token", res.token)

@@ -51,12 +51,8 @@ const getCardInfo = require('./api/get/game/getCardInfo')
 const getUserCardsInfo = require('./api/get/game/getUserCardsInfo')
 
 // Patch middleware
-const modifyCard = require('./api/patch/admin/modifyCard')
-const modifyMap = require('./api/patch/admin/modifyMap')
-const modifyShopPack = require('./api/patch/admin/modifyShopPack')
 const openPack = require('./api/patch/user/openPack')
 const deleteDeck = require('./api/patch/user/deleteDeck')
-const editDeck = require('./api/patch/user/editDeck')
 
 // Post middleware
 const addCard = require('./api/post/admin/addCard')
@@ -67,6 +63,10 @@ const buyPack = require('./api/post/user/buyPack')
 const findGame = require('./api/post/game/find')
 
 // Put middleware
+const modifyCard = require('./api/put/admin/modifyCard')
+const modifyMap = require('./api/put/admin/modifyMap')
+const modifyShopPack = require('./api/put/admin/modifyShopPack')
+const editDeck = require('./api/put/user/editDeck')
 
 // Delete middleware
 const cancelSearch = require('./api/delete/game/cancel')
@@ -161,11 +161,7 @@ app.use('/get/user/cards/info', getUserCardsInfo)
 app.use('/get/card', getCardInfo)
 
 // Patch
-app.use('/patch/admin/modify/card', modifyCard)
-app.use('/patch/admin/modify/map', modifyMap)
-app.use('/patch/admin/modify/shopPack', modifyShopPack)
 app.use('/patch/user/packs', openPack)
-app.use('/patch/deck/edit', editDeck)
 app.use('/decks/remove', deleteDeck)
 
 // Post
@@ -177,6 +173,10 @@ app.use('/post/user/packs', buyPack)
 app.use('/find/game', findGame)
 
 // Put
+app.use('/put/admin/modify/card', modifyCard)
+app.use('/put/admin/modify/map', modifyMap)
+app.use('/put/admin/modify/shopPack', modifyShopPack)
+app.use('/put/deck/edit', editDeck)
 
 // Delete
 app.use('/cancel/game', cancelSearch)
@@ -184,7 +184,7 @@ app.use('/cancel/game', cancelSearch)
 // Other endpoints
 app.use('*', error404View)
 
-// Run servers
+// Run matchmaking server
 startMatchmaking(io, ioNotSecure)
 
 // HTTPS

@@ -70,8 +70,8 @@ function editDeck(deck) {
     var stringifiedObject = JSON.stringify(patchObject)
 
     $.ajax({
-        type: "PATCH",
-        url: `/patch/deck/edit`,
+        type: "PUT",
+        url: `/put/deck/edit`,
         data: stringifiedObject,
         success: function (res) {
             if (res.token) {

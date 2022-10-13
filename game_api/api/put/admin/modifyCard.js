@@ -5,7 +5,7 @@ const axios = require('axios')
 const { Card } = require('../../../models/card')
 
 // Middleware for patching card
-router.patch('/', async (req, res) => {
+router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
