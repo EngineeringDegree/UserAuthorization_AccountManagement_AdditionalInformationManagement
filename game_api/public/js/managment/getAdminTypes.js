@@ -76,7 +76,7 @@ function init() {
                             page = res.page
                         }
 
-                        displayReturnedInfo(res.cards, res.page, res.pages, type, pagesDisplay, 'typeId', 'type')
+                        displayReturnedInfo(res.types, res.page, res.pages, type, pagesDisplay, 'typeId', 'type')
                         logIn()
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
