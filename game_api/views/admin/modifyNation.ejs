@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+
+                <input id="nation-id" type="hidden" value="<%= nation._id %>" />
+                Nation Name: <input id="nation-name" type="text" value="<%= nation.name %>" />
+                Nation Description: <input id="nation-description" type="text" value="<%= nation.description %>" />
+                <% if(nation.readyToUse) { %>
+                    Ready to use: <input id="nation-ready" type="checkbox" checked />
+                    <% } else { %>
+                        Ready to use: <input id="nation-ready" type="checkbox" />
+                        <% } %>
+                            <%- include('../partials/components/footer') %>
+
+                                <%- include('../partials/links/authorizationServer') %>
+                                    <%- include('../partials/links/authorizeAdmin') %>
+                                        <%- include('../partials/links/modifyNation') %>
+</body>
+
+</html>

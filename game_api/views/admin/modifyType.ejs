@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+
+                <input id="type-id" type="hidden" value="<%= type._id %>" />
+                Type Name: <input id="type-name" type="text" value="<%= type.name %>" />
+                Type Description: <input id="type-description" type="text" value="<%= type.description %>" />
+                <% if(type.readyToUse) { %>
+                    Ready to use: <input id="type-ready" type="checkbox" checked />
+                    <% } else { %>
+                        Ready to use: <input id="type-ready" type="checkbox" />
+                        <% } %>
+                            <%- include('../partials/components/footer') %>
+
+                                <%- include('../partials/links/authorizationServer') %>
+                                    <%- include('../partials/links/authorizeAdmin') %>
+                                        <%- include('../partials/links/modifyType') %>
+</body>
+
+</html>
