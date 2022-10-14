@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+
+                <label>
+                    Effect Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Effect Description
+                    <input id="description" type="text" />
+                </label>
+                <button id="add-btn">Add Effect</button>
+                <%- include('../partials/components/footer') %>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addEffect') %>
+</body>
+
+</html>

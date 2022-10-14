@@ -2,12 +2,12 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 
 const Card_Type = mongoose.model('Card_Type', new mongoose.Schema({
-    typeName: {
+    name: {
         type: String,
         required: true,
         unique: true
     },
-    typeDescription: {
+    description: {
         type: String,
         required: true
     },
@@ -19,8 +19,8 @@ const Card_Type = mongoose.model('Card_Type', new mongoose.Schema({
 
 function validateCardType(type) {
     const schema = Joi.object({
-        typeName: Joi.string().required(),
-        typeDescription: Joi.string().required(),
+        name: Joi.string().required(),
+        description: Joi.string().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(type)

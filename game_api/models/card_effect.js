@@ -2,12 +2,12 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 
 const Card_Effect = mongoose.model('Card_Effect', new mongoose.Schema({
-    effectName: {
+    name: {
         type: String,
         required: true,
         unique: true
     },
-    effectDescription: {
+    description: {
         type: String,
         required: true
     },
@@ -19,8 +19,8 @@ const Card_Effect = mongoose.model('Card_Effect', new mongoose.Schema({
 
 function validateCardEffect(effect) {
     const schema = Joi.object({
-        effectName: Joi.string().required(),
-        effectDescription: Joi.string().required(),
+        name: Joi.string().required(),
+        description: Joi.string().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(effect)

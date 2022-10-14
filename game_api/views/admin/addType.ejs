@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+
+                <label>
+                    Type Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Type Description
+                    <input id="type" type="text" />
+                </label>
+                <button id="add-btn">Add Type</button>
+                <%- include('../partials/components/footer') %>
+
+                    <%- include('../partials/links/authorizationServer') %>
+                        <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addType') %>
+</body>
+
+</html>

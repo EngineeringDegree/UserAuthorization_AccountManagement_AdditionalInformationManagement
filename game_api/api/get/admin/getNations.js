@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
-const { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
 const { filterAsset } = require('../../../utils/filter/filter')
 
 /*
@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
     }
 
     if (user.data) {
-        var cards = await filterAsset(req.query.records, req.query.cardName, req.query.page, Card)
-        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
+        var nations = await filterAsset(req.query.records, req.query.nationName, req.query.page, Card_Nation)
+        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: user.data.token, nations: nations.assets, pages: nations.pages, page: nations.page })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
@@ -39,7 +39,7 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         records: Joi.number().required(),
-        cardName: Joi.string().allow(null, ''),
+        nationName: Joi.string().allow(null, ''),
         page: Joi.number().required()
     })
     const validation = schema.validate(req)
