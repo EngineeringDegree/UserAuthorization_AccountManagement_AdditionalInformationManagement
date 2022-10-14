@@ -23,11 +23,11 @@
                 </label>
                 <label>
                     Type
-                    <input id="type" type="text" />
+                    <div id="types"></div>
                 </label>
                 <label>
                     Nation
-                    <input id="nation" type="text" />
+                    <div id="nations"></div>
                 </label>
                 <label>
                     Resources
@@ -47,7 +47,7 @@
                 </label>
                 <label>
                     Effects
-                    <input id="effects" type="text" />
+                    <div id="effects"></div>
                 </label>
                 <label>
                     Description
@@ -63,6 +63,7 @@
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorizeAdmin') %>
                             <%- include('../partials/links/addCard') %>
+                                <%- include('../partials/links/getAllCardAssets') %>
 </body>
 
 </html>

@@ -61,6 +61,7 @@ const getUserDeck = require('./api/get/game/getDeck')
 const getUserCards = require('./api/get/game/getUserCards')
 const getCardInfo = require('./api/get/game/getCardInfo')
 const getUserCardsInfo = require('./api/get/game/getUserCardsInfo')
+const getAllAssets = require('./api/get/admin/getAllAssets')
 
 // Patch middleware
 const openPack = require('./api/patch/user/openPack')
@@ -189,6 +190,7 @@ app.use('/get/user/deck', getUserDeck)
 app.use('/get/user/cards', getUserCards)
 app.use('/get/user/cards/info', getUserCardsInfo)
 app.use('/get/card', getCardInfo)
+app.use('/get/cardAssets/all', getAllAssets)
 
 // Patch
 app.use('/patch/user/packs', openPack)
