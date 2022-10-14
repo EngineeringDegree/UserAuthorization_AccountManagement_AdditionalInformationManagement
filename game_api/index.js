@@ -81,6 +81,9 @@ const findGame = require('./api/post/game/find')
 const modifyCard = require('./api/put/admin/modifyCard')
 const modifyMap = require('./api/put/admin/modifyMap')
 const modifyShopPack = require('./api/put/admin/modifyShopPack')
+const modifyEffect = require('./api/put/admin/modifyEffect')
+const modifyNation = require('./api/put/admin/modifyNation')
+const modifyType = require('./api/put/admin/modifyType')
 const editDeck = require('./api/put/user/editDeck')
 
 // Delete middleware
@@ -206,6 +209,9 @@ app.use('/find/game', findGame)
 app.use('/put/admin/modify/card', modifyCard)
 app.use('/put/admin/modify/map', modifyMap)
 app.use('/put/admin/modify/shopPack', modifyShopPack)
+app.use('/put/admin/modify/effect', modifyEffect)
+app.use('/put/admin/modify/nation', modifyNation)
+app.use('/put/admin/modify/type', modifyType)
 app.use('/put/deck/edit', editDeck)
 
 // Delete

@@ -5,27 +5,17 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('pack-name')
+    var name = document.getElementById('nation-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var nation = document.getElementById('pack-nation')
-    if (nation) {
-        nation.addEventListener('keyup', anythingChanged, false)
+    var description = document.getElementById('nation-description')
+    if (description) {
+        description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var price = document.getElementById('pack-price')
-    if (price) {
-        price.addEventListener('keyup', anythingChanged, false)
-    }
-
-    var cardsCount = document.getElementById('pack-count')
-    if (cardsCount) {
-        cardsCount.addEventListener('keyup', anythingChanged, false)
-    }
-
-    var readyToUse = document.getElementById('pack-ready')
+    var readyToUse = document.getElementById('nation-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
@@ -48,34 +38,27 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var patchObject = {
+    var putObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
-        name: $('#pack-name').val(),
-        nation: $('#pack-nation').val(),
-        price: $('#pack-price').val(),
-        id: $('#pack-id').val(),
-        readyToUse: $('#pack-ready').is(":checked"),
-        cardsCount: $('#pack-count').val()
+        name: $('#nation-name').val(),
+        description: $('#nation-description').val(),
+        id: $('#nation-id').val(),
+        readyToUse: $('#nation-ready').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(patchObject)
+    var stringifiedObject = JSON.stringify(putObject)
 
     $.ajax({
         type: "PUT",
         data: stringifiedObject,
-        url: '/put/admin/modify/shopPack',
+        url: '/put/admin/modify/nation',
         success: function (res) {
             if (res.token) {
                 window.localStorage.setItem("token", res.token)
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.responseJSON.action == "GO TO MAPS") {
-                window.location.pathname = '/manage/map'
-                return
-            }
-
             if (xhr.responseJSON.action == "LOGOUT") {
                 logOut()
                 return
