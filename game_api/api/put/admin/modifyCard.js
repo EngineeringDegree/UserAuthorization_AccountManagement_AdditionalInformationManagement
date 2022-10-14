@@ -24,6 +24,18 @@ router.put('/', async (req, res) => {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
         if (card) {
+
+            var nations = req.body.nation
+            var nation = []
+
+            for (let i = 0; i < nations.length; i++) {
+                if (nations[i] != 'All') {
+                    nation.push(nations[i])
+                } else {
+                    nation.unshift(nations[i])
+                }
+            }
+
             const filter = {
                 _id: card._id
             }
@@ -31,7 +43,7 @@ router.put('/', async (req, res) => {
                 name: req.body.name,
                 image: req.body.image,
                 type: req.body.type,
-                nation: req.body.nation,
+                nation: nation,
                 resources: req.body.resources,
                 attack: req.body.attack,
                 defense: req.body.defense,

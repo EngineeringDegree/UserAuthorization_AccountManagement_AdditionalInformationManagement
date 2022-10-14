@@ -31,11 +31,22 @@ router.post('/', async (req, res) => {
  * @param {object} card to save 
  */
 async function createCard(card) {
+    var nations = card.nation
+    var nation = []
+
+    for (let i = 0; i < nations.length; i++) {
+        if (nations[i] != 'All') {
+            nation.push(nations[i])
+        } else {
+            nation.unshift(nations[i])
+        }
+    }
+
     var newCard = new Card(_.pick({
         name: card.name,
         image: card.image,
         type: card.type,
-        nation: card.nation,
+        nation: nation,
         resources: card.resources,
         attack: card.attack,
         defense: card.defense,
