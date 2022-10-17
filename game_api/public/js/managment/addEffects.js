@@ -19,6 +19,7 @@ function sendRequest() {
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: $('#name').val(),
+        basicDuration: $('#basic-duration').val(),
         description: $('#description').val()
     }
     var stringifiedObject = JSON.stringify(postObject)

@@ -16,6 +16,10 @@
                 <input id="field-id" type="hidden" value="<%= field._id %>" />
                 Field Name: <input id="field-name" type="text" value="<%= field.name %>" />
                 Field Description: <input id="field-description" type="text" value="<%= field.description %>" />
+                Field Basic Defence: <input id="basic-defence" type="text" value="<%= field.basicDefence %>" />
+                Field Basic Mobility Cost: <input id="basic-mobility-cost" type="text"
+                    value="<%= field.basicMobilityCost %>" />
+
                 <% if(field.readyToUse) { %>
                     Ready to use: <input id="field-ready" type="checkbox" checked />
                     <% } else { %>

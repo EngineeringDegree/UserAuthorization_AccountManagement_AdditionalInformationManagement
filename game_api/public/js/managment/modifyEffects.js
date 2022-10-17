@@ -19,6 +19,11 @@ function init() {
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
+
+    var basicDuration = document.getElementById('basic-duration')
+    if (basicDuration) {
+        basicDuration.addEventListener('keyup', anythingChanged, false)
+    }
 }
 
 /** 
@@ -45,6 +50,7 @@ function sendRequest() {
         name: $('#effect-name').val(),
         description: $('#effect-description').val(),
         id: $('#effect-id').val(),
+        basicDuration: $('#basic-duration').val(),
         readyToUse: $('#effect-ready').is(":checked")
     }
     var stringifiedObject = JSON.stringify(putObject)

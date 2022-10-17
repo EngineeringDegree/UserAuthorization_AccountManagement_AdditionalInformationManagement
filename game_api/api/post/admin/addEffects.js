@@ -28,14 +28,15 @@ router.post('/', async (req, res) => {
 
 /**
  * Save map with following arguments
- * @param {object} pack to save 
+ * @param {object} effect to save 
  */
 async function createEffect(effect) {
     var newEffect = new Effect(_.pick({
         name: effect.name,
         description: effect.description,
+        basicDuration: effect.basicDuration,
         readyToUse: false
-    }, ['name', 'description', 'readyToUse']))
+    }, ['name', 'description', 'basicDuration', 'readyToUse']))
     await newEffect.save()
 }
 
@@ -50,6 +51,7 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
+        basicDuration: Joi.number().required(),
         description: Joi.string().required()
     })
     const validation = schema.validate(req)

@@ -11,6 +11,14 @@ const Map_Field = mongoose.model('Map_Field', new mongoose.Schema({
         type: String,
         required: true
     },
+    basicDefence: {
+        type: Number,
+        required: true
+    },
+    basicMobilityCost: {
+        type: Number,
+        required: true
+    },
     readyToUse: {
         type: Boolean,
         required: true
@@ -21,6 +29,8 @@ function validateMapField(field) {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
+        basicDefence: Joi.number().required(),
+        basicMobilityCost: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(field)

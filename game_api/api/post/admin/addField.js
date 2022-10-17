@@ -28,14 +28,16 @@ router.post('/', async (req, res) => {
 
 /**
  * Save map field with following arguments
- * @param {object} pack to save 
+ * @param {object} mapField to save 
  */
 async function createField(mapField) {
     var newField = new Map_Field(_.pick({
         name: mapField.name,
         description: mapField.description,
+        basicDefence: mapField.basicDefence,
+        basicMobilityCost: mapField.basicMobilityCost,
         readyToUse: false
-    }, ['name', 'description', 'readyToUse']))
+    }, ['name', 'description', 'basicDefence', 'basicMobilityCost', 'readyToUse']))
     await newField.save()
 }
 
@@ -50,6 +52,8 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
+        basicDefence: Joi.number().required(),
+        basicMobilityCost: Joi.number().required(),
         description: Joi.string().required()
     })
     const validation = schema.validate(req)

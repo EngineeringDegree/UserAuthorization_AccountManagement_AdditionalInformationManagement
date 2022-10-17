@@ -11,6 +11,10 @@ const Effect = mongoose.model('Effect', new mongoose.Schema({
         type: String,
         required: true
     },
+    basicDuration: {
+        type: Number,
+        required: true
+    },
     readyToUse: {
         type: Boolean,
         required: true
@@ -21,6 +25,7 @@ function validateEffect(effect) {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
+        basicDuration: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(effect)

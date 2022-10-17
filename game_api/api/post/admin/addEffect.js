@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
 
 /**
  * Save map with following arguments
- * @param {object} pack to save 
+ * @param {object} effect to save 
  */
 async function createEffect(effect) {
     var newEffect = new Card_Effect(_.pick({

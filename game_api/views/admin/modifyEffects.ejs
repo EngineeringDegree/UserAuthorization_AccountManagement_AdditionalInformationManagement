@@ -16,6 +16,7 @@
                 <input id="effect-id" type="hidden" value="<%= effect._id %>" />
                 Effect Name: <input id="effect-name" type="text" value="<%= effect.name %>" />
                 Effect Description: <input id="effect-description" type="text" value="<%= effect.description %>" />
+                Effect Basic Duration: <input id="basic-duration" type="text" value="<%= effect.basicDuration %>" />
                 <% if(effect.readyToUse) { %>
                     Ready to use: <input id="effect-ready" type="checkbox" checked />
                     <% } else { %>

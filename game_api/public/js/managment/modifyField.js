@@ -19,6 +19,16 @@ function init() {
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
+
+    var basicDefence = document.getElementById('basic-defence')
+    if (basicDefence) {
+        basicDefence.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var basicMobilityCost = document.getElementById('basic-mobility-cost')
+    if (basicMobilityCost) {
+        basicMobilityCost.addEventListener('keyup', anythingChanged, false)
+    }
 }
 
 /** 
@@ -44,6 +54,8 @@ function sendRequest() {
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: $('#field-name').val(),
         description: $('#field-description').val(),
+        basicDefence: $('#basic-defence').val(),
+        basicMobilityCost: $('#basic-mobility-cost').val(),
         id: $('#field-id').val(),
         readyToUse: $('#field-ready').is(":checked")
     }
