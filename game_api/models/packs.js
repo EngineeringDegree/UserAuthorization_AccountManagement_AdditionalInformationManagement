@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Pack to open for owner object
 const Pack = mongoose.model('Pack', new mongoose.Schema({
     owner: {
         type: String,

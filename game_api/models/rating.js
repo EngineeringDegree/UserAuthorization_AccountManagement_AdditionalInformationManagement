@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Rating of owner in certain nation object
 const Rating = mongoose.model('Rating', new mongoose.Schema({
     owner: {
         type: String,

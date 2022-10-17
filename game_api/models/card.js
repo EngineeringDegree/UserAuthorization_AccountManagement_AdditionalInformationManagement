@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Card object
 const Card = mongoose.model('Card', new mongoose.Schema({
     name: {
         type: String,

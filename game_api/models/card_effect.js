@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Abilities/skills of cards
 const Card_Effect = mongoose.model('Card_Effect', new mongoose.Schema({
     name: {
         type: String,

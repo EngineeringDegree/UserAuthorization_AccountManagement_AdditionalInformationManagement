@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// SHop pack to buy
 const Shop_Pack = mongoose.model('Shop_Pack', new mongoose.Schema({
     cardsCount: {
         type: Number,

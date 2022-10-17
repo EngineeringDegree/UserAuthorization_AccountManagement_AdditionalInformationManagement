@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Deck object
 const Deck = mongoose.model('Deck', new mongoose.Schema({
     name: {
         type: String,

@@ -1,12 +1,11 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
-// All possible nations of cards
-const Card_Nation = mongoose.model('Card_Nation', new mongoose.Schema({
+// Type of map field (It gives effect to the card which is on it)
+const Map_Field = mongoose.model('Map_Field', new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     description: {
         type: String,
@@ -18,15 +17,15 @@ const Card_Nation = mongoose.model('Card_Nation', new mongoose.Schema({
     }
 }))
 
-function validateCardNation(nation) {
+function validateMapField(field) {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
         readyToUse: Joi.boolean().required()
     })
-    const validation = schema.validate(nation)
+    const validation = schema.validate(field)
     return validation
 }
 
-exports.Card_Nation = Card_Nation
-exports.validate = validateCardNation
+exports.Map_Field = Map_Field
+exports.validate = validateMapField

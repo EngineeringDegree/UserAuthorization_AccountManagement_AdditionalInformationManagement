@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
  * @param {string} owner email of owner of new pack
  */
 async function createInvitationalGift(owner) {
-    var cards = await Card.find({ basicDeck: { $gt: 0 } }).select('_id basicDeck')
+    var cards = await Card.find({ basicDeck: { $gt: 0 }, readyToUse: true }).select('_id basicDeck')
     var newPack = new Pack(_.pick({
         owner: owner,
         cards: cards,

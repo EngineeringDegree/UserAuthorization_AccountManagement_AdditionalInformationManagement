@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Type of card (It gives card class ability/skill)
 const Card_Type = mongoose.model('Card_Type', new mongoose.Schema({
     name: {
         type: String,

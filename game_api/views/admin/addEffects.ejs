@@ -12,20 +12,21 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-                <div>
-                    <a href="/manage/card">Manage Cards</a>
-                    <a href="/manage/map">Manage Maps</a>
-                    <a href="/manage/shopPacks">Manage Shop Packs</a>
-                    <a href="/manage/nations">Manage Card Nations</a>
-                    <a href="/manage/effects">Manage Card Effects</a>
-                    <a href="/manage/types">Manage Card Types</a>
-                    <a href="/manage/fields">Manage Map Fields</a>
-                    <a href="/manage/effect">Manage Effects</a>
-                </div>
+
+                <label>
+                    Effect Name
+                    <input id="name" type="text" />
+                </label>
+                <label>
+                    Effect Description
+                    <input id="description" type="text" />
+                </label>
+                <button id="add-btn">Add Effect</button>
                 <%- include('../partials/components/footer') %>
 
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorizeAdmin') %>
+                            <%- include('../partials/links/addEffects') %>
 </body>
 
 </html>

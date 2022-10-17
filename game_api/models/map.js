@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// Map object
 const Map = mongoose.model('Map', new mongoose.Schema({
     name: {
         type: String,

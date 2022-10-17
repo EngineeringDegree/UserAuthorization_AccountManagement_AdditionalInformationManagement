@@ -1,12 +1,11 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
-// All possible nations of cards
-const Card_Nation = mongoose.model('Card_Nation', new mongoose.Schema({
+// Type of effect (It gives effect to the card, like panic, buffs or debuffs not dependent on map field, card effecr or card type or card nation)
+const Effect = mongoose.model('Effect', new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     description: {
         type: String,
@@ -18,15 +17,15 @@ const Card_Nation = mongoose.model('Card_Nation', new mongoose.Schema({
     }
 }))
 
-function validateCardNation(nation) {
+function validateEffect(effect) {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
         readyToUse: Joi.boolean().required()
     })
-    const validation = schema.validate(nation)
+    const validation = schema.validate(effect)
     return validation
 }
 
-exports.Card_Nation = Card_Nation
-exports.validate = validateCardNation
+exports.Effect = Effect
+exports.validate = validateEffect

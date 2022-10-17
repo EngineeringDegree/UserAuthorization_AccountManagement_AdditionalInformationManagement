@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const mongoose = require('mongoose')
 
+// User Cards object
 const UserCard = mongoose.model('UserCard', new mongoose.Schema({
     owner: {
         type: String,
