@@ -1,4 +1,4 @@
-var timeoutId, timeoutTime = 1000, savedConfigurations = []
+var timeoutId, timeoutTime = 1000, savedConfigurations = [], currentIndex = 0
 $(document).ready(init())
 
 /**
@@ -10,25 +10,20 @@ function init() {
         cardName.addEventListener('keyup', anythingChanged, false)
     }
 
+
     var size = document.getElementById('map-size')
     if (size) {
-        drawOverlay(size, true)
+        var starting = document.getElementById('map-starting')
+        var fields = document.getElementById('map-fields')
+        if (starting && fields) {
+            drawOverlay(size, starting.value, fields.value, true)
+        }
         size.addEventListener('keyup', anythingChanged, false)
     }
 
     var image = document.getElementById('map-image')
     if (image) {
         image.addEventListener('keyup', anythingChanged, false)
-    }
-
-    var fields = document.getElementById('map-fields')
-    if (fields) {
-        fields.addEventListener('keyup', anythingChanged, false)
-    }
-
-    var starting = document.getElementById('map-starting')
-    if (starting) {
-        starting.addEventListener('keyup', anythingChanged, false)
     }
 
     var description = document.getElementById('map-description')
@@ -76,8 +71,8 @@ function sendRequest() {
         name: $('#map-name').val(),
         size: $('#map-size').val(),
         image: $('#map-image').val(),
-        fields: [$('#map-fields').val()],
-        startingPositions: [$('#map-starting').val()],
+        fields: savedConfigurations[currentIndex].fields,
+        startingPositions: savedConfigurations[currentIndex].startingPositions,
         readyToUse: $('#map-ready').is(":checked"),
         id: $('#map-id').val(),
         description: $('#map-description').val()

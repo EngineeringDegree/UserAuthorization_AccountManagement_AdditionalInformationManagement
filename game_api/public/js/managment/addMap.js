@@ -1,4 +1,4 @@
-var savedConfigurations = []
+var savedConfigurations = [], currentIndex = -1
 $(document).ready(init())
 
 /**
@@ -25,37 +25,41 @@ function init() {
  * Sends requests with user details and card details to save to backend
  */
 function sendRequest() {
-    var postObject = {
-        email: window.localStorage.getItem('email'),
-        token: window.localStorage.getItem('token'),
-        refreshToken: window.localStorage.getItem('refreshToken'),
-        name: $('#name').val(),
-        size: $('#size').val(),
-        image: $('#image').val(),
-        fields: [$('#fields').val()],
-        startingPositions: [$('#starting-positions').val()],
-        description: $('#description').val()
-    }
-    var stringifiedObject = JSON.stringify(postObject)
+    if (currentIndex >= 0) {
+        var postObject = {
+            email: window.localStorage.getItem('email'),
+            token: window.localStorage.getItem('token'),
+            refreshToken: window.localStorage.getItem('refreshToken'),
+            name: $('#name').val(),
+            size: $('#size').val(),
+            image: $('#image').val(),
+            fields: savedConfigurations[currentIndex].fields,
+            startingPositions: savedConfigurations[currentIndex].startingPositions,
+            description: $('#description').val()
+        }
+        var stringifiedObject = JSON.stringify(postObject)
 
-    $.ajax({
-        type: "POST",
-        data: stringifiedObject,
-        url: '/post/admin/add/map',
-        success: function (res) {
-            if (res.token) {
-                window.localStorage.setItem("token", res.token)
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.responseJSON.action == "LOGOUT") {
-                logOut()
-                return
-            }
-        },
-        dataType: "json",
-        contentType: "application/json"
-    })
+        $.ajax({
+            type: "POST",
+            data: stringifiedObject,
+            url: '/post/admin/add/map',
+            success: function (res) {
+                if (res.token) {
+                    window.localStorage.setItem("token", res.token)
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.responseJSON.action == "LOGOUT") {
+                    logOut()
+                    return
+                }
+            },
+            dataType: "json",
+            contentType: "application/json"
+        })
+    } else {
+        alert("Fill all fields")
+    }
 }
 
 function logOut() {

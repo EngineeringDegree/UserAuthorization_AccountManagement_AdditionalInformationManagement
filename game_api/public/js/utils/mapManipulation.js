@@ -12,9 +12,11 @@ function imageChanged(e) {
 /**
  * Function which draws overlay if data is good for it
  * @param {DOMElement} e event emitter
+ * @param {string} starting starting position passed when loads
+ * @param {string} startingFields fields loaded from database
  * @param {boolean} emittedByLoad if draw was initiated on load (it sends other event emitter, needs to check it)
  */
-function drawOverlay(e, emittedByLoad = false) {
+function drawOverlay(e, starting = false, startingFields = false, emittedByLoad = false) {
     var value
     var overlay = document.getElementById('field-grid')
     if (overlay) {
@@ -26,7 +28,7 @@ function drawOverlay(e, emittedByLoad = false) {
     }
 
     if (value) {
-        displayOverlay(value)
+        displayOverlay(value, starting, startingFields)
     }
 
 }
@@ -62,7 +64,43 @@ function formatValue(value) {
 /**
  * Displays overlay over map
  * @param {string} formattedValue in format numberxnumber 
+ * @param {string} starting starting postions
+ * @param {string} startingFields starting fields
  */
-function displayOverlay(formattedValue) {
-    console.log(formattedValue, savedConfigurations)
+function displayOverlay(formattedValue, starting, startingFields) {
+    var indexToEdit = -1
+    for (let i = 0; i < savedConfigurations.length; i++) {
+        if (savedConfigurations[i].dimensions == formattedValue) {
+            indexToEdit = i
+            currentIndex = i
+            break
+        }
+    }
+
+    if (indexToEdit < 0) {
+        if (starting && startingFields) {
+            var arr = starting.split(',')
+            var arrFields = startingFields.split(',')
+            savedConfigurations.push({
+                dimensions: formattedValue,
+                fields: arrFields,
+                startingPositions: arr
+            })
+        } else {
+            savedConfigurations.push({
+                dimensions: formattedValue,
+                fields: [],
+                startingPositions: []
+            })
+        }
+
+        indexToEdit = savedConfigurations.length - 1
+        currentIndex = indexToEdit
+    }
+
+    var img = document.getElementById('image-display')
+    var grid = document.getElementById('field-grid')
+    if (img && grid) {
+        console.log(formattedValue, savedConfigurations, indexToEdit)
+    }
 }
