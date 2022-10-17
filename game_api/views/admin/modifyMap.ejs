@@ -27,14 +27,16 @@
                         Ready to use: <input id="map-ready" type="checkbox" />
                         <% } %>
                             <div>
-                                <img src="#" id="image-display" class="map display" alt="Map not found" />
+                                <img src="<%= map.image %>" id="image-display" class="map display"
+                                    alt="Map not found" />
                                 <div id="field-grid" class="cube-overlay"></div>
                             </div>
                             <%- include('../partials/components/footer') %>
 
                                 <%- include('../partials/links/authorizationServer') %>
                                     <%- include('../partials/links/authorizeAdmin') %>
-                                        <%- include('../partials/links/modifyMap') %>
+                                        <%- include('../partials/links/mapManipulation') %>
+                                            <%- include('../partials/links/modifyMap') %>
 </body>
 
 </html>

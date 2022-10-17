@@ -39,12 +39,22 @@ function init() {
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
+
+    var image = document.getElementById('map-image')
+    if (image) {
+        image.addEventListener('keyup', imageChanged, false)
+    }
 }
 
 /** 
  * Send request on something changed after 1 second
+ * @param {DOMElement} e event emitter
  */
-function anythingChanged() {
+function anythingChanged(e) {
+    if (e.target.id == 'map-size') {
+        drawOverlay(e)
+    }
+
     if (timeoutId) {
         clearTimeout(timeoutId)
     }

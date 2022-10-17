@@ -8,6 +8,16 @@ function init() {
     if (addBtn) {
         addBtn.addEventListener('click', sendRequest, false)
     }
+
+    var image = document.getElementById('image')
+    if (image) {
+        image.addEventListener('keyup', imageChanged, false)
+    }
+
+    var size = document.getElementById('size')
+    if (size) {
+        image.addEventListener('keyup', drawOverlay, false)
+    }
 }
 
 /**
