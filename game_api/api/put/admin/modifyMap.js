@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
 const { Map } = require('../../../models/map')
+const { filterMapSize } = require('../../../utils/filter/filterMapSize')
 
 // Middleware for patching map
 router.put('/', async (req, res) => {
@@ -24,12 +25,17 @@ router.put('/', async (req, res) => {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
         if (map) {
+            var sizeToSave = filterMapSize(req.body.size)
+            if (!sizeToSave) {
+                return res.status(400).send({ status: 'BAD SIZE DATA', code: 404, action: 'FOCUS ON SIZE FIELD' })
+            }
+
             const filter = {
                 _id: map._id
             }
             const update = {
                 name: req.body.name,
-                size: req.body.size,
+                size: sizeToSave,
                 image: req.body.image,
                 fields: req.body.fields,
                 startingPositions: req.body.startingPositions,

@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Joi = require('joi')
 const axios = require('axios')
 const { Map } = require('../../../models/map')
+const { filterMapSize } = require('../../../utils/filter/filterMapSize')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
@@ -19,8 +20,12 @@ router.post('/', async (req, res) => {
     }
 
     if (user.data) {
-        await createMap(req.body)
-        return res.status(200).send({ status: 'MAP CREATED', code: 200, token: user.data.token })
+        var mapCreated = await createMap(req.body)
+        if (mapCreated) {
+            return res.status(200).send({ status: 'MAP CREATED', code: 200, token: user.data.token })
+        }
+
+        return res.status(400).send({ status: 'BAD SIZE', code: 400, action: 'FOCUS ON SIZE' })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
@@ -31,9 +36,13 @@ router.post('/', async (req, res) => {
  * @param {object} map to save 
  */
 async function createMap(map) {
+    var sizeToSave = filterMapSize(map.size)
+    if (!sizeToSave) {
+        return false
+    }
     var newMap = new Map(_.pick({
         name: map.name,
-        size: map.size,
+        size: sizeToSave,
         image: map.image,
         fields: map.fields,
         startingPositions: map.startingPositions,
@@ -41,6 +50,7 @@ async function createMap(map) {
         description: map.description
     }, ['name', 'size', 'image', 'fields', 'startingPositions', 'readyToUse', 'description']))
     await newMap.save()
+    return true
 }
 
 /**
