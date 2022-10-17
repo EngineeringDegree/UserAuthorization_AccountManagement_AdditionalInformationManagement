@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/tags/metaTags') %>
+        <%- include('../partials/tags/favicon') %>
+            <title>Ninergames</title>
+            <%- include('../partials/links/mainLinks') %>
+</head>
+
+<body>
+    <%- include('../partials/noscript/noscript') %>
+        <%- include('../partials/components/menu') %>
+            <%- include('../partials/components/breadcrumb') %>
+
+                <input id="field-id" type="hidden" value="<%= field._id %>" />
+                Field Name: <input id="field-name" type="text" value="<%= field.name %>" />
+                Field Description: <input id="field-description" type="text" value="<%= field.description %>" />
+                <% if(field.readyToUse) { %>
+                    Ready to use: <input id="field-ready" type="checkbox" checked />
+                    <% } else { %>
+                        Ready to use: <input id="field-ready" type="checkbox" />
+                        <% } %>
+                            <%- include('../partials/components/footer') %>
+
+                                <%- include('../partials/links/authorizationServer') %>
+                                    <%- include('../partials/links/authorizeAdmin') %>
+                                        <%- include('../partials/links/modifyField') %>
+</body>
+
+</html>
