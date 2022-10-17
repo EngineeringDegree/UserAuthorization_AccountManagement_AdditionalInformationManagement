@@ -1,8 +1,4 @@
-const matchmakeTimeCheck = 5000
-const ratingModifier = 100
-const strengthModifier = 20
 var playersToMatchmake = []
-var playersToSort = []
 
 /**
  * Matchmake function which send socket signal to needed sockets and creates a game
@@ -10,18 +6,18 @@ var playersToSort = []
  * @param {object} ioNotSecure server not secured
  */
 var matchmake = async (io, ioNotSecure) => {
-    playersToSort = playersToMatchmake
+    var playersToSort = playersToMatchmake
     playersToMatchmake = []
     playersToSort.sort((a, b) => {
         return a.userRating - b.userRating
     })
 
     for (let i = 1; i < playersToSort.length; i++) {
-        if (playersToSort[i - 1].userRating + ratingModifier >= playersToSort[i].userRating && (!playersToSort[i - 1].pared && !playersToSort[i - 1].pared)) {
+        if (playersToSort[i - 1].userRating + process.env.RATING_MODIFIER >= playersToSort[i].userRating && (!playersToSort[i - 1].pared && !playersToSort[i - 1].pared)) {
             if (playersToSort[i - 1].strength < playersToSort[i].strength) {
-                if (playersToSort[i - 1].strength + strengthModifier >= playersToSort[i].strength) {
-                    playersToSort[i - 1].pared == true
-                    playersToSort[i].pared == true
+                if (playersToSort[i - 1].strength + process.env.STRENGTH_MODIFIER >= playersToSort[i].strength) {
+                    playersToSort[i - 1].pared = true
+                    playersToSort[i].pared = true
                     if (io) {
                         let id = await generateGame(playersToSort[i - 1], playersToSort[i])
                         io.in(playersToSort[i - 1].id).emit('gameCreated', id)
@@ -33,9 +29,9 @@ var matchmake = async (io, ioNotSecure) => {
                     }
                 }
             } else if (playersToSort[i - 1].strength > playersToSort[i].strength) {
-                if (playersToSort[i].strength + strengthModifier >= playersToSort[i - 1].strength) {
-                    playersToSort[i - 1].pared == true
-                    playersToSort[i].pared == true
+                if (playersToSort[i].strength + process.env.STRENGTH_MODIFIER >= playersToSort[i - 1].strength) {
+                    playersToSort[i - 1].pared = true
+                    playersToSort[i].pared = true
                     if (io) {
                         let id = await generateGame(playersToSort[i - 1], playersToSort[i])
                         io.in(playersToSort[i - 1].id).emit('gameCreated', id)
@@ -47,8 +43,8 @@ var matchmake = async (io, ioNotSecure) => {
                     }
                 }
             } else if (playersToSort[i - 1].strength == playersToSort[i].strength) {
-                playersToSort[i - 1].pared == true
-                playersToSort[i].pared == true
+                playersToSort[i - 1].pared = true
+                playersToSort[i].pared = true
                 if (io) {
                     let id = await generateGame(playersToSort[i - 1], playersToSort[i])
                     io.in(playersToSort[i - 1].id).emit('gameCreated', id)
@@ -132,7 +128,7 @@ var removePlayerById = (id) => {
 var startMatchmaking = (io, ioNotSecure) => {
     setInterval(() => {
         matchmake(io, ioNotSecure)
-    }, matchmakeTimeCheck)
+    }, process.env.MATCHMAKE_TIME_CHECK)
 }
 
 module.exports = { startMatchmaking, addPlayer, removePlayer, removePlayerById }
