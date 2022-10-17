@@ -1,4 +1,4 @@
-var timeoutId, timeoutTime = 1000
+var timeoutId, timeoutTime = 1000, savedConfigurations = []
 $(document).ready(init())
 
 /**
@@ -12,6 +12,7 @@ function init() {
 
     var size = document.getElementById('map-size')
     if (size) {
+        drawOverlay(size, true)
         size.addEventListener('keyup', anythingChanged, false)
     }
 

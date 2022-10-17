@@ -1,3 +1,4 @@
+var savedConfigurations = []
 $(document).ready(init())
 
 /**
@@ -16,7 +17,7 @@ function init() {
 
     var size = document.getElementById('size')
     if (size) {
-        image.addEventListener('keyup', drawOverlay, false)
+        size.addEventListener('keyup', drawOverlay, false)
     }
 }
 

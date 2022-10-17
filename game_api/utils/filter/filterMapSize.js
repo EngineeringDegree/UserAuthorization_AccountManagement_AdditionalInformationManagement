@@ -16,11 +16,11 @@ var filterMapSize = (size) => {
             sizeToSave = `${size[0]}x${size[0]}`
         } else {
             sizeTemp = size[0] / 1
-            if (isNaN(sizeTemp)) {
+            if (isNaN(sizeTemp) || sizeTemp == '') {
                 return false
             } else {
                 sizeTemp = size[1] / 1
-                if (isNaN(sizeTemp)) {
+                if (isNaN(sizeTemp) || sizeTemp == '') {
                     return false
                 }
                 sizeToSave = `${size[0]}x${size[1]}`
