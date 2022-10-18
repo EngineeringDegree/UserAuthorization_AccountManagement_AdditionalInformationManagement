@@ -6,6 +6,10 @@ function imageChanged(e) {
     var imageDisplay = document.getElementById('image-display')
     if (imageDisplay) {
         imageDisplay.src = e.target.value
+        var size = document.getElementById('size')
+        if (size) {
+            drawOverlay(size, false, false, true)
+        }
     }
 }
 
@@ -100,7 +104,44 @@ function displayOverlay(formattedValue, starting, startingFields) {
 
     var img = document.getElementById('image-display')
     var grid = document.getElementById('field-grid')
-    if (img && grid) {
-        console.log(formattedValue, savedConfigurations, indexToEdit)
+    if (img) {
+        var width = img.clientWidth
+        var height = img.clientHeight
+        displayGridOnImageLoad(width, height, formattedValue, indexToEdit)
+        img.onload = function () {
+            displayGridOnImageLoad(this.width, this.height, formattedValue, indexToEdit)
+        }
+    }
+}
+
+/**
+ * Displays grid on image
+ * @param {number} width of image
+ * @param {number} height of image
+ * @param {string} formattedValue of dimensions f.e. 10x10
+ * @param {number} indexToEdit of saved configurations
+ */
+function displayGridOnImageLoad(width, height, formattedValue, indexToEdit) {
+    var grid = document.getElementById('field-grid')
+    if (grid) {
+        grid.innerHTML = ''
+        console.log(width, height, formattedValue, indexToEdit, savedConfigurations)
+        var val = formattedValue.split('x')
+        var blockWidth = width / val[0]
+        var blockHeight = height / val[1]
+        for (let i = 0; i < val[1]; i++) {
+            let divOuter = document.createElement('div')
+            divOuter.classList = 'd-flex'
+            divOuter.id = `row-${i}`
+            for (let j = 0; j < val[0]; j++) {
+                let div = document.createElement('div')
+                div.classList = 'clickable map-overlay'
+                div.id = `field-${j}-${i}`
+                div.style.width = `${blockWidth}px`
+                div.style.height = `${blockHeight}px`
+                divOuter.appendChild(div)
+            }
+            grid.appendChild(divOuter)
+        }
     }
 }

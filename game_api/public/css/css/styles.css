@@ -1,4 +1,6 @@
-*, html, body {
+*,
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -8,6 +10,17 @@
 }
 
 .red-border {
-  border: 1px solid #ff0000;
+  border: 2px solid #ff0000;
 }
-/*# sourceMappingURL=styles.css.map */
+
+.clickable {
+  cursor: pointer;
+}
+
+.map-overlay {
+  border: 1px solid #000;
+}
+
+.cube-overlay {
+  top: 0;
+}/*# sourceMappingURL=styles.css.map */

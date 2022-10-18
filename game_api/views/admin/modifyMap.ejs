@@ -26,10 +26,10 @@
                     <% } else { %>
                         Ready to use: <input id="map-ready" type="checkbox" />
                         <% } %>
-                            <div>
+                            <div class="position-relative">
                                 <img src="<%= map.image %>" id="image-display" class="map display"
                                     alt="Map not found" />
-                                <div id="field-grid" class="cube-overlay"></div>
+                                <div id="field-grid" class="cube-overlay position-absolute"></div>
                             </div>
                             <%- include('../partials/components/footer') %>
 

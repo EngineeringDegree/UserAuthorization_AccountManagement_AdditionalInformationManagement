@@ -1,6 +1,8 @@
 @import "vars.scss";
 
-*, html, body {
+*,
+html,
+body {
     margin: 0;
     padding: 0;
 }
@@ -11,4 +13,16 @@
 
 .red-border {
     border: 2px solid $errorColor;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.map-overlay {
+    border: 1px solid #000;
+}
+
+.cube-overlay {
+    top: 0;
 }
