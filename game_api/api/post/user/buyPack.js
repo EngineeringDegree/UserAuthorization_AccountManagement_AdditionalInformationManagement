@@ -35,13 +35,14 @@ router.post('/', async (req, res) => {
                 }
                 if (funds.data) {
                     var cards = await Card.find({ readyToUse: true })
+                    var packNation = await Card_Nation.find({ _id: pack.nation, readyToUse: true })
                     var cardsToUse = []
 
-                    if (pack.nation != "All") {
+                    if (packNation.name != "All") {
                         for (let i = 0; i < cards.length; i++) {
                             for (let j = 0; j < cards[i].nation.length; j++) {
                                 var nation = await Card_Nation.find({ _id: cards[i].nation })
-                                if (nation.name == pack.nation || nation.name == 'All') {
+                                if (nation.name == packNation.name || nation.name == 'All') {
                                     cardsToUse.push(cards[i])
                                     break
                                 }

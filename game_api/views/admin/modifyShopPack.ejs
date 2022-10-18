@@ -15,7 +15,10 @@
 
                 <input id="pack-id" type="hidden" value="<%= pack._id %>" />
                 Pack Name: <input id="pack-name" type="text" value="<%= pack.name %>" />
-                Pack Nation: <input id="pack-nation" type="text" value="<%= pack.nation %>" />
+                <label>
+                    Nation
+                    <div id="nations"></div>
+                </label>
                 Pack Price: <input id="pack-price" type="text" value="<%= pack.price %>" />
                 Pack Cards Count: <input id="pack-count" type="text" value="<%= pack.cardsCount %>" />
                 <% if(pack.readyToUse) { %>
@@ -27,7 +30,8 @@
 
                                 <%- include('../partials/links/authorizationServer') %>
                                     <%- include('../partials/links/authorizeAdmin') %>
-                                        <%- include('../partials/links/modifyPack') %>
+                                        <%- include('../partials/links/displayReturnedNations') %>
+                                            <%- include('../partials/links/modifyPack') %>
 </body>
 
 </html>

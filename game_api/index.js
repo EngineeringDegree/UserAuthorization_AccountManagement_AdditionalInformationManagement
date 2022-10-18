@@ -66,6 +66,7 @@ const getUserCards = require('./api/get/game/getUserCards')
 const getCardInfo = require('./api/get/game/getCardInfo')
 const getUserCardsInfo = require('./api/get/game/getUserCardsInfo')
 const getAllAssets = require('./api/get/admin/getAllAssets')
+const getAllNations = require('./api/get/admin/getAllNations')
 
 // Patch middleware
 const openPack = require('./api/patch/user/openPack')
@@ -205,6 +206,7 @@ app.use('/get/user/deck', authorizeUser, getUserDeck)
 app.use('/get/user/cards', authorizeUser, getUserCards)
 app.use('/get/user/cards/info', authorizeUser, getUserCardsInfo)
 app.use('/get/cardAssets/all', authorizeAdmin, getAllAssets)
+app.use('/manage/get/nations/all', authorizeAdmin, getAllNations)
 
 // Patch
 app.use('/patch/user/packs', authorizeUser, openPack)

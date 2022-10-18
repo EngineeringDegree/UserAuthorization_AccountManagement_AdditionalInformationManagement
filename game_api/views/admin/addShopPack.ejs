@@ -18,7 +18,7 @@
                 </label>
                 <label>
                     Nation
-                    <input id="nation" type="text" />
+                    <div id="nations"></div>
                 </label>
                 <label>
                     Cards Count
@@ -33,7 +33,8 @@
 
                     <%- include('../partials/links/authorizationServer') %>
                         <%- include('../partials/links/authorizeAdmin') %>
-                            <%- include('../partials/links/addShopPack') %>
+                            <%- include('../partials/links/displayReturnedNations') %>
+                                <%- include('../partials/links/addShopPack') %>
 </body>
 
 </html>

@@ -10,11 +10,6 @@ function init() {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var nation = document.getElementById('pack-nation')
-    if (nation) {
-        nation.addEventListener('keyup', anythingChanged, false)
-    }
-
     var price = document.getElementById('pack-price')
     if (price) {
         price.addEventListener('keyup', anythingChanged, false)
@@ -53,7 +48,7 @@ function sendRequest() {
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: $('#pack-name').val(),
-        nation: $('#pack-nation').val(),
+        nation: $('#nation').val(),
         price: $('#pack-price').val(),
         id: $('#pack-id').val(),
         readyToUse: $('#pack-ready').is(":checked"),
