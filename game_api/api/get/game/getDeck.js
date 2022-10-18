@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const axios = require('axios')
 const Joi = require('joi')
 var { Deck } = require('../../../models/deck')
 
@@ -10,18 +9,12 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/checkIfLoggedIn?email=${req.query.email}&token=${req.query.token}&refreshToken=${req.query.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
+    if (res.locals.user.data) {
         var deck = await Deck.findOne({ _id: req.query.id })
         if (deck) {
             if (deck.owner == req.query.email) {
-                if (user.data.token) {
-                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: user.data.token })
+                if (res.locals.user.data.token) {
+                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token })
                 }
                 return res.status(200).send({ status: 'OK', code: 200, deck: deck })
             }

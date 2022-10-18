@@ -15,13 +15,7 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/checkIfLoggedIn?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
+    if (res.locals.user.data) {
         try {
             var pack = await Pack.findOne({ _id: req.body.id })
         } catch (e) {
@@ -79,7 +73,7 @@ router.patch('/', async (req, res) => {
             if (decks.length == 0) {
                 await generateBasicDecks(req.body.email, cardsInPack)
             }
-            return res.status(200).send({ status: 'PACK OPENED', code: 200, token: user.data.token, id: pack._id, cards: cardsInPack })
+            return res.status(200).send({ status: 'PACK OPENED', code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
         }
         return res.status(404).send({ status: 'PACK NOT FOUND', code: 404, action: 'PACK NOT FOUND POPUP' })
     }

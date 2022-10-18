@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
-const axios = require('axios')
 const { Deck } = require('../../../models/deck')
 const { Rating } = require('../../../models/rating')
 const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
@@ -16,14 +15,8 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/checkIfLoggedIn?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
-        if (user.data.confirmed) {
+    if (res.locals.user.data) {
+        if (res.locals.user.data.confirmed) {
             var deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             if (deck) {
                 if (deck.owner == req.body.email) {
@@ -49,10 +42,10 @@ router.post('/', async (req, res) => {
                     })
 
                     if (success) {
-                        return res.status(200).send({ status: 'OK', code: 200, action: 'JOIN QUEUE', token: user.data.token })
+                        return res.status(200).send({ status: 'OK', code: 200, action: 'JOIN QUEUE', token: res.locals.user.data.token })
                     }
 
-                    return res.status(500).send({ status: 'SOMETHING WENT WRONG', code: 500, action: 'SOMETHING WENT WRONG POPUP', token: user.data.token })
+                    return res.status(500).send({ status: 'SOMETHING WENT WRONG', code: 500, action: 'SOMETHING WENT WRONG POPUP', token: res.locals.user.data.token })
                 }
                 return res.status(401).send({ status: 'THAT IS NOT YOUR DECK', code: 401, action: 'RELOAD PAGE' })
             }

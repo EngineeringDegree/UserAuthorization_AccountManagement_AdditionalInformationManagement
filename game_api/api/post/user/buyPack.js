@@ -15,14 +15,8 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/checkIfLoggedIn?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
-        if (user.data.confirmed) {
+    if (res.locals.user.data) {
+        if (res.locals.user.data.confirmed) {
             var pack = await Shop_Pack.findOne({ _id: req.body.id })
             if (pack) {
                 try {

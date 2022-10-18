@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
-const axios = require('axios')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { UserCard } = require('../../../models/user_cards')
@@ -16,13 +15,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/checkIfLoggedIn?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
+    if (res.locals.user.data) {
         var strength = 0
         var q = 0
         for (let i = 0; i < req.body.cards.length; i++) {
@@ -50,7 +43,7 @@ router.post('/', async (req, res) => {
 
         }
         await createDeck({ name: req.body.name, nation: req.body.nation, cards: req.body.cards }, strength, req.body.email)
-        return res.status(200).send({ status: 'CARD CREATED', code: 200, token: user.data.token, })
+        return res.status(200).send({ status: 'DECK CREATED', code: 200, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

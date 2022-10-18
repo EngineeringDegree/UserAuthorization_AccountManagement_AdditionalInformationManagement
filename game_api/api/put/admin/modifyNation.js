@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
-const axios = require('axios')
 const { Card_Nation } = require('../../../models/card_nation')
 
 // Middleware for puting nations
@@ -11,13 +10,7 @@ router.put('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.body.email}&token=${req.body.token}&refreshToken=${req.body.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
+    if (res.locals.user.data) {
         try {
             var nation = await Card_Nation.findOne({ _id: req.body.id })
         } catch (e) {
@@ -37,8 +30,9 @@ router.put('/', async (req, res) => {
             }
 
             await Card_Nation.updateOne(filter, update)
-            return res.status(200).send({ status: 'NATION MODIFIED', code: 200, token: user.data.token })
+            return res.status(200).send({ status: 'NATION MODIFIED', code: 200, token: res.locals.user.data.token })
         }
+
         return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: '' })
     }
 

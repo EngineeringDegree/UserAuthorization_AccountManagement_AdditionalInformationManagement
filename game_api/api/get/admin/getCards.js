@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
-const axios = require('axios')
 const { Card } = require('../../../models/card')
 const { filterAsset } = require('../../../utils/filter/filter')
 
@@ -14,15 +13,9 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
-    try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${req.query.email}&token=${req.query.token}&refreshToken=${req.query.refreshToken}`)
-    } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
-    }
-
-    if (user.data) {
+    if (res.locals.user.data) {
         var cards = await filterAsset(req.query.records, req.query.cardName, req.query.page, Card)
-        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
+        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
