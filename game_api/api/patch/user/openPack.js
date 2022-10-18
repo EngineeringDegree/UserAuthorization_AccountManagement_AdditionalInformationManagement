@@ -7,6 +7,7 @@ const { Pack } = require('../../../models/packs')
 const { UserCard } = require('../../../models/user_cards')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
 
 // Middleware for opening pack, patching user card collection and creating basic deck if there isn't something like that
 router.patch('/', async (req, res) => {
@@ -98,46 +99,54 @@ async function generateBasicDecks(owner, cards) {
         let card = await Card.findOne({ _id: cards[i]._id })
 
         if (card.nation.length == 1) {
-            if (card.nation[0] == 'All') {
-                allNationCards.strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
-                allNationCards.cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
-            } else {
-                var nationAlreadyGenerated = false
-                for (let j = 0; j < nationCards.length; j++) {
-                    if (card.nation[0] == nationCards[j].nation) {
-                        nationAlreadyGenerated = true
-                        nationCards[j].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
-                        nationCards[j].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
-                        break
+            var nation = await Card_Nation.findOne({ _id: card.nation[0], readyToUse: true })
+            if (nation) {
+                if (nation.name == 'All') {
+                    allNationCards.strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                    allNationCards.cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
+                } else {
+                    var nationAlreadyGenerated = false
+                    for (let j = 0; j < nationCards.length; j++) {
+                        if (nation.name == nationCards[j].nation) {
+                            nationAlreadyGenerated = true
+                            nationCards[j].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                            nationCards[j].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
+                            break
+                        }
                     }
-                }
 
-                if (!nationAlreadyGenerated) {
-                    nationCards.push({
-                        strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
-                        cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
-                        nation: card.nation[0]
-                    })
+                    if (!nationAlreadyGenerated) {
+                        nationCards.push({
+                            strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
+                            cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
+                            nation: nation.name,
+                            id: nation._id
+                        })
+                    }
                 }
             }
         } else {
             for (let j = 0; j < card.nation.length; j++) {
-                var nationAlreadyGenerated = false
-                for (let k = 0; k < nationCards.length; k++) {
-                    if (card.nation[j] == nationCards[k].nation) {
-                        nationAlreadyGenerated = true
-                        nationCards[k].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
-                        nationCards[k].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
-                        break
+                var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                if (nation) {
+                    var nationAlreadyGenerated = false
+                    for (let k = 0; k < nationCards.length; k++) {
+                        if (nation.name == nationCards[k].nation) {
+                            nationAlreadyGenerated = true
+                            nationCards[k].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                            nationCards[k].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
+                            break
+                        }
                     }
-                }
 
-                if (!nationAlreadyGenerated) {
-                    nationCards.push({
-                        strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
-                        cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
-                        nation: card.nation[j]
-                    })
+                    if (!nationAlreadyGenerated) {
+                        nationCards.push({
+                            strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
+                            cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
+                            nation: nation.name,
+                            id: nation._id
+                        })
+                    }
                 }
             }
         }
@@ -146,7 +155,7 @@ async function generateBasicDecks(owner, cards) {
     do {
         var newDeck = new Deck(_.pick({
             owner: owner,
-            nation: nationCards[nationCards.length - 1].nation,
+            nation: nationCards[nationCards.length - 1].id,
             cards: nationCards[nationCards.length - 1].cards.concat(allNationCards.cards),
             strength: nationCards[nationCards.length - 1].strength + allNationCards.strength,
             name: `${nationCards[nationCards.length - 1].nation} Starter Deck`,

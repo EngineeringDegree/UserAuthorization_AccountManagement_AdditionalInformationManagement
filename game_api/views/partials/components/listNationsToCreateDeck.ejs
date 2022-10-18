@@ -1,8 +1,8 @@
 <% if(nations.length> 0) { %>
     <select id="my-nation-to-create-deck-from">
         <% for(var i=0; i < nations.length; i++) { %>
-            <option value="<%= nations[i] %>">
-                <%= nations[i] %>
+            <option value="<%= nations[i]._id %>">
+                <%= nations[i].name %>
             </option>
             <% } %>
     </select>

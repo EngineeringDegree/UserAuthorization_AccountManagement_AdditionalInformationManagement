@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
                 for (let j = 0; j < card.nation.length; j++) {
                     var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                     if (nation) {
-                        if (nation.name == 'All' || nation.name == req.body.nation) {
+                        if (nation.name == 'All' || card.nation[j] == req.body.nation) {
                             found = true
                             break
                         }

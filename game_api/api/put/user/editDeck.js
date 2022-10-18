@@ -20,7 +20,7 @@ router.put('/', async (req, res) => {
         var strength = 0
         var q = 0
         for (let i = 0; i < req.body.cards.length; i++) {
-            q += req.body.cards[i].quantity
+            q += (req.body.cards[i].quantity / 1)
         }
         if (q > maxCountOfCards) {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
@@ -36,7 +36,7 @@ router.put('/', async (req, res) => {
                 for (let j = 0; j < card.nation.length; j++) {
                     var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                     if (nation) {
-                        if (nation.name == 'All' || nation.name == req.body.nation) {
+                        if (nation.name == 'All' || card.nation[j] == req.body.nation) {
                             found = true
                             break
                         }

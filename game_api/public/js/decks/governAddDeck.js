@@ -7,7 +7,7 @@ function init() {
     var currentDeck = 0
     var currentDecksByNations = []
     $("#my-nation-to-create-deck-from > option").each(function () {
-        currentDecksByNations.push({ name: makeid(8), nation: this.value, cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: '' })
+        currentDecksByNations.push({ name: makeid(8), nation: this.value, nationName: this.text, cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: '' })
     })
     var userCards = []
     var loggedIn = document.getElementsByClassName('logged-in')
@@ -74,7 +74,7 @@ function init() {
 
         var cardsToDisplay = []
         for (let i = 0; i < userCards.length; i++) {
-            if (userCards[i].card.nation[0] == 'All') {
+            if (userCards[i].nations[0] == 'All') {
                 cardsToDisplay.push({ card: userCards[i].card, quantity: userCards[i].quantity })
                 continue
             }
@@ -144,7 +144,7 @@ function init() {
      * @param {array} deck of objects which contains deck object which will be sent to backend on "save" button click
      */
     function displayDeck(deck) {
-        $('#nation').text(`Nation ${deck.nation}`)
+        $('#nation').text(`Nation ${deck.nationName}`)
         $('#name').val(deck.name)
         $('#strength').text(`Strength:  ${deck.strength}`)
         var el = document.getElementById('cards-inside')

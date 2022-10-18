@@ -4,6 +4,7 @@ const _ = require('lodash')
 var { Deck } = require('../../../models/deck')
 var { Pack } = require('../../../models/packs')
 var { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
@@ -25,12 +26,24 @@ router.get('/', async (req, res) => {
 
             return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
         }
-
-        if (res.locals.user.data.token) {
-            return res.status(200).send({ status: 'OK', token: res.locals.user.data.token, code: 200, decks: decks })
+        var decksToReturn = []
+        for (let i = 0; i < decks.length; i++) {
+            var nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+            if (nation) {
+                decksToReturn.push({
+                    _id: decks[i]._id,
+                    nation: nation.name,
+                    name: decks[i].name,
+                    strength: decks[i].strength
+                })
+            }
         }
 
-        return res.status(200).send({ status: 'OK', code: 200, decks: decks })
+        if (res.locals.user.data.token) {
+            return res.status(200).send({ status: 'OK', token: res.locals.user.data.token, code: 200, decks: decksToReturn })
+        }
+
+        return res.status(200).send({ status: 'OK', code: 200, decks: decksToReturn })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

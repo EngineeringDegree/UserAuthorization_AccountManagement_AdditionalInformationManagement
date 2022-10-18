@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
 const { UserCard } = require('../../../models/user_cards')
+const { Card_Nation } = require('../../../models/card_nation')
 const { Card } = require('../../../models/card')
 
 // Middleware which sends deck add page with breadcrumbs
@@ -73,18 +74,24 @@ router.get('/', async (req, res) => {
             var cards = userCards.cards
             var nations = []
             for (let i = 0; i < cards.length; i++) {
-                var nationExist = false
-                var card = await Card.findOne({ _id: cards[i]._id })
+                var card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
                 if (card) {
                     for (let j = 0; j < card.nation.length; j++) {
-                        for (let k = 0; k < nations.length; k++) {
-                            if (card.nation[j] == nations[k] || card.nation[0] == 'All') {
-                                nationExist = true
-                                break
+                        var nationExist = false
+                        var nat = await Card_Nation.findOne({ _id: card.nation[j] })
+                        if (nat) {
+                            for (let k = 0; k < nations.length; k++) {
+                                if (nat.name == nations[k].name || nat.name == 'All') {
+                                    nationExist = true
+                                    break
+                                }
                             }
                         }
-                        if (!nationExist) {
-                            nations.push(card.nation[j])
+                        if (!nationExist && nat) {
+                            nations.push({
+                                _id: card.nation[j],
+                                name: nat.name
+                            })
                         }
                     }
                 }

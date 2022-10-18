@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 var { UserCard } = require('../../../models/user_cards')
+var { Card_Nation } = require('../../../models/card_nation')
 var { Card } = require('../../../models/card')
 
 router.get('/', async (req, res) => {
@@ -12,7 +13,14 @@ router.get('/', async (req, res) => {
             for (let i = 0; i < cards.length; i++) {
                 var card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
                 if (card) {
-                    cardsFiltered.push({ card: card, quantity: cards[i].quantity })
+                    var nations = []
+                    for (let j = 0; j < card.nation.length; j++) {
+                        var nation = await Card_Nation.findOne({ _id: card.nation, readyToUse: true })
+                        if (nation) {
+                            nations.push(nation.name)
+                        }
+                    }
+                    cardsFiltered.push({ card: card, quantity: cards[i].quantity, nations: nations })
                 }
             }
 

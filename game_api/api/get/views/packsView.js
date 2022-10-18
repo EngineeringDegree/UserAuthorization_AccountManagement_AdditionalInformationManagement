@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const axios = require('axios')
 const { Pack } = require('../../../models/packs')
+const { Card_Nation } = require('../../../models/card_nation')
 
 // Middleware which sends packs page with breadcrumbs
 router.get('/', async (req, res) => {
@@ -57,8 +58,27 @@ router.get('/', async (req, res) => {
         text: `${user.data.username}`
     })
 
+    var packsToReturn = []
     var userPacks = await Pack.find({ owner: user.data.email, used: false }).select('_id nation packName')
-    return res.status(200).render('pages/packs', { breadcrumb: breadcrumb, packs: userPacks })
+    for (let i = 0; i < userPacks.length; i++) {
+        if (userPacks[i].nation == 'All') {
+            packsToReturn.push({
+                _id: userPacks[i]._id,
+                nation: 'All',
+                packName: userPacks[i].packName
+            })
+        } else {
+            var nation = await Card_Nation.findOne({ _id: userPacks[i].nation, readyToUse: true })
+            if (nation) {
+                packsToReturn.push({
+                    _id: userPacks[i]._id,
+                    nation: nation.name,
+                    packName: userPacks[i].packName
+                })
+            }
+        }
+    }
+    return res.status(200).render('pages/packs', { breadcrumb: breadcrumb, packs: packsToReturn })
 })
 
 /**
