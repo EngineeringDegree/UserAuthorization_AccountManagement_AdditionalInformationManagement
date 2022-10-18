@@ -1,15 +1,15 @@
-var timeoutId, timeoutTime = 1000, savedConfigurations = [], currentIndex = 0
+var timeoutId, timeoutTime = 1000, savedConfigurations = [], currentIndex = 0, currentField = ''
 $(document).ready(init())
 
 /**
  * Adds event listener to input
  */
 function init() {
+    getMapFields()
     var cardName = document.getElementById('map-name')
     if (cardName) {
         cardName.addEventListener('keyup', anythingChanged, false)
     }
-
 
     var size = document.getElementById('map-size')
     if (size) {

@@ -99,17 +99,16 @@ function displayOverlay(formattedValue, starting, startingFields) {
         }
 
         indexToEdit = savedConfigurations.length - 1
-        currentIndex = indexToEdit
     }
+    currentIndex = indexToEdit
 
     var img = document.getElementById('image-display')
-    var grid = document.getElementById('field-grid')
     if (img) {
         var width = img.clientWidth
         var height = img.clientHeight
-        displayGridOnImageLoad(width, height, formattedValue, indexToEdit)
+        displayGridOnImageLoad(width, height, formattedValue)
         img.onload = function () {
-            displayGridOnImageLoad(this.width, this.height, formattedValue, indexToEdit)
+            displayGridOnImageLoad(this.width, this.height, formattedValue)
         }
     }
 }
@@ -119,16 +118,16 @@ function displayOverlay(formattedValue, starting, startingFields) {
  * @param {number} width of image
  * @param {number} height of image
  * @param {string} formattedValue of dimensions f.e. 10x10
- * @param {number} indexToEdit of saved configurations
  */
-function displayGridOnImageLoad(width, height, formattedValue, indexToEdit) {
+function displayGridOnImageLoad(width, height, formattedValue) {
     var grid = document.getElementById('field-grid')
     if (grid) {
         grid.innerHTML = ''
-        console.log(width, height, formattedValue, indexToEdit, savedConfigurations)
+        console.log(width, height, formattedValue, currentIndex, savedConfigurations)
         var val = formattedValue.split('x')
         var blockWidth = width / val[0]
         var blockHeight = height / val[1]
+        console.log(currentField)
         for (let i = 0; i < val[1]; i++) {
             let divOuter = document.createElement('div')
             divOuter.classList = 'd-flex'
@@ -144,4 +143,36 @@ function displayGridOnImageLoad(width, height, formattedValue, indexToEdit) {
             grid.appendChild(divOuter)
         }
     }
+}
+
+/**
+ * Gets and displays fields which can be used later on map
+ */
+function getMapFields() {
+    $.ajax({
+        type: "GET",
+        url: `/manage/get/fields/all?email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`,
+        success: function (res) {
+            if (res.token) {
+                window.localStorage.setItem("token", res.token)
+            }
+
+            var placeFields = document.getElementById('fields-grid')
+            if (placeFields) {
+                for (let i = 0; i < res.fields.length; i++) {
+                    if (i == 0) {
+                        currentField = res.fields[i]
+                    }
+                    console.log(res.fields[i])
+                }
+
+                console.log(currentField, currentIndex, savedConfigurations)
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr, ajaxOptions, thrownError)
+        },
+        dataType: "json",
+        contentType: "application/json"
+    })
 }

@@ -1,10 +1,11 @@
-var savedConfigurations = [], currentIndex = -1
+var savedConfigurations = [], currentIndex = -1, currentField = ''
 $(document).ready(init())
 
 /**
  * Adds event listener to button
  */
 function init() {
+    getMapFields()
     var addBtn = document.getElementById('add-btn')
     if (addBtn) {
         addBtn.addEventListener('click', sendRequest, false)
