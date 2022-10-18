@@ -19,7 +19,16 @@ function sendRequest() {
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: $('#name').val(),
-        type: $('#type').val()
+        type: $('#type').val(),
+        buffNearbyAllies: $('#buff-nearby-allies').val(),
+        debuffNearbyEnemies: $('#debuff-nearby-enemies').val(),
+        mobility: $('#mobility').val(),
+        defence: $('#defence').val(),
+        attack: $('#attack').val(),
+        stunImmunity: $('#stun-immunity').is(":checked"),
+        scareImmunity: $('#scare-immunity').is(":checked"),
+        silenceImmunity: $('#silence-immunity').is(":checked"),
+        charge: $('#charge').is(":checked")
     }
     var stringifiedObject = JSON.stringify(postObject)
 
@@ -31,12 +40,16 @@ function sendRequest() {
             if (res.token) {
                 window.localStorage.setItem("token", res.token)
             }
+
+            alert("Success")
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.responseJSON.action == "LOGOUT") {
                 logOut()
                 return
             }
+
+            alert('Error')
         },
         dataType: "json",
         contentType: "application/json"

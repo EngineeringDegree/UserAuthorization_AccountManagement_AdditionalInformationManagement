@@ -34,8 +34,11 @@ async function createNation(nation) {
     var newNation = new Card_Nation(_.pick({
         name: nation.name,
         description: nation.nation,
+        mobility: nation.mobility,
+        defence: nation.defence,
+        attack: nation.attack,
         readyToUse: false
-    }, ['name', 'description', 'readyToUse']))
+    }, ['name', 'description', 'mobility', 'defence', 'attack', 'readyToUse']))
     await newNation.save()
 }
 
@@ -50,6 +53,9 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
         nation: Joi.string().required()
     })
     const validation = schema.validate(req)

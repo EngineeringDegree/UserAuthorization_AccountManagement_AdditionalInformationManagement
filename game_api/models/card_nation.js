@@ -12,6 +12,18 @@ const Card_Nation = mongoose.model('Card_Nation', new mongoose.Schema({
         type: String,
         required: true
     },
+    mobility: {
+        type: Number,
+        required: true
+    },
+    defence: {
+        type: Number,
+        required: true
+    },
+    attack: {
+        type: Number,
+        required: true
+    },
     readyToUse: {
         type: Boolean,
         required: true
@@ -22,6 +34,9 @@ function validateCardNation(nation) {
     const schema = Joi.object({
         name: Joi.string().required(),
         description: Joi.string().required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(nation)

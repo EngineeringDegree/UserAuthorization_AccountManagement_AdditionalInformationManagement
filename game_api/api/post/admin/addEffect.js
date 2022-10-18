@@ -34,8 +34,21 @@ async function createEffect(effect) {
     var newEffect = new Card_Effect(_.pick({
         name: effect.name,
         description: effect.description,
+        mobility: effect.mobility,
+        defence: effect.defence,
+        attack: effect.attack,
+        canUseOn: effect.canUseOn,
+        cooldown: effect.cooldown,
+        duration: effect.duration,
+        cost: effect.cost,
+        stunImmunity: effect.stunImmunity,
+        scareImmunity: effect.scareImmunity,
+        silenceImmunity: effect.silenceImmunity,
+        stun: effect.stun,
+        scare: effect.scare,
+        silence: effect.silence,
         readyToUse: false
-    }, ['name', 'description', 'readyToUse']))
+    }, ['name', 'description', 'mobility', 'defence', 'attack', 'canUseOn', 'cooldown', 'duration', 'cost', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'stun', 'scare', 'silence', 'readyToUse']))
     await newEffect.save()
 }
 
@@ -50,7 +63,20 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
+        canUseOn: Joi.number().required(),
+        cooldown: Joi.number().required(),
+        duration: Joi.number().required(),
+        cost: Joi.string().required(),
+        stunImmunity: Joi.boolean().required(),
+        scareImmunity: Joi.boolean().required(),
+        silenceImmunity: Joi.boolean().required(),
+        stun: Joi.boolean().required(),
+        scare: Joi.boolean().required(),
+        silence: Joi.boolean().required()
     })
     const validation = schema.validate(req)
     return validation

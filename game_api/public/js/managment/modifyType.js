@@ -15,6 +15,51 @@ function init() {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
+    var bna = document.getElementById('type-buff-nearby-allies')
+    if (bna) {
+        bna.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var dne = document.getElementById('type-debuff-nearby-enemies')
+    if (dne) {
+        dne.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var mobility = document.getElementById('type-mobility')
+    if (mobility) {
+        mobility.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var defence = document.getElementById('type-defence')
+    if (defence) {
+        defence.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var attack = document.getElementById('type-attack')
+    if (attack) {
+        attack.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var stun = document.getElementById('type-stun-immunity')
+    if (stun) {
+        stun.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var scare = document.getElementById('type-scare-immunity')
+    if (scare) {
+        scare.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var silence = document.getElementById('type-silence-immunity')
+    if (silence) {
+        silence.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var charge = document.getElementById('type-charge')
+    if (charge) {
+        charge.addEventListener('mousedown', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('type-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -45,6 +90,15 @@ function sendRequest() {
         name: $('#type-name').val(),
         description: $('#type-description').val(),
         id: $('#type-id').val(),
+        buffNearbyAllies: $('#type-buff-nearby-allies').val(),
+        debuffNearbyEnemies: $('#type-debuff-nearby-enemies').val(),
+        mobility: $('#type-mobility').val(),
+        defence: $('#type-defence').val(),
+        attack: $('#type-attack').val(),
+        stunImmunity: $('#type-stun-immunity').is(":checked"),
+        scareImmunity: $('#type-scare-immunity').is(":checked"),
+        silenceImmunity: $('#type-silence-immunity').is(":checked"),
+        charge: $('#type-charge').is(":checked"),
         readyToUse: $('#type-ready').is(":checked")
     }
     var stringifiedObject = JSON.stringify(putObject)

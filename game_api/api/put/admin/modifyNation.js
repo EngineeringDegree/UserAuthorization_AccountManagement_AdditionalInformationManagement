@@ -30,6 +30,9 @@ router.put('/', async (req, res) => {
             const update = {
                 name: req.body.name,
                 description: req.body.description,
+                mobility: req.body.mobility,
+                defence: req.body.defence,
+                attack: req.body.attack,
                 readyToUse: req.body.readyToUse
             }
 
@@ -55,6 +58,9 @@ function validate(req) {
         id: Joi.string().min(1).required(),
         name: Joi.string().min(1).required(),
         description: Joi.string().required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(req)

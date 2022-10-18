@@ -19,7 +19,20 @@ function sendRequest() {
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: $('#name').val(),
-        description: $('#description').val()
+        description: $('#description').val(),
+        mobility: $('#mobility').val(),
+        defence: $('#defence').val(),
+        attack: $('#attack').val(),
+        canUseOn: $('#can-use-on').val(),
+        cooldown: $('#cooldown').val(),
+        duration: $('#duration').val(),
+        cost: $('#cost').val(),
+        stunImmunity: $('#stun-immunity').is(":checked"),
+        scareImmunity: $('#scare-immunity').is(":checked"),
+        silenceImmunity: $('#silence-immunity').is(":checked"),
+        stun: $('#stun').is(":checked"),
+        scare: $('#scare').is(":checked"),
+        silence: $('#silence').is(":checked")
     }
     var stringifiedObject = JSON.stringify(postObject)
 
@@ -31,12 +44,16 @@ function sendRequest() {
             if (res.token) {
                 window.localStorage.setItem("token", res.token)
             }
+
+            alert('success')
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.responseJSON.action == "LOGOUT") {
                 logOut()
                 return
             }
+
+            alert('error')
         },
         dataType: "json",
         contentType: "application/json"

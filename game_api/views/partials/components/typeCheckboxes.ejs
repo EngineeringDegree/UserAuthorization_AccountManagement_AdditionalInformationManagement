@@ -1,0 +1,20 @@
+<% if(type.stunImmunity) { %>
+    Stun Immunity: <input id="type-stun-immunity" type="checkbox" checked />
+    <% } else { %>
+        Stun Immunity: <input id="type-stun-immunity" type="checkbox" />
+        <% } %>
+            <% if(type.scareImmunity) { %>
+                Scare Immunity: <input id="type-scare-immunity" type="checkbox" checked />
+                <% } else { %>
+                    Scare Immunity: <input id="type-scare-immunity" type="checkbox" />
+                    <% } %>
+                        <% if(type.silenceImmunity) { %>
+                            Silence Immunity: <input id="type-silence-immunity" type="checkbox" checked />
+                            <% } else { %>
+                                Silence Immunity: <input id="type-silence-immunity" type="checkbox" />
+                                <% } %>
+                                    <% if(type.charge) { %>
+                                        Charge: <input id="type-charge" type="checkbox" checked />
+                                        <% } else { %>
+                                            Charge: <input id="type-charge" type="checkbox" />
+                                            <% } %>

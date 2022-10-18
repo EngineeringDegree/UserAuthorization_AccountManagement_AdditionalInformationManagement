@@ -12,20 +12,18 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
+                <%- include('../partials/components/effectInputs') %>
+                    <%- include('../partials/components/effectCheckboxes') %>
+                        <% if(effect.readyToUse) { %>
+                            Ready to use: <input id="effect-ready" type="checkbox" checked />
+                            <% } else { %>
+                                Ready to use: <input id="effect-ready" type="checkbox" />
+                                <% } %>
+                                    <%- include('../partials/components/footer') %>
 
-                <input id="effect-id" type="hidden" value="<%= effect._id %>" />
-                Effect Name: <input id="effect-name" type="text" value="<%= effect.name %>" />
-                Effect Description: <input id="effect-description" type="text" value="<%= effect.description %>" />
-                <% if(effect.readyToUse) { %>
-                    Ready to use: <input id="effect-ready" type="checkbox" checked />
-                    <% } else { %>
-                        Ready to use: <input id="effect-ready" type="checkbox" />
-                        <% } %>
-                            <%- include('../partials/components/footer') %>
-
-                                <%- include('../partials/links/authorizationServer') %>
-                                    <%- include('../partials/links/authorizeAdmin') %>
-                                        <%- include('../partials/links/modifyEffect') %>
+                                        <%- include('../partials/links/authorizationServer') %>
+                                            <%- include('../partials/links/authorizeAdmin') %>
+                                                <%- include('../partials/links/modifyEffect') %>
 </body>
 
 </html>

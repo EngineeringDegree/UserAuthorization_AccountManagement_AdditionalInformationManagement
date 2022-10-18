@@ -15,6 +15,71 @@ function init() {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
+    var mobility = document.getElementById('effect-mobility')
+    if (mobility) {
+        mobility.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var defence = document.getElementById('effect-defence')
+    if (defence) {
+        defence.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var attack = document.getElementById('effect-attack')
+    if (attack) {
+        attack.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var canUseOn = document.getElementById('effect-can-use-on')
+    if (canUseOn) {
+        canUseOn.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var cooldown = document.getElementById('effect-cooldown')
+    if (cooldown) {
+        cooldown.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var duration = document.getElementById('effect-duration')
+    if (duration) {
+        duration.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var cost = document.getElementById('effect-cost')
+    if (cost) {
+        cost.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var stunImmunity = document.getElementById('effect-stun-immunity')
+    if (stunImmunity) {
+        stunImmunity.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var scareImmunity = document.getElementById('effect-scare-immunity')
+    if (scareImmunity) {
+        scareImmunity.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var silenceImmunity = document.getElementById('effect-silence-immunity')
+    if (silenceImmunity) {
+        silenceImmunity.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var stun = document.getElementById('effect-stun')
+    if (stun) {
+        stun.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var scare = document.getElementById('effect-scare')
+    if (scare) {
+        scare.addEventListener('mousedown', anythingChanged, false)
+    }
+
+    var silence = document.getElementById('effect-silence')
+    if (silence) {
+        silence.addEventListener('mousedown', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('effect-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -45,6 +110,19 @@ function sendRequest() {
         name: $('#effect-name').val(),
         description: $('#effect-description').val(),
         id: $('#effect-id').val(),
+        mobility: $('#effect-mobility').val(),
+        defence: $('#effect-defence').val(),
+        attack: $('#effect-attack').val(),
+        canUseOn: $('#effect-can-use-on').val(),
+        cooldown: $('#effect-cooldown').val(),
+        duration: $('#effect-duration').val(),
+        cost: $('#effect-cost').val(),
+        stunImmunity: $('#effect-stun-immunity').is(":checked"),
+        scareImmunity: $('#effect-scare-immunity').is(":checked"),
+        silenceImmunity: $('#effect-silence-immunity').is(":checked"),
+        stun: $('#effect-stun').is(":checked"),
+        scare: $('#effect-scare').is(":checked"),
+        silence: $('#effect-silence').is(":checked"),
         readyToUse: $('#effect-ready').is(":checked")
     }
     var stringifiedObject = JSON.stringify(putObject)

@@ -16,6 +16,9 @@
                 <input id="nation-id" type="hidden" value="<%= nation._id %>" />
                 Nation Name: <input id="nation-name" type="text" value="<%= nation.name %>" />
                 Nation Description: <input id="nation-description" type="text" value="<%= nation.description %>" />
+                Nation Mobility: <input id="nation-mobility" type="text" value="<%= nation.mobility %>" />
+                Nation Defence: <input id="nation-defence" type="text" value="<%= nation.defence %>" />
+                Nation Attack: <input id="nation-attack" type="text" value="<%= nation.attack %>" />
                 <% if(nation.readyToUse) { %>
                     Ready to use: <input id="nation-ready" type="checkbox" checked />
                     <% } else { %>

@@ -15,6 +15,21 @@ function init() {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
+    var mobility = document.getElementById('nation-mobility')
+    if (mobility) {
+        mobility.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var defence = document.getElementById('nation-defence')
+    if (defence) {
+        defence.addEventListener('keyup', anythingChanged, false)
+    }
+
+    var attack = document.getElementById('nation-attack')
+    if (attack) {
+        attack.addEventListener('keyup', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('nation-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -45,6 +60,9 @@ function sendRequest() {
         name: $('#nation-name').val(),
         description: $('#nation-description').val(),
         id: $('#nation-id').val(),
+        mobility: $('#nation-mobility').val(),
+        defence: $('#nation-defence').val(),
+        attack: $('#nation-attack').val(),
         readyToUse: $('#nation-ready').is(":checked")
     }
     var stringifiedObject = JSON.stringify(putObject)

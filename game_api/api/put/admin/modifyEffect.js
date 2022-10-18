@@ -30,6 +30,19 @@ router.put('/', async (req, res) => {
             const update = {
                 name: req.body.name,
                 description: req.body.description,
+                mobility: req.body.mobility,
+                defence: req.body.defence,
+                attack: req.body.attack,
+                canUseOn: req.body.canUseOn,
+                cooldown: req.body.cooldown,
+                duration: req.body.duration,
+                cost: req.body.cost,
+                stunImmunity: req.body.stunImmunity,
+                scareImmunity: req.body.scareImmunity,
+                silenceImmunity: req.body.silenceImmunity,
+                stun: req.body.stun,
+                scare: req.body.scare,
+                silence: req.body.silence,
                 readyToUse: req.body.readyToUse
             }
 
@@ -55,6 +68,19 @@ function validate(req) {
         id: Joi.string().min(1).required(),
         name: Joi.string().min(1).required(),
         description: Joi.string().required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
+        canUseOn: Joi.number().required(),
+        cooldown: Joi.number().required(),
+        duration: Joi.number().required(),
+        cost: Joi.string().required(),
+        stunImmunity: Joi.boolean().required(),
+        scareImmunity: Joi.boolean().required(),
+        silenceImmunity: Joi.boolean().required(),
+        stun: Joi.boolean().required(),
+        scare: Joi.boolean().required(),
+        silence: Joi.boolean().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(req)

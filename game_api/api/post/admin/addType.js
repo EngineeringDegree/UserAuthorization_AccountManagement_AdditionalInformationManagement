@@ -34,8 +34,17 @@ async function createType(type) {
     var newType = new Card_Type(_.pick({
         name: type.name,
         description: type.type,
+        buffNearbyAllies: type.buffNearbyAllies,
+        debuffNearbyEnemies: type.debuffNearbyEnemies,
+        mobility: type.mobility,
+        defence: type.defence,
+        attack: type.attack,
+        stunImmunity: type.stunImmunity,
+        scareImmunity: type.scareImmunity,
+        silenceImmunity: type.silenceImmunity,
+        charge: type.charge,
         readyToUse: false
-    }, ['name', 'description', 'readyToUse']))
+    }, ['name', 'description', 'buffNearbyAllies', 'debuffNearbyEnemies', 'mobility', 'defence', 'attack', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'charge', 'readyToUse']))
     await newType.save()
 }
 
@@ -50,7 +59,16 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
-        type: Joi.string().required()
+        type: Joi.string().required(),
+        buffNearbyAllies: Joi.string().required(),
+        debuffNearbyEnemies: Joi.string().required(),
+        mobility: Joi.number().required(),
+        defence: Joi.number().required(),
+        attack: Joi.number().required(),
+        stunImmunity: Joi.boolean().required(),
+        scareImmunity: Joi.boolean().required(),
+        silenceImmunity: Joi.boolean().required(),
+        charge: Joi.boolean().required()
     })
     const validation = schema.validate(req)
     return validation
