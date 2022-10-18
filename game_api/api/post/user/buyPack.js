@@ -6,6 +6,7 @@ const axios = require('axios')
 const { selectRandomElementFromArray } = require('../../../utils/random/random')
 const { Card } = require('../../../models/card')
 const { Pack } = require('../../../models/packs')
+const { Card_Nation } = require('../../../models/card_nation')
 const { Shop_Pack } = require('../../../models/shop_pack')
 
 // Middleware for creating a deck
@@ -24,7 +25,8 @@ router.post('/', async (req, res) => {
                         email: req.body.email,
                         token: req.body.token,
                         refreshToken: req.body.refreshToken,
-                        price: pack.price
+                        price: pack.price,
+                        gameApiSecret: process.env.GAME_API_SECRET
                     }
 
                     var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
@@ -34,10 +36,12 @@ router.post('/', async (req, res) => {
                 if (funds.data) {
                     var cards = await Card.find({ readyToUse: true })
                     var cardsToUse = []
+
                     if (pack.nation != "All") {
                         for (let i = 0; i < cards.length; i++) {
                             for (let j = 0; j < cards[i].nation.length; j++) {
-                                if (cards[i].nation[j] == pack.nation || cards[i].nation[j] == 'All') {
+                                var nation = await Card_Nation.find({ _id: cards[i].nation })
+                                if (nation.name == pack.nation || nation.name == 'All') {
                                     cardsToUse.push(cards[i])
                                     break
                                 }
@@ -47,8 +51,25 @@ router.post('/', async (req, res) => {
                         cardsToUse = cards
                     }
 
-                    var cardsChoosen = []
+                    if (cardsToUse.length == 0) {
+                        try {
+                            var patchObject = {
+                                email: req.body.email,
+                                token: req.body.token,
+                                refreshToken: req.body.refreshToken,
+                                refund: pack.price,
+                                gameApiSecret: process.env.GAME_API_SECRET
+                            }
 
+                            var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
+                        } catch (e) {
+                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                        }
+
+                        return res.status(404).send({ status: 'CARDS IN NATION NOT FOUND', code: 404, action: 'REFUND' })
+                    }
+
+                    var cardsChoosen = []
                     for (let i = 0; i < pack.cardsCount; i++) {
                         var el = selectRandomElementFromArray(cardsToUse.length)
                         var card = cardsToUse[el]

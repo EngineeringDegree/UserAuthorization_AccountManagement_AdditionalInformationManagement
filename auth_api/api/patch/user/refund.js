@@ -15,7 +15,7 @@ router.patch('/', async (req, res) => {
     }
 
     if (req.body.gameApiSecret != process.env.GAME_API_SECRET) {
-        return res.status(401).send({ status: 'YOU CANNOT START YOUR OWN BUY CALL', code: 401, action: 'LOGOUT' })
+        return res.status(401).send({ status: 'YOU CANNOT START YOUR OWN REFUND', code: 401, action: 'LOGOUT' })
     }
 
     let user = await User.findOne({ email: req.body.email })
@@ -27,19 +27,14 @@ router.patch('/', async (req, res) => {
         if (!check) {
             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
             if (check) {
-                if (user.funds >= req.body.price) {
-                    await changeUserAdmin(user.funds, req.body.price, user._id)
-                    return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
-                }
-                return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
+                await changeUserAdmin(user.funds, req.body.refund, user._id)
+                return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
             }
             return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
-        if (user.funds >= req.body.price) {
-            await changeUserAdmin(user.funds, req.body.price, user._id)
-            return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
-        }
-        return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
+
+        await changeUserAdmin(user.funds, req.body.refund, user._id)
+        return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
@@ -48,15 +43,15 @@ router.patch('/', async (req, res) => {
 /**
  * Changes user funds
  * @param {number} funds of user
- * @param {number} price to subtract
+ * @param {number} refund to add
  * @param {string} id of user
  */
-async function changeUserAdmin(funds, price, id) {
+async function changeUserAdmin(funds, refund, id) {
     const filter = {
         _id: id
     }
     const update = {
-        funds: funds - price
+        funds: funds + refund
     }
 
     await User.updateOne(filter, update)
@@ -73,7 +68,7 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         gameApiSecret: Joi.string().required(),
-        price: Joi.number().required()
+        refund: Joi.number().required()
     })
     const validation = schema.validate(req)
     return validation

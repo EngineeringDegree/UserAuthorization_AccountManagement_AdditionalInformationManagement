@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
 const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 const { maxCountOfCards } = require('../../../utils/deck/maxCountOfCards')
@@ -27,13 +28,22 @@ router.put('/', async (req, res) => {
         var userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
             var card = await Card.findOne({ _id: req.body.cards[i]._id, readyToUse: true })
+            if (!card) {
+                return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
+            }
             if (checkIfUserHasCard(card, userCards)) {
-                if (card.nation.includes(req.body.nation) || card.nation[0] == 'All') {
-                    if (card) {
-                        strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * req.body.cards[i].quantity)
-                    } else {
-                        return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
+                var found = false
+                for (let j = 0; j < card.nation.length; j++) {
+                    var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                    if (nation) {
+                        if (nation.name == 'All' || nation.name == req.body.nation) {
+                            found = true
+                            break
+                        }
                     }
+                }
+                if (found) {
+                    strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * req.body.cards[i].quantity)
                 } else {
                     return res.status(401).send({ status: 'SOME CARDS DOES NOT BELONG TO NATION YOU WANT TO USE A DECK FOR', code: 401, action: 'RELOAD' })
                 }
