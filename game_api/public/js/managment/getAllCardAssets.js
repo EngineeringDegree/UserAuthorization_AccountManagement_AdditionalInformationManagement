@@ -12,7 +12,6 @@ function init() {
                     window.localStorage.setItem("token", res.token)
                 }
 
-
                 var nations = document.getElementById('nations')
                 var types = document.getElementById('types')
                 var effects = document.getElementById('effects')
@@ -28,12 +27,12 @@ function init() {
                         nations.appendChild(p)
                         var checkbox = document.createElement('input')
                         checkbox.type = 'checkbox'
-                        checkbox.id = res.nations[i].name
+                        checkbox.id = res.nations[i]._id
                         if (cardNation) {
                             let value = cardNation.value
                             value = value.split(',')
                             for (let j = 0; j < value.length; j++) {
-                                if (value[j] == res.nations[i].name) {
+                                if (value[j] == res.nations[i]._id) {
                                     checkbox.checked = true
                                     break
                                 }
@@ -49,12 +48,12 @@ function init() {
                         types.appendChild(p)
                         var checkbox = document.createElement('input')
                         checkbox.type = 'checkbox'
-                        checkbox.id = res.types[i].name
+                        checkbox.id = res.types[i]._id
                         if (cardType) {
                             let value = cardType.value
                             value = value.split(',')
                             for (let j = 0; j < value.length; j++) {
-                                if (value[j] == res.types[i].name) {
+                                if (value[j] == res.types[i]._id) {
                                     checkbox.checked = true
                                     break
                                 }
@@ -70,12 +69,12 @@ function init() {
                         effects.appendChild(p)
                         var checkbox = document.createElement('input')
                         checkbox.type = 'checkbox'
-                        checkbox.id = res.effects[i].name
+                        checkbox.id = res.effects[i]._id
                         if (cardEffects) {
                             let value = cardEffects.value
                             value = value.split(',')
                             for (let j = 0; j < value.length; j++) {
-                                if (value[j] == res.effects[i].name) {
+                                if (value[j] == res.effects[i]._id) {
                                     checkbox.checked = true
                                     break
                                 }
