@@ -108,7 +108,7 @@ function displayOverlay(formattedValue, starting, startingFields) {
         if (startingFields) {
             var arrFields = startingFields.split(',')
             for (let k = 0; k < arrFields.length; k++) {
-                if (k % arrs[1] == 0) {
+                if (k % arrs[0] == 0) {
                     fieldsArr.push([])
                 }
                 fieldsArr[fieldsArr.length - 1].push(arrFields[k])
