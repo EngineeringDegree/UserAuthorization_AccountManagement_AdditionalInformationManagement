@@ -19,8 +19,15 @@ body {
 
 .map-overlay {
   border: 1px solid #000;
+  color: #ff0000;
+  font-weight: bold;
 }
 
 .cube-overlay {
   top: 0;
+}
+
+.field-to-place {
+  width: 100px;
+  height: 100px;
 }/*# sourceMappingURL=styles.css.map */

@@ -82,25 +82,40 @@ function displayOverlay(formattedValue, starting, startingFields) {
     }
 
     if (indexToEdit < 0) {
-        if (starting && startingFields) {
-            var arr = starting.split(',')
-            var arrFields = startingFields.split(',')
-            savedConfigurations.push({
-                dimensions: formattedValue,
-                fields: arrFields,
-                startingPositions: arr
-            })
-        } else {
-            savedConfigurations.push({
-                dimensions: formattedValue,
-                fields: [],
-                startingPositions: []
-            })
-        }
+        savedConfigurations.push({
+            dimensions: formattedValue,
+            fields: [],
+            startingPositions: []
+        })
 
         indexToEdit = savedConfigurations.length - 1
     }
+
     currentIndex = indexToEdit
+    var arrs = formattedValue.split('x')
+    var fieldsArr = []
+    var startingArr = []
+    if (arrs.length == 2) {
+        if (starting) {
+            var arr = starting.split(',')
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] != '') {
+                    startingArr.push(arr[i])
+                }
+                savedConfigurations[currentIndex].startingPositions = startingArr
+            }
+        }
+        if (startingFields) {
+            var arrFields = startingFields.split(',')
+            for (let k = 0; k < arrFields.length; k++) {
+                if (k % arrs[1] == 0) {
+                    fieldsArr.push([])
+                }
+                fieldsArr[fieldsArr.length - 1].push(arrFields[k])
+            }
+            savedConfigurations[currentIndex].fields = fieldsArr
+        }
+    }
 
     var img = document.getElementById('image-display')
     if (img) {
@@ -123,11 +138,9 @@ function displayGridOnImageLoad(width, height, formattedValue) {
     var grid = document.getElementById('field-grid')
     if (grid) {
         grid.innerHTML = ''
-        console.log(width, height, formattedValue, currentIndex, savedConfigurations)
         var val = formattedValue.split('x')
         var blockWidth = width / val[0]
         var blockHeight = height / val[1]
-        console.log(currentField)
         for (let i = 0; i < val[1]; i++) {
             let divOuter = document.createElement('div')
             divOuter.classList = 'd-flex'
@@ -138,11 +151,13 @@ function displayGridOnImageLoad(width, height, formattedValue) {
                 div.id = `field-${j}-${i}`
                 div.style.width = `${blockWidth}px`
                 div.style.height = `${blockHeight}px`
+                div.addEventListener('click', changeField, false)
                 divOuter.appendChild(div)
             }
             grid.appendChild(divOuter)
         }
     }
+    generateBasicFieldsToSavedConfigrations()
 }
 
 /**
@@ -159,20 +174,137 @@ function getMapFields() {
 
             var placeFields = document.getElementById('fields-grid')
             if (placeFields) {
-                for (let i = 0; i < res.fields.length; i++) {
-                    if (i == 0) {
-                        currentField = res.fields[i]
-                    }
-                    console.log(res.fields[i])
+                if (res.fields[0]) {
+                    currentField = res.fields[0]._id
                 }
 
-                console.log(currentField, currentIndex, savedConfigurations)
+                fields = res.fields
+
+                displayFieldsToUse(res.fields, placeFields)
+                generateBasicFieldsToSavedConfigrations()
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr, ajaxOptions, thrownError)
+            alert('error')
         },
         dataType: "json",
         contentType: "application/json"
     })
+}
+
+/**
+ * Places a fields to choose later to choose terrain
+ * @param {array} fields taken from backend 
+ * @param {DOMElement} placeFields where to place it
+ */
+function displayFieldsToUse(fields, placeFields) {
+    placeFields.innerHTML = ''
+    for (let i = 0; i < fields.length; i++) {
+        var el = document.createElement('div')
+        if (i == 0) {
+            el.classList = 'clickable field-to-place text-center map-overlay'
+        } else {
+            el.classList = 'clickable field-to-place text-center'
+        }
+        el.id = fields[i]._id
+        el.textContent = fields[i].name
+        el.addEventListener('click', changeChoosenField, false)
+        placeFields.appendChild(el)
+    }
+
+    var el2 = document.createElement('div')
+    el2.classList = 'clickable field-to-place text-center'
+    el2.id = 'spawnpoints'
+    el2.textContent = 'Choose spawnpoint'
+    el2.addEventListener('click', chooseSpawnpoint, false)
+    placeFields.appendChild(el2)
+}
+
+/**
+ * Starts choosing spawnpoints
+ * @param {DOMElement} e event
+ */
+function chooseSpawnpoint(e) {
+    var els = document.getElementsByClassName('field-to-place')
+    for (let i = 0; i < els.length; i++) {
+        els[i].classList.remove('map-overlay')
+    }
+
+    choosingSpawnpoints = true
+    e.target.classList.add('map-overlay')
+}
+
+/**
+ * Generates first fields to save in configuration
+ */
+function generateBasicFieldsToSavedConfigrations() {
+    if (savedConfigurations[currentIndex]) {
+        var dim = savedConfigurations[currentIndex].dimensions
+        dim = dim.split('x')
+        if (savedConfigurations[currentIndex].fields.length == 0 && currentField) {
+            for (let i = 0; i < dim[1]; i++) {
+                savedConfigurations[currentIndex].fields.push([])
+                for (let j = 0; j < dim[0]; j++) {
+                    savedConfigurations[currentIndex].fields[i].push(currentField)
+                    var el = document.getElementById(`field-${j}-${i}`)
+                    if (el) {
+                        for (let k = 0; k < fields.length; k++) {
+                            if (fields[k]._id == savedConfigurations[currentIndex].fields[i][j]) {
+                                el.textContent = fields[k].name
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < dim[1]; i++) {
+            for (let j = 0; j < dim[0]; j++) {
+                var el = document.getElementById(`field-${j}-${i}`)
+                if (el) {
+                    for (let k = 0; k < fields.length; k++) {
+                        if (fields[k]._id == savedConfigurations[currentIndex].fields[i][j]) {
+                            el.textContent = fields[k].name
+                        }
+                    }
+                }
+            }
+        }
+
+        var mapFields = document.getElementById('map-fields')
+        if (mapFields) {
+            mapFields.value = savedConfigurations[currentIndex].fields
+            mapFields.dispatchEvent(new Event('change'))
+        }
+    }
+}
+
+/**
+ * Changes choosen field
+ * @param {DOMElement} e changes currentField to target.id
+ */
+function changeChoosenField(e) {
+    var els = document.getElementsByClassName('field-to-place')
+    for (let i = 0; i < els.length; i++) {
+        els[i].classList.remove('map-overlay')
+    }
+    currentField = e.target.id
+    e.target.classList.add('map-overlay')
+    choosingSpawnpoints = false
+}
+
+/**
+ * Changes fields in saved configuration
+ * @param {DOMElement} e target clicked
+ */
+function changeField(e) {
+    var target = e.target.id.split('-')
+    if (target[1] && target[2]) {
+        if (!choosingSpawnpoints) {
+            savedConfigurations[currentIndex].fields[target[2]][target[1]] = currentField
+        } else {
+            console.log('choosing spawnpoints')
+        }
+        generateBasicFieldsToSavedConfigrations()
+    }
 }

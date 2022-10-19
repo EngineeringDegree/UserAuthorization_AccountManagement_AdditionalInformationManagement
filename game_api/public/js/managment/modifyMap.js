@@ -1,4 +1,4 @@
-var timeoutId, timeoutTime = 1000, savedConfigurations = [], currentIndex = 0, currentField = ''
+var timeoutId, timeoutTime = 1000, savedConfigurations = [], currentIndex = 0, currentField = '', fields = [], choosingSpawnpoints = false
 $(document).ready(init())
 
 /**
@@ -16,6 +16,8 @@ function init() {
         var starting = document.getElementById('map-starting')
         var fields = document.getElementById('map-fields')
         if (starting && fields) {
+            starting.addEventListener('change', anythingChanged, false)
+            fields.addEventListener('change', anythingChanged, false)
             drawOverlay(size, starting.value, fields.value, true)
         }
         size.addEventListener('keyup', anythingChanged, false)

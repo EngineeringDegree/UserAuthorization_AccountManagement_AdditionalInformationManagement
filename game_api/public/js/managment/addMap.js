@@ -1,4 +1,4 @@
-var savedConfigurations = [], currentIndex = -1, currentField = ''
+var savedConfigurations = [], currentIndex = -1, currentField = '', fields = [], choosingSpawnpoints = false
 $(document).ready(init())
 
 /**
