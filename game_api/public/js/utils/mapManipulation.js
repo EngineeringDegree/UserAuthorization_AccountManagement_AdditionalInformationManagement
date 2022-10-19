@@ -262,12 +262,20 @@ function generateBasicFieldsToSavedConfigrations() {
             for (let j = 0; j < dim[0]; j++) {
                 var el = document.getElementById(`field-${j}-${i}`)
                 if (el) {
+                    el.classList.remove('spawnpoint')
                     for (let k = 0; k < fields.length; k++) {
                         if (fields[k]._id == savedConfigurations[currentIndex].fields[i][j]) {
                             el.textContent = fields[k].name
                         }
                     }
                 }
+            }
+        }
+
+        for (let i = 0; i < savedConfigurations[currentIndex].startingPositions.length; i++) {
+            let el = document.getElementById(savedConfigurations[currentIndex].startingPositions[i])
+            if (el) {
+                el.classList.add('spawnpoint')
             }
         }
 
@@ -303,7 +311,18 @@ function changeField(e) {
         if (!choosingSpawnpoints) {
             savedConfigurations[currentIndex].fields[target[2]][target[1]] = currentField
         } else {
-            console.log('choosing spawnpoints')
+            let gotIn = false
+            for (let i = 0; i < savedConfigurations[currentIndex].startingPositions.length; i++) {
+                if (savedConfigurations[currentIndex].startingPositions[i] == e.target.id) {
+                    gotIn = true
+                    savedConfigurations[currentIndex].startingPositions.splice(i, 1)
+                    break
+                }
+            }
+
+            if (!gotIn) {
+                savedConfigurations[currentIndex].startingPositions.push(e.target.id)
+            }
         }
         generateBasicFieldsToSavedConfigrations()
     }

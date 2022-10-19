@@ -30,4 +30,8 @@ body {
 .field-to-place {
   width: 100px;
   height: 100px;
+}
+
+.spawnpoint {
+  background: rgba(225, 171, 44, 0.4);
 }/*# sourceMappingURL=styles.css.map */
