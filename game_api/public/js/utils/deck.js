@@ -63,7 +63,6 @@ function editDeck(deck) {
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         name: deck.name,
-        nation: deck.nation,
         cards: deck.cards.cardsPrepared,
         id: deck.id
     }

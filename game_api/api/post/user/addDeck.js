@@ -24,6 +24,11 @@ router.post('/', async (req, res) => {
         if (q > process.env.MAX_COUNT_OF_CARDS) {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
         }
+
+        var deckNation = await Card_Nation.findOne({ _id: req.body.nation, readyToUse: true })
+        if (!deckNation) {
+            return res.status(401).send({ status: 'THIS NATION HAS BEEN TURNED OFF', code: 401, action: 'RELOAD' })
+        }
         var userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
             var card = await Card.findOne({ _id: req.body.cards[i]._id, readyToUse: true })

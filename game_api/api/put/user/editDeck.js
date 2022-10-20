@@ -24,6 +24,11 @@ router.put('/', async (req, res) => {
         if (q > process.env.MAX_COUNT_OF_CARDS) {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
         }
+
+        var deckNation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+        if (!deckNation) {
+            return res.status(401).send({ status: 'THIS NATION HAS BEEN TURNED OFF', code: 401, action: 'RELOAD' })
+        }
         var userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
             var card = await Card.findOne({ _id: req.body.cards[i]._id, readyToUse: true })
@@ -35,7 +40,7 @@ router.put('/', async (req, res) => {
                 for (let j = 0; j < card.nation.length; j++) {
                     var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                     if (nation) {
-                        if (nation.name == 'All' || card.nation[j] == req.body.nation) {
+                        if (nation.name == 'All' || card.nation[j] == deck.nation) {
                             found = true
                             break
                         }
@@ -83,7 +88,6 @@ function validate(req) {
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         name: Joi.string().min(1).required(),
-        nation: Joi.string().min(1).required(),
         cards: Joi.array().required(),
         id: Joi.string().required()
     })
