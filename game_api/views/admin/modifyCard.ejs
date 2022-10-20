@@ -34,12 +34,13 @@
                     <% } else { %>
                         Ready to use: <input id="card-ready" type="checkbox" />
                         <% } %>
-                            <%- include('../partials/components/footer') %>
+                            <%- include('../partials/components/cardManipulation') %>
+                                <%- include('../partials/components/footer') %>
 
-                                <%- include('../partials/links/authorizationServer') %>
-                                    <%- include('../partials/links/authorizeAdmin') %>
-                                        <%- include('../partials/links/modifyCard') %>
-                                            <%- include('../partials/links/getAllCardAssets') %>
+                                    <%- include('../partials/links/authorizationServer') %>
+                                        <%- include('../partials/links/authorizeAdmin') %>
+                                            <%- include('../partials/links/modifyCard') %>
+                                                <%- include('../partials/links/getAllCardAssets') %>
 </body>
 
 </html>
