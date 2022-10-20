@@ -6,7 +6,6 @@ const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
 const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
-const { maxCountOfCards } = require('../../../utils/deck/maxCountOfCards')
 
 // Middleware for editing decks
 router.put('/', async (req, res) => {
@@ -22,7 +21,7 @@ router.put('/', async (req, res) => {
         for (let i = 0; i < req.body.cards.length; i++) {
             q += (req.body.cards[i].quantity / 1)
         }
-        if (q > maxCountOfCards) {
+        if (q > process.env.MAX_COUNT_OF_CARDS) {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
         }
         var userCards = await UserCard.findOne({ owner: req.body.email })

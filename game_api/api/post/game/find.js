@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
 const { Deck } = require('../../../models/deck')
+const { Card } = require('../../../models/card')
 const { Rating } = require('../../../models/rating')
 const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
 
@@ -20,6 +21,12 @@ router.post('/', async (req, res) => {
             var deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             if (deck) {
                 if (deck.owner == req.body.email) {
+                    for (let i = 0; i < deck.cards.length; i++) {
+                        let card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
+                        if (!card) {
+                            return res.status(401).send({ status: 'THAT CARD IS TURNED OFF', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
+                        }
+                    }
                     var rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
                     var userRating = 1500
                     if (rating) {
