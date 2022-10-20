@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
-var { Deck } = require('../../../models/deck')
-var { Pack } = require('../../../models/packs')
-var { Card } = require('../../../models/card')
+const { Deck } = require('../../../models/deck')
+const { Pack } = require('../../../models/packs')
+const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 
 router.get('/', async (req, res) => {

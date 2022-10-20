@@ -5,6 +5,7 @@ const _ = require('lodash')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Rating } = require('../../../models/rating')
+const { Card_Nation } = require('../../../models/card_nation')
 const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
 
 /*
@@ -21,6 +22,11 @@ router.post('/', async (req, res) => {
             var deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             if (deck) {
                 if (deck.owner == req.body.email) {
+                    var nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+                    if (!nation) {
+                        return res.status(401).send({ status: 'THAT NATION IS TURNED OFF', code: 401, action: 'CHANGE DECKS LIST' })
+                    }
+
                     for (let i = 0; i < deck.cards.length; i++) {
                         let card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
                         if (!card) {
