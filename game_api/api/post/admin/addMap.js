@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Joi = require('joi')
 const { Map } = require('../../../models/map')
 const { filterMapSize } = require('../../../utils/filter/filterMapSize')
+const { checkIfFieldsAreOkay, checkIfStartingPositionsAreOkay } = require('../../../utils/map/check')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
@@ -33,6 +34,17 @@ async function createMap(map) {
     if (!sizeToSave) {
         return false
     }
+
+    var goodFields = await checkIfFieldsAreOkay(map.fields, map.size)
+    if (!goodFields) {
+        return false
+    }
+
+    var goodStartingPostions = checkIfStartingPositionsAreOkay(map.startingPositions, map.size)
+    if (!goodStartingPostions) {
+        return false
+    }
+
     var newMap = new Map(_.pick({
         name: map.name,
         size: sizeToSave,

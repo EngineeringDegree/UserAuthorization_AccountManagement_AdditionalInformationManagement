@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const { Map } = require('../../../models/map')
+const { checkIfFieldsAreOkay, checkIfStartingPositionsAreOkay } = require('../../../utils/map/check')
 const { filterMapSize } = require('../../../utils/filter/filterMapSize')
 
 // Middleware for patching map
@@ -21,6 +22,16 @@ router.put('/', async (req, res) => {
             var sizeToSave = filterMapSize(req.body.size)
             if (!sizeToSave) {
                 return res.status(400).send({ status: 'BAD SIZE DATA', code: 404, action: 'FOCUS ON SIZE FIELD' })
+            }
+
+            var goodFields = await checkIfFieldsAreOkay(req.body.fields, req.body.size)
+            if (!goodFields) {
+                return res.status(400).send({ status: 'BAD FIELDS', code: 404, action: 'RELOAD' })
+            }
+
+            var goodStartingPostions = checkIfStartingPositionsAreOkay(req.body.startingPositions, req.body.size)
+            if (!goodStartingPostions) {
+                return res.status(400).send({ status: 'BAD STARTING POSITIONS', code: 404, action: 'RELOAD' })
             }
 
             const filter = {
