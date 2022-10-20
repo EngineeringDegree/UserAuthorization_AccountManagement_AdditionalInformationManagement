@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
+const { Card_Nation } = require('../../../models/card_nation')
 var { Deck } = require('../../../models/deck')
 
 router.get('/', async (req, res) => {
@@ -13,10 +14,15 @@ router.get('/', async (req, res) => {
         var deck = await Deck.findOne({ _id: req.query.id })
         if (deck) {
             if (deck.owner == req.query.email) {
-                if (res.locals.user.data.token) {
-                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token })
+                var nation = await Card_Nation.findOne({ _id: deck.nation })
+                if (nation) {
+                    if (res.locals.user.data.token) {
+                        return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
+                    }
+                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, nation: nation.name })
                 }
-                return res.status(200).send({ status: 'OK', code: 200, deck: deck })
+
+                return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'NATION NOT FOUND POPUP' })
             }
 
             return res.status(401).send({ status: 'DECK IS NOT YOURS', code: 401, action: 'NOT AN OWNER POPUP' })

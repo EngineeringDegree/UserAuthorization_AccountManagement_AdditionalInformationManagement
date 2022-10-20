@@ -6,7 +6,7 @@ $(document).ready(init())
 function init() {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
-    var deck = { name: '', nation: '', cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: urlParams.get('deckId') }
+    var deck = { name: '', nation: '', nationName: '', cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: urlParams.get('deckId') }
     var userCards = []
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
         $.ajax({
@@ -18,6 +18,7 @@ function init() {
                 }
                 deck.name = res.deck.name
                 deck.nation = res.deck.nation
+                deck.nationName = res.nation
                 deck.strength = res.deck.strength
                 deck.cards.cardsPrepared = res.deck.cards
                 sendRequest()
@@ -129,7 +130,7 @@ function init() {
                 div.appendChild(divName)
                 var inputQuantity = document.createElement('input')
                 inputQuantity.className = 'quantity'
-                inputQuantity.id = `${cards[i].card._id}-quantity`
+                inputQuantity.id = cards[i].card._id
                 inputQuantity.value = 0
                 for (let j = 0; j < cardsAlreadyDisplayed.length; j++) {
                     if (cardsAlreadyDisplayed[j]._id == cards[i].card._id) {
@@ -141,6 +142,8 @@ function init() {
                 inputQuantity.min = 0
                 inputQuantity.max = cards[i].quantity
                 inputQuantity.step = 1
+                inputQuantity.addEventListener('input', editCardsFront, false)
+                inputQuantity.addEventListener('change', editCardsFront, false)
                 div.appendChild(inputQuantity)
                 var cardStrength = document.createElement('input')
                 cardStrength.id = `${cards[i].card._id}-strength`
@@ -148,12 +151,6 @@ function init() {
                 cardStrength.value = cards[i].card.attack + cards[i].card.defense + cards[i].card.effects.length + cards[i].card.mobility + cards[i].card.type.length
                 cardStrength.type = 'hidden'
                 div.appendChild(cardStrength)
-                var btn = document.createElement('button')
-                btn.id = cards[i].card._id
-                btn.class = 'btn'
-                btn.textContent = 'Change Deck'
-                btn.addEventListener('click', editCardsFront)
-                div.appendChild(btn)
                 el.appendChild(div)
             }
         }
@@ -164,7 +161,7 @@ function init() {
      * @param {array} deck of objects which contains deck object which will be sent to backend on "save" button click
      */
     function displayDeck(deck) {
-        $('#nation').text(`Nation ${deck.nation}`)
+        $('#nation').text(`Nation ${deck.nationName}`)
         $('#name').val(deck.name)
         $('#strength').text(`Strength:  ${deck.strength}`)
         var el = document.getElementById('cards-inside')
@@ -195,7 +192,7 @@ function init() {
      * @param {DOM} e event emiiter
      */
     function editCardsFront(e) {
-        var quantity = $(`#${e.target.id}-quantity`).val()
+        var quantity = $(`#${e.target.id}`).val()
         var name = $(`#${e.target.id}-name`).text()
         var strength = $(`#${e.target.id}-strength`).val()
         var cardsPrepared = deck.cards.cardsPrepared

@@ -109,7 +109,7 @@ function init() {
                 div.appendChild(divName)
                 var inputQuantity = document.createElement('input')
                 inputQuantity.className = 'quantity'
-                inputQuantity.id = `${cards[i].card._id}-quantity`
+                inputQuantity.id = cards[i].card._id
                 inputQuantity.value = 0
                 for (let j = 0; j < cardsAlreadyDisplayed.length; j++) {
                     if (cardsAlreadyDisplayed[j]._id == cards[i].card._id) {
@@ -121,6 +121,8 @@ function init() {
                 inputQuantity.min = 0
                 inputQuantity.max = cards[i].quantity
                 inputQuantity.step = 1
+                inputQuantity.addEventListener('input', editCardsFront, false)
+                inputQuantity.addEventListener('change', editCardsFront, false)
                 div.appendChild(inputQuantity)
                 var cardStrength = document.createElement('input')
                 cardStrength.id = `${cards[i].card._id}-strength`
@@ -128,12 +130,6 @@ function init() {
                 cardStrength.value = cards[i].card.attack + cards[i].card.defense + cards[i].card.effects.length + cards[i].card.mobility + cards[i].card.type.length
                 cardStrength.type = 'hidden'
                 div.appendChild(cardStrength)
-                var btn = document.createElement('button')
-                btn.id = cards[i].card._id
-                btn.class = 'btn'
-                btn.textContent = 'Change Deck'
-                btn.addEventListener('click', editCardsFront)
-                div.appendChild(btn)
                 el.appendChild(div)
             }
         }
@@ -175,7 +171,7 @@ function init() {
      * @param {DOM} e event emiiter
      */
     function editCardsFront(e) {
-        var quantity = $(`#${e.target.id}-quantity`).val()
+        var quantity = $(`#${e.target.id}`).val()
         var name = $(`#${e.target.id}-name`).text()
         var strength = $(`#${e.target.id}-strength`).val()
         var cardsPrepared = currentDecksByNations[currentDeck].cards.cardsPrepared
