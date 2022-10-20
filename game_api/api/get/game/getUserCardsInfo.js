@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
             var cards = cardsObj.cards
             var cardsFiltered = []
             for (let i = 0; i < cards.length; i++) {
-                var card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
+                var card = await Card.findOne({ _id: cards[i]._id })
                 if (card) {
                     var nations = []
                     for (let j = 0; j < card.nation.length; j++) {

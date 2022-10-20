@@ -105,7 +105,11 @@ function init() {
                 var divName = document.createElement('div')
                 divName.id = `${cards[i].card._id}-name`
                 divName.className = 'name'
-                divName.textContent = cards[i].card.name
+                if (cards[i].card.readyToUse) {
+                    divName.textContent = cards[i].card.name
+                } else {
+                    divName.textContent = cards[i].card.name + ' - Card temporary turned off. Please do not use it if you want to play with this deck. '
+                }
                 div.appendChild(divName)
                 var inputQuantity = document.createElement('input')
                 inputQuantity.className = 'quantity'
