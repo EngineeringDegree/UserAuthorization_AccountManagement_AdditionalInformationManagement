@@ -29,8 +29,9 @@ async function createField(mapField) {
         description: mapField.description,
         basicDefence: mapField.basicDefence,
         basicMobilityCost: mapField.basicMobilityCost,
+        visionCost: mapField.visionCost,
         readyToUse: false
-    }, ['name', 'description', 'basicDefence', 'basicMobilityCost', 'readyToUse']))
+    }, ['name', 'description', 'basicDefence', 'basicMobilityCost', 'visionCost', 'readyToUse']))
     await newField.save()
 }
 
@@ -47,6 +48,7 @@ function validate(req) {
         name: Joi.string().min(1).required(),
         basicDefence: Joi.number().required(),
         basicMobilityCost: Joi.number().required(),
+        visionCost: Joi.number().required(),
         description: Joi.string().required()
     })
     const validation = schema.validate(req)

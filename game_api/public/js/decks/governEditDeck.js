@@ -49,6 +49,7 @@ function init() {
                     if (res.token) {
                         window.localStorage.setItem("token", res.token)
                     }
+
                     userCards = res.cards
                     $('#save-deck').on('click', saveNationDeck)
                     $('#name').on('keyup', editNameFront)

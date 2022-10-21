@@ -45,6 +45,11 @@ function init() {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
+    var vision = document.getElementById('card-vision')
+    if (vision) {
+        vision.addEventListener('keyup', anythingChanged, false)
+    }
+
     var effects = document.getElementById('card-effects')
     if (effects) {
         effects.addEventListener('keyup', anythingChanged, false)
@@ -122,6 +127,7 @@ function sendRequest() {
             attack: $('#card-attack').val(),
             defense: $('#card-defense').val(),
             mobility: $('#card-mobility').val(),
+            vision: $('#card-vision').val(),
             effects: effect,
             readyToUse: $('#card-ready').is(":checked"),
             id: $('#card-id').val(),

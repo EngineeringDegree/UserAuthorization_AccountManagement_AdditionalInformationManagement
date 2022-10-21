@@ -53,6 +53,7 @@ function sendRequest() {
             attack: $('#attack').val(),
             defense: $('#defense').val(),
             mobility: $('#mobility').val(),
+            vision: $('#vision').val(),
             effects: effect,
             description: $('#description').val(),
             basicDeck: $('#basic-deck').val()

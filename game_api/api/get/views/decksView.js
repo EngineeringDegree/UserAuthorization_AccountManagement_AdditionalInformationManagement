@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
     var decksToReturn = []
     var decks = await Deck.find({ owner: user.data.email, deleted: false }).select('_id name nation')
     for (let i = 0; i < decks.length; i++) {
-        var nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+        var nation = await Card_Nation.findOne({ _id: decks[i].nation })
         if (nation) {
             decksToReturn.push({
                 _id: decks[i]._id,

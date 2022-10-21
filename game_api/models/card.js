@@ -35,6 +35,10 @@ const Card = mongoose.model('Card', new mongoose.Schema({
         type: Number,
         required: true
     },
+    vision: {
+        type: Number,
+        required: true
+    },
     effects: {
         type: Array,
         required: true
@@ -63,6 +67,7 @@ function validateCard(card) {
         attack: Joi.number().required(),
         defense: Joi.number().required(),
         mobility: Joi.number().required(),
+        vision: Joi.number().required(),
         effects: Joi.array().required(),
         readyToUse: Joi.boolean().required(),
         description: Joi.string().required(),

@@ -21,6 +21,7 @@ function sendRequest() {
         name: $('#name').val(),
         basicDefence: $('#basic-defence').val(),
         basicMobilityCost: $('#basic-mobility-cost').val(),
+        visionCost: $('#vision-cost').val(),
         description: $('#description').val()
     }
     var stringifiedObject = JSON.stringify(postObject)

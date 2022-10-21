@@ -25,6 +25,7 @@ router.put('/', async (req, res) => {
                 description: req.body.description,
                 basicDefence: req.body.basicDefence,
                 basicMobilityCost: req.body.basicMobilityCost,
+                visionCost: req.body.visionCost,
                 readyToUse: req.body.readyToUse
             }
 
@@ -52,6 +53,7 @@ function validate(req) {
         description: Joi.string().required(),
         basicDefence: Joi.number().required(),
         basicMobilityCost: Joi.number().required(),
+        visionCost: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(req)

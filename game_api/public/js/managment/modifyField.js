@@ -29,6 +29,11 @@ function init() {
     if (basicMobilityCost) {
         basicMobilityCost.addEventListener('keyup', anythingChanged, false)
     }
+
+    var visionCost = document.getElementById('vision-cost')
+    if (visionCost) {
+        visionCost.addEventListener('keyup', anythingChanged, false)
+    }
 }
 
 /** 
@@ -56,6 +61,7 @@ function sendRequest() {
         description: $('#field-description').val(),
         basicDefence: $('#basic-defence').val(),
         basicMobilityCost: $('#basic-mobility-cost').val(),
+        visionCost: $('#vision-cost').val(),
         id: $('#field-id').val(),
         readyToUse: $('#field-ready').is(":checked")
     }

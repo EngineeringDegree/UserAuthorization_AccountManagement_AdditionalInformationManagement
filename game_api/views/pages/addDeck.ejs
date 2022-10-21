@@ -12,31 +12,32 @@
     <%- include('../partials/noscript/noscript') %>
         <%- include('../partials/components/menu') %>
             <%- include('../partials/components/breadcrumb') %>
-                <div id="deck-data">
-                    New deck data
-                    <%- include('../partials/components/listNationsToCreateDeck') %>
-                        <div id="cards-in-deck">
-                            <div id="nation">
+                <%- include('../partials/components/currentlyTurnedOffNations') %>
+                    <div id="deck-data">
+                        New deck data
+                        <%- include('../partials/components/listNationsToCreateDeck') %>
+                            <div id="cards-in-deck">
+                                <div id="nation">
+
+                                </div>
+                                <div>
+                                    <input id="name" type="text" />
+                                </div>
+                                <div id="strength">
+
+                                </div>
+                                <div id="cards-inside">
+
+                                </div>
+                            </div>
+                            <div id="displaying-cards">
 
                             </div>
-                            <div>
-                                <input id="name" type="text" />
-                            </div>
-                            <div id="strength">
-
-                            </div>
-                            <div id="cards-inside">
-
-                            </div>
-                        </div>
-                        <div id="displaying-cards">
-
-                        </div>
-                        <button id="save-deck">Save Deck</button>
-                </div>
-                <%- include('../partials/components/footer') %>
-                    <%- include('../partials/links/authorizationServer') %>
-                        <%- include('../partials/links/authorize') %>
+                            <button id="save-deck">Save Deck</button>
+                    </div>
+                    <%- include('../partials/components/footer') %>
+                        <%- include('../partials/links/authorizationServer') %>
+                            <%- include('../partials/links/authorize') %>
 </body>
 
 </html>
