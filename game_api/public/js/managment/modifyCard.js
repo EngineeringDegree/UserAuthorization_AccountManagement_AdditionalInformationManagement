@@ -62,7 +62,7 @@ function init() {
 
     var basicDeck = document.getElementById('card-basic-deck')
     if (basicDeck) {
-        basicDeck.addEventListener('change', anythingChanged, false)
+        basicDeck.addEventListener('keyup', anythingChanged, false)
     }
 }
 

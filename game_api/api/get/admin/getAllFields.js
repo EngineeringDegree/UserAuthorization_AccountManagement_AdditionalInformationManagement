@@ -7,7 +7,7 @@ This middleware sends cards according to parameters if user is admin
 */
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
-        var fields = await Map_Field.find({ readyToUse: true })
+        var fields = await Map_Field.find({})
         return res.status(200).send({ status: 'MAP FIELDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, fields: fields })
     }
 

@@ -31,7 +31,8 @@ body {
 
 .field-to-place {
     width: 100px;
-    height: 100px;
+    height: max-content;
+    min-height: 100px;
 }
 
 .spawnpoint {

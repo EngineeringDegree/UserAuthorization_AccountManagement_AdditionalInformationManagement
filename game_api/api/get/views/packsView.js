@@ -68,7 +68,7 @@ router.get('/', async (req, res) => {
                 packName: userPacks[i].packName
             })
         } else {
-            var nation = await Card_Nation.findOne({ _id: userPacks[i].nation, readyToUse: true })
+            var nation = await Card_Nation.findOne({ _id: userPacks[i].nation })
             if (nation) {
                 packsToReturn.push({
                     _id: userPacks[i]._id,

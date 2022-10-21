@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
-const axios = require('axios')
 const { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
+const { Card_Effect } = require('../../../models/card_effect')
+const { Card_Type } = require('../../../models/card_type')
+const { collectionFilter } = require('../../../utils/filter/collectionFilter')
 
 // Middleware for patching card
 router.put('/', async (req, res) => {
@@ -20,15 +23,11 @@ router.put('/', async (req, res) => {
         if (card) {
 
             var nations = req.body.nation
-            var nation = []
-
-            for (let i = 0; i < nations.length; i++) {
-                if (nations[i] != 'All') {
-                    nation.push(nations[i])
-                } else {
-                    nation.unshift(nations[i])
-                }
-            }
+            var types = req.body.type
+            var effects = req.body.effects
+            var nation = await collectionFilter(nations, Card_Nation)
+            var type = await collectionFilter(types, Card_Type)
+            var effect = await collectionFilter(effects, Card_Effect)
 
             const filter = {
                 _id: card._id
@@ -36,13 +35,13 @@ router.put('/', async (req, res) => {
             const update = {
                 name: req.body.name,
                 image: req.body.image,
-                type: req.body.type,
+                type: type,
                 nation: nation,
                 resources: req.body.resources,
                 attack: req.body.attack,
                 defense: req.body.defense,
                 mobility: req.body.mobility,
-                effects: req.body.effects,
+                effects: effect,
                 readyToUse: req.body.readyToUse,
                 description: req.body.description,
                 basicDeck: req.body.basicDeck

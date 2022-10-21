@@ -83,6 +83,8 @@ function init() {
                         }
                         effects.appendChild(checkbox)
                     }
+
+                    anythingChanged()
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

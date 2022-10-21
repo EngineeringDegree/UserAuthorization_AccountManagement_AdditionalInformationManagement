@@ -198,6 +198,7 @@ function getMapFields() {
  * @param {DOMElement} placeFields where to place it
  */
 function displayFieldsToUse(fields, placeFields) {
+    console.log(fields)
     placeFields.innerHTML = ''
     for (let i = 0; i < fields.length; i++) {
         var el = document.createElement('div')
@@ -207,7 +208,11 @@ function displayFieldsToUse(fields, placeFields) {
             el.classList = 'clickable field-to-place text-center'
         }
         el.id = fields[i]._id
-        el.textContent = fields[i].name
+        if (fields[i].readyToUse) {
+            el.textContent = fields[i].name
+        } else {
+            el.textContent = fields[i].name + ' - This field is currently turned off. It will not be used in game if map is turned on. It will change to the closest field type instead.'
+        }
         el.addEventListener('click', changeChoosenField, false)
         placeFields.appendChild(el)
     }

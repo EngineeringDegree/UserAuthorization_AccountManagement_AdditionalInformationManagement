@@ -29,7 +29,10 @@ body {
 
 .field-to-place {
   width: 100px;
-  height: 100px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  min-height: 100px;
 }
 
 .spawnpoint {

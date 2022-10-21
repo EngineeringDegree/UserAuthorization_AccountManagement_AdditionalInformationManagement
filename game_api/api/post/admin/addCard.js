@@ -3,6 +3,10 @@ const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
 const { Card } = require('../../../models/card')
+const { Card_Nation } = require('../../../models/card_nation')
+const { Card_Effect } = require('../../../models/card_effect')
+const { Card_Type } = require('../../../models/card_type')
+const { collectionFilter } = require('../../../utils/filter/collectionFilter')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
@@ -25,26 +29,22 @@ router.post('/', async (req, res) => {
  */
 async function createCard(card) {
     var nations = card.nation
-    var nation = []
-
-    for (let i = 0; i < nations.length; i++) {
-        if (nations[i] != 'All') {
-            nation.push(nations[i])
-        } else {
-            nation.unshift(nations[i])
-        }
-    }
+    var types = card.type
+    var effects = card.effects
+    var nation = await collectionFilter(nations, Card_Nation)
+    var type = await collectionFilter(types, Card_Type)
+    var effect = await collectionFilter(effects, Card_Effect)
 
     var newCard = new Card(_.pick({
         name: card.name,
         image: card.image,
-        type: card.type,
+        type: type,
         nation: nation,
         resources: card.resources,
         attack: card.attack,
         defense: card.defense,
         mobility: card.mobility,
-        effects: card.effects,
+        effects: effect,
         readyToUse: false,
         description: card.description,
         basicDeck: card.basicDeck
