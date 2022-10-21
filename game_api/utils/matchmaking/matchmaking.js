@@ -88,7 +88,11 @@ var generateGame = async (player1, player2) => {
         finished: false,
     }, ['player1', 'player2', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
     var returnedInfo = await newGame.save()
-    return `/game/${returnedInfo._id}`
+    if (returnedInfo._id) {
+        return `/game/${returnedInfo._id}`
+    }
+
+    return '/cannotGenerateGame'
 }
 
 /**
