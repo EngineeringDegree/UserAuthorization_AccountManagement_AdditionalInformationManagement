@@ -1,3 +1,5 @@
+const { Game } = require('../../models/game')
+const _ = require('lodash')
 var playersToMatchmake = []
 
 /**
@@ -73,8 +75,20 @@ var matchmake = async (io, ioNotSecure) => {
  * @param {object} player2 in game
  */
 var generateGame = async (player1, player2) => {
-    console.log(player1, player2)
-    return '/test/id'
+    var newGame = new Game(_.pick({
+        player1: {},
+        player2: {},
+        map: {},
+        currentState: {},
+        settings: {},
+        history: [],
+        player1Starts: true,
+        weakerPlayerChoosed: false,
+        outcome: {},
+        finished: false,
+    }, ['player1', 'player2', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
+    var returnedInfo = await newGame.save()
+    return `/game/${returnedInfo._id}`
 }
 
 /**
