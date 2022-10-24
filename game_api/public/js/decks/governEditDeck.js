@@ -1,3 +1,4 @@
+var deck, userCards
 $(document).ready(init())
 
 /**
@@ -6,8 +7,8 @@ $(document).ready(init())
 function init() {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
-    var deck = { name: '', nation: '', nationName: '', cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: urlParams.get('deckId') }
-    var userCards = []
+    deck = { name: '', nation: '', nationName: '', cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: urlParams.get('deckId') }
+    userCards = []
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
         $.ajax({
             type: "GET",

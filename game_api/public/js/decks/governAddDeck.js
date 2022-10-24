@@ -1,15 +1,13 @@
+var currentDecksByNations = [], currentDeck = 0, userCards = []
 $(document).ready(init())
 
 /**
  * Adds listeners
  */
 function init() {
-    var currentDeck = 0
-    var currentDecksByNations = []
     $("#my-nation-to-create-deck-from > option").each(function () {
         currentDecksByNations.push({ name: makeid(8), nation: this.value, nationName: this.text, cards: { cardsPrepared: [], cardsDisplayed: [] }, strength: 0, id: '' })
     })
-    var userCards = []
     var loggedIn = document.getElementsByClassName('logged-in')
     var loggedOut = document.getElementsByClassName('logged-out')
     sendRequest()

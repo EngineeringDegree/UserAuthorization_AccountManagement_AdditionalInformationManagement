@@ -99,6 +99,8 @@ const editDeck = require('./api/put/user/editDeck')
 
 // Delete middleware
 const cancelSearch = require('./api/delete/game/cancel')
+const deckSync = require('./api/delete/user/deckSync')
+const cardSync = require('./api/delete/user/cardSync')
 
 // Authorization middleware
 const authorizeUser = require('./utils/auth/authorizeUser')
@@ -242,6 +244,8 @@ app.use('/put/deck/edit', authorizeUser, editDeck)
 
 // Delete
 app.use('/cancel/game', authorizeUser, cancelSearch)
+app.use('/check/deck/sync', authorizeUser, deckSync)
+app.use('/check/card/sync', authorizeUser, cardSync)
 
 // Other endpoints
 app.use('*', error404View)
