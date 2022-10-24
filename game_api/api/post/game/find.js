@@ -26,13 +26,26 @@ router.post('/', async (req, res) => {
                     if (!nation) {
                         return res.status(401).send({ status: 'THAT NATION IS TURNED OFF', code: 401, action: 'CHANGE DECKS LIST' })
                     }
-
+                    var strength = 0
                     for (let i = 0; i < deck.cards.length; i++) {
                         let card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
                         if (!card) {
                             return res.status(401).send({ status: 'THAT CARD IS TURNED OFF', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
+                        strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
                     }
+
+                    if (strength != deck.strength) {
+                        const filter = {
+                            _id: deck._id
+                        }
+                        const update = {
+                            strength: strength
+                        }
+
+                        await Deck.updateOne(filter, update)
+                    }
+
                     var rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
                     var userRating = 1500
                     if (rating) {
@@ -49,7 +62,7 @@ router.post('/', async (req, res) => {
                         id: req.body.socketId,
                         userDeck: req.body.userDeck,
                         email: req.body.email,
-                        strength: deck.strength,
+                        strength: strength,
                         userRating: userRating,
                         pared: false
                     })

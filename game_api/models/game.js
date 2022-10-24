@@ -10,6 +10,14 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         type: Object,
         required: true
     },
+    player1Fog: {
+        type: Object,
+        required: true
+    },
+    player2Fog: {
+        type: Object,
+        required: true
+    },
     map: {
         type: Object,
         required: true
@@ -48,6 +56,8 @@ function validateGame(game) {
     const schema = Joi.object({
         player1: Joi.object().required(),
         player2: Joi.object().required(),
+        player1Fog: Joi.object().required(),
+        player2Fog: Joi.object().required(),
         map: Joi.object().required(),
         currentState: Joi.object().required(),
         settings: Joi.object().required(),
