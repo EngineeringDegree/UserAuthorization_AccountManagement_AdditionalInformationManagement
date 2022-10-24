@@ -32,6 +32,10 @@ router.post('/', async (req, res) => {
                         if (!card) {
                             return res.status(401).send({ status: 'THAT CARD IS TURNED OFF', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
+
+                        if (!card.nation.includes(deck.nation)) {
+                            return res.status(401).send({ status: 'NATION NOT FOUND IN CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
+                        }
                         strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
                     }
 
