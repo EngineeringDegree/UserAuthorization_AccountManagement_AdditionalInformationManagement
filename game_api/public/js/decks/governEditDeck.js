@@ -25,7 +25,6 @@ function init() {
                 sendRequest()
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr.responseJSON)
                 if (xhr.responseJSON.action == "LOGOUT") {
                     window.location.pathname = '/logout'
                     return

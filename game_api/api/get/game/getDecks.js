@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
+const { checkDeckStrengthAndUpdate } = require('../../../utils/deck/checkStrengthAndUpdate')
 const { Deck } = require('../../../models/deck')
 const { Pack } = require('../../../models/packs')
 const { Card } = require('../../../models/card')
@@ -30,11 +31,12 @@ router.get('/', async (req, res) => {
         for (let i = 0; i < decks.length; i++) {
             var nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
             if (nation) {
+                var strength = await checkDeckStrengthAndUpdate(decks[i]._id)
                 decksToReturn.push({
                     _id: decks[i]._id,
                     nation: nation.name,
                     name: decks[i].name,
-                    strength: decks[i].strength
+                    strength: strength
                 })
             }
         }

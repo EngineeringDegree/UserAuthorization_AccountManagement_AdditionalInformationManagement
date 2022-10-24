@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
-const { Deck } = require('../../../models/deck')
+const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
@@ -34,22 +34,9 @@ router.delete('/', async (req, res) => {
             }
 
             let q = 0
-            let found = false
-            for (let j = 0; j < userCards.cards.length; j++) {
-                if (userCards.cards[j]._id.equals(card._id)) {
-                    found = true
-                    if (userCards.cards[j].quantity < prepared[i].quantity) {
-                        return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
-                    }
-                    q += prepared[i].quantity
-                    if (q > process.env.MAX_COUNT_OF_CARDS) {
-                        return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
-                    }
-                }
-
-            }
-
-            if (!found) {
+            q += prepared[i].quantity
+            let found = checkIfUserHasCard(card, userCards, prepared[i].quantity)
+            if (!found || q > process.env.MAX_COUNT_OF_CARDS) {
                 return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
             }
         }

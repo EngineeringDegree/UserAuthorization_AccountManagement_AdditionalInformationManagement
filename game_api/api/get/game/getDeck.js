@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
+const { checkDeckStrengthAndUpdate } = require('../../../utils/deck/checkStrengthAndUpdate')
 const { Card_Nation } = require('../../../models/card_nation')
-var { Deck } = require('../../../models/deck')
+const { Deck } = require('../../../models/deck')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
@@ -16,10 +17,9 @@ router.get('/', async (req, res) => {
             if (deck.owner == req.query.email) {
                 var nation = await Card_Nation.findOne({ _id: deck.nation })
                 if (nation) {
-                    if (res.locals.user.data.token) {
-                        return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
-                    }
-                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, nation: nation.name })
+                    var strength = await checkDeckStrengthAndUpdate(deck._id)
+                    deck.strength = strength
+                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
                 }
 
                 return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'NATION NOT FOUND POPUP' })
