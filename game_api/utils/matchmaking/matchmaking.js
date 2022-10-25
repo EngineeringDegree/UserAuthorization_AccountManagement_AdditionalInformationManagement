@@ -75,6 +75,7 @@ var matchmake = async (io, ioNotSecure) => {
  * @param {object} player2 in game
  */
 var generateGame = async (player1, player2) => {
+    console.log(player1, player2)
     var newGame = new Game(_.pick({
         player1: {},
         player2: {},
@@ -91,7 +92,7 @@ var generateGame = async (player1, player2) => {
     }, ['player1', 'player2', 'player1Fog', 'player2Fog', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
     var returnedInfo = await newGame.save()
     if (returnedInfo._id) {
-        return `/game/${returnedInfo._id}`
+        return `/game?id=${returnedInfo._id}`
     }
 
     return '/cannotGenerateGame'
