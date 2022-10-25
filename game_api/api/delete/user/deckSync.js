@@ -18,7 +18,10 @@ router.delete('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var deck = await Deck.findOne({ _id: req.body.deck.id, deleted: false })
+        var deck = undefined
+        try {
+            deck = await Deck.findOne({ _id: req.body.deck.id, deleted: false })
+        } catch (e) { }
         if (!deck) {
             return res.status(404).send({ status: 'DECK NOT FOUND', code: 404, action: 'GO TO DECKS PAGE', token: res.locals.user.data.token })
         }
@@ -26,7 +29,10 @@ router.delete('/', async (req, res) => {
             return res.status(401).send({ status: 'DECK NATIONS ARE DIFFRENT', code: 401, action: 'RELOAD', token: res.locals.user.data.token })
         }
 
-        var nation = await Card_Nation.findOne({ _id: req.body.deck.nation })
+        var nation = undefined
+        try {
+            nation = await Card_Nation.findOne({ _id: req.body.deck.nation })
+        } catch (e) { }
         if (!nation) {
             return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'GO TO DECKS PAGE', token: res.locals.user.data.token })
         }
@@ -35,7 +41,10 @@ router.delete('/', async (req, res) => {
         var strength = 0
         var notSync = false
         for (let i = 0; i < deck.cards.length; i++) {
-            var card = await Card.findOne({ _id: deck.cards[i]._id })
+            var card = undefined
+            try {
+                card = await Card.findOne({ _id: deck.cards[i]._id })
+            } catch (e) { }
             if (card) {
                 if (card.nation.includes(deck.nation)) {
                     newCardsToSave.push(deck.cards[i])
@@ -55,7 +64,9 @@ router.delete('/', async (req, res) => {
             cards: newCardsToSave,
             strength: strength
         }
-        await Deck.updateOne(filter, update)
+        try {
+            await Deck.updateOne(filter, update)
+        } catch (e) { }
 
         if (notSync) {
             return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
@@ -64,7 +75,10 @@ router.delete('/', async (req, res) => {
         var userCards = await UserCard.findOne({ owner: req.body.email })
         var prepared = req.body.deck.cards.cardsPrepared
         for (let i = 0; i < prepared.length; i++) {
-            var card = await Card.findOne({ _id: prepared[i]._id })
+            var card = undefined
+            try {
+                card = await Card.findOne({ _id: prepared[i]._id })
+            } catch (e) { }
             if (!card) {
                 return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
             }

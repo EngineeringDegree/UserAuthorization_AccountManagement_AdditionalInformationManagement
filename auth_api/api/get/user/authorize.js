@@ -28,7 +28,9 @@ router.get('/', async (req, res) => {
                 const update = {
                     confirmed: true
                 }
-                const result = await User.updateOne(filter, update)
+                try {
+                    const result = await User.updateOne(filter, update)
+                } catch (e) { }
                 data = {
                     text: 'Address confirmed',
                     code: 200,

@@ -48,7 +48,9 @@ async function changeUserConfirmed(id, confirmed) {
         confirmed: confirmed
     }
 
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) { }
 }
 
 /**

@@ -12,7 +12,10 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var deck = await Deck.findOne({ _id: req.query.id })
+        var deck = undefined
+        try {
+            var deck = await Deck.findOne({ _id: req.query.id })
+        } catch (e) { }
         if (deck) {
             if (deck.owner == req.query.email) {
                 var nation = await Card_Nation.findOne({ _id: deck.nation })

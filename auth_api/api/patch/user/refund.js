@@ -54,7 +54,9 @@ async function changeUserAdmin(funds, refund, id) {
         funds: funds + refund
     }
 
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) { }
 }
 
 /**

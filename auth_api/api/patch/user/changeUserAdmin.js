@@ -49,7 +49,9 @@ async function changeUserAdmin(id, admin) {
         admin: admin
     }
 
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) { }
 }
 
 /**

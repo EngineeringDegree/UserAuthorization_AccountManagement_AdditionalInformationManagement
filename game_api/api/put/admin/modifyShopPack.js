@@ -29,7 +29,11 @@ router.put('/', async (req, res) => {
                 readyToUse: req.body.readyToUse
             }
 
-            await Shop_Pack.updateOne(filter, update)
+            try {
+                await Shop_Pack.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'MAP FIELD NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'SHOP PACK MODIFIED', code: 200, token: res.locals.user.data.token })
         }
         return res.status(404).send({ status: 'MAP NOT FOUND', code: 404, action: 'GO TO MAPS' })

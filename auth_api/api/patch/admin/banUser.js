@@ -5,7 +5,7 @@ const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
 
-// Middleware for patching card
+// Middleware for banning user
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
@@ -22,7 +22,12 @@ router.patch('/', async (req, res) => {
             if (!check) {
                 check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
                 if (check) {
-                    let userToBan = await User.findOne({ _id: req.body.id })
+                    var userToBan = undefined
+                    try {
+                        userToBan = await User.findOne({ _id: req.body.id })
+                    } catch (e) {
+                        return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+                    }
                     if (userToBan) {
                         const filter = {
                             _id: userToBan._id
@@ -40,14 +45,24 @@ router.patch('/', async (req, res) => {
                             bans: newArr
                         }
 
-                        await User.updateOne(filter, update)
-                        return res.status(200).send({ status: 'USER BANNED', code: 200, token: check, communicate: 'User has benn banned succesfully!' })
+                        try {
+                            await User.updateOne(filter, update)
+                        } catch (e) {
+                            return res.status(500).send({ status: 'USER NOT BANNED', code: 500, action: 'SOMETHING WENT WRONG POPUP' })
+                        }
+                        return res.status(200).send({ status: 'USER BANNED', code: 200, token: check, communicate: 'User has been banned succesfully!' })
                     }
-                    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+                    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
                 }
                 return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
             }
-            let userToBan = await User.findOne({ _id: req.body.id })
+
+            var userToBan = undefined
+            try {
+                userToBan = await User.findOne({ _id: req.body.id })
+            } catch (e) {
+                return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+            }
             if (userToBan) {
                 const filter = {
                     _id: userToBan._id
@@ -65,10 +80,14 @@ router.patch('/', async (req, res) => {
                     bans: newArr
                 }
 
-                await User.updateOne(filter, update)
-                return res.status(200).send({ status: 'USER BANNED', code: 200, communicate: 'User has benn banned succesfully!' })
+                try {
+                    await User.updateOne(filter, update)
+                } catch (e) {
+                    return res.status(500).send({ status: 'USER NOT BANNED', code: 500, action: 'SOMETHING WENT WRONG POPUP' })
+                }
+                return res.status(200).send({ status: 'USER BANNED', code: 200, communicate: 'User has been banned succesfully!' })
             }
-            return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+            return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
         }
         return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
     }

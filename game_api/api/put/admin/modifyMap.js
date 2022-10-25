@@ -47,7 +47,11 @@ router.put('/', async (req, res) => {
                 description: req.body.description
             }
 
-            await Map.updateOne(filter, update)
+            try {
+                await Map.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'MAP NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'MAP MODIFIED', code: 200, token: res.locals.user.data.token })
         }
         return res.status(404).send({ status: 'MAP NOT FOUND', code: 404, action: 'GO TO MAPS' })

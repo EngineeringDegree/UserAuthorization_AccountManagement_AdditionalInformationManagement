@@ -23,7 +23,12 @@ router.get('/', async (req, res) => {
         if (!check) {
             check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
             if (check) {
-                var userToFind = await User.findOne({ _id: req.query.id })
+                var userToFind = undefined
+                try {
+                    userToFind = await User.findOne({ _id: req.query.id })
+                } catch (e) {
+                    return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+                }
                 if (userToFind) {
                     if (user.email == userToFind.email) {
                         return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY LINK TO RESOURCE', token: check })
@@ -33,7 +38,13 @@ router.get('/', async (req, res) => {
             }
             return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
-        var userToFind = await User.findOne({ _id: req.query.id })
+
+        var userToFind = undefined
+        try {
+            userToFind = await User.findOne({ _id: req.query.id })
+        } catch (e) {
+            return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+        }
         if (userToFind) {
             if (user.email == userToFind.email) {
                 return res.status(200).send({ status: 'USER FOUND', code: 200, action: 'DISPLAY LINK TO RESOURCE' })

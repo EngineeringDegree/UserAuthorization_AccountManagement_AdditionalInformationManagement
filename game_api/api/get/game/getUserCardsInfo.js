@@ -11,12 +11,18 @@ router.get('/', async (req, res) => {
             var cards = cardsObj.cards
             var cardsFiltered = []
             for (let i = 0; i < cards.length; i++) {
-                var card = await Card.findOne({ _id: cards[i]._id })
+                var card = undefined
+                try {
+                    card = await Card.findOne({ _id: cards[i]._id })
+                } catch (e) { }
                 if (card) {
                     var nations = []
                     var nationsReady = []
                     for (let j = 0; j < card.nation.length; j++) {
-                        var nation = await Card_Nation.findOne({ _id: card.nation, readyToUse: true })
+                        var nation = undefined
+                        try {
+                            nation = await Card_Nation.findOne({ _id: card.nation, readyToUse: true })
+                        } catch (e) { }
                         if (nation) {
                             let nameFound = false
                             for (let k = 0; k < nations.length; k++) {
@@ -36,11 +42,7 @@ router.get('/', async (req, res) => {
                 }
             }
 
-            if (res.locals.user.data.token) {
-                return res.status(200).send({ status: 'OK', code: 200, cards: cardsFiltered, token: res.locals.user.data.token })
-            }
-
-            return res.status(200).send({ status: 'OK', code: 200, cards: cardsFiltered })
+            return res.status(200).send({ status: 'OK', code: 200, cards: cardsFiltered, token: res.locals.user.data.token })
         }
 
         return res.status(404).send({ status: 'CARDS NOT FOUND', code: 404, action: 'CARDS NOT FOUND POPUP' })

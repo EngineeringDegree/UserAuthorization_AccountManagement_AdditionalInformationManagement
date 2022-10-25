@@ -35,8 +35,9 @@ router.patch('/', async (req, res) => {
                 refreshToken: refreshTokens,
                 token: tokens
             }
-
-            await User.updateOne(filter, update)
+            try {
+                await User.updateOne(filter, update)
+            } catch (e) { }
 
             return res.status(200).send({ status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
         }

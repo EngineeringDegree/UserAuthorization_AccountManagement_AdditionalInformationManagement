@@ -8,10 +8,16 @@ const { Card } = require('../../models/card')
  */
 var checkDeckStrengthAndUpdate = async (id) => {
     var strength = 0
-    var deck = await Deck.findOne({ _id: id })
+    var deck = undefined
+    try {
+        deck = await Deck.findOne({ _id: id })
+    } catch (e) { }
     if (deck) {
         for (let i = 0; i < deck.cards.length; i++) {
-            var card = await Card.findOne({ _id: deck.cards[i]._id })
+            var card = undefined
+            try {
+                card = await Card.findOne({ _id: deck.cards[i]._id })
+            } catch (e) { }
             if (card) {
                 strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
             }
@@ -24,8 +30,9 @@ var checkDeckStrengthAndUpdate = async (id) => {
             const update = {
                 strength: strength
             }
-
-            await Deck.updateOne(filter, update)
+            try {
+                await Deck.updateOne(filter, update)
+            } catch (e) { }
         }
     }
 

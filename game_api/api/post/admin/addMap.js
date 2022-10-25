@@ -54,7 +54,11 @@ async function createMap(map) {
         readyToUse: false,
         description: map.description
     }, ['name', 'size', 'image', 'fields', 'startingPositions', 'readyToUse', 'description']))
-    await newMap.save()
+    try {
+        await newMap.save()
+    } catch (e) {
+        return false
+    }
     return true
 }
 

@@ -30,7 +30,10 @@ router.get('/', async (req, res) => {
         }
         var decksToReturn = []
         for (let i = 0; i < decks.length; i++) {
-            var nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+            var nation = undefined
+            try {
+                nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+            } catch (e) { }
             if (nation) {
                 var strength = await checkDeckStrengthAndUpdate(decks[i]._id)
                 var allOk = await checkIfDeckOk(decks[i]._id)
@@ -45,11 +48,7 @@ router.get('/', async (req, res) => {
             }
         }
 
-        if (res.locals.user.data.token) {
-            return res.status(200).send({ status: 'OK', token: res.locals.user.data.token, code: 200, decks: decksToReturn })
-        }
-
-        return res.status(200).send({ status: 'OK', code: 200, decks: decksToReturn })
+        return res.status(200).send({ status: 'OK', code: 200, decks: decksToReturn, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
@@ -68,7 +67,9 @@ async function createInvitationalGift(owner) {
         packName: 'Welcome Beginner Pack',
         used: false
     }, ['owner', 'cards', 'nation', 'packName', 'used']))
-    await newPack.save()
+    try {
+        await newPack.save()
+    } catch (e) { }
 }
 
 module.exports = router

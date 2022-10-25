@@ -48,7 +48,11 @@ router.put('/', async (req, res) => {
                 basicDeck: req.body.basicDeck
             }
 
-            await Card.updateOne(filter, update)
+            try {
+                await Card.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'CARD NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'CARD MODIFIED', code: 200, token: res.locals.user.data.token })
         }
         return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'GO TO CARDS' })

@@ -32,7 +32,9 @@ async function createNation(nation) {
         attack: nation.attack,
         readyToUse: false
     }, ['name', 'description', 'mobility', 'defence', 'attack', 'readyToUse']))
-    await newNation.save()
+    try {
+        await newNation.save()
+    } catch (e) { }
 }
 
 /**

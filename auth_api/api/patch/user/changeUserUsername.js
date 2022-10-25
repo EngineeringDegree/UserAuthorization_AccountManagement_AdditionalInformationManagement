@@ -48,8 +48,9 @@ async function changeUserUsername(id, username) {
     const update = {
         username: username
     }
-
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) { }
 }
 
 /**

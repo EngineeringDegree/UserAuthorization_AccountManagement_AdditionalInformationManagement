@@ -43,7 +43,9 @@ var askNewToken = async (userRefreshToken, refreshToken, user) => {
             const update = {
                 token: tokens
             }
-            const result = await User.updateOne(filter, update)
+            try {
+                const result = await User.updateOne(filter, update)
+            } catch (e) { }
             return token
         }
     } else {

@@ -3,7 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const { Map_Field } = require('../../../models/map_field')
 
-// Middleware for putting effects
+// Middleware for putting map fields
 router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
@@ -29,7 +29,11 @@ router.put('/', async (req, res) => {
                 readyToUse: req.body.readyToUse
             }
 
-            await Map_Field.updateOne(filter, update)
+            try {
+                await Map_Field.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'MAP FIELD NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'MAP FIELD MODIFIED', code: 200, token: res.locals.user.data.token })
         }
         return res.status(404).send({ status: 'MAP FIELD NOT FOUND', code: 404, action: '' })

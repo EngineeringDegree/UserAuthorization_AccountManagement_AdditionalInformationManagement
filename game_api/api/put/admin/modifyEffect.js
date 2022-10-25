@@ -40,7 +40,11 @@ router.put('/', async (req, res) => {
                 readyToUse: req.body.readyToUse
             }
 
-            await Card_Effect.updateOne(filter, update)
+            try {
+                await Card_Effect.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'CARD EFFECT NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'EFFECT MODIFIED', code: 200, token: res.locals.user.data.token })
         }
         return res.status(404).send({ status: 'EFFECT NOT FOUND', code: 404, action: '' })

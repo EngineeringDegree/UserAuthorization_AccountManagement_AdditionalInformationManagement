@@ -29,7 +29,11 @@ router.put('/', async (req, res) => {
                 readyToUse: req.body.readyToUse
             }
 
-            await Card_Nation.updateOne(filter, update)
+            try {
+                await Card_Nation.updateOne(filter, update)
+            } catch (e) {
+                return res.status(500).send({ status: 'CARD NATION NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+            }
             return res.status(200).send({ status: 'NATION MODIFIED', code: 200, token: res.locals.user.data.token })
         }
 

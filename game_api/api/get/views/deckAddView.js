@@ -74,11 +74,17 @@ router.get('/', async (req, res) => {
             var cards = userCards.cards
             var nations = []
             for (let i = 0; i < cards.length; i++) {
-                var card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
+                var card = undefined
+                try {
+                    card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
+                } catch (e) { }
                 if (card) {
                     for (let j = 0; j < card.nation.length; j++) {
                         var nationExist = false
-                        var nat = await Card_Nation.findOne({ _id: card.nation[j] })
+                        var nat = undefined
+                        try {
+                            nat = await Card_Nation.findOne({ _id: card.nation[j] })
+                        } catch (e) { }
                         if (nat) {
                             for (let k = 0; k < nations.length; k++) {
                                 if (nat.name == nations[k].name || nat.name == 'All') {

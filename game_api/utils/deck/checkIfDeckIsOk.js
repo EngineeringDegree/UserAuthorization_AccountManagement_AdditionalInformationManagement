@@ -8,17 +8,34 @@ const { Card } = require('../../models/card')
  * @returns true if okay, false if not
  */
 var checkIfDeckOk = async (id) => {
-    var deck = await Deck.findOne({ _id: id, deleted: false })
+    var deck = undefined, nation = undefined
+    try {
+        deck = await Deck.findOne({ _id: id, deleted: false })
+    } catch (e) {
+        return false
+    }
+
     if (!deck) {
         return false
     }
-    var nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+
+    try {
+        nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+    } catch (e) {
+        return false
+    }
+
     if (!nation) {
         return false
     }
 
     for (let i = 0; i < deck.cards.length; i++) {
-        let card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
+        var card = undefined
+        try {
+            card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
+        } catch (e) {
+            return false
+        }
         if (!card) {
             return false
         }

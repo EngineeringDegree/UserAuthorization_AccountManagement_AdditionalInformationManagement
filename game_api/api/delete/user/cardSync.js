@@ -17,7 +17,10 @@ router.delete('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var nation = await Card_Nation.findOne({ _id: req.body.deck.nation })
+        var nation = undefined
+        try {
+            nation = await Card_Nation.findOne({ _id: req.body.deck.nation })
+        } catch (e) { }
         if (!nation) {
             return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'GO TO DECKS PAGE', token: res.locals.user.data.token })
         }
@@ -25,7 +28,10 @@ router.delete('/', async (req, res) => {
         var userCards = await UserCard.findOne({ owner: req.body.email })
         var prepared = req.body.deck.cards.cardsPrepared
         for (let i = 0; i < prepared.length; i++) {
-            var card = await Card.findOne({ _id: prepared[i]._id })
+            var card = undefined
+            try {
+                card = await Card.findOne({ _id: prepared[i]._id })
+            } catch (e) { }
             if (!card) {
                 return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
             }

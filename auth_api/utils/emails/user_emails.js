@@ -80,7 +80,9 @@ async function putEmailLog(body, status) {
         status: status,
         timestamp: timestamp
     }, ['message', 'status', 'timestamp']))
-    await newLog.save()
+    try {
+        await newLog.save()
+    } catch (e) { }
 }
 
 module.exports = { sendConfirmationEmail, sendPasswordChangeEmail }

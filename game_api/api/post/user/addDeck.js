@@ -25,20 +25,29 @@ router.post('/', async (req, res) => {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
         }
 
-        var deckNation = await Card_Nation.findOne({ _id: req.body.nation, readyToUse: true })
+        var deckNation = undefined
+        try {
+            deckNation = await Card_Nation.findOne({ _id: req.body.nation, readyToUse: true })
+        } catch (e) { }
         if (!deckNation) {
             return res.status(401).send({ status: 'THIS NATION HAS BEEN TURNED OFF', code: 401, action: 'RELOAD' })
         }
         var userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
-            var card = await Card.findOne({ _id: req.body.cards[i]._id })
+            var card = undefined
+            try {
+                card = await Card.findOne({ _id: req.body.cards[i]._id })
+            } catch (e) { }
             if (!card) {
                 return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
             }
             if (checkIfUserHasCard(card, userCards, req.body.cards[i].quantity)) {
                 var found = false
                 for (let j = 0; j < card.nation.length; j++) {
-                    var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                    var nation = undefined
+                    try {
+                        nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                    } catch (e) { }
                     if (nation) {
                         if (nation.name == 'All' || card.nation[j] == req.body.nation) {
                             found = true
@@ -78,7 +87,9 @@ async function createDeck(deck, strength, owner) {
         owner: owner,
         deleted: false
     }, ['name', 'nation', 'cards', 'strength', 'owner', 'deleted']))
-    await newDeck.save()
+    try {
+        await newDeck.save()
+    } catch (e) { }
 }
 
 /**

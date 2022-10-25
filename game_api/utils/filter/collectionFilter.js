@@ -7,7 +7,10 @@
 var collectionFilter = async (els, Collection) => {
     var toReturn = []
     for (let i = 0; i < els.length; i++) {
-        var el = await Collection.findOne({ _id: els[i] })
+        var el = undefined
+        try {
+            el = await Collection.findOne({ _id: els[i] })
+        } catch (e) { }
         if (el) {
             if (el.name != 'All') {
                 toReturn.push(els[i])

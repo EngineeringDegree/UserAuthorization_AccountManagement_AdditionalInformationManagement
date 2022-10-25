@@ -13,7 +13,10 @@ router.patch('/', async (req, res) => {
 
     var decks = await Deck.find({ owner: req.body.email, deleted: false })
     if (decks.length > 1) {
-        var deck = await Deck.findOne({ _id: req.body.deckId })
+        var deck = undefined
+        try {
+            deck = await Deck.findOne({ _id: req.body.deckId })
+        } catch (e) { }
         if (deck) {
             if (deck.owner == req.body.email) {
                 const filter = {
@@ -23,11 +26,16 @@ router.patch('/', async (req, res) => {
                     deleted: true
                 }
 
-                await Deck.updateOne(filter, update)
+                try {
+                    await Deck.updateOne(filter, update)
+                } catch (e) { }
                 var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
                 var decksToReturn = []
                 for (let i = 0; i < decks.length; i++) {
-                    var nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+                    var nation = undefined
+                    try {
+                        nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
+                    } catch (e) { }
                     if (nation) {
                         decksToReturn.push({
                             _id: decks[i]._id,

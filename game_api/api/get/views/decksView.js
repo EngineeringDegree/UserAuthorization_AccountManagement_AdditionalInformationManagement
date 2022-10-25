@@ -66,14 +66,16 @@ router.get('/', async (req, res) => {
     var decksToReturn = []
     var decks = await Deck.find({ owner: user.data.email, deleted: false }).select('_id name nation')
     for (let i = 0; i < decks.length; i++) {
-        var nation = await Card_Nation.findOne({ _id: decks[i].nation })
-        if (nation) {
-            decksToReturn.push({
-                _id: decks[i]._id,
-                nation: nation.name,
-                name: decks[i].name
-            })
-        }
+        try {
+            var nation = await Card_Nation.findOne({ _id: decks[i].nation })
+            if (nation) {
+                decksToReturn.push({
+                    _id: decks[i]._id,
+                    nation: nation.name,
+                    name: decks[i].name
+                })
+            }
+        } catch (e) { }
     }
     return res.status(200).render('pages/decks', { breadcrumb: breadcrumb, decks: decksToReturn })
 })

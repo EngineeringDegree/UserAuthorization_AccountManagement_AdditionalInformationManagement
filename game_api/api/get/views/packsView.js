@@ -68,14 +68,16 @@ router.get('/', async (req, res) => {
                 packName: userPacks[i].packName
             })
         } else {
-            var nation = await Card_Nation.findOne({ _id: userPacks[i].nation })
-            if (nation) {
-                packsToReturn.push({
-                    _id: userPacks[i]._id,
-                    nation: nation.name,
-                    packName: userPacks[i].packName
-                })
-            }
+            try {
+                var nation = await Card_Nation.findOne({ _id: userPacks[i].nation })
+                if (nation) {
+                    packsToReturn.push({
+                        _id: userPacks[i]._id,
+                        nation: nation.name,
+                        packName: userPacks[i].packName
+                    })
+                }
+            } catch (e) { }
         }
     }
     return res.status(200).render('pages/packs', { breadcrumb: breadcrumb, packs: packsToReturn })

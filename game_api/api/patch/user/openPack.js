@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
-const axios = require('axios')
 const { Pack } = require('../../../models/packs')
 const { UserCard } = require('../../../models/user_cards')
 const { Deck } = require('../../../models/deck')
@@ -30,7 +29,9 @@ router.patch('/', async (req, res) => {
                 used: true
             }
 
-            await Pack.updateOne(filter, update)
+            try {
+                await Pack.updateOne(filter, update)
+            } catch (e) { }
             var cardsInPack = pack.cards
             var userCards = await UserCard.findOne({ owner: req.body.email })
             if (userCards) {
@@ -56,7 +57,9 @@ router.patch('/', async (req, res) => {
                 const update2 = {
                     cards: cards
                 }
-                await UserCard.updateOne(filter2, update2)
+                try {
+                    await UserCard.updateOne(filter2, update2)
+                } catch (e) { }
             } else {
                 var cards = []
                 for (let i = 0; i < cardsInPack.length; i++) {
@@ -67,7 +70,9 @@ router.patch('/', async (req, res) => {
                     owner: req.body.email,
                     cards: cards
                 }, ['owner', 'cards']))
-                await newCardsCollection.save()
+                try {
+                    await newCardsCollection.save()
+                } catch (e) { }
             }
 
             let decks = await Deck.find({ owner: req.body.email })
@@ -96,10 +101,16 @@ async function generateBasicDecks(owner, cards) {
     var nationCards = []
 
     for (let i = 0; i < cards.length; i++) {
-        let card = await Card.findOne({ _id: cards[i]._id })
+        var card = undefined
+        try {
+            card = await Card.findOne({ _id: cards[i]._id })
+        } catch (e) { }
 
         if (card.nation.length == 1) {
-            var nation = await Card_Nation.findOne({ _id: card.nation[0], readyToUse: true })
+            var nation = undefined
+            try {
+                nation = await Card_Nation.findOne({ _id: card.nation[0], readyToUse: true })
+            } catch (e) { }
             if (nation) {
                 if (nation.name == 'All') {
                     allNationCards.strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
@@ -127,7 +138,10 @@ async function generateBasicDecks(owner, cards) {
             }
         } else {
             for (let j = 0; j < card.nation.length; j++) {
-                var nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                var nation = undefined
+                try {
+                    nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
+                } catch (e) { }
                 if (nation) {
                     var nationAlreadyGenerated = false
                     for (let k = 0; k < nationCards.length; k++) {
@@ -161,7 +175,9 @@ async function generateBasicDecks(owner, cards) {
             name: `${nationCards[nationCards.length - 1].nation} Starter Deck`,
             deleted: false
         }, ['owner', 'nation', 'cards', 'strength', 'name', 'deleted']))
-        await newDeck.save()
+        try {
+            await newDeck.save()
+        } catch (e) { }
         nationCards.pop()
     } while (nationCards.length != 0)
 }

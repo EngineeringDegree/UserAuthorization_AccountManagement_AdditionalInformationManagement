@@ -19,16 +19,25 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         if (res.locals.user.data.confirmed) {
-            var deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
+            var deck = undefined
+            try {
+                deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
+            } catch (e) { }
             if (deck) {
                 if (deck.owner == req.body.email) {
-                    var nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+                    var nation = undefined
+                    try {
+                        nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
+                    } catch (e) { }
                     if (!nation) {
                         return res.status(401).send({ status: 'THAT NATION IS TURNED OFF', code: 401, action: 'CHANGE DECKS LIST' })
                     }
                     var strength = 0
                     for (let i = 0; i < deck.cards.length; i++) {
-                        let card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
+                        var card = undefined
+                        try {
+                            card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
+                        } catch (e) { }
                         if (!card) {
                             return res.status(401).send({ status: 'THAT CARD IS TURNED OFF', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
@@ -47,7 +56,9 @@ router.post('/', async (req, res) => {
                             strength: strength
                         }
 
-                        await Deck.updateOne(filter, update)
+                        try {
+                            await Deck.updateOne(filter, update)
+                        } catch (e) { }
                     }
 
                     var rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
@@ -60,7 +71,11 @@ router.post('/', async (req, res) => {
                             nation: deck.nation,
                             rating: 1500
                         }, ['owner', 'nation', 'rating']))
-                        await newRating.save()
+                        try {
+                            await newRating.save()
+                        } catch (e) {
+                            return res.status(500).send({ status: 'SOMETHING WENT WRONG', code: 500, action: 'SOMETHING WENT WRONG POPUP', token: res.locals.user.data.token })
+                        }
                     }
                     var success = addPlayer({
                         id: req.body.socketId,

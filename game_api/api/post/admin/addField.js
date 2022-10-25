@@ -32,7 +32,9 @@ async function createField(mapField) {
         visionCost: mapField.visionCost,
         readyToUse: false
     }, ['name', 'description', 'basicDefence', 'basicMobilityCost', 'visionCost', 'readyToUse']))
-    await newField.save()
+    try {
+        await newField.save()
+    } catch (e) { }
 }
 
 /**

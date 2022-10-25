@@ -18,7 +18,10 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         if (res.locals.user.data.confirmed) {
-            var pack = await Shop_Pack.findOne({ _id: req.body.id })
+            var pack = undefined
+            try {
+                pack = await Shop_Pack.findOne({ _id: req.body.id })
+            } catch (e) { }
             if (pack) {
                 try {
                     var patchObject = {
@@ -35,13 +38,37 @@ router.post('/', async (req, res) => {
                 }
                 if (funds.data) {
                     var cards = await Card.find({ readyToUse: true })
-                    var packNation = await Card_Nation.find({ _id: pack.nation, readyToUse: true })
+                    var packNation = undefined
+                    try {
+                        packNation = await Card_Nation.find({ _id: pack.nation, readyToUse: true })
+                    } catch (e) { }
                     var cardsToUse = []
+
+                    if (!packNation) {
+                        try {
+                            var patchObject = {
+                                email: req.body.email,
+                                token: req.body.token,
+                                refreshToken: req.body.refreshToken,
+                                refund: pack.price,
+                                gameApiSecret: process.env.GAME_API_SECRET
+                            }
+
+                            var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
+                        } catch (e) {
+                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                        }
+
+                        return res.status(404).send({ status: 'THAT NATION IS NOT TURNED ON', code: 404, action: 'REFUND' })
+                    }
 
                     if (packNation.name != "All") {
                         for (let i = 0; i < cards.length; i++) {
                             for (let j = 0; j < cards[i].nation.length; j++) {
-                                var nation = await Card_Nation.find({ _id: cards[i].nation })
+                                var nation = undefined
+                                try {
+                                    nation = await Card_Nation.find({ _id: cards[i].nation })
+                                } catch (e) { }
                                 if (nation.name == packNation.name || nation.name == 'All') {
                                     cardsToUse.push(cards[i])
                                     break
@@ -120,7 +147,9 @@ async function createPack(cards, owner, nation, packName) {
         owner: owner,
         used: false
     }, ['packName', 'nation', 'cards', 'owner', 'used']))
-    await newPack.save()
+    try {
+        await newPack.save()
+    } catch (e) { }
 }
 
 /**

@@ -50,7 +50,9 @@ async function createCard(card) {
         description: card.description,
         basicDeck: card.basicDeck
     }, ['name', 'image', 'type', 'nation', 'resources', 'attack', 'defense', 'mobility', 'vision', 'effects', 'readyToUse', 'description', 'basicDeck']))
-    await newCard.save()
+    try {
+        await newCard.save()
+    } catch (e) { }
 }
 
 /**

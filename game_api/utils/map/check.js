@@ -26,7 +26,10 @@ var checkIfFieldsAreOkay = async (fields, dimensions) => {
 
     for (let i = 0; i < dims[1]; i++) {
         for (let j = 0; j < dims[0]; j++) {
-            var field = await Map_Field.findOne({ _id: fields[i][j] })
+            var field = undefined
+            try {
+                field = await Map_Field.findOne({ _id: fields[i][j] })
+            } catch (e) { }
             if (!field) {
                 return false
             }

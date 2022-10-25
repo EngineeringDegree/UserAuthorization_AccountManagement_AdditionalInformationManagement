@@ -49,7 +49,9 @@ async function changeUserPassword(id, password) {
         password: pass
     }
 
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) { }
 }
 
 /**

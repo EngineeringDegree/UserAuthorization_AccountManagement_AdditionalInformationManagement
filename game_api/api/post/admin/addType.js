@@ -38,7 +38,9 @@ async function createType(type) {
         charge: type.charge,
         readyToUse: false
     }, ['name', 'description', 'buffNearbyAllies', 'debuffNearbyEnemies', 'mobility', 'defence', 'attack', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'charge', 'readyToUse']))
-    await newType.save()
+    try {
+        await newType.save()
+    } catch (e) { }
 }
 
 /**

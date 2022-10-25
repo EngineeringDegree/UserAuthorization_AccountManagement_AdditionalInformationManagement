@@ -57,7 +57,11 @@ async function changeUserEmail(id, email) {
         confirmed: false
     }
 
-    await User.updateOne(filter, update)
+    try {
+        await User.updateOne(filter, update)
+    } catch (e) {
+        return true
+    }
     return false
 }
 

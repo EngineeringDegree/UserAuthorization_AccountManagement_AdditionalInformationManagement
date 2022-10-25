@@ -57,7 +57,9 @@ async function putAdmin(body) {
         bans: [],
         funds: 0
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
-    await newUser.save()
+    try {
+        await newUser.save()
+    } catch (e) { }
     return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 
@@ -83,7 +85,9 @@ async function putUser(body) {
         bans: [],
         funds: 0
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
-    await newUser.save()
+    try {
+        await newUser.save()
+    } catch (e) { }
     return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
 }
 

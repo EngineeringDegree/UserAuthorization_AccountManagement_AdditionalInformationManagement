@@ -42,7 +42,9 @@ async function createEffect(effect) {
         silence: effect.silence,
         readyToUse: false
     }, ['name', 'description', 'mobility', 'defence', 'attack', 'canUseOn', 'cooldown', 'duration', 'cost', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'stun', 'scare', 'silence', 'readyToUse']))
-    await newEffect.save()
+    try {
+        await newEffect.save()
+    } catch (e) { }
 }
 
 /**

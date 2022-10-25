@@ -31,7 +31,9 @@ async function createPack(pack) {
         price: pack.price,
         readyToUse: false
     }, ['name', 'cardsCount', 'nation', 'price', 'readyToUse']))
-    await newPack.save()
+    try {
+        await newPack.save()
+    } catch (e) { }
 }
 
 /**
