@@ -253,7 +253,7 @@ app.use('/check/card/sync', authorizeUser, cardSync)
 app.use('*', error404View)
 
 // Run matchmaking server
-startMatchmaking(io, ioNotSecure)
+startMatchmaking(io, ioNotSecure, 'Ranked', 60000, 100)
 
 // HTTPS
 if (process.env.MODE == "live") {

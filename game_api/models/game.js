@@ -34,10 +34,6 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         type: Array,
         required: true
     },
-    player1Starts: {
-        type: Boolean,
-        required: true
-    },
     weakerPlayerChoosed: {
         type: Boolean,
         required: true
@@ -62,7 +58,6 @@ function validateGame(game) {
         currentState: Joi.object().required(),
         settings: Joi.object().required(),
         history: Joi.array().required(),
-        player1Starts: Joi.boolean().required(),
         weakerPlayerChoosed: Joi.boolean().required(),
         outcome: Joi.object().required(),
         finished: Joi.boolean().required()

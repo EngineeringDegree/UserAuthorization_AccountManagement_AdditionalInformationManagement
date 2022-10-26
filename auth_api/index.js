@@ -23,6 +23,7 @@ const changePasswordView = require('./api/get/views/changePasswordView')
 const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
 const checkIfHasAdminPremisions = require('./api/get/admin/checkIfUserHasAdminPremisions')
 const isOwner = require('./api/get/user/isOwner')
+const usersToGame = require('./api/get/admin/usersToGame')
 
 // Patch middleware
 const login = require('./api/patch/user/login')
@@ -84,6 +85,7 @@ app.use('/get/user', getUser)
 app.use('/get/user/exist', checkIfUserExists)
 app.use('/authorize', authorizeAccount)
 app.use('/get/user/isOwner', isOwner)
+app.use('/get/usersToGame', usersToGame)
 
 // Patch
 app.use('/patch/login', login)

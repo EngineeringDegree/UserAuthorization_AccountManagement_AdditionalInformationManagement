@@ -1,4 +1,6 @@
 const { Game } = require('../../models/game')
+const { Deck } = require('../../models/deck')
+const axios = require('axios')
 const _ = require('lodash')
 var playersToMatchmake = []
 
@@ -6,8 +8,11 @@ var playersToMatchmake = []
  * Matchmake function which send socket signal to needed sockets and creates a game
  * @param {object} io server secured
  * @param {object} ioNotSecure server not secured
+ * @param {string} gameType for settings
+ * @param {number} moveTime for settings how long move will take
+ * @param {number} turnLimit for settings how long will game take
  */
-var matchmake = async (io, ioNotSecure) => {
+var matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
     var playersToSort = playersToMatchmake
     playersToMatchmake = []
     playersToSort.sort((a, b) => {
@@ -15,48 +20,20 @@ var matchmake = async (io, ioNotSecure) => {
     })
 
     for (let i = 1; i < playersToSort.length; i++) {
-        if (playersToSort[i - 1].userRating + process.env.RATING_MODIFIER >= playersToSort[i].userRating && (!playersToSort[i - 1].pared && !playersToSort[i - 1].pared)) {
-            if (playersToSort[i - 1].strength < playersToSort[i].strength) {
-                if (playersToSort[i - 1].strength + process.env.STRENGTH_MODIFIER >= playersToSort[i].strength) {
-                    playersToSort[i - 1].pared = true
-                    playersToSort[i].pared = true
-                    if (io) {
-                        let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                        io.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                        io.in(playersToSort[i].id).emit('gameCreated', id)
-                    } else {
-                        let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                        ioNotSecure.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                        ioNotSecure.in(playersToSort[i].id).emit('gameCreated', id)
-                    }
-                }
-            } else if (playersToSort[i - 1].strength > playersToSort[i].strength) {
-                if (playersToSort[i].strength + process.env.STRENGTH_MODIFIER >= playersToSort[i - 1].strength) {
-                    playersToSort[i - 1].pared = true
-                    playersToSort[i].pared = true
-                    if (io) {
-                        let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                        io.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                        io.in(playersToSort[i].id).emit('gameCreated', id)
-                    } else {
-                        let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                        ioNotSecure.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                        ioNotSecure.in(playersToSort[i].id).emit('gameCreated', id)
-                    }
-                }
-            } else if (playersToSort[i - 1].strength == playersToSort[i].strength) {
-                playersToSort[i - 1].pared = true
-                playersToSort[i].pared = true
-                if (io) {
-                    let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                    io.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                    io.in(playersToSort[i].id).emit('gameCreated', id)
-                } else {
-                    let id = await generateGame(playersToSort[i - 1], playersToSort[i])
-                    ioNotSecure.in(playersToSort[i - 1].id).emit('gameCreated', id)
-                    ioNotSecure.in(playersToSort[i].id).emit('gameCreated', id)
-                }
-            }
+        if (playersToSort[i - 1].pared) {
+            continue
+        }
+
+        if (!checkIfInRange(playersToSort[i - 1], playersToSort[i])) {
+            continue
+        }
+
+        playersToSort[i - 1].pared = true
+        playersToSort[i].pared = true
+        if (io) {
+            generateGame(playersToSort[i - 1], playersToSort[i], gameType, moveTime, turnLimit, io)
+        } else {
+            generateGame(playersToSort[i - 1], playersToSort[i], gameType, moveTime, turnLimit, ioNotSecure)
         }
     }
 
@@ -70,32 +47,149 @@ var matchmake = async (io, ioNotSecure) => {
 }
 
 /**
+ * Checks if two players can be paired
+ * @param {object} player1 
+ * @param {object} player2 
+ * @returns true if can pair them, false if not
+ */
+var checkIfInRange = (player1, player2) => {
+    if (player1.userRating <= player2.userRating) {
+        if (player1.userRating + (process.env.RATING_MODIFIER) / 1 >= player2.userRating) {
+            if (player1.strength <= player2.strength) {
+                return player1.strength + (process.env.STRENGTH_MODIFIER) / 1 >= player2.strength
+            } else {
+                return player2.strength + (process.env.STRENGTH_MODIFIER) / 1 >= player1.strength
+            }
+        }
+
+        return false
+    } else {
+        if (player2.userRating + (process.env.RATING_MODIFIER) / 1 >= player1.userRating) {
+            if (player1.strength <= player2.strength) {
+                return player1.strength + (process.env.STRENGTH_MODIFIER) / 1 >= player2.strength
+            } else {
+                return player2.strength + (process.env.STRENGTH_MODIFIER) / 1 >= player1.strength
+            }
+        }
+
+        return false
+    }
+}
+
+/**
+ * Redirects pared users to proper page
+ * @param {object} io server
+ * @param {string} id1 of socket
+ * @param {string} id2 of socket
+ * @param {string} target to where redirect
+ */
+var redirectSocketsTo = (io, id1, id2, target) => {
+    io.in(id1).emit('gameCreated', target)
+    io.in(id2).emit('gameCreated', target)
+}
+
+/**
  * Generates game
  * @param {object} player1 in game
  * @param {object} player2 in game
+ * @param {string} gameType for settings
+ * @param {number} moveTime for settings how long move will take
+ * @param {number} turnLimit for settings how long will game take
  */
-var generateGame = async (player1, player2) => {
-    console.log(player1, player2)
-    var newGame = new Game(_.pick({
-        player1: {},
-        player2: {},
-        player1Fog: {},
-        player2Fog: {},
-        map: {},
-        currentState: {},
-        settings: {},
-        history: [],
-        player1Starts: true,
-        weakerPlayerChoosed: false,
-        outcome: {},
-        finished: false,
-    }, ['player1', 'player2', 'player1Fog', 'player2Fog', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
-    var returnedInfo = await newGame.save()
-    if (returnedInfo._id) {
-        return `/game/${returnedInfo._id}`
+var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) => {
+    var deck1 = undefined, deck2 = undefined, users = undefined
+    if (player2.strength < player1.strength) {
+        try {
+            deck1 = await Deck.findOne({ _id: player2.userDeck, deleted: false })
+            deck2 = await Deck.findOne({ _id: player1.userDeck, deleted: false })
+        } catch (e) {
+            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        }
+
+        try {
+            users = await axios.get(`${process.env.AUTH_SERVER}/get/usersToGame?player1=${player2.email}&player2=${player1.email}&gameApiSecret=${process.env.GAME_API_SECRET}`)
+        } catch (e) {
+            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        }
+    } else {
+        try {
+            deck1 = await Deck.findOne({ _id: player1.userDeck, deleted: false })
+            deck2 = await Deck.findOne({ _id: player2.userDeck, deleted: false })
+        } catch (e) {
+            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        }
+
+        try {
+            users = await axios.get(`${process.env.AUTH_SERVER}/get/usersToGame?player1=${player1.email}&player2=${player2.email}&gameApiSecret=${process.env.GAME_API_SECRET}`)
+        } catch (e) {
+            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        }
+
     }
 
-    return '/cannotGenerateGame'
+    if (!deck1 || !deck2 || !users) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+    }
+
+    if (!users.data) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+    }
+
+    var newGame = new Game(_.pick({
+        player1: {
+            id: users.data.user1
+        },
+        player2: {
+            id: users.data.user2
+        },
+        player1Fog: {
+
+        },
+        player2Fog: {
+
+        },
+        map: {
+
+        },
+        currentState: {
+
+        },
+        settings: {
+            gameType: gameType,
+            moveTime: moveTime,
+            turnLimit: turnLimit
+        },
+        history: [{
+
+        }],
+        weakerPlayerChoosed: false,
+        outcome: {
+            winner: '',
+            textOutcome: '',
+            player1Points: 0,
+            player1Funds: 0,
+            player2Points: 0,
+            player2Funds: 0
+        },
+        finished: false,
+    }, ['player1', 'player2', 'player1Fog', 'player2Fog', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
+
+    var returnedInfo = undefined
+    try {
+        returnedInfo = await newGame.save()
+    } catch (e) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+    }
+
+    if (!returnedInfo) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+    }
+
+    if (returnedInfo._id) {
+        redirectSocketsTo(io, player1.id, player2.id, `/game/${returnedInfo._id}`)
+    }
+
+    redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
 }
 
 /**
@@ -145,10 +239,15 @@ var removePlayerById = (id) => {
 
 /**
  * Starts matchmaking system on the server
+ * @param {object} io sockets
+ * @param {object} ioNotSecure sockets
+ * @param {string} gameType for settings
+ * @param {number} moveTime for settings how long move will take
+ * @param {number} turnLimit for settings how long will game take
  */
-var startMatchmaking = (io, ioNotSecure) => {
+var startMatchmaking = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
     setInterval(() => {
-        matchmake(io, ioNotSecure)
+        matchmake(io, ioNotSecure, gameType, moveTime, turnLimit)
     }, process.env.MATCHMAKE_TIME_CHECK)
 }
 
