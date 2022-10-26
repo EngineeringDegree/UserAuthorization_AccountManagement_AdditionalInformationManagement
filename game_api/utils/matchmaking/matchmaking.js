@@ -135,33 +135,43 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
     }
 
+    var player1 = {
+        id: users.data.user1
+    }
+    var player2 = {
+        id: users.data.user2
+    }
+    var player1Fog = {
+
+    }
+    var player2Fog = {
+
+    }
+    var map = {
+
+    }
+    var currentState = {
+
+    }
+    var history = [[{
+        player1: player1Fog,
+        player2: player2Fog,
+        players: currentState
+    }]]
+
     var newGame = new Game(_.pick({
-        player1: {
-            id: users.data.user1
-        },
-        player2: {
-            id: users.data.user2
-        },
-        player1Fog: {
-
-        },
-        player2Fog: {
-
-        },
-        map: {
-
-        },
-        currentState: {
-
-        },
+        player1: player1,
+        player2: player2,
+        player1Fog: player1Fog,
+        player2Fog: player2Fog,
+        map: map,
+        currentState: currentState,
         settings: {
             gameType: gameType,
             moveTime: moveTime,
             turnLimit: turnLimit
         },
-        history: [{
-
-        }],
+        history: history,
         weakerPlayerChoosed: false,
         outcome: {
             winner: '',
