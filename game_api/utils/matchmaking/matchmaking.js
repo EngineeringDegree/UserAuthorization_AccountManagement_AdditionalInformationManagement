@@ -151,7 +151,8 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
             description: nation1.description,
             mobility: nation1.mobility,
             defence: nation1.defence,
-            attack: nation1.attack
+            attack: nation1.attack,
+            vision: nation1.vision
         },
         initialStrength: strength1,
         currentStrength: strength1,
@@ -164,7 +165,8 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
             description: nation2.description,
             mobility: nation2.mobility,
             defence: nation2.defence,
-            attack: nation2.attack
+            attack: nation2.attack,
+            vision: nation2.vision
         },
         initialStrength: strength2,
         currentStrength: strength2,

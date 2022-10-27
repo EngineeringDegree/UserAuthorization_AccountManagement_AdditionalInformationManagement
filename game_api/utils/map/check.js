@@ -9,7 +9,13 @@ const { Map_Field } = require('../../models/map_field')
 var checkIfFieldsAreOkay = async (fields, dimensions) => {
     var dims = dimensions.split('x')
     if (dims.length != 2) {
-        return false
+        if (dims.length != 1) {
+            return false
+        }
+    }
+
+    if (dims.length == 1) {
+        dims.push(dims[0])
     }
 
     dims[0] /= 1
@@ -29,7 +35,9 @@ var checkIfFieldsAreOkay = async (fields, dimensions) => {
             var field = undefined
             try {
                 field = await Map_Field.findOne({ _id: fields[i][j] })
-            } catch (e) { }
+            } catch (e) {
+                return false
+            }
             if (!field) {
                 return false
             }
@@ -47,8 +55,17 @@ var checkIfFieldsAreOkay = async (fields, dimensions) => {
 var checkIfStartingPositionsAreOkay = (positions, dimensions) => {
     var dims = dimensions.split('x')
     if (dims.length != 2) {
-        return false
+        if (dims.length != 1) {
+            return false
+        }
     }
+
+    if (dims.length == 1) {
+        dims.push(dims[0])
+    }
+
+    dims[0] /= 1
+    dims[1] /= 1
 
     for (let i = 0; i < positions.length; i++) {
         let pos = positions[i].split('-')
