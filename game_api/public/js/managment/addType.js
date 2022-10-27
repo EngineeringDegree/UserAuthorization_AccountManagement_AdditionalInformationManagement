@@ -4,7 +4,7 @@ $(document).ready(init())
  * Adds event listener to button
  */
 function init() {
-    var addBtn = document.getElementById('add-btn')
+    let addBtn = document.getElementById('add-btn')
     if (addBtn) {
         addBtn.addEventListener('click', sendRequest, false)
     }
@@ -14,7 +14,7 @@ function init() {
  * Sends requests with user details and card details to save to backend
  */
 function sendRequest() {
-    var postObject = {
+    const postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -31,7 +31,7 @@ function sendRequest() {
         silenceImmunity: $('#silence-immunity').is(":checked"),
         charge: $('#charge').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "POST",

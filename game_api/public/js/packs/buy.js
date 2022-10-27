@@ -4,13 +4,10 @@ $(document).ready(init())
  * Initialize buttons to use buyPack function as onClick handler
  */
 function init() {
-    var buttons = document.getElementsByClassName('buy-pack-buttons')
+    let buttons = document.getElementsByClassName('buy-pack-buttons')
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", buyPack)
     }
-
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
 
     /**
      * Sends request to buy pack for user
@@ -18,13 +15,13 @@ function init() {
      */
     function buyPack(e) {
         if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
-            var patchObject = {
+            const patchObject = {
                 email: window.localStorage.getItem('email'),
                 token: window.localStorage.getItem('token'),
                 refreshToken: window.localStorage.getItem('refreshToken'),
                 id: e.target.id
             }
-            var stringifiedObject = JSON.stringify(patchObject)
+            const stringifiedObject = JSON.stringify(patchObject)
 
             $.ajax({
                 type: "POST",
@@ -65,13 +62,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 }

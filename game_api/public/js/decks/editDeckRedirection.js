@@ -12,7 +12,7 @@ function init() {
  * Redirects user to edit deck page
  */
 function editDeckRedirection() {
-    var deckId = $('#my-decks').val()
+    let deckId = $('#my-decks').val()
     window.location.href = `/decks/edit?deckId=${deckId}&userId=${window.localStorage.getItem('userId')}&email=${window.localStorage.getItem('email')}&token=${window.localStorage.getItem('token')}&refreshToken=${window.localStorage.getItem('refreshToken')}`
 }
 
@@ -20,13 +20,13 @@ function editDeckRedirection() {
  * Tries to delete object on backend and shows result
  */
 function deleteDeck() {
-    var patchObject = {
+    const patchObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         deckId: $('#my-decks').val()
     }
-    var stringifiedObject = JSON.stringify(patchObject)
+    const stringifiedObject = JSON.stringify(patchObject)
 
     $.ajax({
         type: "PATCH",
@@ -65,15 +65,15 @@ function deleteDeck() {
      * @returns void
      */
     function alterSelectElement(decks) {
-        var select = document.getElementById('my-decks')
+        let select = document.getElementById('my-decks')
         if (select) {
             if (decks.length == 0) {
                 select.remove()
-                var editDeckBtn = document.getElementById('edit-deck')
+                let editDeckBtn = document.getElementById('edit-deck')
                 if (editDeckBtn) {
                     editDeckBtn.remove()
                 }
-                var removeDeckBtn = document.getElementById('delete-deck')
+                let removeDeckBtn = document.getElementById('delete-deck')
                 if (removeDeckBtn) {
                     removeDeckBtn.remove()
                 }

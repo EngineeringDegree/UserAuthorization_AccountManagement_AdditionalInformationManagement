@@ -3,7 +3,7 @@
  * @param {User} user object model
  * @returns boolean if user confirmed account
  */
-var checkIsConfirmed = (user) => {
+const checkIsConfirmed = (user) => {
     return user.confirmed
 }
 

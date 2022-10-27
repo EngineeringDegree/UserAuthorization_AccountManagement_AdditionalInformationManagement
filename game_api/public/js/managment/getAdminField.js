@@ -5,23 +5,23 @@ $(document).ready(init())
  * Initialization function for all actions
  */
 function init() {
-    var pageListener = document.getElementById('pageListener')
+    let pageListener = document.getElementById('pageListener')
     if (pageListener) {
         pageListener.addEventListener('change', sendRequest, false)
     }
 
-    var records = document.getElementById('records-per-page')
+    let records = document.getElementById('records-per-page')
     if (records) {
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
-    var fieldName = document.getElementById('field-name')
+    let fieldName = document.getElementById('field-name')
     if (fieldName) {
         fieldName.addEventListener('keyup', effectNameChanged, false)
     }
 
-    var pagesDisplay = document.getElementById('pages')
-    var fields = document.getElementById('fields')
+    let pagesDisplay = document.getElementById('pages')
+    let fields = document.getElementById('fields')
 
     sendRequest()
 

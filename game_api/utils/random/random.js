@@ -3,7 +3,7 @@
  * @param {number} i array length
  * @returns number
  */
-var selectRandomElementFromArray = (i) => {
+const selectRandomElementFromArray = (i) => {
     return Math.floor(Math.random() * i)
 }
 

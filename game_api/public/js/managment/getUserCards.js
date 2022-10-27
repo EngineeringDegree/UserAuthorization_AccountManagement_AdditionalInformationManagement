@@ -4,8 +4,6 @@ $(document).ready(init())
  * Initialization function for all actions
  */
 function init() {
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     sendRequest()
@@ -56,7 +54,7 @@ function init() {
                         window.localStorage.setItem("token", res.token)
                     }
 
-                    var cardsContainer = document.getElementById('user-cards')
+                    let cardsContainer = document.getElementById('user-cards')
                     if (cardsContainer) {
                         let card = document.createElement('div')
                         card.className = 'card'
@@ -82,14 +80,6 @@ function init() {
      * Hides links which shouldn't be visible if user is logged out
      */
     function logOut() {
-        window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 }

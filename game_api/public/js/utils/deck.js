@@ -4,9 +4,9 @@
  * @returns random string with length of parameter
  */
 function makeid(length) {
-    var result = ''
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    var charactersLength = characters.length
+    let result = ''
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const charactersLength = characters.length
     for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength))
     }
@@ -18,7 +18,7 @@ function makeid(length) {
  * @param {object} deck of deck to add 
  */
 function addDeck(deck) {
-    var postObject = {
+    const postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -26,7 +26,7 @@ function addDeck(deck) {
         nation: deck.nation,
         cards: deck.cards.cardsPrepared
     }
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "POST",
@@ -58,7 +58,7 @@ function addDeck(deck) {
  * @param {object} deck of deck to change 
  */
 function editDeck(deck) {
-    var patchObject = {
+    const patchObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -66,7 +66,7 @@ function editDeck(deck) {
         cards: deck.cards.cardsPrepared,
         id: deck.id
     }
-    var stringifiedObject = JSON.stringify(patchObject)
+    const stringifiedObject = JSON.stringify(patchObject)
 
     $.ajax({
         type: "PUT",

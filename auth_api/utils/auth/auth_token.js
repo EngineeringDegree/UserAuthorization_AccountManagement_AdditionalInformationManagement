@@ -8,7 +8,7 @@ const { User } = require('../../models/user')
  * @param {string} token token sent from user to server
  * @returns 
  */
-var checkToken = (userToken, token) => {
+const checkToken = (userToken, token) => {
     const check = jwt.verify(token, config.get('PrivateKey'), (e) => {
         return e
     })
@@ -31,7 +31,7 @@ var checkToken = (userToken, token) => {
  * @param {Object} user user model from database 
  * @returns 
  */
-var askNewToken = async (userRefreshToken, refreshToken, user) => {
+const askNewToken = async (userRefreshToken, refreshToken, user) => {
     if (checkToken(userRefreshToken, refreshToken)) {
         if (user) {
             let tokens = user.token

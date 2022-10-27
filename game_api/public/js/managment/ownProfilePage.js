@@ -4,9 +4,7 @@ $(document).ready(init())
  * Initialization function for all actions
  */
 function init() {
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
-    var userId = document.getElementById('user-id')
+    let userId = document.getElementById('user-id')
     sendRequest()
 
     /**
@@ -23,9 +21,9 @@ function init() {
                             window.localStorage.setItem("token", res.token)
                         }
 
-                        var el = document.getElementById('to-user-decks')
+                        let el = document.getElementById('to-user-decks')
                         if (el) {
-                            var link = document.createElement('a')
+                            let link = document.createElement('a')
                             link.textContent = 'My Decks'
                             link.href = `/decks?userId=${userId.value}`
                             el.appendChild(link)
@@ -51,13 +49,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 }

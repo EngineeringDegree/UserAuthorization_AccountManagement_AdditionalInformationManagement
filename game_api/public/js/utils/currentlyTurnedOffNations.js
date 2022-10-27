@@ -9,7 +9,7 @@ function init() {
                 window.localStorage.setItem("token", res.token)
             }
 
-            var el = document.getElementById('turned-off-nations')
+            let el = document.getElementById('turned-off-nations')
             if (el) {
                 el.textContent = ''
                 if (res.nations.length == 0) {

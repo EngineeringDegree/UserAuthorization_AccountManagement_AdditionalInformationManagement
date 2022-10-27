@@ -60,7 +60,7 @@ function createBanUtility(id) {
  * @param {string} reason of ban
  */
 function sendBanRequest(id, value, reason) {
-    var postObject = {
+    const postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -68,7 +68,7 @@ function sendBanRequest(id, value, reason) {
         id: id,
         reason: reason
     }
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "PATCH",
@@ -93,8 +93,8 @@ function sendBanRequest(id, value, reason) {
  * @param {DOMElement} e dom element which was clicked and start calling
  */
 function banUser(e) {
-    var select = document.getElementById(e.target.id + '-select')
-    var reason = document.getElementById(e.target.id + '-reason')
+    let select = document.getElementById(e.target.id + '-select')
+    let reason = document.getElementById(e.target.id + '-reason')
     if (select && reason) {
         if (select.value.trim() != '' && reason.value.trim() != '') {
             sendBanRequest(e.target.id, select.value, reason.value)

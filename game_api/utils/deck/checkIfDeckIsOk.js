@@ -7,8 +7,8 @@ const { Card } = require('../../models/card')
  * @param {string} id of deck
  * @returns true if okay, false if not
  */
-var checkIfDeckOk = async (id) => {
-    var deck = undefined, nation = undefined
+const checkIfDeckOk = async (id) => {
+    let deck = undefined, nation = undefined
     try {
         deck = await Deck.findOne({ _id: id, deleted: false })
     } catch (e) {
@@ -30,7 +30,7 @@ var checkIfDeckOk = async (id) => {
     }
 
     for (let i = 0; i < deck.cards.length; i++) {
-        var card = undefined
+        let card = undefined
         try {
             card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
         } catch (e) {

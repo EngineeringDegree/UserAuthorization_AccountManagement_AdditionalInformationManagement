@@ -6,17 +6,17 @@ $(document).ready(init())
  */
 function init() {
     getMapFields()
-    var addBtn = document.getElementById('add-btn')
+    let addBtn = document.getElementById('add-btn')
     if (addBtn) {
         addBtn.addEventListener('click', sendRequest, false)
     }
 
-    var image = document.getElementById('image')
+    let image = document.getElementById('image')
     if (image) {
         image.addEventListener('keyup', imageChanged, false)
     }
 
-    var size = document.getElementById('size')
+    let size = document.getElementById('size')
     if (size) {
         size.addEventListener('keyup', drawOverlay, false)
     }
@@ -27,7 +27,7 @@ function init() {
  */
 function sendRequest() {
     if (currentIndex >= 0) {
-        var postObject = {
+        const postObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
@@ -38,7 +38,7 @@ function sendRequest() {
             startingPositions: savedConfigurations[currentIndex].startingPositions,
             description: $('#description').val()
         }
-        var stringifiedObject = JSON.stringify(postObject)
+        const stringifiedObject = JSON.stringify(postObject)
 
         $.ajax({
             type: "POST",

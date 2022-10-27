@@ -5,7 +5,7 @@ const { removePlayerById } = require('../matchmaking/matchmaking')
  * @param {object} io whole io server 
  * @param {object} socket which lost connection/disconnected 
  */
-var disconnect = (io, socket) => {
+const disconnect = (io, socket) => {
     removePlayerById(socket.id)
 }
 

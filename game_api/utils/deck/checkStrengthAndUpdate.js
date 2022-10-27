@@ -6,15 +6,15 @@ const { calculateCardsStrength } = require('../calculations/calculateCardStrengt
  * @param {DeckID} id to find in db 
  * @retunrs strength
  */
-var checkDeckStrengthAndUpdate = async (id) => {
-    var strength = 0
-    var deck = undefined
+const checkDeckStrengthAndUpdate = async (id) => {
+    let strength = 0
+    let deck = undefined
     try {
         deck = await Deck.findOne({ _id: id })
     } catch (e) { }
     if (deck) {
         for (let i = 0; i < deck.cards.length; i++) {
-            var card = undefined
+            let card = undefined
             try {
                 card = await Card.findOne({ _id: deck.cards[i]._id })
             } catch (e) { }

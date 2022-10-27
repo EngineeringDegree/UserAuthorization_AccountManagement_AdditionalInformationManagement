@@ -5,7 +5,7 @@
  * @param {number} quantity of card
  * @returns if user has card
  */
-var checkIfUserHasCard = (card, userCards, quantity) => {
+const checkIfUserHasCard = (card, userCards, quantity) => {
     for (let i = 0; i < userCards.cards.length; i++) {
         if (card._id.equals(userCards.cards[i]._id)) {
             if (userCards.cards[i].quantity < quantity) {

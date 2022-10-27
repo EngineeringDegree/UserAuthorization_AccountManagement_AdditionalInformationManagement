@@ -4,7 +4,7 @@ $(document).ready(init())
  * Adds event listener to button
  */
 function init() {
-    var addBtn = document.getElementById('add-btn')
+    let addBtn = document.getElementById('add-btn')
     if (addBtn) {
         addBtn.addEventListener('click', sendRequest, false)
     }
@@ -14,13 +14,13 @@ function init() {
  * Sends requests with user details and card details to save to backend
  */
 function sendRequest() {
-    var types = $("#types :input")
-    var nations = $("#nations :input")
-    var effects = $("#effects :input")
+    const types = $("#types :input")
+    const nations = $("#nations :input")
+    const effects = $("#effects :input")
 
-    var type = []
-    var nation = []
-    var effect = []
+    let type = []
+    let nation = []
+    let effect = []
 
     for (let i = 0; i < types.length; i++) {
         if (types[i].checked == true) {
@@ -41,7 +41,7 @@ function sendRequest() {
     }
 
     if (types && nations && effects) {
-        var postObject = {
+        const postObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
@@ -58,7 +58,7 @@ function sendRequest() {
             description: $('#description').val(),
             basicDeck: $('#basic-deck').val()
         }
-        var stringifiedObject = JSON.stringify(postObject)
+        const stringifiedObject = JSON.stringify(postObject)
 
         $.ajax({
             type: "POST",

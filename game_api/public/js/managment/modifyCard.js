@@ -5,67 +5,67 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var cardName = document.getElementById('card-name')
+    let cardName = document.getElementById('card-name')
     if (cardName) {
         cardName.addEventListener('keyup', anythingChanged, false)
     }
 
-    var image = document.getElementById('card-image')
+    let image = document.getElementById('card-image')
     if (image) {
         image.addEventListener('keyup', anythingChanged, false)
     }
 
-    var type = document.getElementById('card-type')
+    let type = document.getElementById('card-type')
     if (type) {
         type.addEventListener('keyup', anythingChanged, false)
     }
 
-    var nation = document.getElementById('card-nation')
+    let nation = document.getElementById('card-nation')
     if (nation) {
         nation.addEventListener('keyup', anythingChanged, false)
     }
 
-    var resources = document.getElementById('card-resources')
+    let resources = document.getElementById('card-resources')
     if (resources) {
         resources.addEventListener('keyup', anythingChanged, false)
     }
 
-    var attack = document.getElementById('card-attack')
+    let attack = document.getElementById('card-attack')
     if (attack) {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
-    var defense = document.getElementById('card-defense')
+    let defense = document.getElementById('card-defense')
     if (defense) {
         defense.addEventListener('keyup', anythingChanged, false)
     }
 
-    var mobility = document.getElementById('card-mobility')
+    let mobility = document.getElementById('card-mobility')
     if (mobility) {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
-    var vision = document.getElementById('card-vision')
+    let vision = document.getElementById('card-vision')
     if (vision) {
         vision.addEventListener('keyup', anythingChanged, false)
     }
 
-    var effects = document.getElementById('card-effects')
+    let effects = document.getElementById('card-effects')
     if (effects) {
         effects.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('card-description')
+    let description = document.getElementById('card-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('card-ready')
+    let readyToUse = document.getElementById('card-ready')
     if (readyToUse) {
         readyToUse.addEventListener('change', anythingChanged, false)
     }
 
-    var basicDeck = document.getElementById('card-basic-deck')
+    let basicDeck = document.getElementById('card-basic-deck')
     if (basicDeck) {
         basicDeck.addEventListener('keyup', anythingChanged, false)
     }
@@ -88,13 +88,13 @@ function anythingChanged() {
  * Sends requests with user details and card details to patch on backend
  */
 function sendRequest() {
-    var types = $("#types :input")
-    var nations = $("#nations :input")
-    var effects = $("#effects :input")
+    const types = $("#types :input")
+    const nations = $("#nations :input")
+    const effects = $("#effects :input")
 
-    var type = []
-    var nation = []
-    var effect = []
+    let type = []
+    let nation = []
+    let effect = []
 
     for (let i = 0; i < types.length; i++) {
         if (types[i].checked == true) {
@@ -115,7 +115,7 @@ function sendRequest() {
     }
 
     if (types && nations && effects) {
-        var postObject = {
+        const postObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
@@ -134,7 +134,7 @@ function sendRequest() {
             description: $('#card-description').val(),
             basicDeck: $('#card-basic-deck').val()
         }
-        var stringifiedObject = JSON.stringify(postObject)
+        const stringifiedObject = JSON.stringify(postObject)
 
         $.ajax({
             type: "PUT",

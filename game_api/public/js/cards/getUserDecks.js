@@ -4,9 +4,6 @@ $(document).ready(init())
  * Initialize request for getting user decks
  */
 function init() {
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
-
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
         $.ajax({
             type: "GET",
@@ -16,12 +13,12 @@ function init() {
                     window.localStorage.setItem("token", res.token)
                 }
 
-                var div = document.getElementById('user-deck')
+                let div = document.getElementById('user-deck')
                 if (div) {
-                    var select = document.createElement('select')
+                    let select = document.createElement('select')
                     select.id = 'user-decks'
                     for (let i = 0; i < res.decks.length; i++) {
-                        var opt = document.createElement('option')
+                        let opt = document.createElement('option')
                         opt.value = res.decks[i]._id
                         opt.innerHTML = `${res.decks[i].name} ${res.decks[i].nation} ${res.decks[i].strength}`
                         select.appendChild(opt)
@@ -56,13 +53,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 }

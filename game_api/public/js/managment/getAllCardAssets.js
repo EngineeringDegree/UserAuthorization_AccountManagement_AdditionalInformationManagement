@@ -12,13 +12,13 @@ function init() {
                     window.localStorage.setItem("token", res.token)
                 }
 
-                var nations = document.getElementById('nations')
-                var types = document.getElementById('types')
-                var effects = document.getElementById('effects')
+                let nations = document.getElementById('nations')
+                let types = document.getElementById('types')
+                let effects = document.getElementById('effects')
 
-                var cardType = document.getElementById('card-type')
-                var cardNation = document.getElementById('card-nation')
-                var cardEffects = document.getElementById('card-effects')
+                let cardType = document.getElementById('card-type')
+                let cardNation = document.getElementById('card-nation')
+                let cardEffects = document.getElementById('card-effects')
 
                 if (nations && types && effects) {
                     for (let i = 0; i < res.nations.length; i++) {
@@ -43,10 +43,10 @@ function init() {
                     }
 
                     for (let i = 0; i < res.types.length; i++) {
-                        var p = document.createElement('p')
+                        let p = document.createElement('p')
                         p.textContent = res.types[i].name
                         types.appendChild(p)
-                        var checkbox = document.createElement('input')
+                        let checkbox = document.createElement('input')
                         checkbox.type = 'checkbox'
                         checkbox.id = res.types[i]._id
                         if (cardType) {
@@ -64,10 +64,10 @@ function init() {
                     }
 
                     for (let i = 0; i < res.effects.length; i++) {
-                        var p = document.createElement('p')
+                        let p = document.createElement('p')
                         p.textContent = res.effects[i].name
                         effects.appendChild(p)
-                        var checkbox = document.createElement('input')
+                        let checkbox = document.createElement('input')
                         checkbox.type = 'checkbox'
                         checkbox.id = res.effects[i]._id
                         if (cardEffects) {

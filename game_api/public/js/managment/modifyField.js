@@ -5,32 +5,32 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('field-name')
+    let name = document.getElementById('field-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('field-description')
+    let description = document.getElementById('field-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('field-ready')
+    let readyToUse = document.getElementById('field-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var basicDefence = document.getElementById('basic-defence')
+    let basicDefence = document.getElementById('basic-defence')
     if (basicDefence) {
         basicDefence.addEventListener('keyup', anythingChanged, false)
     }
 
-    var basicMobilityCost = document.getElementById('basic-mobility-cost')
+    let basicMobilityCost = document.getElementById('basic-mobility-cost')
     if (basicMobilityCost) {
         basicMobilityCost.addEventListener('keyup', anythingChanged, false)
     }
 
-    var visionCost = document.getElementById('vision-cost')
+    let visionCost = document.getElementById('vision-cost')
     if (visionCost) {
         visionCost.addEventListener('keyup', anythingChanged, false)
     }
@@ -53,7 +53,7 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var putObject = {
+    const putObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -65,7 +65,7 @@ function sendRequest() {
         id: $('#field-id').val(),
         readyToUse: $('#field-ready').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(putObject)
+    const stringifiedObject = JSON.stringify(putObject)
 
     $.ajax({
         type: "PUT",

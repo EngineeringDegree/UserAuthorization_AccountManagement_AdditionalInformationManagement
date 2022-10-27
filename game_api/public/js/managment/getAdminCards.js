@@ -5,8 +5,8 @@ $(document).ready(init())
  * Initialization function for all actions
  */
 function init() {
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
+    let loggedIn = document.getElementsByClassName('logged-in')
+    let loggedOut = document.getElementsByClassName('logged-out')
 
     if (window.location.pathname == '/logout') {
         logOut()
@@ -18,23 +18,23 @@ function init() {
         return
     }
 
-    var pageListener = document.getElementById('pageListener')
+    let pageListener = document.getElementById('pageListener')
     if (pageListener) {
         pageListener.addEventListener('change', sendRequest, false)
     }
 
-    var records = document.getElementById('records-per-page')
+    let records = document.getElementById('records-per-page')
     if (records) {
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
-    var cardName = document.getElementById('card-name')
+    let cardName = document.getElementById('card-name')
     if (cardName) {
         cardName.addEventListener('keyup', cardNameChanged, false)
     }
 
-    var pagesDisplay = document.getElementById('pages')
-    var cards = document.getElementById('cards')
+    let pagesDisplay = document.getElementById('pages')
+    let cards = document.getElementById('cards')
 
     sendRequest()
 
@@ -99,13 +99,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 

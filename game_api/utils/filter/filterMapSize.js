@@ -3,10 +3,10 @@
  * @param {string} size to filter
  * @returns false if bad data, sizeToSave string if good data 
  */
-var filterMapSize = (size) => {
-    var sizeToSave = ''
-    var sizeTemp
-    var size = size.split('x')
+const filterMapSize = (size) => {
+    let sizeToSave = ''
+    let sizeTemp
+    size = size.split('x')
     if (size.length == 1 || size.length == 2) {
         if (size.length == 1) {
             sizeTemp = size[0] / 1

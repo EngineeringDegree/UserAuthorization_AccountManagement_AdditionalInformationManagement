@@ -6,15 +6,15 @@ $(document).ready(init())
  */
 function init() {
     getMapFields()
-    var cardName = document.getElementById('map-name')
+    let cardName = document.getElementById('map-name')
     if (cardName) {
         cardName.addEventListener('keyup', anythingChanged, false)
     }
 
-    var size = document.getElementById('map-size')
+    let size = document.getElementById('map-size')
     if (size) {
-        var starting = document.getElementById('map-starting')
-        var fields = document.getElementById('map-fields')
+        let starting = document.getElementById('map-starting')
+        let fields = document.getElementById('map-fields')
         if (starting && fields) {
             starting.addEventListener('change', anythingChanged, false)
             fields.addEventListener('change', anythingChanged, false)
@@ -23,24 +23,19 @@ function init() {
         size.addEventListener('keyup', anythingChanged, false)
     }
 
-    var image = document.getElementById('map-image')
+    let image = document.getElementById('map-image')
     if (image) {
         image.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('map-description')
+    let description = document.getElementById('map-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('map-ready')
+    let readyToUse = document.getElementById('map-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
-    }
-
-    var image = document.getElementById('map-image')
-    if (image) {
-        image.addEventListener('keyup', imageChanged, false)
     }
 }
 
@@ -66,7 +61,7 @@ function anythingChanged(e) {
  * Sends requests with user details and card details to patch on backend
  */
 function sendRequest() {
-    var postObject = {
+    const postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -79,7 +74,7 @@ function sendRequest() {
         id: $('#map-id').val(),
         description: $('#map-description').val()
     }
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "PUT",

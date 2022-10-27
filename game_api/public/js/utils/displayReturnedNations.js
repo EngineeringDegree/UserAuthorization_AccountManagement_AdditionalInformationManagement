@@ -34,13 +34,13 @@ function sendRequest() {
      * @param {array} nations 
      */
     function displayNations(nations) {
-        var nationsPlace = document.getElementById('nations')
+        let nationsPlace = document.getElementById('nations')
         if (nationsPlace) {
-            var select = document.createElement('select')
+            let select = document.createElement('select')
             select.id = 'nation'
             select.addEventListener('change', modify, false)
             for (let i = 0; i < nations.length; i++) {
-                var option = document.createElement('option')
+                let option = document.createElement('option')
                 option.value = nations[i]._id
                 option.textContent = nations[i].name
                 select.appendChild(option)
@@ -55,7 +55,7 @@ function sendRequest() {
      */
     function modify() {
         if (window.location.pathname == '/manage/shopPack/modify') {
-            var patchObject = {
+            const patchObject = {
                 email: window.localStorage.getItem('email'),
                 token: window.localStorage.getItem('token'),
                 refreshToken: window.localStorage.getItem('refreshToken'),
@@ -66,7 +66,7 @@ function sendRequest() {
                 readyToUse: $('#pack-ready').is(":checked"),
                 cardsCount: $('#pack-count').val()
             }
-            var stringifiedObject = JSON.stringify(patchObject)
+            const stringifiedObject = JSON.stringify(patchObject)
 
             $.ajax({
                 type: "PUT",

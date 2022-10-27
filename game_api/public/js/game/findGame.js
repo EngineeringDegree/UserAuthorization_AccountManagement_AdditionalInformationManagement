@@ -20,20 +20,20 @@ function init() {
  * Initializes find game operation request to button
  */
 function findGame() {
-    var choosenUserDeck = $('#user-decks').val()
+    const choosenUserDeck = $('#user-decks').val()
     if (!choosenUserDeck) {
         alert('Choose deck you want to play with. It can take a while to load up.')
         return
     }
 
-    var postObject = {
+    const postObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         socketId: socket.id,
         userDeck: choosenUserDeck
     }
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "POST",
@@ -68,12 +68,12 @@ function findGame() {
 }
 
 function cancelGame() {
-    var deleteObject = {
+    const deleteObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken')
     }
-    var stringifiedObject = JSON.stringify(deleteObject)
+    const stringifiedObject = JSON.stringify(deleteObject)
 
     $.ajax({
         type: "DELETE",

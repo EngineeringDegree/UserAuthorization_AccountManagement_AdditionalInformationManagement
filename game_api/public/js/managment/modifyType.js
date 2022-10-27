@@ -5,67 +5,67 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('type-name')
+    let name = document.getElementById('type-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('type-description')
+    let description = document.getElementById('type-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var bna = document.getElementById('type-buff-nearby-allies')
+    let bna = document.getElementById('type-buff-nearby-allies')
     if (bna) {
         bna.addEventListener('keyup', anythingChanged, false)
     }
 
-    var dne = document.getElementById('type-debuff-nearby-enemies')
+    let dne = document.getElementById('type-debuff-nearby-enemies')
     if (dne) {
         dne.addEventListener('keyup', anythingChanged, false)
     }
 
-    var mobility = document.getElementById('type-mobility')
+    let mobility = document.getElementById('type-mobility')
     if (mobility) {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
-    var defence = document.getElementById('type-defence')
+    let defence = document.getElementById('type-defence')
     if (defence) {
         defence.addEventListener('keyup', anythingChanged, false)
     }
 
-    var attack = document.getElementById('type-attack')
+    let attack = document.getElementById('type-attack')
     if (attack) {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
-    var vision = document.getElementById('type-vision')
+    let vision = document.getElementById('type-vision')
     if (vision) {
         vision.addEventListener('keyup', anythingChanged, false)
     }
 
-    var stun = document.getElementById('type-stun-immunity')
+    let stun = document.getElementById('type-stun-immunity')
     if (stun) {
         stun.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var scare = document.getElementById('type-scare-immunity')
+    let scare = document.getElementById('type-scare-immunity')
     if (scare) {
         scare.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var silence = document.getElementById('type-silence-immunity')
+    let silence = document.getElementById('type-silence-immunity')
     if (silence) {
         silence.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var charge = document.getElementById('type-charge')
+    let charge = document.getElementById('type-charge')
     if (charge) {
         charge.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('type-ready')
+    let readyToUse = document.getElementById('type-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
@@ -88,7 +88,7 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var putObject = {
+    const putObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -107,7 +107,7 @@ function sendRequest() {
         charge: $('#type-charge').is(":checked"),
         readyToUse: $('#type-ready').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(putObject)
+    const stringifiedObject = JSON.stringify(putObject)
 
     $.ajax({
         type: "PUT",

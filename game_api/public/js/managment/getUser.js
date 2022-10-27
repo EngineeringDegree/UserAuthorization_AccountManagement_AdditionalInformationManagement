@@ -52,12 +52,12 @@ function init() {
         if (!user) {
             return
         }
-        var element = document.createElement('div')
-        var admin = document.createElement('input')
+        let element = document.createElement('div')
+        let admin = document.createElement('input')
         admin.type = 'checkbox'
         admin.disabled = true
 
-        var confirmed = document.createElement('input')
+        let confirmed = document.createElement('input')
         confirmed.type = 'checkbox'
         confirmed.disabled = true
         confirmed.id = 'confirmed'
@@ -121,7 +121,7 @@ function init() {
         }
         user.appendChild(element)
 
-        var btn = document.getElementById(userInfo.id)
+        let btn = document.getElementById(userInfo.id)
         if (btn) {
             btn.addEventListener('click', banUser, false)
         }
@@ -132,13 +132,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 

@@ -5,37 +5,37 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('nation-name')
+    let name = document.getElementById('nation-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('nation-description')
+    let description = document.getElementById('nation-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var mobility = document.getElementById('nation-mobility')
+    let mobility = document.getElementById('nation-mobility')
     if (mobility) {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
-    var defence = document.getElementById('nation-defence')
+    let defence = document.getElementById('nation-defence')
     if (defence) {
         defence.addEventListener('keyup', anythingChanged, false)
     }
 
-    var attack = document.getElementById('nation-attack')
+    let attack = document.getElementById('nation-attack')
     if (attack) {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
-    var vision = document.getElementById('nation-vision')
+    let vision = document.getElementById('nation-vision')
     if (vision) {
         vision.addEventListener('keyup', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('nation-ready')
+    let readyToUse = document.getElementById('nation-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
@@ -58,7 +58,7 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var putObject = {
+    const putObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -71,7 +71,7 @@ function sendRequest() {
         vision: $('#nation-vision').val(),
         readyToUse: $('#nation-ready').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(putObject)
+    const stringifiedObject = JSON.stringify(putObject)
 
     $.ajax({
         type: "PUT",

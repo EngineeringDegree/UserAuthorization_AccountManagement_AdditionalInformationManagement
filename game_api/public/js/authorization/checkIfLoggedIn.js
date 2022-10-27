@@ -4,8 +4,8 @@ $(document).ready(init())
  * Function which sends signal to backend to check if user is logged in and hides menu properly.
  */
 function init() {
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
+    let loggedIn = document.getElementsByClassName('logged-in')
+    let loggedOut = document.getElementsByClassName('logged-out')
 
     if (window.location.pathname == '/logout') {
         logOut()
@@ -45,13 +45,7 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
+        window.location.pathname = '/logout'
     }
 
     /**

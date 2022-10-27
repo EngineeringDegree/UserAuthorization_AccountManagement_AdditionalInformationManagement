@@ -4,7 +4,7 @@ $(document).ready(init())
  * Initialize buttons to use openPack function as onClick handler
  */
 function init() {
-    var buttons = document.getElementsByClassName('open-pack-buttons')
+    let buttons = document.getElementsByClassName('open-pack-buttons')
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", openPack)
     }
@@ -16,13 +16,13 @@ function init() {
  */
 function openPack(e) {
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken')) {
-        var patchObject = {
+        const patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
             id: e.target.id
         }
-        var stringifiedObject = JSON.stringify(patchObject)
+        const stringifiedObject = JSON.stringify(patchObject)
 
         $.ajax({
             type: "PATCH",

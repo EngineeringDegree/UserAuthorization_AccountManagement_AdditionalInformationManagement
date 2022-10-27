@@ -1,4 +1,4 @@
-// global scope vairables for user action timers
+// global scope variables for user action timers
 var changePropagationTime = 1000, uChangeId
 
 /**
@@ -12,13 +12,13 @@ function usernameChanged(e) {
 
     uChangeId = setTimeout(() => {
         if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
-            var patchObject = {
+            const patchObject = {
                 email: window.localStorage.getItem('email'),
                 token: window.localStorage.getItem('token'),
                 refreshToken: window.localStorage.getItem('refreshToken'),
                 newUsername: e.target.value
             }
-            var stringifiedObject = JSON.stringify(patchObject)
+            const stringifiedObject = JSON.stringify(patchObject)
 
             $.ajax({
                 type: "PATCH",
@@ -49,15 +49,15 @@ function usernameChanged(e) {
  * Sets up timeout to send request which changes user email
  */
 function emailChanged() {
-    var email = document.getElementById('email')
-    var password = document.getElementById('password')
+    const email = document.getElementById('email')
+    const password = document.getElementById('password')
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER && email && password) {
-        var patchObject = {
+        const patchObject = {
             email: window.localStorage.getItem('email'),
             newEmail: email.value,
             password: password.value
         }
-        var stringifiedObject = JSON.stringify(patchObject)
+        const stringifiedObject = JSON.stringify(patchObject)
 
         $.ajax({
             type: "PATCH",
@@ -98,14 +98,14 @@ function emailChanged() {
  */
 function adminChanged(e) {
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
-        var patchObject = {
+        const patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
             admin: e.target.checked,
             user: e.target.userId
         }
-        var stringifiedObject = JSON.stringify(patchObject)
+        const stringifiedObject = JSON.stringify(patchObject)
 
         $.ajax({
             type: "PATCH",
@@ -136,14 +136,14 @@ function adminChanged(e) {
  */
 function confirmedChanged(e) {
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
-        var patchObject = {
+        const patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
             confirmed: e.target.checked,
             user: e.target.userId
         }
-        var stringifiedObject = JSON.stringify(patchObject)
+        const stringifiedObject = JSON.stringify(patchObject)
 
         $.ajax({
             type: "PATCH",
@@ -173,12 +173,12 @@ function confirmedChanged(e) {
  */
 function askForNewPassword() {
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
-        var patchObject = {
+        const patchObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
         }
-        var stringifiedObject = JSON.stringify(patchObject)
+        const stringifiedObject = JSON.stringify(patchObject)
 
         $.ajax({
             type: "PATCH",
@@ -208,17 +208,5 @@ function askForNewPassword() {
  */
 function logOut() {
     window.localStorage.clear()
-
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
-
-    for (let i = 0; i < loggedIn.length; i) {
-        loggedIn[i].remove()
-    }
-
-    for (let i = 0; i < loggedOut.length; i++) {
-        loggedOut[i].classList.remove('d-none')
-    }
-
     window.location.pathname = "/logout"
 }

@@ -3,10 +3,10 @@
  * @param {DOMElement} e event emitter
  */
 function imageChanged(e) {
-    var imageDisplay = document.getElementById('image-display')
+    let imageDisplay = document.getElementById('image-display')
     if (imageDisplay) {
         imageDisplay.src = e.target.value
-        var size = document.getElementById('size')
+        let size = document.getElementById('size')
         if (size) {
             drawOverlay(size, false, false, true)
         }
@@ -21,8 +21,8 @@ function imageChanged(e) {
  * @param {boolean} emittedByLoad if draw was initiated on load (it sends other event emitter, needs to check it)
  */
 function drawOverlay(e, starting = false, startingFields = false, emittedByLoad = false) {
-    var value
-    var overlay = document.getElementById('field-grid')
+    let value
+    let overlay = document.getElementById('field-grid')
     if (overlay) {
         if (emittedByLoad) {
             value = formatValue(e.value)
@@ -43,8 +43,8 @@ function drawOverlay(e, starting = false, startingFields = false, emittedByLoad 
  * @returns string if formatted correctly, false if cannot format
  */
 function formatValue(value) {
-    var toReturn
-    var val = value.split('x')
+    let toReturn
+    const val = value.split('x')
     if (val.length == 1 || val.length == 2) {
         if (val.length == 1) {
             if (isNaN(val[0])) {
@@ -72,7 +72,7 @@ function formatValue(value) {
  * @param {string} startingFields starting fields
  */
 function displayOverlay(formattedValue, starting, startingFields) {
-    var indexToEdit = -1
+    let indexToEdit = -1
     for (let i = 0; i < savedConfigurations.length; i++) {
         if (savedConfigurations[i].dimensions == formattedValue) {
             indexToEdit = i
@@ -92,12 +92,12 @@ function displayOverlay(formattedValue, starting, startingFields) {
     }
 
     currentIndex = indexToEdit
-    var arrs = formattedValue.split('x')
-    var fieldsArr = []
-    var startingArr = []
+    const arrs = formattedValue.split('x')
+    let fieldsArr = []
+    let startingArr = []
     if (arrs.length == 2) {
         if (starting) {
-            var arr = starting.split(',')
+            let arr = starting.split(',')
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] != '') {
                     startingArr.push(arr[i])
@@ -106,7 +106,7 @@ function displayOverlay(formattedValue, starting, startingFields) {
             }
         }
         if (startingFields) {
-            var arrFields = startingFields.split(',')
+            let arrFields = startingFields.split(',')
             for (let k = 0; k < arrFields.length; k++) {
                 if (k % arrs[0] == 0) {
                     fieldsArr.push([])
@@ -117,10 +117,10 @@ function displayOverlay(formattedValue, starting, startingFields) {
         }
     }
 
-    var img = document.getElementById('image-display')
+    let img = document.getElementById('image-display')
     if (img) {
-        var width = img.clientWidth
-        var height = img.clientHeight
+        let width = img.clientWidth
+        let height = img.clientHeight
         displayGridOnImageLoad(width, height, formattedValue)
         img.onload = function () {
             displayGridOnImageLoad(this.width, this.height, formattedValue)
@@ -135,12 +135,12 @@ function displayOverlay(formattedValue, starting, startingFields) {
  * @param {string} formattedValue of dimensions f.e. 10x10
  */
 function displayGridOnImageLoad(width, height, formattedValue) {
-    var grid = document.getElementById('field-grid')
+    let grid = document.getElementById('field-grid')
     if (grid) {
         grid.innerHTML = ''
-        var val = formattedValue.split('x')
-        var blockWidth = width / val[0]
-        var blockHeight = height / val[1]
+        let val = formattedValue.split('x')
+        let blockWidth = width / val[0]
+        let blockHeight = height / val[1]
         for (let i = 0; i < val[1]; i++) {
             let divOuter = document.createElement('div')
             divOuter.classList = 'd-flex'
@@ -172,7 +172,7 @@ function getMapFields() {
                 window.localStorage.setItem("token", res.token)
             }
 
-            var placeFields = document.getElementById('fields-grid')
+            let placeFields = document.getElementById('fields-grid')
             if (placeFields) {
                 if (res.fields[0]) {
                     currentField = res.fields[0]._id
@@ -198,10 +198,9 @@ function getMapFields() {
  * @param {DOMElement} placeFields where to place it
  */
 function displayFieldsToUse(fields, placeFields) {
-    console.log(fields)
     placeFields.innerHTML = ''
     for (let i = 0; i < fields.length; i++) {
-        var el = document.createElement('div')
+        let el = document.createElement('div')
         if (i == 0) {
             el.classList = 'clickable field-to-place text-center map-overlay'
         } else {
@@ -217,7 +216,7 @@ function displayFieldsToUse(fields, placeFields) {
         placeFields.appendChild(el)
     }
 
-    var el2 = document.createElement('div')
+    let el2 = document.createElement('div')
     el2.classList = 'clickable field-to-place text-center'
     el2.id = 'spawnpoints'
     el2.textContent = 'Choose spawnpoint'
@@ -230,7 +229,7 @@ function displayFieldsToUse(fields, placeFields) {
  * @param {DOMElement} e event
  */
 function chooseSpawnpoint(e) {
-    var els = document.getElementsByClassName('field-to-place')
+    let els = document.getElementsByClassName('field-to-place')
     for (let i = 0; i < els.length; i++) {
         els[i].classList.remove('map-overlay')
     }
@@ -244,14 +243,14 @@ function chooseSpawnpoint(e) {
  */
 function generateBasicFieldsToSavedConfigrations() {
     if (savedConfigurations[currentIndex]) {
-        var dim = savedConfigurations[currentIndex].dimensions
+        let dim = savedConfigurations[currentIndex].dimensions
         dim = dim.split('x')
         if (savedConfigurations[currentIndex].fields.length == 0 && currentField) {
             for (let i = 0; i < dim[1]; i++) {
                 savedConfigurations[currentIndex].fields.push([])
                 for (let j = 0; j < dim[0]; j++) {
                     savedConfigurations[currentIndex].fields[i].push(currentField)
-                    var el = document.getElementById(`field-${j}-${i}`)
+                    let el = document.getElementById(`field-${j}-${i}`)
                     if (el) {
                         for (let k = 0; k < fields.length; k++) {
                             if (fields[k]._id == savedConfigurations[currentIndex].fields[i][j]) {
@@ -265,7 +264,7 @@ function generateBasicFieldsToSavedConfigrations() {
 
         for (let i = 0; i < dim[1]; i++) {
             for (let j = 0; j < dim[0]; j++) {
-                var el = document.getElementById(`field-${j}-${i}`)
+                let el = document.getElementById(`field-${j}-${i}`)
                 if (el) {
                     el.classList.remove('spawnpoint')
                     for (let k = 0; k < fields.length; k++) {
@@ -284,7 +283,7 @@ function generateBasicFieldsToSavedConfigrations() {
             }
         }
 
-        var mapFields = document.getElementById('map-fields')
+        let mapFields = document.getElementById('map-fields')
         if (mapFields) {
             mapFields.value = savedConfigurations[currentIndex].fields
             mapFields.dispatchEvent(new Event('change'))
@@ -297,7 +296,7 @@ function generateBasicFieldsToSavedConfigrations() {
  * @param {DOMElement} e changes currentField to target.id
  */
 function changeChoosenField(e) {
-    var els = document.getElementsByClassName('field-to-place')
+    let els = document.getElementsByClassName('field-to-place')
     for (let i = 0; i < els.length; i++) {
         els[i].classList.remove('map-overlay')
     }
@@ -311,7 +310,7 @@ function changeChoosenField(e) {
  * @param {DOMElement} e target clicked
  */
 function changeField(e) {
-    var target = e.target.id.split('-')
+    let target = e.target.id.split('-')
     if (target[1] && target[2]) {
         if (!choosingSpawnpoints) {
             savedConfigurations[currentIndex].fields[target[2]][target[1]] = currentField

@@ -5,87 +5,87 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('effect-name')
+    let name = document.getElementById('effect-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var description = document.getElementById('effect-description')
+    let description = document.getElementById('effect-description')
     if (description) {
         description.addEventListener('keyup', anythingChanged, false)
     }
 
-    var mobility = document.getElementById('effect-mobility')
+    let mobility = document.getElementById('effect-mobility')
     if (mobility) {
         mobility.addEventListener('keyup', anythingChanged, false)
     }
 
-    var defence = document.getElementById('effect-defence')
+    let defence = document.getElementById('effect-defence')
     if (defence) {
         defence.addEventListener('keyup', anythingChanged, false)
     }
 
-    var attack = document.getElementById('effect-attack')
+    let attack = document.getElementById('effect-attack')
     if (attack) {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
-    var vision = document.getElementById('effect-vision')
+    let vision = document.getElementById('effect-vision')
     if (vision) {
         vision.addEventListener('keyup', anythingChanged, false)
     }
 
-    var canUseOn = document.getElementById('effect-can-use-on')
+    let canUseOn = document.getElementById('effect-can-use-on')
     if (canUseOn) {
         canUseOn.addEventListener('keyup', anythingChanged, false)
     }
 
-    var cooldown = document.getElementById('effect-cooldown')
+    let cooldown = document.getElementById('effect-cooldown')
     if (cooldown) {
         cooldown.addEventListener('keyup', anythingChanged, false)
     }
 
-    var duration = document.getElementById('effect-duration')
+    let duration = document.getElementById('effect-duration')
     if (duration) {
         duration.addEventListener('keyup', anythingChanged, false)
     }
 
-    var cost = document.getElementById('effect-cost')
+    let cost = document.getElementById('effect-cost')
     if (cost) {
         cost.addEventListener('keyup', anythingChanged, false)
     }
 
-    var stunImmunity = document.getElementById('effect-stun-immunity')
+    let stunImmunity = document.getElementById('effect-stun-immunity')
     if (stunImmunity) {
         stunImmunity.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var scareImmunity = document.getElementById('effect-scare-immunity')
+    let scareImmunity = document.getElementById('effect-scare-immunity')
     if (scareImmunity) {
         scareImmunity.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var silenceImmunity = document.getElementById('effect-silence-immunity')
+    let silenceImmunity = document.getElementById('effect-silence-immunity')
     if (silenceImmunity) {
         silenceImmunity.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var stun = document.getElementById('effect-stun')
+    let stun = document.getElementById('effect-stun')
     if (stun) {
         stun.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var scare = document.getElementById('effect-scare')
+    let scare = document.getElementById('effect-scare')
     if (scare) {
         scare.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var silence = document.getElementById('effect-silence')
+    let silence = document.getElementById('effect-silence')
     if (silence) {
         silence.addEventListener('mousedown', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('effect-ready')
+    let readyToUse = document.getElementById('effect-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
@@ -108,7 +108,7 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var putObject = {
+    const putObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -131,7 +131,7 @@ function sendRequest() {
         silence: $('#effect-silence').is(":checked"),
         readyToUse: $('#effect-ready').is(":checked")
     }
-    var stringifiedObject = JSON.stringify(putObject)
+    const stringifiedObject = JSON.stringify(putObject)
 
     $.ajax({
         type: "PUT",

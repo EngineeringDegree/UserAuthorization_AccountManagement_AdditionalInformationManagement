@@ -13,8 +13,8 @@ var playersToMatchmake = []
  * @param {number} moveTime for settings how long move will take
  * @param {number} turnLimit for settings how long will game take
  */
-var matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
-    var playersToSort = playersToMatchmake
+const matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
+    let playersToSort = playersToMatchmake
     playersToMatchmake = []
     playersToSort.sort((a, b) => {
         return a.userRating - b.userRating
@@ -53,7 +53,7 @@ var matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
  * @param {object} player2 
  * @returns true if can pair them, false if not
  */
-var checkIfInRange = (player1, player2) => {
+const checkIfInRange = (player1, player2) => {
     if (player1.userRating <= player2.userRating) {
         if (player1.userRating + (process.env.RATING_MODIFIER) / 1 >= player2.userRating) {
             if (player1.strength <= player2.strength) {
@@ -84,7 +84,7 @@ var checkIfInRange = (player1, player2) => {
  * @param {string} id2 of socket
  * @param {string} target to where redirect
  */
-var redirectSocketsTo = (io, id1, id2, target) => {
+const redirectSocketsTo = (io, id1, id2, target) => {
     io.in(id1).emit('gameCreated', target)
     io.in(id2).emit('gameCreated', target)
 }
@@ -97,8 +97,8 @@ var redirectSocketsTo = (io, id1, id2, target) => {
  * @param {number} moveTime for settings how long move will take
  * @param {number} turnLimit for settings how long will game take
  */
-var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) => {
-    var deck1 = undefined, deck2 = undefined, users = undefined, temp
+const generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) => {
+    let deck1 = undefined, deck2 = undefined, users = undefined, temp = undefined
     if (player2.strength < player1.strength) {
         temp = player2
         player2 = player1
@@ -130,7 +130,7 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         return
     }
 
-    var cards1 = [], cards2 = [], nation1 = undefined, nation2 = undefined, strength1 = 0, strength2 = 0
+    let cards1 = [], cards2 = [], nation1 = undefined, nation2 = undefined, strength1 = 0, strength2 = 0
     try {
         nation1 = await Card_Nation.findOne({ _id: deck1.nation, readyToUse: true })
         nation2 = await Card_Nation.findOne({ _id: deck2.nation, readyToUse: true })
@@ -144,7 +144,7 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         return
     }
 
-    var player1Game = {
+    const player1Game = {
         id: users.data.user1,
         nationInfo: {
             nation: nation1.name,
@@ -158,7 +158,7 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         currentStrength: strength1,
         cards: cards1
     }
-    var player2Game = {
+    const player2Game = {
         id: users.data.user2,
         nationInfo: {
             nation: nation2.name,
@@ -172,25 +172,25 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         currentStrength: strength2,
         cards: cards2
     }
-    var map = {
+    const map = {
 
     }
-    var player1Fog = {
+    const player1Fog = {
 
     }
-    var player2Fog = {
+    const player2Fog = {
 
     }
-    var currentState = {
+    const currentState = {
 
     }
-    var history = [[{
+    const history = [[{
         player1: player1Fog,
         player2: player2Fog,
         players: currentState
     }]]
 
-    var newGame = new Game(_.pick({
+    let newGame = new Game(_.pick({
         player1: player1Game,
         player2: player2Game,
         player1Fog: player1Fog,
@@ -215,7 +215,7 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         finished: false,
     }, ['player1', 'player2', 'player1Fog', 'player2Fog', 'map', 'currentState', 'settings', 'history', 'player1Starts', 'weakerPlayerChoosed', 'outcome', 'finished']))
 
-    var returnedInfo = undefined
+    let returnedInfo = undefined
     try {
         returnedInfo = await newGame.save()
     } catch (e) {
@@ -241,7 +241,7 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
  * @param {object} player 
  * @returns boolean if success
  */
-var addPlayer = (player) => {
+const addPlayer = (player) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
         if (playersToMatchmake[i].id == player.id || playersToMatchmake[i].email == player.email) {
             return false
@@ -256,7 +256,7 @@ var addPlayer = (player) => {
  * @param {string} email 
  * @returns boolean if success
  */
-var removePlayer = (email) => {
+const removePlayer = (email) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
         if (playersToMatchmake[i].email == email) {
             playersToMatchmake.splice(i, 1)
@@ -271,7 +271,7 @@ var removePlayer = (email) => {
  * @param {string} id to remove 
  * @returns boolean if success
  */
-var removePlayerById = (id) => {
+const removePlayerById = (id) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
         if (playersToMatchmake[i].id == id) {
             playersToMatchmake.splice(i, 1)
@@ -289,7 +289,7 @@ var removePlayerById = (id) => {
  * @param {number} moveTime for settings how long move will take
  * @param {number} turnLimit for settings how long will game take
  */
-var startMatchmaking = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
+const startMatchmaking = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
     setInterval(() => {
         matchmake(io, ioNotSecure, gameType, moveTime, turnLimit)
     }, process.env.MATCHMAKE_TIME_CHECK)

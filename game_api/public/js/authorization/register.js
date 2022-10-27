@@ -12,8 +12,8 @@ function init() {
  * Sends ajax request to backend or shows user he has error
  */
 function signUp() {
-    var checkIfNotValid = false
-    var postObject = {
+    let checkIfNotValid = false
+    const postObject = {
         email: getEmailRegisterValue(),
         username: getUsernameValue(),
         password: getPasswordRegisterValue(),
@@ -66,7 +66,7 @@ function signUp() {
         return
     }
 
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
     $.ajax({
         type: "POST",
         url: `${AUTHORIZATION_SERVER}/post/register`,

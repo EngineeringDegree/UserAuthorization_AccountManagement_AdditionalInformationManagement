@@ -48,9 +48,8 @@ router.get('/', async (req, res) => {
  * @param {object} req of query parameters
  * @returns object containing user info, page and avaiable pages
  */
-var getUsers = async (req) => {
-    var users = [], allUsers = []
-    var pages = 1, page = 1, records = 50, username = ''
+const getUsers = async (req) => {
+    let users = [], pages = 1, page = 1, records = 50, username = ''
     if (req.query.page) {
         page = req.query.page
     }
@@ -63,7 +62,7 @@ var getUsers = async (req) => {
         username = req.query.username
     }
 
-    allUsers = await User.find({ "username": { "$regex": username, "$options": "i" } }).sort({ "username": 1 })
+    const allUsers = await User.find({ "username": { "$regex": username, "$options": "i" } }).sort({ "username": 1 })
     if (allUsers.length > records) {
         pages = Math.ceil(allUsers.length / records)
         if (page > pages) {

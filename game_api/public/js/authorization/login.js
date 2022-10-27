@@ -12,8 +12,8 @@ function init() {
  * @returns none 
  */
 function signIn() {
-    var checkIfNotValid = false
-    var postObject = {
+    let checkIfNotValid = false
+    const postObject = {
         email: getEmailValue(),
         password: getPasswordValue()
     }
@@ -41,7 +41,7 @@ function signIn() {
         return
     }
 
-    var stringifiedObject = JSON.stringify(postObject)
+    const stringifiedObject = JSON.stringify(postObject)
 
     $.ajax({
         type: "PATCH",

@@ -6,9 +6,8 @@
  * @param {MongoDB} mongoObject to search
  * @returns {object} with returned cards, count of pages and current page
  */
-var filterAsset = async (records, name, page, mongoObject) => {
-    var assets = [], returnedAssets = []
-    var pages = 1
+const filterAsset = async (records, name, page, mongoObject) => {
+    let assets = [], returnedAssets = [], pages = 1
     assets = await mongoObject.find({ "name": { "$regex": name, "$options": "i" } }).sort({ "name": 1 })
     if (assets.length > records) {
         pages = Math.ceil(assets.length / records)

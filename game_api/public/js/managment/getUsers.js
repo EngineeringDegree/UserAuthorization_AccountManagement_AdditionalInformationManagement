@@ -4,23 +4,23 @@ $(document).ready(init())
  * Initialization function for all actions
  */
 function init() {
-    var timeoutId, timeoutTime = 1000, page = 1
+    let timeoutId, timeoutTime = 1000, page = 1
 
-    var loggedIn = document.getElementsByClassName('logged-in')
-    var loggedOut = document.getElementsByClassName('logged-out')
+    let loggedIn = document.getElementsByClassName('logged-in')
+    let loggedOut = document.getElementsByClassName('logged-out')
 
-    var records = document.getElementById('records-per-page')
+    let records = document.getElementById('records-per-page')
     if (records) {
         records.addEventListener('change', recordsPerPageChanged, false)
     }
 
-    var username = document.getElementById('username')
+    let username = document.getElementById('username')
     if (username) {
         username.addEventListener('keyup', usernameChanged, false)
     }
 
-    var pagesDisplay = document.getElementById('pages')
-    var users = document.getElementById('users')
+    let pagesDisplay = document.getElementById('pages')
+    let users = document.getElementById('users')
 
     sendRequest()
 
@@ -113,7 +113,7 @@ function init() {
                     element.appendChild(createBanUtility(records[i].id))
                 }
                 users.appendChild(element)
-                var btn = document.getElementById(records[i].id)
+                let btn = document.getElementById(records[i].id)
                 if (btn) {
                     btn.addEventListener('click', banUser, false)
                 }
@@ -148,13 +148,6 @@ function init() {
      */
     function logOut() {
         window.localStorage.clear()
-        for (let i = 0; i < loggedIn.length; i) {
-            loggedIn[i].remove()
-        }
-
-        for (let i = 0; i < loggedOut.length; i++) {
-            loggedOut[i].classList.remove('d-none')
-        }
         window.location.pathname = "/logout"
     }
 

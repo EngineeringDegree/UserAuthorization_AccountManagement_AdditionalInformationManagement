@@ -4,10 +4,10 @@
  * @param {Collection} Collection to check from
  * @returns filtered array
  */
-var collectionFilter = async (els, Collection) => {
-    var toReturn = []
+const collectionFilter = async (els, Collection) => {
+    let toReturn = []
     for (let i = 0; i < els.length; i++) {
-        var el = undefined
+        let el = undefined
         try {
             el = await Collection.findOne({ _id: els[i] })
         } catch (e) { }

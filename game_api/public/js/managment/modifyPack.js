@@ -5,22 +5,22 @@ $(document).ready(init())
  * Adds event listener to input
  */
 function init() {
-    var name = document.getElementById('pack-name')
+    let name = document.getElementById('pack-name')
     if (name) {
         name.addEventListener('keyup', anythingChanged, false)
     }
 
-    var price = document.getElementById('pack-price')
+    let price = document.getElementById('pack-price')
     if (price) {
         price.addEventListener('keyup', anythingChanged, false)
     }
 
-    var cardsCount = document.getElementById('pack-count')
+    let cardsCount = document.getElementById('pack-count')
     if (cardsCount) {
         cardsCount.addEventListener('keyup', anythingChanged, false)
     }
 
-    var readyToUse = document.getElementById('pack-ready')
+    let readyToUse = document.getElementById('pack-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
     }
@@ -43,7 +43,7 @@ function anythingChanged() {
  * Sends requests with user details and pack details to patch on backend
  */
 function sendRequest() {
-    var patchObject = {
+    const patchObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
@@ -54,7 +54,7 @@ function sendRequest() {
         readyToUse: $('#pack-ready').is(":checked"),
         cardsCount: $('#pack-count').val()
     }
-    var stringifiedObject = JSON.stringify(patchObject)
+    const stringifiedObject = JSON.stringify(patchObject)
 
     $.ajax({
         type: "PUT",

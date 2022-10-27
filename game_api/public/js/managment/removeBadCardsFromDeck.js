@@ -1,7 +1,7 @@
 $(document).ready(init())
 
 function init() {
-    var sync = document.getElementById('sync-check')
+    let sync = document.getElementById('sync-check')
     if (sync) {
         sync.addEventListener('click', syncCards, false)
     }
@@ -9,14 +9,14 @@ function init() {
 
 function syncCards() {
     if (typeof deck !== 'undefined') {
-        let deleteObject = {
+        const deleteObject = {
             email: window.localStorage.getItem('email'),
             token: window.localStorage.getItem('token'),
             refreshToken: window.localStorage.getItem('refreshToken'),
             deck: deck
         }
 
-        let stringifiedObject = JSON.stringify(deleteObject)
+        const stringifiedObject = JSON.stringify(deleteObject)
         $.ajax({
             type: "DELETE",
             data: stringifiedObject,
@@ -43,14 +43,14 @@ function syncCards() {
         return
     }
 
-    let deleteObject = {
+    const deleteObject = {
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),
         refreshToken: window.localStorage.getItem('refreshToken'),
         deck: currentDecksByNations[currentDeck]
     }
 
-    let stringifiedObject = JSON.stringify(deleteObject)
+    const stringifiedObject = JSON.stringify(deleteObject)
 
     $.ajax({
         type: "DELETE",
