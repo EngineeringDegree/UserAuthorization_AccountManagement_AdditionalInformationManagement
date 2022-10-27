@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 
 // Middleware for changing user username
 router.patch('/', async (req, res) => {
@@ -22,12 +23,17 @@ router.patch('/', async (req, res) => {
 
         const pass = await bcrypt.compare(req.body.password, user.password)
         if (pass) {
-            const alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
+            const alreadyExists = await changeUserEmail(user._id, req.body.newEmail, user.email)
             if (alreadyExists) {
                 return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
             }
 
-            sendConfirmationEmail({ email: req.body.newEmail, accessToken: user.accessToken })
+            const accessToken = await Token.findOne({ owner: req.body.newEmail, type: process.env.ACCESS })
+            if (!accessToken) {
+                return res.status(401).send({ status: 'NO ACCESS TOKEN', code: 404, action: 'REFRESH' })
+            }
+
+            sendConfirmationEmail({ email: req.body.newEmail, accessToken: accessToken.token })
             return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
         }
         return res.status(401).send({ status: 'PASSWORD NOT MATCH', code: 401 })
@@ -40,10 +46,29 @@ router.patch('/', async (req, res) => {
  * Changes user email to email variable value
  * @param {string} id of user to alter
  * @param {string} email new email of an user 
+ * @param {string} oldEmail of an user 
  */
-async function changeUserEmail(id, email) {
+async function changeUserEmail(id, email, oldEmail) {
     const user = await User.findOne({ email: email })
     if (user) {
+        return true
+    }
+
+    const accessToken = await Token.findOne({ owner: oldEmail, type: process.env.ACCESS })
+    if (!accessToken) {
+        return true
+    }
+
+    const tokenFilter = {
+        _id: accessToken._id
+    }
+    const tokenUpdate = {
+        owner: email
+    }
+
+    try {
+        await Token.updateOne(tokenFilter, tokenUpdate)
+    } catch (e) {
         return true
     }
 
@@ -60,6 +85,7 @@ async function changeUserEmail(id, email) {
     } catch (e) {
         return true
     }
+
     return false
 }
 

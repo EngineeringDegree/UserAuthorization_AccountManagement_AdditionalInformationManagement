@@ -15,9 +15,11 @@ const checkToken = async (email, token, type) => {
     if (!dbToken) {
         return false
     }
+
     const check = jwt.verify(dbToken.token, config.get('PrivateKey'), (e) => {
         return e
     })
+
     if (check != null) {
         return false
     }
@@ -33,11 +35,11 @@ const checkToken = async (email, token, type) => {
  * @returns token or false
  */
 const askNewToken = async (email, token, userId) => {
-    if (checkToken(email, token, process.env.REFRESH)) {
+    if (await checkToken(email, token, process.env.REFRESH)) {
         const token = jwt.sign({ _id: userId }, config.get('PrivateKey'), { expiresIn: '1h' })
         let newToken = new Token(_.pick({
             owner: email,
-            type: process.env.REFRESH,
+            type: process.env.AUTHORIZATION,
             token: token,
             issuedAt: new Date()
         }, ['owner', 'type', 'token', 'issuedAt']))
@@ -47,9 +49,10 @@ const askNewToken = async (email, token, userId) => {
             return false
         }
         return token
-    } else {
-        return false
     }
+
+    return false
+
 }
 
 module.exports = { checkToken, askNewToken }

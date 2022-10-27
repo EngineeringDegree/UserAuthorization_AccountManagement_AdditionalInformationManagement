@@ -8,6 +8,10 @@ const { EmailLog } = require('../../models/email_logs')
  * @param {object} data contains email and authorization token 
  */
 async function sendConfirmationEmail(data) {
+    if (data.code != 200) {
+        putEmailLog(`code ${data.code}, status: ${data.status}`, "error")
+    }
+
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_SERVICE_ADDRESS,
         port: process.env.EMAIL_SERVICE_PORT,
