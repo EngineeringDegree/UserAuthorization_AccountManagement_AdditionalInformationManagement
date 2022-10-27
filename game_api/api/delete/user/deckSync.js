@@ -19,7 +19,7 @@ router.delete('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var deck = undefined
+        let deck = undefined
         try {
             deck = await Deck.findOne({ _id: req.body.deck.id, deleted: false })
         } catch (e) { }
@@ -30,7 +30,7 @@ router.delete('/', async (req, res) => {
             return res.status(401).send({ status: 'DECK NATIONS ARE DIFFRENT', code: 401, action: 'RELOAD', token: res.locals.user.data.token })
         }
 
-        var nation = undefined
+        let nation = undefined
         try {
             nation = await Card_Nation.findOne({ _id: req.body.deck.nation })
         } catch (e) { }
@@ -38,11 +38,11 @@ router.delete('/', async (req, res) => {
             return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'GO TO DECKS PAGE', token: res.locals.user.data.token })
         }
 
-        var newCardsToSave = []
-        var strength = 0
-        var notSync = false
+        let newCardsToSave = []
+        let strength = 0
+        let notSync = false
         for (let i = 0; i < deck.cards.length; i++) {
-            var card = undefined
+            let card = undefined
             try {
                 card = await Card.findOne({ _id: deck.cards[i]._id })
             } catch (e) { }
@@ -73,10 +73,11 @@ router.delete('/', async (req, res) => {
             return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
         }
 
-        var userCards = await UserCard.findOne({ owner: req.body.email })
-        var prepared = req.body.deck.cards.cardsPrepared
+        const userCards = await UserCard.findOne({ owner: req.body.email })
+        const prepared = req.body.deck.cards.cardsPrepared
+        let q = 0
         for (let i = 0; i < prepared.length; i++) {
-            var card = undefined
+            let card = undefined
             try {
                 card = await Card.findOne({ _id: prepared[i]._id })
             } catch (e) { }
@@ -87,9 +88,8 @@ router.delete('/', async (req, res) => {
                 return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
             }
 
-            let q = 0
             q += prepared[i].quantity
-            let found = checkIfUserHasCard(card, userCards, prepared[i].quantity)
+            const found = checkIfUserHasCard(card, userCards, prepared[i].quantity)
             if (!found || q > process.env.MAX_COUNT_OF_CARDS) {
                 return res.status(400).send({ status: 'NOT SYNCHRONIZED', code: 400, token: res.locals.user.data.token, action: 'RELOAD' })
             }

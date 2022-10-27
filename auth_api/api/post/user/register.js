@@ -20,14 +20,15 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ status: 'PASSWORDS DO NOT MATCH', code: 400 })
     }
 
-    let user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        var data
+        let data
         if (await User.countDocuments() == 0) {
             data = await putAdmin(req.body)
         } else {
             data = await putUser(req.body)
         }
+
         sendConfirmationEmail(data)
         return res.status(200).send(data)
     } else {
@@ -41,11 +42,11 @@ router.post('/', async (req, res) => {
  * @returns object with status, code, tokens, username and email
  */
 async function putAdmin(body) {
-    var pass = await bcrypt.hash(body.password, salt)
+    const pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
     const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
     const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
-    var newUser = new User(_.pick({
+    let newUser = new User(_.pick({
         username: body.username,
         email: body.email,
         password: pass,
@@ -59,8 +60,15 @@ async function putAdmin(body) {
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()
-    } catch (e) { }
-    return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    } catch (e) {
+        return { status: 'SOMETHING WENT WRONG', code: 500 }
+    }
+
+    if (newUser._id) {
+        return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    }
+
+    return { status: 'SOMETHING WENT WRONG', code: 500 }
 }
 
 /**
@@ -69,11 +77,11 @@ async function putAdmin(body) {
  * @returns object with status, code, tokens, username and email
  */
 async function putUser(body) {
-    var pass = await bcrypt.hash(body.password, salt)
+    const pass = await bcrypt.hash(body.password, salt)
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
     const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
     const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
-    var newUser = new User(_.pick({
+    let newUser = new User(_.pick({
         username: body.username,
         email: body.email,
         password: pass,
@@ -87,8 +95,15 @@ async function putUser(body) {
     }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()
-    } catch (e) { }
-    return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    } catch (e) {
+        return { status: 'SOMETHING WENT WRONG', code: 500 }
+    }
+
+    if (newUser._id) {
+        return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+    }
+
+    return { status: 'SOMETHING WENT WRONG', code: 500 }
 }
 
 /**

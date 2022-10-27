@@ -14,16 +14,15 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
-    let user = await User.findOne({ email: req.body.email })
-
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
 
-        var pass = await bcrypt.compare(req.body.password, user.password)
+        const pass = await bcrypt.compare(req.body.password, user.password)
         if (pass) {
-            var alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
+            const alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
             if (alreadyExists) {
                 return res.status(409).send({ status: "EMAIL ALREADY REGISTERED", code: 409 })
             }
@@ -38,13 +37,12 @@ router.patch('/', async (req, res) => {
 })
 
 /**
- * Changes user username to username variable value
+ * Changes user email to email variable value
  * @param {string} id of user to alter
  * @param {string} email new email of an user 
  */
 async function changeUserEmail(id, email) {
-    let user = await User.findOne({ email: email })
-
+    const user = await User.findOne({ email: email })
     if (user) {
         return true
     }

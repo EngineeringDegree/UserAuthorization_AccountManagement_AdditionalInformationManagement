@@ -13,8 +13,7 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
-    let user = await User.findOne({ email: req.body.email })
-
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401 })

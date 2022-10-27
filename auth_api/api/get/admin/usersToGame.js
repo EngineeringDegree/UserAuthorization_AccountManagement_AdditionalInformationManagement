@@ -17,8 +17,8 @@ router.get('/', async (req, res) => {
         return res.status(401).send({ status: 'BAD SECRET KEY', code: 401, action: 'BAD SECRET KEY' })
     }
 
-    let user1 = await User.findOne({ email: req.query.player1 })
-    let user2 = await User.findOne({ email: req.query.player2 })
+    const user1 = await User.findOne({ email: req.query.player1 })
+    const user2 = await User.findOne({ email: req.query.player2 })
     if (!user1 || !user2) {
         return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
     }

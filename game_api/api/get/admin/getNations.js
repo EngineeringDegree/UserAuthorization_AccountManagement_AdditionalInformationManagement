@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var nations = await filterAsset(req.query.records, req.query.nationName, req.query.page, Card_Nation)
+        const nations = await filterAsset(req.query.records, req.query.nationName, req.query.page, Card_Nation)
         return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, nations: nations.assets, pages: nations.pages, page: nations.page })
     }
 

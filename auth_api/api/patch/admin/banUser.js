@@ -11,18 +11,18 @@ router.patch('/', async (req, res) => {
     if (error) {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
-    let user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (user.admin) {
             if (checkIfBanned(user)) {
                 return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
             }
 
-            var check = checkToken(user.token, req.body.token)
+            let check = checkToken(user.token, req.body.token)
             if (!check) {
                 check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
                 if (check) {
-                    var userToBan = undefined
+                    let userToBan = undefined
                     try {
                         userToBan = await User.findOne({ _id: req.body.id })
                     } catch (e) {
@@ -32,9 +32,9 @@ router.patch('/', async (req, res) => {
                         const filter = {
                             _id: userToBan._id
                         }
-                        var newArr = userToBan.bans
-                        var currDate = new Date().getTime()
-                        var banDate = `${currDate + (req.body.value * 1000 * 60 * 60 * 24)}`
+                        let newArr = userToBan.bans
+                        const currDate = new Date().getTime()
+                        const banDate = `${currDate + (req.body.value * 1000 * 60 * 60 * 24)}`
                         newArr.push({
                             to: banDate,
                             givenBy: req.body.email,
@@ -57,7 +57,7 @@ router.patch('/', async (req, res) => {
                 return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
             }
 
-            var userToBan = undefined
+            let userToBan = undefined
             try {
                 userToBan = await User.findOne({ _id: req.body.id })
             } catch (e) {
@@ -68,9 +68,9 @@ router.patch('/', async (req, res) => {
                     _id: userToBan._id
                 }
 
-                var newArr = userToBan.bans
-                var currDate = new Date().getTime()
-                var banDate = `${currDate + (req.body.value * 1000 * 60 * 60 * 24)}`
+                let newArr = userToBan.bans
+                const currDate = new Date().getTime()
+                const banDate = `${currDate + (req.body.value * 1000 * 60 * 60 * 24)}`
                 newArr.push({
                     to: banDate,
                     givenBy: req.body.email,

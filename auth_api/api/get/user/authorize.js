@@ -8,6 +8,7 @@ Checks if user exists
 */
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
+    let data
     if (error) {
         data = {
             text: 'Bad data',
@@ -17,8 +18,7 @@ router.get('/', async (req, res) => {
         return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
     }
 
-    var data
-    let user = await User.findOne({ email: req.query.email })
+    const user = await User.findOne({ email: req.query.email })
     if (user) {
         if (req.query.accessToken == user.accessToken) {
             if (!user.confirmed) {

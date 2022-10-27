@@ -18,17 +18,17 @@ router.patch('/', async (req, res) => {
         return res.status(401).send({ status: 'YOU CANNOT START YOUR OWN BUY CALL', code: 401, action: 'LOGOUT' })
     }
 
-    let user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
-        var check = checkToken(user.token, req.body.token)
+        let check = checkToken(user.token, req.body.token)
         if (!check) {
             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
             if (check) {
                 if (user.funds >= req.body.price) {
-                    await changeUserAdmin(user.funds, req.body.price, user._id)
+                    await changeUserFunds(user.funds, req.body.price, user._id)
                     return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
                 }
                 return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
@@ -36,7 +36,7 @@ router.patch('/', async (req, res) => {
             return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
         if (user.funds >= req.body.price) {
-            await changeUserAdmin(user.funds, req.body.price, user._id)
+            await changeUserFunds(user.funds, req.body.price, user._id)
             return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
         }
         return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
@@ -51,7 +51,7 @@ router.patch('/', async (req, res) => {
  * @param {number} price to subtract
  * @param {string} id of user
  */
-async function changeUserAdmin(funds, price, id) {
+async function changeUserFunds(funds, price, id) {
     const filter = {
         _id: id
     }

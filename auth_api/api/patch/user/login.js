@@ -14,16 +14,16 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
-    let user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
         }
 
-        var pass = await bcrypt.compare(req.body.password, user.password)
+        const pass = await bcrypt.compare(req.body.password, user.password)
         if (pass) {
-            var refreshTokens = user.refreshToken
-            var tokens = user.token
+            let refreshTokens = user.refreshToken
+            let tokens = user.token
             const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '60d' })
             const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
             refreshTokens.push(refreshToken)

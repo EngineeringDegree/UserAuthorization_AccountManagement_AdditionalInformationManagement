@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var fields = await filterAsset(req.query.records, req.query.fieldName, req.query.page, Map_Field)
+        const fields = await filterAsset(req.query.records, req.query.fieldName, req.query.page, Map_Field)
         return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, fields: fields.assets, pages: fields.pages, page: fields.page })
     }
 

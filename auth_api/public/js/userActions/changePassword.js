@@ -4,7 +4,7 @@ $(document).ready(init())
  * Initialize listener for button
  */
 function init() {
-    var el = document.getElementById('send-change-password')
+    const el = document.getElementById('send-change-password')
     if (el) {
         el.addEventListener('click', sendChangePasswordRequest, false)
     }
@@ -14,28 +14,28 @@ function init() {
  * Send request for changing password
  */
 function sendChangePasswordRequest() {
-    var elPass = document.getElementById('password-register')
-    var elRepPass = document.getElementById('password-repeat-register')
+    const elPass = document.getElementById('password-register')
+    const elRepPass = document.getElementById('password-repeat-register')
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     const email = urlParams.get('email')
     const accessToken = urlParams.get('accessToken')
     if (elPass && elRepPass && email && accessToken) {
-        var pass = elPass.value
-        var repPass = elRepPass.value
+        const pass = elPass.value
+        const repPass = elRepPass.value
 
         if (pass != repPass) {
             passwordsNotMatch()
             return
         }
 
-        var postObject = {
+        const postObject = {
             password: pass,
             repeatPassword: repPass,
             email: email,
             accessToken: accessToken
         }
-        var stringifiedObject = JSON.stringify(postObject)
+        const stringifiedObject = JSON.stringify(postObject)
 
         $.ajax({
             type: "PATCH",

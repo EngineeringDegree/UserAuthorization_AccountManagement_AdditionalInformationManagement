@@ -18,13 +18,13 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400 })
     }
 
-    let user = await User.findOne({ email: req.query.email })
+    const user = await User.findOne({ email: req.query.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
         if (user.admin) {
-            var check = checkToken(user.token, req.query.token)
+            let check = checkToken(user.token, req.query.token)
             if (!check) {
                 check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
                 if (check) {

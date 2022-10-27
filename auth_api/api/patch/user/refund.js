@@ -18,12 +18,13 @@ router.patch('/', async (req, res) => {
         return res.status(401).send({ status: 'YOU CANNOT START YOUR OWN REFUND', code: 401, action: 'LOGOUT' })
     }
 
-    let user = await User.findOne({ email: req.body.email })
+    const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
-        var check = checkToken(user.token, req.body.token)
+
+        let check = checkToken(user.token, req.body.token)
         if (!check) {
             check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
             if (check) {

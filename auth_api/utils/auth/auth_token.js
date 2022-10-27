@@ -9,11 +9,11 @@ const { User } = require('../../models/user')
  * @returns 
  */
 var checkToken = (userToken, token) => {
-    var check = jwt.verify(token, config.get('PrivateKey'), (e) => {
+    const check = jwt.verify(token, config.get('PrivateKey'), (e) => {
         return e
     })
     if (check == null) {
-        for (var i = userToken.length - 1; i >= 0; i--) {
+        for (let i = userToken.length - 1; i >= 0; i--) {
             if (userToken[i] == token) {
                 return true
             }
@@ -34,7 +34,7 @@ var checkToken = (userToken, token) => {
 var askNewToken = async (userRefreshToken, refreshToken, user) => {
     if (checkToken(userRefreshToken, refreshToken)) {
         if (user) {
-            var tokens = user.token
+            let tokens = user.token
             const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
             tokens.push(token)
             const filter = {

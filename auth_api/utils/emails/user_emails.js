@@ -8,7 +8,7 @@ const { EmailLog } = require('../../models/email_logs')
  * @param {object} data contains email and authorization token 
  */
 async function sendConfirmationEmail(data) {
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_SERVICE_ADDRESS,
         port: process.env.EMAIL_SERVICE_PORT,
         secure: true,
@@ -18,7 +18,7 @@ async function sendConfirmationEmail(data) {
         }
     })
 
-    var mailOptions = {
+    const mailOptions = {
         from: process.env.CONFIRMATION_EMAIL,
         to: data.email,
         subject: `${process.env.GAME_NAME} email confirmation`,
@@ -39,7 +39,7 @@ async function sendConfirmationEmail(data) {
  * @param {object} data contains email and authorization token of process
  */
 async function sendPasswordChangeEmail(data) {
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_SERVICE_ADDRESS,
         port: process.env.EMAIL_SERVICE_PORT,
         secure: true,
@@ -49,7 +49,7 @@ async function sendPasswordChangeEmail(data) {
         }
     })
 
-    var mailOptions = {
+    const mailOptions = {
         from: process.env.CONFIRMATION_EMAIL,
         to: data.email,
         subject: `${process.env.GAME_NAME} email confirmation`,
@@ -75,7 +75,7 @@ async function sendPasswordChangeEmail(data) {
 async function putEmailLog(body, status) {
     const currentDate = new Date();
     const timestamp = currentDate.getTime();
-    var newLog = new EmailLog(_.pick({
+    let newLog = new EmailLog(_.pick({
         message: body,
         status: status,
         timestamp: timestamp

@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var types = await filterAsset(req.query.records, req.query.typeName, req.query.page, Card_Type)
+        let types = await filterAsset(req.query.records, req.query.typeName, req.query.page, Card_Type)
         return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, types: types.assets, pages: types.pages, page: types.page })
     }
 
