@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 const salt = 10
 
 // Middleware to registration
@@ -21,19 +22,19 @@ router.post('/', async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email })
-    if (!user) {
-        let data
-        if (await User.countDocuments() == 0) {
-            data = await putAdmin(req.body)
-        } else {
-            data = await putUser(req.body)
-        }
-
-        sendConfirmationEmail(data)
-        return res.status(200).send(data)
-    } else {
+    if (user) {
         return res.status(400).send({ status: 'USER FOUND', code: 400 })
     }
+
+    let data
+    if (await User.countDocuments() == 0) {
+        data = await putAdmin(req.body)
+    } else {
+        data = await putUser(req.body)
+    }
+
+    sendConfirmationEmail(data)
+    return res.status(200).send(data)
 })
 
 /**
@@ -50,14 +51,11 @@ async function putAdmin(body) {
         username: body.username,
         email: body.email,
         password: pass,
-        token: [token],
-        refreshToken: [refreshToken],
-        accessToken,
         confirmed: false,
         admin: true,
         bans: [],
         funds: 0
-    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
+    }, ['username', 'email', 'password', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()
     } catch (e) {
@@ -78,26 +76,54 @@ async function putAdmin(body) {
  */
 async function putUser(body) {
     const pass = await bcrypt.hash(body.password, salt)
-    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
-    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
-    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
+
     let newUser = new User(_.pick({
         username: body.username,
         email: body.email,
         password: pass,
-        token: [token],
-        refreshToken: [refreshToken],
-        accessToken,
         confirmed: false,
         admin: false,
         bans: [],
         funds: 0
-    }, ['username', 'email', 'password', 'token', 'refreshToken', 'accessToken', 'confirmed', 'admin', 'bans', 'funds']))
+    }, ['username', 'email', 'password', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()
     } catch (e) {
         return { status: 'SOMETHING WENT WRONG', code: 500 }
     }
+
+    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
+    let newToken = new Token(_.pick({
+        owner: body.email,
+        type: process.env.AUTHORIZATION,
+        token: token,
+        issuedAt: new Date()
+    }, ['owner', 'type', 'token', 'issuedAt']))
+    try {
+        await newToken.save()
+    } catch (e) { }
+
+    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
+    newToken = new Token(_.pick({
+        owner: body.email,
+        type: process.env.REFRESH,
+        token: refreshToken,
+        issuedAt: new Date()
+    }, ['owner', 'type', 'token', 'issuedAt']))
+    try {
+        await newToken.save()
+    } catch (e) { }
+
+    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
+    newToken = new Token(_.pick({
+        owner: body.email,
+        type: process.env.ACCESS,
+        token: accessToken,
+        issuedAt: new Date()
+    }, ['owner', 'type', 'token', 'issuedAt']))
+    try {
+        await newToken.save()
+    } catch (e) { }
 
     if (newUser._id) {
         return { status: 'OK', code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }

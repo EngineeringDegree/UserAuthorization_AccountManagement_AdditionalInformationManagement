@@ -19,9 +19,9 @@ router.get('/', async (req, res) => {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
-        let check = checkToken(user.token, req.query.token)
+        let check = await checkToken(user.email, req.query.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
+            check = await askNewToken(user.email, req.query.refreshToken, user._id)
             if (check) {
                 let userToFind = undefined
                 try {

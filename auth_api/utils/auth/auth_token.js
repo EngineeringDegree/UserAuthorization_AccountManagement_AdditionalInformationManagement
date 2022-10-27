@@ -1,53 +1,52 @@
 const jwt = require('jsonwebtoken')
 const config = require('config')
-const { User } = require('../../models/user')
+const _ = require('lodash')
+const { Token } = require('../../models/token')
 
 /**
- * Check if tokens are valid and match each other
- * @param {array} userToken array of user tokens
+ * Check if tokens are valid
+ * @param {string} email of owner
  * @param {string} token token sent from user to server
- * @returns 
+ * @param {string} type of token
+ * @returns true if good, false if bad
  */
-const checkToken = (userToken, token) => {
-    const check = jwt.verify(token, config.get('PrivateKey'), (e) => {
-        return e
-    })
-    if (check == null) {
-        for (let i = userToken.length - 1; i >= 0; i--) {
-            if (userToken[i] == token) {
-                return true
-            }
-        }
-        return false
-    } else {
+const checkToken = async (email, token, type) => {
+    const dbToken = await Token.findOne({ owner: email, token: token, type: type })
+    if (!dbToken) {
         return false
     }
+    const check = jwt.verify(dbToken.token, config.get('PrivateKey'), (e) => {
+        return e
+    })
+    if (check != null) {
+        return false
+    }
+
+    return true
 }
 
 /**
- * 
- * @param {Array} userRefreshToken array of refreshToken taken from database. 
- * @param {String} refreshToken refreshToken sent from user
- * @param {Object} user user model from database 
- * @returns 
+ * Asks for new token based on refresh token
+ * @param {string} email of owner
+ * @param {string} token token sent from user to server
+ * @param {string} userId of owner
+ * @returns token or false
  */
-const askNewToken = async (userRefreshToken, refreshToken, user) => {
-    if (checkToken(userRefreshToken, refreshToken)) {
-        if (user) {
-            let tokens = user.token
-            const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
-            tokens.push(token)
-            const filter = {
-                _id: user._id
-            }
-            const update = {
-                token: tokens
-            }
-            try {
-                const result = await User.updateOne(filter, update)
-            } catch (e) { }
-            return token
+const askNewToken = async (email, token, userId) => {
+    if (checkToken(email, token, process.env.REFRESH)) {
+        const token = jwt.sign({ _id: userId }, config.get('PrivateKey'), { expiresIn: '1h' })
+        let newToken = new Token(_.pick({
+            owner: email,
+            type: process.env.REFRESH,
+            token: token,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) {
+            return false
         }
+        return token
     } else {
         return false
     }

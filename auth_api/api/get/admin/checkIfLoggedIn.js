@@ -18,25 +18,27 @@ router.get('/', async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.query.email })
-    if (user) {
-        if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
-        }
-        if (user.admin) {
-            let check = checkToken(user.token, req.query.token)
-            if (!check) {
-                check = await askNewToken(user.refreshToken, req.query.refreshToken, user)
-                if (check) {
-                    return res.status(200).send({ status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check })
-                }
-                return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
-            }
-            return res.status(200).send({ status: 'USER LOGGED IN', code: 200, action: 'LOGIN' })
-        }
+    if (!user) {
+        return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    }
+
+    if (checkIfBanned(user)) {
+        return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+    }
+
+    if (!user.admin) {
         return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    let check = checkToken(user.email, req.query.token, process.env.AUTHORIZATION)
+    if (!check) {
+        check = await askNewToken(user.email, req.query.refreshToken, user._id)
+        if (check) {
+            return res.status(200).send({ status: 'USER LOGGED IN', code: 200, action: 'LOGIN', token: check })
+        }
+        return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+    }
+    return res.status(200).send({ status: 'USER LOGGED IN', code: 200, action: 'LOGIN' })
 })
 
 /**

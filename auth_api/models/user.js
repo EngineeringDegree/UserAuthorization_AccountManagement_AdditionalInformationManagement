@@ -16,18 +16,6 @@ const User = mongoose.model('User', new mongoose.Schema({
         type: String,
         required: true
     },
-    token: {
-        type: Array,
-        required: true
-    },
-    refreshToken: {
-        type: Array,
-        required: true
-    },
-    accessToken: {
-        type: String,
-        required: true
-    },
     confirmed: {
         type: Boolean,
         required: true
@@ -50,9 +38,6 @@ function validateUser(user) {
         username: Joi.string().max(50).required(),
         email: Joi.string().email().required(),
         password: Joi.string().required(),
-        token: Joi.array().required(),
-        refreshToken: Joi.array().required(),
-        accessToken: Joi.string().required(),
         confirmed: Joi.boolean().required(),
         admin: Joi.boolean().required(),
         bans: Joi.array(),

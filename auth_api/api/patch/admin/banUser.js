@@ -18,9 +18,9 @@ router.patch('/', async (req, res) => {
                 return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
             }
 
-            let check = checkToken(user.token, req.body.token)
+            let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
             if (!check) {
-                check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
+                check = await askNewToken(user.email, req.body.refreshToken, user._id)
                 if (check) {
                     let userToBan = undefined
                     try {

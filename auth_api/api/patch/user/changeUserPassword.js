@@ -4,6 +4,7 @@ const router = express.Router()
 const Joi = require('joi')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 const salt = 10
 
 // Middleware for changing user username
@@ -14,24 +15,29 @@ router.patch('/', async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email })
-    if (user) {
-        if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
-        }
+    if (!user) {
+        return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+    }
 
-        if (req.body.password != req.body.repeatPassword) {
-            return res.status(400).send({ status: "PASSWORDS DO NOT MATCH", code: 400 })
-        }
+    if (checkIfBanned(user)) {
+        return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
+    }
 
-        if (user.accessToken == req.body.accessToken) {
-            await changeUserPassword(user._id, req.body.password)
-            return res.status(200).send({ status: "PASSWORD CHANGED", code: 200 })
-        }
+    if (req.body.password != req.body.repeatPassword) {
+        return res.status(400).send({ status: "PASSWORDS DO NOT MATCH", code: 400 })
+    }
 
+    const token = await Token.findOne({ owner: req.body.email, type: process.env.ACCESS })
+    if (!token) {
         return res.status(401).send({ status: "USER NOT AUTHORIZED", code: 401 })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+    if (token.token != req.body.accessToken) {
+        return res.status(401).send({ status: "USER NOT AUTHORIZED", code: 401 })
+    }
+
+    await changeUserPassword(user._id, req.body.password)
+    return res.status(200).send({ status: "PASSWORD CHANGED", code: 200 })
 })
 
 /**
@@ -40,7 +46,7 @@ router.patch('/', async (req, res) => {
  * @param {string} password password to hash and save
  */
 async function changeUserPassword(id, password) {
-    var pass = await bcrypt.hash(password, salt)
+    const pass = await bcrypt.hash(password, salt)
     const filter = {
         _id: id
     }

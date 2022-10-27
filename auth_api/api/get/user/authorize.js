@@ -2,6 +2,7 @@ const express = require('express')
 const Joi = require('joi')
 const router = express.Router()
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 
 /*
 Checks if user exists
@@ -20,7 +21,8 @@ router.get('/', async (req, res) => {
 
     const user = await User.findOne({ email: req.query.email })
     if (user) {
-        if (req.query.accessToken == user.accessToken) {
+        const accessToken = await Token.findOne({ owner: user.email, token: req.query.accessToken, type: process.env.ACCESS })
+        if (accessToken) {
             if (!user.confirmed) {
                 const filter = {
                     _id: user._id
@@ -30,11 +32,17 @@ router.get('/', async (req, res) => {
                 }
                 try {
                     const result = await User.updateOne(filter, update)
-                } catch (e) { }
-                data = {
-                    text: 'Address confirmed',
-                    code: 200,
-                    status: 'ACCOUNT CONFIRMED'
+                    data = {
+                        text: 'Address confirmed',
+                        code: 200,
+                        status: 'ACCOUNT CONFIRMED'
+                    }
+                } catch (e) {
+                    data = {
+                        text: 'Something went wrong',
+                        code: 500,
+                        status: 'ACCOUNT NOT CONFIRMED'
+                    }
                 }
             } else {
                 data = {

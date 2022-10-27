@@ -19,26 +19,27 @@ router.patch('/', async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email })
-    if (user) {
-        if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
-        }
-
-        let check = checkToken(user.token, req.body.token)
-        if (!check) {
-            check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
-            if (check) {
-                await changeUserAdmin(user.funds, req.body.refund, user._id)
-                return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
-            }
-            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
-        }
-
-        await changeUserAdmin(user.funds, req.body.refund, user._id)
-        return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
+    if (!user) {
+        return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    if (checkIfBanned(user)) {
+        return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+    }
+
+    let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
+    if (!check) {
+        check = await askNewToken(user.email, req.body.refreshToken, user._id)
+        if (check) {
+            await changeUserFunds(user.funds, req.body.refund, user._id)
+            return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
+        }
+        return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+    }
+
+    await changeUserFunds(user.funds, req.body.refund, user._id)
+    return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
+
 })
 
 /**
@@ -47,7 +48,7 @@ router.patch('/', async (req, res) => {
  * @param {number} refund to add
  * @param {string} id of user
  */
-async function changeUserAdmin(funds, refund, id) {
+async function changeUserFunds(funds, refund, id) {
     const filter = {
         _id: id
     }

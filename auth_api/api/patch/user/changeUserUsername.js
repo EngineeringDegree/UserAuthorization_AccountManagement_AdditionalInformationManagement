@@ -18,9 +18,9 @@ router.patch('/', async (req, res) => {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
 
-        let check = checkToken(user.token, req.body.token)
+        let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
+            check = await askNewToken(user.email, req.body.refreshToken, user._id)
             if (check) {
                 await changeUserUsername(user._id, req.body.newUsername)
                 return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername, token: check })

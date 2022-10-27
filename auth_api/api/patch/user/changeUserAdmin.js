@@ -14,13 +14,17 @@ router.patch('/', async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
+        if (!user.admin) {
+            return res.status(401).send({ status: 'YOU ARE NOT AN ADMIN', code: 401, action: 'LOGOUT' })
+        }
+
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
 
-        let check = checkToken(user.token, req.body.token)
+        let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
+            check = await askNewToken(user.email, req.body.refreshToken, user._id)
             if (check) {
                 await changeUserAdmin(req.body.user, req.body.admin)
                 return res.status(200).send({ status: "USER IS ADMIN", code: 200, admin: req.body.admin, token: check })

@@ -6,6 +6,7 @@ const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { sendPasswordChangeEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 
 
 // Middleware for changing user username
@@ -21,17 +22,24 @@ router.patch('/', async (req, res) => {
             return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
         }
 
-        let check = checkToken(user.token, req.body.token)
+        let check = await checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.refreshToken, req.body.refreshToken, user)
+            check = await askNewToken(user.email, req.body.refreshToken, user._id)
             if (check) {
-                sendPasswordChangeEmail({ email: user.email, accessToken: user.accessToken })
+                const accessToken = await Token.findOne({ owner: user.email, type: process.env.ACCESS })
+                if (!accessToken) {
+                    return res.status(401).send({ status: 'NO ACCESS TOKEN', code: 404, action: 'REFRESH' })
+                }
+                sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token })
                 return res.status(200).send({ status: "PASSWORD EMAIL SENT", code: 200, username: req.body.newUsername, token: check })
             }
             return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
         }
-
-        sendPasswordChangeEmail({ email: user.email, accessToken: user.accessToken })
+        const accessToken = await Token.findOne({ owner: user.email, type: process.env.ACCESS })
+        if (!accessToken) {
+            return res.status(401).send({ status: 'NO ACCESS TOKEN', code: 404, action: 'REFRESH' })
+        }
+        sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token })
         return res.status(200).send({ status: "PASSWORD EMAIL SENT", code: 200, username: req.body.newUsername })
     }
 

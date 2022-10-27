@@ -4,7 +4,9 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
+const _ = require('lodash')
 const { User } = require('../../../models/user')
+const { Token } = require('../../../models/token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 
 // Middleware for login user
@@ -15,37 +17,42 @@ router.patch('/', async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.body.email })
-    if (user) {
-        if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
-        }
+    if (!user) {
+        return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+    }
 
-        const pass = await bcrypt.compare(req.body.password, user.password)
-        if (pass) {
-            let refreshTokens = user.refreshToken
-            let tokens = user.token
-            const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '60d' })
-            const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
-            refreshTokens.push(refreshToken)
-            tokens.push(token)
-            const filter = {
-                _id: user._id
-            }
-            const update = {
-                refreshToken: refreshTokens,
-                token: tokens
-            }
-            try {
-                await User.updateOne(filter, update)
-            } catch (e) { }
+    if (checkIfBanned(user)) {
+        return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
+    }
 
-            return res.status(200).send({ status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
-        }
-
+    const pass = await bcrypt.compare(req.body.password, user.password)
+    if (!pass) {
         return res.status(401).send({ status: 'BAD DATA', code: 401 })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+    const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
+    let newToken = new Token(_.pick({
+        owner: user.email,
+        type: process.env.AUTHORIZATION,
+        token: token,
+        issuedAt: new Date()
+    }, ['owner', 'type', 'token', 'issuedAt']))
+    try {
+        await newToken.save()
+    } catch (e) { }
+
+    const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '60d' })
+    newToken = new Token(_.pick({
+        owner: user.email,
+        type: process.env.REFRESH,
+        token: refreshToken,
+        issuedAt: new Date()
+    }, ['owner', 'type', 'token', 'issuedAt']))
+    try {
+        await newToken.save()
+    } catch (e) { }
+
+    return res.status(200).send({ status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
 })
 
 /**
