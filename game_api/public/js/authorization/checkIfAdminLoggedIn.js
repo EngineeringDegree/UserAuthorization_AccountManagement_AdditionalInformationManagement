@@ -12,11 +12,6 @@ function init() {
         return
     }
 
-    if (window.location.pathname == '/registered') {
-        logIn()
-        return
-    }
-
     if (window.localStorage.getItem('email') && window.localStorage.getItem('token') && window.localStorage.getItem('refreshToken') && AUTHORIZATION_SERVER) {
         $.ajax({
             type: "GET",
@@ -48,8 +43,17 @@ function init() {
      * Hides linkes which shouldn't be visible if user is logged out
      */
     function logOut() {
+        for (let i = 0; i < loggedOut.length; i++) {
+            loggedOut[i].classList.remove('d-none')
+        }
+
+        for (let i = 0; i < loggedIn.length; i) {
+            loggedIn[i].remove()
+        }
         window.localStorage.clear()
-        window.location.pathname = "/logout"
+        if (window.location.pathname != '/logout' && window.location.pathname != '/' && window.location.pathname != '' && window.location.pathname != '/sign-in') {
+            window.location.pathname = '/logout'
+        }
     }
 
     /**

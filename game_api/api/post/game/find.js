@@ -9,6 +9,7 @@ const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Rating } = require('../../../models/rating')
 const { Card_Nation } = require('../../../models/card_nation')
+const { UserCard } = require('../../../models/user_cards')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -35,6 +36,7 @@ router.post('/', async (req, res) => {
                         return res.status(401).send({ status: 'THAT NATION IS TURNED OFF', code: 401, action: 'CHANGE DECKS LIST' })
                     }
                     let strength = 0
+                    const userCards = await UserCard.findOne({ owner: req.body.email })
                     for (let i = 0; i < deck.cards.length; i++) {
                         let card = undefined
                         try {
@@ -48,7 +50,7 @@ router.post('/', async (req, res) => {
                             return res.status(401).send({ status: 'NATION NOT FOUND IN CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
 
-                        if (!checkIfUserHasCard(card, userCards, req.body.cards[i].quantity)) {
+                        if (!checkIfUserHasCard(card, userCards, deck.cards[i].quantity)) {
                             return res.status(401).send({ status: 'USER DO NOT HAVE CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
                         strength += calculateCardsStrength(card, deck.cards[i].quantity)
