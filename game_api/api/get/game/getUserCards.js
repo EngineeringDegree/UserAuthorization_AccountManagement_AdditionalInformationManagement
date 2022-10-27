@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-var { UserCard } = require('../../../models/user_cards')
+const { UserCard } = require('../../../models/user_cards')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
-        var cardsObj = await UserCard.findOne({ owner: req.query.email })
+        const cardsObj = await UserCard.findOne({ owner: req.query.email })
         if (cardsObj) {
             if (res.locals.user.data.token) {
                 return res.status(200).send({ status: 'OK', code: 200, cards: cardsObj.cards, token: res.locals.user.data.token })

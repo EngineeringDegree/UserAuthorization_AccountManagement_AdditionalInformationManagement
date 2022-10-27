@@ -12,15 +12,15 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var deck = undefined
+        let deck = undefined
         try {
-            var deck = await Deck.findOne({ _id: req.query.id })
+            deck = await Deck.findOne({ _id: req.query.id })
         } catch (e) { }
         if (deck) {
             if (deck.owner == req.query.email) {
-                var nation = await Card_Nation.findOne({ _id: deck.nation })
+                const nation = await Card_Nation.findOne({ _id: deck.nation })
                 if (nation) {
-                    var strength = await checkDeckStrengthAndUpdate(deck._id)
+                    let strength = await checkDeckStrengthAndUpdate(deck._id)
                     deck.strength = strength
                     return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
                 }

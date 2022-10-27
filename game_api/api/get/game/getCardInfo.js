@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
-var { Card } = require('../../../models/card')
+const { Card } = require('../../../models/card')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    var card = undefined
+    let card = undefined
     try {
         card = await Card.findOne({ _id: req.query.id, readyToUse: true })
     } catch (e) { }

@@ -10,9 +10,9 @@ const { Card_Nation } = require('../../../models/card_nation')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
-        var decks = await Deck.find({ owner: req.query.email, deleted: false }).select('_id name nation strength')
+        const decks = await Deck.find({ owner: req.query.email, deleted: false }).select('_id name nation strength')
         if (decks.length == 0) {
-            var packs = await Pack.find({ owner: req.query.email })
+            const packs = await Pack.find({ owner: req.query.email })
             if (packs.length == 0) {
                 await createInvitationalGift(req.query.email)
             } else {
@@ -28,15 +28,16 @@ router.get('/', async (req, res) => {
 
             return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
         }
-        var decksToReturn = []
+
+        let decksToReturn = []
         for (let i = 0; i < decks.length; i++) {
-            var nation = undefined
+            let nation = undefined
             try {
                 nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
             } catch (e) { }
             if (nation) {
-                var strength = await checkDeckStrengthAndUpdate(decks[i]._id)
-                var allOk = await checkIfDeckOk(decks[i]._id)
+                const strength = await checkDeckStrengthAndUpdate(decks[i]._id)
+                const allOk = await checkIfDeckOk(decks[i]._id)
                 if (allOk) {
                     decksToReturn.push({
                         _id: decks[i]._id,
@@ -59,8 +60,8 @@ router.get('/', async (req, res) => {
  * @param {string} owner email of owner of new pack
  */
 async function createInvitationalGift(owner) {
-    var cards = await Card.find({ basicDeck: { $gt: 0 }, readyToUse: true }).select('_id basicDeck')
-    var newPack = new Pack(_.pick({
+    const cards = await Card.find({ basicDeck: { $gt: 0 }, readyToUse: true }).select('_id basicDeck')
+    let newPack = new Pack(_.pick({
         owner: owner,
         cards: cards,
         nation: 'All',

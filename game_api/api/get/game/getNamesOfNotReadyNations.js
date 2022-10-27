@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-var { Card_Nation } = require('../../../models/card_nation')
+const { Card_Nation } = require('../../../models/card_nation')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
-        var nationsToReturn = []
-        var nations = await Card_Nation.find({ readyToUse: false })
+        let nationsToReturn = []
+        const nations = await Card_Nation.find({ readyToUse: false })
         if (nations) {
             for (let i = 0; i < nations.length; i++) {
                 nationsToReturn.push(nations[i].name)

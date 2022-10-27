@@ -1,25 +1,25 @@
 const express = require('express')
 const router = express.Router()
-var { UserCard } = require('../../../models/user_cards')
-var { Card_Nation } = require('../../../models/card_nation')
-var { Card } = require('../../../models/card')
+const { UserCard } = require('../../../models/user_cards')
+const { Card_Nation } = require('../../../models/card_nation')
+const { Card } = require('../../../models/card')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
-        var cardsObj = await UserCard.findOne({ owner: req.query.email })
+        const cardsObj = await UserCard.findOne({ owner: req.query.email })
         if (cardsObj) {
-            var cards = cardsObj.cards
-            var cardsFiltered = []
+            const cards = cardsObj.cards
+            let cardsFiltered = []
             for (let i = 0; i < cards.length; i++) {
-                var card = undefined
+                let card = undefined
                 try {
                     card = await Card.findOne({ _id: cards[i]._id })
                 } catch (e) { }
                 if (card) {
-                    var nations = []
-                    var nationsReady = []
+                    let nations = []
+                    let nationsReady = []
                     for (let j = 0; j < card.nation.length; j++) {
-                        var nation = undefined
+                        let nation = undefined
                         try {
                             nation = await Card_Nation.findOne({ _id: card.nation, readyToUse: true })
                         } catch (e) { }
