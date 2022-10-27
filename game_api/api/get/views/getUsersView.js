@@ -5,7 +5,7 @@ const router = express.Router()
 Middleware which sends users specified in parameters. 
 */
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    const breadcrumb = [
         {
             currentPage: false,
             text: 'Home',

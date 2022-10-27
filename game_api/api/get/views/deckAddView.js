@@ -8,7 +8,7 @@ const { Card } = require('../../../models/card')
 
 // Middleware which sends deck add page with breadcrumbs
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -35,8 +35,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
+    let user = undefined
     try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
+        user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
     } catch (e) {
         breadcrumb.push({
             currentPage: true,
@@ -45,7 +46,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if (!user.data.userReturned) {
+    if (!user) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -70,18 +71,18 @@ router.get('/', async (req, res) => {
                 currentPage: true,
                 text: 'Add Deck'
             })
-            var userCards = await UserCard.findOne({ owner: req.query.email })
-            var cards = userCards.cards
-            var nations = []
+            const userCards = await UserCard.findOne({ owner: req.query.email })
+            const cards = userCards.cards
+            let nations = []
             for (let i = 0; i < cards.length; i++) {
-                var card = undefined
+                let card = undefined
                 try {
                     card = await Card.findOne({ _id: cards[i]._id, readyToUse: true })
                 } catch (e) { }
                 if (card) {
                     for (let j = 0; j < card.nation.length; j++) {
-                        var nationExist = false
-                        var nat = undefined
+                        let nationExist = false
+                        let nat = undefined
                         try {
                             nat = await Card_Nation.findOne({ _id: card.nation[j] })
                         } catch (e) { }

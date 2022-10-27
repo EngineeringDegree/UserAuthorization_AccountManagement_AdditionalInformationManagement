@@ -13,23 +13,24 @@ router.put('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        let map = undefined
         try {
-            var map = await Map.findOne({ _id: req.body.id })
+            map = await Map.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
         if (map) {
-            var sizeToSave = filterMapSize(req.body.size)
+            const sizeToSave = filterMapSize(req.body.size)
             if (!sizeToSave) {
                 return res.status(400).send({ status: 'BAD SIZE DATA', code: 404, action: 'FOCUS ON SIZE FIELD' })
             }
 
-            var goodFields = await checkIfFieldsAreOkay(req.body.fields, req.body.size)
+            const goodFields = await checkIfFieldsAreOkay(req.body.fields, req.body.size)
             if (!goodFields) {
                 return res.status(400).send({ status: 'BAD FIELDS', code: 404, action: 'RELOAD' })
             }
 
-            var goodStartingPostions = checkIfStartingPositionsAreOkay(req.body.startingPositions, req.body.size)
+            const goodStartingPostions = checkIfStartingPositionsAreOkay(req.body.startingPositions, req.body.size)
             if (!goodStartingPostions) {
                 return res.status(400).send({ status: 'BAD STARTING POSITIONS', code: 404, action: 'RELOAD' })
             }

@@ -3,7 +3,7 @@ const router = express.Router()
 
 // Middleware which sends main page with breadcrumbs
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    const breadcrumb = [
         {
             currentPage: true,
             text: 'Home'

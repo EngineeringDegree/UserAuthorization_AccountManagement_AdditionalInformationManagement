@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
+const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 const { calculateCardsStrength } = require('../../../utils/calculations/calculateCardStrength')
 const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
 const { Deck } = require('../../../models/deck')
@@ -20,22 +21,22 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         if (res.locals.user.data.confirmed) {
-            var deck = undefined
+            let deck = undefined
             try {
                 deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             } catch (e) { }
             if (deck) {
                 if (deck.owner == req.body.email) {
-                    var nation = undefined
+                    let nation = undefined
                     try {
                         nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
                     } catch (e) { }
                     if (!nation) {
                         return res.status(401).send({ status: 'THAT NATION IS TURNED OFF', code: 401, action: 'CHANGE DECKS LIST' })
                     }
-                    var strength = 0
+                    let strength = 0
                     for (let i = 0; i < deck.cards.length; i++) {
-                        var card = undefined
+                        let card = undefined
                         try {
                             card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
                         } catch (e) { }
@@ -45,6 +46,10 @@ router.post('/', async (req, res) => {
 
                         if (!card.nation.includes(deck.nation)) {
                             return res.status(401).send({ status: 'NATION NOT FOUND IN CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
+                        }
+
+                        if (!checkIfUserHasCard(card, userCards, req.body.cards[i].quantity)) {
+                            return res.status(401).send({ status: 'USER DO NOT HAVE CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
                         strength += calculateCardsStrength(card, deck.cards[i].quantity)
                     }
@@ -62,12 +67,12 @@ router.post('/', async (req, res) => {
                         } catch (e) { }
                     }
 
-                    var rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
-                    var userRating = 1500
+                    const rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
+                    let userRating = 1500
                     if (rating) {
                         userRating = rating.rating
                     } else {
-                        var newRating = new Rating(_.pick({
+                        let newRating = new Rating(_.pick({
                             owner: req.body.email,
                             nation: deck.nation,
                             rating: 1500
@@ -78,7 +83,7 @@ router.post('/', async (req, res) => {
                             return res.status(500).send({ status: 'SOMETHING WENT WRONG', code: 500, action: 'SOMETHING WENT WRONG POPUP', token: res.locals.user.data.token })
                         }
                     }
-                    var success = addPlayer({
+                    const success = addPlayer({
                         id: req.body.socketId,
                         userDeck: req.body.userDeck,
                         email: req.body.email,

@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
  * @param {object} type to save 
  */
 async function createType(type) {
-    var newType = new Card_Type(_.pick({
+    let newType = new Card_Type(_.pick({
         name: type.name,
         description: type.type,
         buffNearbyAllies: type.buffNearbyAllies,

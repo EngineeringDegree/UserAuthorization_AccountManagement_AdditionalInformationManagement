@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
  * @param {object} mapField to save 
  */
 async function createField(mapField) {
-    var newField = new Map_Field(_.pick({
+    let newField = new Map_Field(_.pick({
         name: mapField.name,
         description: mapField.description,
         basicDefence: mapField.basicDefence,

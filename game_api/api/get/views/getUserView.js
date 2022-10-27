@@ -7,7 +7,7 @@ const axios = require('axios')
 Middleware which sends user specified in parameter. 
 */
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -40,8 +40,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
+    let user = undefined
     try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
+        user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
     } catch (e) {
         breadcrumb.push({
             currentPage: true,
@@ -50,7 +51,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if (!user.data.userReturned) {
+    if (!user) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'

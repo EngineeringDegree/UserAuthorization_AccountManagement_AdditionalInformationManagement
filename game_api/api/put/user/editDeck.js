@@ -15,13 +15,13 @@ router.put('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    var deck = undefined
+    let deck = undefined
     try {
         deck = await Deck.findOne({ _id: req.body.id, deleted: false })
     } catch (e) { }
     if (deck) {
-        var strength = 0
-        var q = 0
+        let strength = 0
+        let q = 0
         for (let i = 0; i < req.body.cards.length; i++) {
             q += (req.body.cards[i].quantity / 1)
         }
@@ -29,16 +29,16 @@ router.put('/', async (req, res) => {
             return res.status(401).send({ status: 'TOO MUCH CARDS IN DECK', code: 401, action: 'RELOAD' })
         }
 
-        var deckNation = undefined
+        let deckNation = undefined
         try {
             deckNation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
         } catch (e) { }
         if (!deckNation) {
             return res.status(401).send({ status: 'THIS NATION HAS BEEN TURNED OFF', code: 401, action: 'RELOAD' })
         }
-        var userCards = await UserCard.findOne({ owner: req.body.email })
+        const userCards = await UserCard.findOne({ owner: req.body.email })
         for (let i = 0; i < req.body.cards.length; i++) {
-            var card = undefined
+            let card = undefined
             try {
                 card = await Card.findOne({ _id: req.body.cards[i]._id })
             } catch (e) { }
@@ -46,9 +46,9 @@ router.put('/', async (req, res) => {
                 return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'RELOAD' })
             }
             if (checkIfUserHasCard(card, userCards, req.body.cards[i].quantity)) {
-                var found = false
+                let found = false
                 for (let j = 0; j < card.nation.length; j++) {
-                    var nation = undefined
+                    let nation = undefined
                     try {
                         nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                     } catch (e) { }

@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
  * @param {object} nation to save 
  */
 async function createNation(nation) {
-    var newNation = new Card_Nation(_.pick({
+    let newNation = new Card_Nation(_.pick({
         name: nation.name,
         description: nation.nation,
         mobility: nation.mobility,

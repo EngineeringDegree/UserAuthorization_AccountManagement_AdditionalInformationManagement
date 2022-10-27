@@ -18,13 +18,14 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         if (res.locals.user.data.confirmed) {
-            var pack = undefined
+            let pack = undefined
             try {
                 pack = await Shop_Pack.findOne({ _id: req.body.id })
             } catch (e) { }
             if (pack) {
+                let funds = undefined
                 try {
-                    var patchObject = {
+                    const patchObject = {
                         email: req.body.email,
                         token: req.body.token,
                         refreshToken: req.body.refreshToken,
@@ -32,13 +33,13 @@ router.post('/', async (req, res) => {
                         gameApiSecret: process.env.GAME_API_SECRET
                     }
 
-                    var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
+                    funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
                 } catch (e) {
                     return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
                 }
                 if (funds.data) {
-                    var cards = await Card.find({ readyToUse: true })
-                    var packNation = undefined
+                    const cards = await Card.find({ readyToUse: true })
+                    let packNation = undefined
                     try {
                         packNation = await Card_Nation.find({ _id: pack.nation, readyToUse: true })
                     } catch (e) { }
@@ -46,7 +47,7 @@ router.post('/', async (req, res) => {
 
                     if (!packNation) {
                         try {
-                            var patchObject = {
+                            const patchObject = {
                                 email: req.body.email,
                                 token: req.body.token,
                                 refreshToken: req.body.refreshToken,
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
                                 gameApiSecret: process.env.GAME_API_SECRET
                             }
 
-                            var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
+                            funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
                         } catch (e) {
                             return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
                         }
@@ -62,26 +63,24 @@ router.post('/', async (req, res) => {
                         return res.status(404).send({ status: 'THAT NATION IS NOT TURNED ON', code: 404, action: 'REFUND' })
                     }
 
-                    if (packNation.name != "All") {
-                        for (let i = 0; i < cards.length; i++) {
-                            for (let j = 0; j < cards[i].nation.length; j++) {
-                                var nation = undefined
-                                try {
-                                    nation = await Card_Nation.find({ _id: cards[i].nation })
-                                } catch (e) { }
-                                if (nation.name == packNation.name) {
-                                    cardsToUse.push(cards[i])
-                                    break
-                                }
+
+                    for (let i = 0; i < cards.length; i++) {
+                        for (let j = 0; j < cards[i].nation.length; j++) {
+                            let nation = undefined
+                            try {
+                                nation = await Card_Nation.find({ _id: cards[i].nation })
+                            } catch (e) { }
+                            if (nation.name == packNation.name) {
+                                cardsToUse.push(cards[i])
+                                break
                             }
                         }
-                    } else {
-                        cardsToUse = cards
                     }
+
 
                     if (cardsToUse.length == 0) {
                         try {
-                            var patchObject = {
+                            const patchObject = {
                                 email: req.body.email,
                                 token: req.body.token,
                                 refreshToken: req.body.refreshToken,
@@ -89,7 +88,7 @@ router.post('/', async (req, res) => {
                                 gameApiSecret: process.env.GAME_API_SECRET
                             }
 
-                            var funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
+                            funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
                         } catch (e) {
                             return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
                         }
@@ -97,11 +96,11 @@ router.post('/', async (req, res) => {
                         return res.status(404).send({ status: 'CARDS IN NATION NOT FOUND', code: 404, action: 'REFUND' })
                     }
 
-                    var cardsChoosen = []
+                    let cardsChoosen = []
                     for (let i = 0; i < pack.cardsCount; i++) {
-                        var el = selectRandomElementFromArray(cardsToUse.length)
-                        var card = cardsToUse[el]
-                        var alreadyIn = false
+                        let el = selectRandomElementFromArray(cardsToUse.length)
+                        let card = cardsToUse[el]
+                        let alreadyIn = false
                         for (let j = 0; j < cardsChoosen.length; j++) {
                             if (cardsChoosen[j]._id.equals(card._id)) {
                                 alreadyIn = true
@@ -140,7 +139,7 @@ router.post('/', async (req, res) => {
  * @param {String} packName to save 
  */
 async function createPack(cards, owner, nation, packName) {
-    var newPack = new Pack(_.pick({
+    let newPack = new Pack(_.pick({
         packName: packName,
         nation: nation,
         cards: cards,

@@ -7,7 +7,7 @@ const { Card_Nation } = require('../../../models/card_nation')
 
 // Middleware which sends packs page with breadcrumbs
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -35,8 +35,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
+    let user = undefined
     try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
+        user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
     } catch (e) {
         breadcrumb.push({
             currentPage: true,
@@ -45,7 +46,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if (!user.data.userReturned) {
+    if (!user) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -58,8 +59,8 @@ router.get('/', async (req, res) => {
         text: `${user.data.username}`
     })
 
-    var packsToReturn = []
-    var userPacks = await Pack.find({ owner: user.data.email, used: false }).select('_id nation packName')
+    let packsToReturn = []
+    const userPacks = await Pack.find({ owner: user.data.email, used: false }).select('_id nation packName')
     for (let i = 0; i < userPacks.length; i++) {
         if (userPacks[i].nation == 'All') {
             packsToReturn.push({
@@ -69,7 +70,7 @@ router.get('/', async (req, res) => {
             })
         } else {
             try {
-                var nation = await Card_Nation.findOne({ _id: userPacks[i].nation })
+                const nation = await Card_Nation.findOne({ _id: userPacks[i].nation })
                 if (nation) {
                     packsToReturn.push({
                         _id: userPacks[i]._id,

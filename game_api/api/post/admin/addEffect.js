@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
  * @param {object} effect to save 
  */
 async function createEffect(effect) {
-    var newEffect = new Card_Effect(_.pick({
+    let newEffect = new Card_Effect(_.pick({
         name: effect.name,
         description: effect.description,
         mobility: effect.mobility,

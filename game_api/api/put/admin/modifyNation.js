@@ -11,8 +11,9 @@ router.put('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        let nation = undefined
         try {
-            var nation = await Card_Nation.findOne({ _id: req.body.id })
+            nation = await Card_Nation.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }

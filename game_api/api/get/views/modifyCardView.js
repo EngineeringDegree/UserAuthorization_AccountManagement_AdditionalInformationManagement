@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -36,8 +36,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('admin/cardNotFound', { breadcrumb: breadcrumb })
     }
 
+    let card = undefined
     try {
-        var card = await Card.findOne({ _id: req.query.cardId })
+        card = await Card.findOne({ _id: req.query.cardId })
     } catch (e) {
         breadcrumb.push({
             currentPage: true,

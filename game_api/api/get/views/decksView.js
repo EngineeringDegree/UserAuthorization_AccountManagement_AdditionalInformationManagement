@@ -7,7 +7,7 @@ const { Card_Nation } = require('../../../models/card_nation')
 
 // Middleware which sends decks page with breadcrumbs and decks listed
 router.get('/', async (req, res) => {
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -34,8 +34,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
+    let user = undefined
     try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
+        user = await axios.get(`${process.env.AUTH_SERVER}/get/user/exist?id=${req.query.userId}`)
     } catch (e) {
         breadcrumb.push({
             currentPage: true,
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/userNotFound', { breadcrumb: breadcrumb })
     }
 
-    if (!user.data.userReturned) {
+    if (!user) {
         breadcrumb.push({
             currentPage: true,
             text: 'User not found'
@@ -63,11 +64,11 @@ router.get('/', async (req, res) => {
         text: `My Decks`
     })
 
-    var decksToReturn = []
-    var decks = await Deck.find({ owner: user.data.email, deleted: false }).select('_id name nation')
+    let decksToReturn = []
+    const decks = await Deck.find({ owner: user.data.email, deleted: false }).select('_id name nation')
     for (let i = 0; i < decks.length; i++) {
         try {
-            var nation = await Card_Nation.findOne({ _id: decks[i].nation })
+            const nation = await Card_Nation.findOne({ _id: decks[i].nation })
             if (nation) {
                 decksToReturn.push({
                     _id: decks[i]._id,

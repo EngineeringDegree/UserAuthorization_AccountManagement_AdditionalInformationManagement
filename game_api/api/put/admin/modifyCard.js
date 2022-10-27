@@ -15,19 +15,20 @@ router.put('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        let card = undefined
         try {
-            var card = await Card.findOne({ _id: req.body.id })
+            card = await Card.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
         if (card) {
 
-            var nations = req.body.nation
-            var types = req.body.type
-            var effects = req.body.effects
-            var nation = await collectionFilter(nations, Card_Nation)
-            var type = await collectionFilter(types, Card_Type)
-            var effect = await collectionFilter(effects, Card_Effect)
+            const nations = req.body.nation
+            const types = req.body.type
+            const effects = req.body.effects
+            const nation = await collectionFilter(nations, Card_Nation)
+            const type = await collectionFilter(types, Card_Type)
+            const effect = await collectionFilter(effects, Card_Effect)
 
             const filter = {
                 _id: card._id

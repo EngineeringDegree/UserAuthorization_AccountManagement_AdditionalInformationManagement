@@ -17,8 +17,9 @@ router.patch('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        let pack = undefined
         try {
-            var pack = await Pack.findOne({ _id: req.body.id })
+            pack = await Pack.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }
@@ -33,10 +34,10 @@ router.patch('/', async (req, res) => {
             try {
                 await Pack.updateOne(filter, update)
             } catch (e) { }
-            var cardsInPack = pack.cards
-            var userCards = await UserCard.findOne({ owner: req.body.email })
+            const cardsInPack = pack.cards
+            const userCards = await UserCard.findOne({ owner: req.body.email })
             if (userCards) {
-                var cards = userCards.cards
+                let cards = userCards.cards
                 for (let i = 0; i < cardsInPack.length; i++) {
                     let foundInCollection = false
                     for (let j = 0; j < cards.length; j++) {
@@ -62,12 +63,12 @@ router.patch('/', async (req, res) => {
                     await UserCard.updateOne(filter2, update2)
                 } catch (e) { }
             } else {
-                var cards = []
+                let cards = []
                 for (let i = 0; i < cardsInPack.length; i++) {
                     cards.push({ _id: cardsInPack[i]._id, quantity: cardsInPack[i].basicDeck })
                 }
 
-                var newCardsCollection = new UserCard(_.pick({
+                let newCardsCollection = new UserCard(_.pick({
                     owner: req.body.email,
                     cards: cards
                 }, ['owner', 'cards']))
@@ -95,21 +96,21 @@ router.patch('/', async (req, res) => {
  * @param {array} cards array of card objects to generate decks from
  */
 async function generateBasicDecks(owner, cards) {
-    var nationCards = []
+    let nationCards = []
 
     for (let i = 0; i < cards.length; i++) {
-        var card = undefined
+        let card = undefined
         try {
             card = await Card.findOne({ _id: cards[i]._id })
         } catch (e) { }
 
         if (card.nation.length == 1) {
-            var nation = undefined
+            let nation = undefined
             try {
                 nation = await Card_Nation.findOne({ _id: card.nation[0], readyToUse: true })
             } catch (e) { }
             if (nation) {
-                var nationAlreadyGenerated = false
+                let nationAlreadyGenerated = false
                 for (let j = 0; j < nationCards.length; j++) {
                     if (nation.name == nationCards[j].nation) {
                         nationAlreadyGenerated = true
@@ -130,12 +131,12 @@ async function generateBasicDecks(owner, cards) {
             }
         } else {
             for (let j = 0; j < card.nation.length; j++) {
-                var nation = undefined
+                let nation = undefined
                 try {
                     nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                 } catch (e) { }
                 if (nation) {
-                    var nationAlreadyGenerated = false
+                    let nationAlreadyGenerated = false
                     for (let k = 0; k < nationCards.length; k++) {
                         if (nation.name == nationCards[k].nation) {
                             nationAlreadyGenerated = true
@@ -159,7 +160,7 @@ async function generateBasicDecks(owner, cards) {
     }
 
     do {
-        var newDeck = new Deck(_.pick({
+        let newDeck = new Deck(_.pick({
             owner: owner,
             nation: nationCards[nationCards.length - 1].id,
             cards: nationCards[nationCards.length - 1].cards,

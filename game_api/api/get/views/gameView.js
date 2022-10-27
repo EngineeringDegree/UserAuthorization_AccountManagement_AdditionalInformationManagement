@@ -5,9 +5,9 @@ const { Game } = require('../../../models/game')
 
 // Middleware which sends signin page with breadcrumbs
 router.get('/', async (req, res) => {
-    var id = req.originalUrl.split('/')
+    let id = req.originalUrl.split('/')
     id = { id: id[id.length - 1] }
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -23,8 +23,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('pages/gameNotFound', { breadcrumb: breadcrumb })
     }
 
+    let game = undefined
     try {
-        var game = await Game.findOne({ _id: id.id })
+        game = await Game.findOne({ _id: id.id })
     } catch (e) {
         breadcrumb.push({
             currentPage: true,

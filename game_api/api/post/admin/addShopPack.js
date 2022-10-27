@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
  * @param {object} pack to save 
  */
 async function createPack(pack) {
-    var newPack = new Shop_Pack(_.pick({
+    let newPack = new Shop_Pack(_.pick({
         name: pack.name,
         cardsCount: pack.cardsCount,
         nation: pack.nation,

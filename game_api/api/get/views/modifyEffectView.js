@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -36,8 +36,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('admin/effectNotFound', { breadcrumb: breadcrumb })
     }
 
+    let effect = undefined
     try {
-        var effect = await Card_Effect.findOne({ _id: req.query.effectId })
+        effect = await Card_Effect.findOne({ _id: req.query.effectId })
     } catch (e) {
         breadcrumb.push({
             currentPage: true,

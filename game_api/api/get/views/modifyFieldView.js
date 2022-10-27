@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
     }
 
-    var breadcrumb = [
+    let breadcrumb = [
         {
             currentPage: false,
             text: 'Home',
@@ -36,8 +36,9 @@ router.get('/', async (req, res) => {
         return res.status(404).render('admin/fieldNotFound', { breadcrumb: breadcrumb })
     }
 
+    let field = undefined
     try {
-        var field = await Map_Field.findOne({ _id: req.query.fieldId })
+        field = await Map_Field.findOne({ _id: req.query.fieldId })
     } catch (e) {
         breadcrumb.push({
             currentPage: true,

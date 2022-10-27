@@ -11,9 +11,9 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
     }
 
-    var decks = await Deck.find({ owner: req.body.email, deleted: false })
+    let decks = await Deck.find({ owner: req.body.email, deleted: false })
     if (decks.length > 1) {
-        var deck = undefined
+        let deck = undefined
         try {
             deck = await Deck.findOne({ _id: req.body.deckId })
         } catch (e) { }
@@ -29,10 +29,10 @@ router.patch('/', async (req, res) => {
                 try {
                     await Deck.updateOne(filter, update)
                 } catch (e) { }
-                var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
-                var decksToReturn = []
+                decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
+                let decksToReturn = []
                 for (let i = 0; i < decks.length; i++) {
-                    var nation = undefined
+                    let nation = undefined
                     try {
                         nation = await Card_Nation.findOne({ _id: decks[i].nation, readyToUse: true })
                     } catch (e) { }
@@ -52,7 +52,7 @@ router.patch('/', async (req, res) => {
         }
     }
 
-    var decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
+    decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
     return res.status(401).send({ status: 'DECK NOT FOUND, YOU CANNOT DELETE IT', code: 404, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
 })
 

@@ -11,8 +11,9 @@ router.put('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        let pack = undefined
         try {
-            var pack = await Shop_Pack.findOne({ _id: req.body.id })
+            pack = await Shop_Pack.findOne({ _id: req.body.id })
         } catch (e) {
             return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
         }

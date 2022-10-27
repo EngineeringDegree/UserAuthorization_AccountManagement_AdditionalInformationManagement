@@ -28,14 +28,14 @@ router.post('/', async (req, res) => {
  * @param {object} card to save 
  */
 async function createCard(card) {
-    var nations = card.nation
-    var types = card.type
-    var effects = card.effects
-    var nation = await collectionFilter(nations, Card_Nation)
-    var type = await collectionFilter(types, Card_Type)
-    var effect = await collectionFilter(effects, Card_Effect)
+    const nations = card.nation
+    const types = card.type
+    const effects = card.effects
+    const nation = await collectionFilter(nations, Card_Nation)
+    const type = await collectionFilter(types, Card_Type)
+    const effect = await collectionFilter(effects, Card_Effect)
 
-    var newCard = new Card(_.pick({
+    let newCard = new Card(_.pick({
         name: card.name,
         image: card.image,
         type: type,

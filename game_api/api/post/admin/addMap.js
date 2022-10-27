@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        var mapCreated = await createMap(req.body)
+        const mapCreated = await createMap(req.body)
         if (mapCreated) {
             return res.status(200).send({ status: 'MAP CREATED', code: 200, token: res.locals.user.data.token })
         }
@@ -30,22 +30,22 @@ router.post('/', async (req, res) => {
  * @param {object} map to save 
  */
 async function createMap(map) {
-    var sizeToSave = filterMapSize(map.size)
+    const sizeToSave = filterMapSize(map.size)
     if (!sizeToSave) {
         return false
     }
 
-    var goodFields = await checkIfFieldsAreOkay(map.fields, map.size)
+    const goodFields = await checkIfFieldsAreOkay(map.fields, map.size)
     if (!goodFields) {
         return false
     }
 
-    var goodStartingPostions = checkIfStartingPositionsAreOkay(map.startingPositions, map.size)
+    const goodStartingPostions = checkIfStartingPositionsAreOkay(map.startingPositions, map.size)
     if (!goodStartingPostions) {
         return false
     }
 
-    var newMap = new Map(_.pick({
+    let newMap = new Map(_.pick({
         name: map.name,
         size: sizeToSave,
         image: map.image,
