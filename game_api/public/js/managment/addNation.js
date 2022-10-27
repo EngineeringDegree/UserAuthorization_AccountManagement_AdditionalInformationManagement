@@ -22,6 +22,7 @@ function sendRequest() {
         mobility: $('#mobility').val(),
         defence: $('#defence').val(),
         attack: $('#attack').val(),
+        vision: $('#vision').val(),
         nation: $('#nation').val()
     }
     var stringifiedObject = JSON.stringify(postObject)

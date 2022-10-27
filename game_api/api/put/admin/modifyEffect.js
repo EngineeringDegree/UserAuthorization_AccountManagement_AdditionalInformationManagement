@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
-const axios = require('axios')
 const { Card_Effect } = require('../../../models/card_effect')
 
 // Middleware for putting effects
@@ -27,6 +26,7 @@ router.put('/', async (req, res) => {
                 mobility: req.body.mobility,
                 defence: req.body.defence,
                 attack: req.body.attack,
+                vision: req.body.vision,
                 canUseOn: req.body.canUseOn,
                 cooldown: req.body.cooldown,
                 duration: req.body.duration,
@@ -69,6 +69,7 @@ function validate(req) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         canUseOn: Joi.number().required(),
         cooldown: Joi.number().required(),
         duration: Joi.number().required(),

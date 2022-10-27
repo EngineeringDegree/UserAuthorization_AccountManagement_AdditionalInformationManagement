@@ -32,12 +32,13 @@ async function createType(type) {
         mobility: type.mobility,
         defence: type.defence,
         attack: type.attack,
+        vision: type.vision,
         stunImmunity: type.stunImmunity,
         scareImmunity: type.scareImmunity,
         silenceImmunity: type.silenceImmunity,
         charge: type.charge,
         readyToUse: false
-    }, ['name', 'description', 'buffNearbyAllies', 'debuffNearbyEnemies', 'mobility', 'defence', 'attack', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'charge', 'readyToUse']))
+    }, ['name', 'description', 'buffNearbyAllies', 'debuffNearbyEnemies', 'mobility', 'defence', 'attack', 'vision', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'charge', 'readyToUse']))
     try {
         await newType.save()
     } catch (e) { }
@@ -60,6 +61,7 @@ function validate(req) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         stunImmunity: Joi.boolean().required(),
         scareImmunity: Joi.boolean().required(),
         silenceImmunity: Joi.boolean().required(),

@@ -26,6 +26,7 @@ router.put('/', async (req, res) => {
                 mobility: req.body.mobility,
                 defence: req.body.defence,
                 attack: req.body.attack,
+                vision: req.body.vision,
                 readyToUse: req.body.readyToUse
             }
 
@@ -59,6 +60,7 @@ function validate(req) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         readyToUse: Joi.boolean().required()
     })
     const validation = schema.validate(req)

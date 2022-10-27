@@ -30,6 +30,11 @@ function init() {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
+    var vision = document.getElementById('effect-vision')
+    if (vision) {
+        vision.addEventListener('keyup', anythingChanged, false)
+    }
+
     var canUseOn = document.getElementById('effect-can-use-on')
     if (canUseOn) {
         canUseOn.addEventListener('keyup', anythingChanged, false)
@@ -113,6 +118,7 @@ function sendRequest() {
         mobility: $('#effect-mobility').val(),
         defence: $('#effect-defence').val(),
         attack: $('#effect-attack').val(),
+        vision: $('#effect-vision').val(),
         canUseOn: $('#effect-can-use-on').val(),
         cooldown: $('#effect-cooldown').val(),
         duration: $('#effect-duration').val(),

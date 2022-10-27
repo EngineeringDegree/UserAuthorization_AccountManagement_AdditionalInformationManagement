@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
+const { calculateCardsStrength } = require('../../../utils/calculations/calculateCardStrength')
+const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Rating } = require('../../../models/rating')
 const { Card_Nation } = require('../../../models/card_nation')
-const { addPlayer } = require('../../../utils/matchmaking/matchmaking')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
                         if (!card.nation.includes(deck.nation)) {
                             return res.status(401).send({ status: 'NATION NOT FOUND IN CARD', code: 401, action: 'DISPLAY CHANGE YOUR DECK POPUP' })
                         }
-                        strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
+                        strength += calculateCardsStrength(card, deck.cards[i].quantity)
                     }
 
                     if (strength != deck.strength) {

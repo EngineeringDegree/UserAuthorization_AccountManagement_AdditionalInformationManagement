@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
+const { calculateCardsStrength } = require('../../../utils/calculations/calculateCardStrength')
 const { Pack } = require('../../../models/packs')
 const { UserCard } = require('../../../models/user_cards')
 const { Deck } = require('../../../models/deck')
@@ -113,14 +114,14 @@ async function generateBasicDecks(owner, cards) {
             } catch (e) { }
             if (nation) {
                 if (nation.name == 'All') {
-                    allNationCards.strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                    allNationCards.strength += calculateCardsStrength(card, cards[i].basicDeck)
                     allNationCards.cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
                 } else {
                     var nationAlreadyGenerated = false
                     for (let j = 0; j < nationCards.length; j++) {
                         if (nation.name == nationCards[j].nation) {
                             nationAlreadyGenerated = true
-                            nationCards[j].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                            nationCards[j].strength += calculateCardsStrength(card, cards[i].basicDeck)
                             nationCards[j].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
                             break
                         }
@@ -128,7 +129,7 @@ async function generateBasicDecks(owner, cards) {
 
                     if (!nationAlreadyGenerated) {
                         nationCards.push({
-                            strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
+                            strength: calculateCardsStrength(card, cards[i].basicDeck),
                             cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
                             nation: nation.name,
                             id: nation._id
@@ -147,7 +148,7 @@ async function generateBasicDecks(owner, cards) {
                     for (let k = 0; k < nationCards.length; k++) {
                         if (nation.name == nationCards[k].nation) {
                             nationAlreadyGenerated = true
-                            nationCards[k].strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck)
+                            nationCards[k].strength += calculateCardsStrength(card, cards[i].basicDeck)
                             nationCards[k].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
                             break
                         }
@@ -155,7 +156,7 @@ async function generateBasicDecks(owner, cards) {
 
                     if (!nationAlreadyGenerated) {
                         nationCards.push({
-                            strength: ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * cards[i].basicDeck),
+                            strength: calculateCardsStrength(card, cards[i].basicDeck),
                             cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
                             nation: nation.name,
                             id: nation._id

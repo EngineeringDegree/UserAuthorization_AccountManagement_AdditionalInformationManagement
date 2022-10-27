@@ -30,8 +30,9 @@ async function createNation(nation) {
         mobility: nation.mobility,
         defence: nation.defence,
         attack: nation.attack,
+        vision: nation.vision,
         readyToUse: false
-    }, ['name', 'description', 'mobility', 'defence', 'attack', 'readyToUse']))
+    }, ['name', 'description', 'mobility', 'defence', 'attack', 'vision', 'readyToUse']))
     try {
         await newNation.save()
     } catch (e) { }
@@ -51,6 +52,7 @@ function validate(req) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         nation: Joi.string().required()
     })
     const validation = schema.validate(req)

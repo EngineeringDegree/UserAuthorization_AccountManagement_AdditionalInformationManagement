@@ -24,6 +24,10 @@ const Card_Effect = mongoose.model('Card_Effect', new mongoose.Schema({
         type: Number,
         required: true
     },
+    vision: {
+        type: Number,
+        required: true
+    },
     canUseOn: {
         type: Number,
         required: true
@@ -77,6 +81,7 @@ function validateCardEffect(effect) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         canUseOn: Joi.number().required(),
         cooldown: Joi.number().required(),
         duration: Joi.number().required(),

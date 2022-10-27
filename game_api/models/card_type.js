@@ -24,6 +24,10 @@ const Card_Type = mongoose.model('Card_Type', new mongoose.Schema({
         type: Number,
         required: true
     },
+    vision: {
+        type: Number,
+        required: true
+    },
     buffNearbyAllies: {
         type: String,
         required: true
@@ -63,6 +67,7 @@ function validateCardType(type) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         stunImmunity: Joi.boolean().required(),
         scareImmunity: Joi.boolean().required(),
         silenceImmunity: Joi.boolean().required(),

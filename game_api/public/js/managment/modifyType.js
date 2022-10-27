@@ -40,6 +40,11 @@ function init() {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
+    var vision = document.getElementById('type-vision')
+    if (vision) {
+        vision.addEventListener('keyup', anythingChanged, false)
+    }
+
     var stun = document.getElementById('type-stun-immunity')
     if (stun) {
         stun.addEventListener('mousedown', anythingChanged, false)
@@ -95,6 +100,7 @@ function sendRequest() {
         mobility: $('#type-mobility').val(),
         defence: $('#type-defence').val(),
         attack: $('#type-attack').val(),
+        vision: $('#type-vision').val(),
         stunImmunity: $('#type-stun-immunity').is(":checked"),
         scareImmunity: $('#type-scare-immunity').is(":checked"),
         silenceImmunity: $('#type-silence-immunity').is(":checked"),

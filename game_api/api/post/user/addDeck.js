@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
+const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
+const { calculateCardsStrength } = require('../../../utils/calculations/calculateCardStrength')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
-const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
 
 // Middleware for creating a deck
 router.post('/', async (req, res) => {
@@ -56,7 +57,7 @@ router.post('/', async (req, res) => {
                     }
                 }
                 if (found) {
-                    strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * req.body.cards[i].quantity)
+                    strength += calculateCardsStrength(card, req.body.cards[i].quantity)
                 } else {
                     return res.status(401).send({ status: 'SOME CARDS DOES NOT BELONG TO NATION YOU WANT TO USE A DECK FOR', code: 401, action: 'RELOAD' })
                 }

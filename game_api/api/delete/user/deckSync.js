@@ -3,6 +3,7 @@ const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
 const { checkIfUserHasCard } = require('../../../utils/deck/checkIfUserHasCard')
+const { calculateCardsStrength } = require('../../../utils/calculations/calculateCardStrength')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
@@ -48,7 +49,7 @@ router.delete('/', async (req, res) => {
             if (card) {
                 if (card.nation.includes(deck.nation)) {
                     newCardsToSave.push(deck.cards[i])
-                    strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
+                    strength += calculateCardsStrength(card, deck.cards[i].quantity)
                 } else {
                     notSync = true
                 }

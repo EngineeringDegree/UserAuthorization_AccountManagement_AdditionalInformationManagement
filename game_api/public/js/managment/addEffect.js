@@ -23,6 +23,7 @@ function sendRequest() {
         mobility: $('#mobility').val(),
         defence: $('#defence').val(),
         attack: $('#attack').val(),
+        vision: $('#vision').val(),
         canUseOn: $('#can-use-on').val(),
         cooldown: $('#cooldown').val(),
         duration: $('#duration').val(),

@@ -30,6 +30,11 @@ function init() {
         attack.addEventListener('keyup', anythingChanged, false)
     }
 
+    var vision = document.getElementById('nation-vision')
+    if (vision) {
+        vision.addEventListener('keyup', anythingChanged, false)
+    }
+
     var readyToUse = document.getElementById('nation-ready')
     if (readyToUse) {
         readyToUse.addEventListener('mousedown', anythingChanged, false)
@@ -63,6 +68,7 @@ function sendRequest() {
         mobility: $('#nation-mobility').val(),
         defence: $('#nation-defence').val(),
         attack: $('#nation-attack').val(),
+        vision: $('#nation-vision').val(),
         readyToUse: $('#nation-ready').is(":checked")
     }
     var stringifiedObject = JSON.stringify(putObject)

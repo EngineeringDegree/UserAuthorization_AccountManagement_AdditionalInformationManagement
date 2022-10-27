@@ -25,6 +25,7 @@ function sendRequest() {
         mobility: $('#mobility').val(),
         defence: $('#defence').val(),
         attack: $('#attack').val(),
+        vision: $('#vision').val(),
         stunImmunity: $('#stun-immunity').is(":checked"),
         scareImmunity: $('#scare-immunity').is(":checked"),
         silenceImmunity: $('#silence-immunity').is(":checked"),

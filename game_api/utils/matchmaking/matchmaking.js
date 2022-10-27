@@ -1,5 +1,6 @@
 const { Game } = require('../../models/game')
 const { Deck } = require('../../models/deck')
+const { Card_Nation } = require('../../models/card_nation')
 const axios = require('axios')
 const _ = require('lodash')
 var playersToMatchmake = []
@@ -97,57 +98,85 @@ var redirectSocketsTo = (io, id1, id2, target) => {
  * @param {number} turnLimit for settings how long will game take
  */
 var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) => {
-    var deck1 = undefined, deck2 = undefined, users = undefined
+    var deck1 = undefined, deck2 = undefined, users = undefined, temp
     if (player2.strength < player1.strength) {
-        try {
-            deck1 = await Deck.findOne({ _id: player2.userDeck, deleted: false })
-            deck2 = await Deck.findOne({ _id: player1.userDeck, deleted: false })
-        } catch (e) {
-            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
-        }
+        temp = player2
+        player2 = player1
+        player1 = temp
+    }
 
-        try {
-            users = await axios.get(`${process.env.AUTH_SERVER}/get/usersToGame?player1=${player2.email}&player2=${player1.email}&gameApiSecret=${process.env.GAME_API_SECRET}`)
-        } catch (e) {
-            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
-        }
-    } else {
-        try {
-            deck1 = await Deck.findOne({ _id: player1.userDeck, deleted: false })
-            deck2 = await Deck.findOne({ _id: player2.userDeck, deleted: false })
-        } catch (e) {
-            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
-        }
+    try {
+        deck1 = await Deck.findOne({ _id: player1.userDeck, deleted: false })
+        deck2 = await Deck.findOne({ _id: player2.userDeck, deleted: false })
+    } catch (e) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
+    }
 
-        try {
-            users = await axios.get(`${process.env.AUTH_SERVER}/get/usersToGame?player1=${player1.email}&player2=${player2.email}&gameApiSecret=${process.env.GAME_API_SECRET}`)
-        } catch (e) {
-            redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
-        }
-
+    try {
+        users = await axios.get(`${process.env.AUTH_SERVER}/get/usersToGame?player1=${player1.email}&player2=${player2.email}&gameApiSecret=${process.env.GAME_API_SECRET}`)
+    } catch (e) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
 
     if (!deck1 || !deck2 || !users) {
         redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
 
     if (!users.data) {
         redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
 
-    var player1 = {
-        id: users.data.user1
+    var cards1 = [], cards2 = [], nation1 = undefined, nation2 = undefined, strength1 = 0, strength2 = 0
+    try {
+        nation1 = await Card_Nation.findOne({ _id: deck1.nation, readyToUse: true })
+        nation2 = await Card_Nation.findOne({ _id: deck2.nation, readyToUse: true })
+    } catch (e) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
-    var player2 = {
-        id: users.data.user2
+
+    if (!nation1 || !nation2) {
+        redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
+    }
+
+    var player1Game = {
+        id: users.data.user1,
+        nationInfo: {
+            nation: nation1.name,
+            description: nation1.description,
+            mobility: nation1.mobility,
+            defence: nation1.defence,
+            attack: nation1.attack
+        },
+        initialStrength: strength1,
+        currentStrength: strength1,
+        cards: cards1
+    }
+    var player2Game = {
+        id: users.data.user2,
+        nationInfo: {
+            nation: nation2.name,
+            description: nation2.description,
+            mobility: nation2.mobility,
+            defence: nation2.defence,
+            attack: nation2.attack
+        },
+        initialStrength: strength2,
+        currentStrength: strength2,
+        cards: cards2
+    }
+    var map = {
+
     }
     var player1Fog = {
 
     }
     var player2Fog = {
-
-    }
-    var map = {
 
     }
     var currentState = {
@@ -160,8 +189,8 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
     }]]
 
     var newGame = new Game(_.pick({
-        player1: player1,
-        player2: player2,
+        player1: player1Game,
+        player2: player2Game,
         player1Fog: player1Fog,
         player2Fog: player2Fog,
         map: map,
@@ -189,14 +218,17 @@ var generateGame = async (player1, player2, gameType, moveTime, turnLimit, io) =
         returnedInfo = await newGame.save()
     } catch (e) {
         redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
 
     if (!returnedInfo) {
         redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')
+        return
     }
 
     if (returnedInfo._id) {
         redirectSocketsTo(io, player1.id, player2.id, `/game/${returnedInfo._id}`)
+        return
     }
 
     redirectSocketsTo(io, player1.id, player2.id, '/cannotGenerateGame')

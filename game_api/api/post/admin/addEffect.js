@@ -30,6 +30,7 @@ async function createEffect(effect) {
         mobility: effect.mobility,
         defence: effect.defence,
         attack: effect.attack,
+        vision: effect.vision,
         canUseOn: effect.canUseOn,
         cooldown: effect.cooldown,
         duration: effect.duration,
@@ -41,7 +42,7 @@ async function createEffect(effect) {
         scare: effect.scare,
         silence: effect.silence,
         readyToUse: false
-    }, ['name', 'description', 'mobility', 'defence', 'attack', 'canUseOn', 'cooldown', 'duration', 'cost', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'stun', 'scare', 'silence', 'readyToUse']))
+    }, ['name', 'description', 'mobility', 'defence', 'attack', 'vision', 'canUseOn', 'cooldown', 'duration', 'cost', 'stunImmunity', 'scareImmunity', 'silenceImmunity', 'stun', 'scare', 'silence', 'readyToUse']))
     try {
         await newEffect.save()
     } catch (e) { }
@@ -62,6 +63,7 @@ function validate(req) {
         mobility: Joi.number().required(),
         defence: Joi.number().required(),
         attack: Joi.number().required(),
+        vision: Joi.number().required(),
         canUseOn: Joi.number().required(),
         cooldown: Joi.number().required(),
         duration: Joi.number().required(),

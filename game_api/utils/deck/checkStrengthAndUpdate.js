@@ -1,6 +1,6 @@
 const { Deck } = require('../../models/deck')
 const { Card } = require('../../models/card')
-
+const { calculateCardsStrength } = require('../calculations/calculateCardStrength')
 /**
  * Finds deck in database and updates strength if necesarry
  * @param {DeckID} id to find in db 
@@ -19,7 +19,7 @@ var checkDeckStrengthAndUpdate = async (id) => {
                 card = await Card.findOne({ _id: deck.cards[i]._id })
             } catch (e) { }
             if (card) {
-                strength += ((card.type.length + card.attack + card.defense + card.mobility + card.effects.length) * deck.cards[i].quantity)
+                strength += calculateCardsStrength(card, deck.cards[i].quantity)
             }
         }
 
