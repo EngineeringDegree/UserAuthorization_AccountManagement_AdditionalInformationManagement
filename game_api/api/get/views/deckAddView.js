@@ -87,7 +87,7 @@ router.get('/', async (req, res) => {
                         } catch (e) { }
                         if (nat) {
                             for (let k = 0; k < nations.length; k++) {
-                                if (nat.name == nations[k].name || nat.name == 'All') {
+                                if (nat.name == nations[k].name) {
                                     nationExist = true
                                     break
                                 }

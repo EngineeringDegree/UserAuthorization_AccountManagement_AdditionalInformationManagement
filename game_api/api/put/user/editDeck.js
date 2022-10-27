@@ -53,7 +53,7 @@ router.put('/', async (req, res) => {
                         nation = await Card_Nation.findOne({ _id: card.nation[j], readyToUse: true })
                     } catch (e) { }
                     if (nation) {
-                        if (nation.name == 'All' || card.nation[j] == deck.nation) {
+                        if (card.nation[j] == deck.nation) {
                             found = true
                             break
                         }

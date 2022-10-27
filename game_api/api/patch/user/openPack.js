@@ -95,10 +95,6 @@ router.patch('/', async (req, res) => {
  * @param {array} cards array of card objects to generate decks from
  */
 async function generateBasicDecks(owner, cards) {
-    var allNationCards = {
-        strength: 0,
-        cards: []
-    }
     var nationCards = []
 
     for (let i = 0; i < cards.length; i++) {
@@ -113,28 +109,23 @@ async function generateBasicDecks(owner, cards) {
                 nation = await Card_Nation.findOne({ _id: card.nation[0], readyToUse: true })
             } catch (e) { }
             if (nation) {
-                if (nation.name == 'All') {
-                    allNationCards.strength += calculateCardsStrength(card, cards[i].basicDeck)
-                    allNationCards.cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
-                } else {
-                    var nationAlreadyGenerated = false
-                    for (let j = 0; j < nationCards.length; j++) {
-                        if (nation.name == nationCards[j].nation) {
-                            nationAlreadyGenerated = true
-                            nationCards[j].strength += calculateCardsStrength(card, cards[i].basicDeck)
-                            nationCards[j].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
-                            break
-                        }
+                var nationAlreadyGenerated = false
+                for (let j = 0; j < nationCards.length; j++) {
+                    if (nation.name == nationCards[j].nation) {
+                        nationAlreadyGenerated = true
+                        nationCards[j].strength += calculateCardsStrength(card, cards[i].basicDeck)
+                        nationCards[j].cards.push({ _id: cards[i]._id, quantity: cards[i].basicDeck })
+                        break
                     }
+                }
 
-                    if (!nationAlreadyGenerated) {
-                        nationCards.push({
-                            strength: calculateCardsStrength(card, cards[i].basicDeck),
-                            cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
-                            nation: nation.name,
-                            id: nation._id
-                        })
-                    }
+                if (!nationAlreadyGenerated) {
+                    nationCards.push({
+                        strength: calculateCardsStrength(card, cards[i].basicDeck),
+                        cards: [{ _id: cards[i]._id, quantity: cards[i].basicDeck }],
+                        nation: nation.name,
+                        id: nation._id
+                    })
                 }
             }
         } else {
@@ -171,8 +162,8 @@ async function generateBasicDecks(owner, cards) {
         var newDeck = new Deck(_.pick({
             owner: owner,
             nation: nationCards[nationCards.length - 1].id,
-            cards: nationCards[nationCards.length - 1].cards.concat(allNationCards.cards),
-            strength: nationCards[nationCards.length - 1].strength + allNationCards.strength,
+            cards: nationCards[nationCards.length - 1].cards,
+            strength: nationCards[nationCards.length - 1].strength,
             name: `${nationCards[nationCards.length - 1].nation} Starter Deck`,
             deleted: false
         }, ['owner', 'nation', 'cards', 'strength', 'name', 'deleted']))

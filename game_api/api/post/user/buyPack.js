@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
                                 try {
                                     nation = await Card_Nation.find({ _id: cards[i].nation })
                                 } catch (e) { }
-                                if (nation.name == packNation.name || nation.name == 'All') {
+                                if (nation.name == packNation.name) {
                                     cardsToUse.push(cards[i])
                                     break
                                 }
