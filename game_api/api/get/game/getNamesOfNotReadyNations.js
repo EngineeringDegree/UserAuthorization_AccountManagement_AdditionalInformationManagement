@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { Card_Nation } = require('../../../models/card_nation')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
@@ -10,7 +12,7 @@ router.get('/', async (req, res) => {
             for (let i = 0; i < nations.length; i++) {
                 nationsToReturn.push(nations[i].name)
             }
-            return res.status(200).send({ status: 'OK', code: 200, nations: nationsToReturn, token: res.locals.user.data.token })
+            return res.status(200).send({ status: statuses.OK, code: 200, nations: nationsToReturn, token: res.locals.user.data.token })
         }
 
         return res.status(404).send({ status: 'NATIONS NOT FOUND', code: 404, action: 'NATIONS NOT FOUND POPUP' })

@@ -3,28 +3,37 @@ const router = express.Router()
 const Joi = require('joi')
 const _ = require('lodash')
 const axios = require('axios')
+const { statuses } = require('../enums/status')
+const { actions } = require('../enums/action')
 
 router.use('/', async (req, res, next) => {
+    let authBody = {
+        email: undefined,
+        token: undefined,
+        refreshToken: undefined
+    }
+
     if (_.isEmpty(req.body)) {
-        var authBody = {
+        authBody = {
             email: req.query.email,
             token: req.query.token,
-            refreshToken: req.query.refreshToken,
+            refreshToken: req.query.refreshToken
         }
     } else {
-        var authBody = {
+        authBody = {
             email: req.body.email,
             token: req.body.token,
-            refreshToken: req.body.refreshToken,
+            refreshToken: req.body.refreshToken
         }
     }
     const { error } = validate(authBody)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
+    let user = undefined
     try {
-        var user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${authBody.email}&token=${authBody.token}&refreshToken=${authBody.refreshToken}`)
+        user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${authBody.email}&token=${authBody.token}&refreshToken=${authBody.refreshToken}`)
     } catch (e) {
         return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
     }

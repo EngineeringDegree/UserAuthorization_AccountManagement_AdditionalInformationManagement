@@ -8,12 +8,14 @@ const { UserCard } = require('../../../models/user_cards')
 const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for opening pack, patching user card collection and creating basic deck if there isn't something like that
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -21,7 +23,7 @@ router.patch('/', async (req, res) => {
         try {
             pack = await Pack.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
         }
         if (pack) {
             const filter = {

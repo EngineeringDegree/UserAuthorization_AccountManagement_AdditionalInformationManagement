@@ -3,6 +3,8 @@ const router = express.Router()
 const Joi = require('joi')
 const { Card_Type } = require('../../../models/card_type')
 const { filterAsset } = require('../../../utils/filter/filter')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -10,7 +12,7 @@ This middleware sends cards according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: 'LOGOUT' })
     }
 
     if (res.locals.user.data) {

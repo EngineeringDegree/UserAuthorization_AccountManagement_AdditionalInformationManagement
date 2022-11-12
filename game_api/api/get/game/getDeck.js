@@ -4,11 +4,13 @@ const Joi = require('joi')
 const { checkDeckStrengthAndUpdate } = require('../../../utils/deck/checkStrengthAndUpdate')
 const { Card_Nation } = require('../../../models/card_nation')
 const { Deck } = require('../../../models/deck')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -22,10 +24,10 @@ router.get('/', async (req, res) => {
                 if (nation) {
                     let strength = await checkDeckStrengthAndUpdate(deck._id)
                     deck.strength = strength
-                    return res.status(200).send({ status: 'OK', code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
+                    return res.status(200).send({ status: statuses.OK, code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
                 }
 
-                return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: 'NATION NOT FOUND POPUP' })
+                return res.status(404).send({ status: statuses.NATION_NOT_FOUND, code: 404, action: 'NATION NOT FOUND POPUP' })
             }
 
             return res.status(401).send({ status: 'DECK IS NOT YOURS', code: 401, action: 'NOT AN OWNER POPUP' })

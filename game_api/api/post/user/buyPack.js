@@ -8,12 +8,14 @@ const { Card } = require('../../../models/card')
 const { Pack } = require('../../../models/packs')
 const { Card_Nation } = require('../../../models/card_nation')
 const { Shop_Pack } = require('../../../models/shop_pack')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for creating a deck
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {

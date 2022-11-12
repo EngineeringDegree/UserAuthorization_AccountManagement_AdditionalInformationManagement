@@ -2,12 +2,14 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const { Map_Field } = require('../../../models/map_field')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for putting map fields
 router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -15,7 +17,7 @@ router.put('/', async (req, res) => {
         try {
             field = await Map_Field.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
         }
         if (field) {
             const filter = {

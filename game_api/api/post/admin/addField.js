@@ -3,12 +3,14 @@ const router = express.Router()
 const _ = require('lodash')
 const Joi = require('joi')
 const { Map_Field } = require('../../../models/map_field')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for creating a map field
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {

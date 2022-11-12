@@ -10,6 +10,8 @@ const { Card } = require('../../../models/card')
 const { Rating } = require('../../../models/rating')
 const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -17,7 +19,7 @@ This middleware sends cards according to parameters if user is admin
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: 'LOGOUT' })
     }
 
     if (res.locals.user.data) {
@@ -95,7 +97,7 @@ router.post('/', async (req, res) => {
                     })
 
                     if (success) {
-                        return res.status(200).send({ status: 'OK', code: 200, action: 'JOIN QUEUE', token: res.locals.user.data.token })
+                        return res.status(200).send({ status: statuses.OK, code: 200, action: 'JOIN QUEUE', token: res.locals.user.data.token })
                     }
 
                     return res.status(500).send({ status: 'SOMETHING WENT WRONG', code: 500, action: 'SOMETHING WENT WRONG POPUP', token: res.locals.user.data.token })

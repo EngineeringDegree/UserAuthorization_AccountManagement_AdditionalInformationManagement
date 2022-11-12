@@ -3,12 +3,14 @@ const router = express.Router()
 const Joi = require('joi')
 const { Deck } = require('../../../models/deck')
 const { Card_Nation } = require('../../../models/card_nation')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for deleteing decks
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     let decks = await Deck.find({ owner: req.body.email, deleted: false })

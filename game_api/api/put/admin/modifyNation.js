@@ -2,12 +2,14 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const { Card_Nation } = require('../../../models/card_nation')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for puting nations
 router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -15,7 +17,7 @@ router.put('/', async (req, res) => {
         try {
             nation = await Card_Nation.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
         }
         if (nation) {
             const filter = {
@@ -39,7 +41,7 @@ router.put('/', async (req, res) => {
             return res.status(200).send({ status: 'NATION MODIFIED', code: 200, token: res.locals.user.data.token })
         }
 
-        return res.status(404).send({ status: 'NATION NOT FOUND', code: 404, action: '' })
+        return res.status(404).send({ status: statuses.NATION_NOT_FOUND, code: 404, action: '' })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

@@ -7,12 +7,14 @@ const { Card_Nation } = require('../../../models/card_nation')
 const { Card_Effect } = require('../../../models/card_effect')
 const { Card_Type } = require('../../../models/card_type')
 const { collectionFilter } = require('../../../utils/filter/collectionFilter')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (res.locals.user.data) {

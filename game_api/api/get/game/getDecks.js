@@ -7,6 +7,8 @@ const { Deck } = require('../../../models/deck')
 const { Pack } = require('../../../models/packs')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     if (res.locals.user.data) {
@@ -49,7 +51,7 @@ router.get('/', async (req, res) => {
             }
         }
 
-        return res.status(200).send({ status: 'OK', code: 200, decks: decksToReturn, token: res.locals.user.data.token })
+        return res.status(200).send({ status: statuses.OK, code: 200, decks: decksToReturn, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })

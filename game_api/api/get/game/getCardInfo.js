@@ -2,11 +2,13 @@ const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
 const { Card } = require('../../../models/card')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     let card = undefined
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
         card = await Card.findOne({ _id: req.query.id, readyToUse: true })
     } catch (e) { }
     if (card) {
-        return res.status(200).send({ status: 'OK', code: 200, card: card, quantity: req.query.quantity })
+        return res.status(200).send({ status: statuses.OK, code: 200, card: card, quantity: req.query.quantity })
     }
 
     return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'CARD NOT FOUND POPUP' })

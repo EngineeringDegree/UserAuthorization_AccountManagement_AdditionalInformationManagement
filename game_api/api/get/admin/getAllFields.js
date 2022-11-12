@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { Map_Field } = require('../../../models/map_field')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin
