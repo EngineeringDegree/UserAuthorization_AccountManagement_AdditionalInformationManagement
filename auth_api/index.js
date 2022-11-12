@@ -78,9 +78,9 @@ app.set('view engine', 'ejs')
 
 // Get
 app.use('/', mainView)
-app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/password/change', changePasswordView)
 
+app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 app.use('/get/admin/premisions', checkIfHasAdminPremisions)
 app.use('/get/users', getUsers)

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
+import { userLoggedIn } from '../../actions/user/userLoggedIn-actions'
+import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
  * MenuWrapper object to display
@@ -7,8 +9,12 @@ import { useSelector, useDispatch } from 'react-redux'
  * @returns jsx of the menu wrapper
  */
 const MenuWrapper = (props) => {
-    const userLoggedIn = useSelector((state) => state.userLoggedIn)
+    const userLogged = useSelector((state) => state.userLoggedIn)
     const dispatch = useDispatch()
+
+    if (checkIfEmptyObject(userLogged)) {
+        dispatch(userLoggedIn(window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken')))
+    }
 
     let menuFilter = props.menuElements
     if (!props.isServerUp) {
@@ -30,4 +36,12 @@ const MenuWrapper = (props) => {
     )
 }
 
-export default MenuWrapper
+function mapStateToProps(state) {
+    return {
+        userLoggedIn: state.userLoggedIn
+    }
+}
+
+const mapDispatchToProps = { userLoggedIn }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuWrapper)
