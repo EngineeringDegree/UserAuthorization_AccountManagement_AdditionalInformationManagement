@@ -8,7 +8,7 @@ const Input = (props) => {
         <div>
             <label>
                 {props.label}
-                <input className={classes} type={props.type} value={props.value} onChange={(e) => props.setter(e.target.value)} />
+                <input className={classes} type={props.type} value={props.value} checked={props.value} onChange={(e) => props.setter(e.target.value)} />
                 {props.error}
             </label>
         </div>

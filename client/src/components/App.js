@@ -136,7 +136,7 @@ class App extends Component {
         <HeaderWrapper menuElements={menuToDisplay} />
         <Routes>
           <Route path='/sign-in' element={<SignInWrapper />} />
-          <Route path='/logout' element={<LogoutWrapper authStateSetter={this.setState} />} />
+          <Route path='/logout' element={<LogoutWrapper />} />
         </Routes>
         <FooterWrapper />
       </Router>

@@ -14,7 +14,6 @@ export const responses = {
  * @returns dispatch function for reducer.
  */
 export function login(email, password) {
-    console.log(email, password)
     /**
      * Main dispatch function returned.
      */
