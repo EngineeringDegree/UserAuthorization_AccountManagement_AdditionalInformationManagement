@@ -10,7 +10,7 @@ const HeaderWrapper = (props) => {
     return (
         <div className="d-flex justify-space-between">
             <Logo />
-            <MenuWrapper menuElements={props.menuElements} isServerUp={props.isServerUp} />
+            <MenuWrapper menuElements={props.menuElements} />
         </div>
     )
 }

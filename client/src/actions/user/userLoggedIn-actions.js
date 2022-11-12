@@ -5,7 +5,8 @@ export const CHECK_LOGGED_SUCCESS = 'check_logged_success'
 export const CHECK_LOGGED_ERROR = 'check_logged_error'
 export const responses = {
     REQUESTING_ACCOUNT_AUTHORIZATION: "REQUESTING ACCOUNT AUTHORIZATION",
-    NO_TOKENS_EMAIL: "NO TOKENS OR EMAIL"
+    NO_TOKENS_EMAIL: "NO TOKENS OR EMAIL",
+    USER_NOT_AUTHORIZED: "USER NOT AUTHORIZED"
 }
 
 /**
@@ -15,7 +16,7 @@ export const responses = {
  * @param {*} refreshToken to check.
  * @returns dispatch function for reducer.
  */
-export function userLoggedIn(email, token, refreshToken) {
+export function checkUserLoggedIn(email, token, refreshToken) {
 
     /**
      * Main dispatch function returned.
@@ -32,7 +33,7 @@ export function userLoggedIn(email, token, refreshToken) {
         try {
             const address = process.env.REACT_APP_AUTH_API + `get/checkIfLoggedIn?email=${email}&token=${token}&refreshToken=${refreshToken}`
             response = await axios.get(address)
-            dispatch(checkIfLoggedSuccess(response))
+            dispatch(checkIfLoggedSuccess(response.data))
         } catch (e) {
             dispatch(checkIfLoggedError(e.response.data))
         }
@@ -53,7 +54,7 @@ export function userLoggedIn(email, token, refreshToken) {
     function checkIfLoggedSuccess(res) {
         return {
             type: CHECK_LOGGED_SUCCESS,
-            payload: res.data
+            payload: res
         }
     }
 

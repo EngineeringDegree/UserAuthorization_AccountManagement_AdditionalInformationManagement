@@ -18,13 +18,12 @@ export default function checkIfLoggedInReducer(state = {}, action) {
                 response: responses.REQUESTING_ACCOUNT_AUTHORIZATION
             }
         case CHECK_LOGGED_SUCCESS:
-            console.log(action.payload)
-            // if (action.payload.token) {
-            // window.localStorage.setItem("token", action.payload.data.token)
-            // }
-            return (action.payload.data)
+            if (action.payload.token) {
+                window.localStorage.setItem('token', action.payload.token)
+            }
+            return (action.payload)
         case CHECK_LOGGED_ERROR:
-            return (action.payload.data)
+            return (action.payload)
         default:
             return state
     }
