@@ -36,12 +36,12 @@ router.patch('/', async (req, res) => {
             }
 
             sendConfirmationEmail({ email: req.body.newEmail, accessToken: accessToken.token })
-            return res.status(200).send({ status: "EMAIL CHANGED", code: 200, email: req.body.newEmail })
+            return res.status(200).send({ status: statuses.EMAIL_CHANGED, code: 200, email: req.body.newEmail, action: actions.EMAIL_CHANGED_POPUP })
         }
         return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

@@ -13,33 +13,33 @@ const salt = 10
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
+        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
     }
 
     if (req.body.password != req.body.repeatPassword) {
-        return res.status(400).send({ status: "PASSWORDS DO NOT MATCH", code: 400 })
+        return res.status(400).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 400, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
     }
 
     const token = await Token.findOne({ owner: req.body.email, type: process.env.ACCESS })
     if (!token) {
-        return res.status(401).send({ status: "USER NOT AUTHORIZED", code: 401 })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
 
     if (token.token != req.body.accessToken) {
-        return res.status(401).send({ status: "USER NOT AUTHORIZED", code: 401 })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
 
     await changeUserPassword(user._id, req.body.password)
-    return res.status(200).send({ status: "PASSWORD CHANGED", code: 200 })
+    return res.status(200).send({ status: statuses.PASSWORD_CHANGED, code: 200, action: actions.PASSWORD_CHANGED_POPUP })
 })
 
 /**

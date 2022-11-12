@@ -11,13 +11,13 @@ const { actions } = require('../../../utils/enums/action')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
         }
 
         let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
@@ -25,16 +25,16 @@ router.patch('/', async (req, res) => {
             check = await askNewToken(user.email, req.body.refreshToken, user._id)
             if (check) {
                 await changeUserUsername(user._id, req.body.newUsername)
-                return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername, token: check })
+                return res.status(200).send({ status: statuses.USERNAME_CHANGED, code: 200, username: req.body.newUsername, token: check, action: actions.USERNAME_CHANGED_POPUP })
             }
-            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
         }
 
         await changeUserUsername(user._id, req.body.newUsername)
-        return res.status(200).send({ status: "USERNAME CHANGED", code: 200, username: req.body.newUsername })
+        return res.status(200).send({ status: statuses.USERNAME_CHANGED, code: 200, username: req.body.newUsername, action: actions.USERNAME_CHANGED_POPUP })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: "LOGOUT" })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

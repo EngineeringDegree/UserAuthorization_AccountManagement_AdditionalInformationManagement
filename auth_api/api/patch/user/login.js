@@ -15,21 +15,21 @@ const { actions } = require('../../../utils/enums/action')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ status: 'USER NOT FOUND', code: 404 })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: 'USER IS BANNED', code: 401 })
+        return res.status(401).send({ status: statuses.USER_BANNED, code: 401, action: actions.USER_IS_BANNED })
     }
 
     const pass = await bcrypt.compare(req.body.password, user.password)
     if (!pass) {
-        return res.status(401).send({ status: 'BAD DATA', code: 401 })
+        return res.status(401).send({ status: statuses.BAD_DATA, code: 401, action: actions.BAD_PASSWORD_POPUP })
     }
 
     const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
@@ -54,7 +54,7 @@ router.patch('/', async (req, res) => {
         await newToken.save()
     } catch (e) { }
 
-    return res.status(200).send({ status: 'OK', code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
+    return res.status(200).send({ status: statuses.OK, code: 200, token, refreshToken, email: user.email, username: user.username, id: user._id, funds: user.funds })
 })
 
 /**
