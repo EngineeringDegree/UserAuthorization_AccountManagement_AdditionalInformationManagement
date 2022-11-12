@@ -7,7 +7,7 @@ const { statuses } = require('../../../utils/enums/status')
 const { actions } = require('../../../utils/enums/action')
 
 /*
-This middleware sends cards according to parameters if user is admin
+This middleware sends types according to parameters if user is admin
 */
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
     if (res.locals.user.data) {
         const types = await filterAsset(req.query.records, req.query.typeName, req.query.page, Card_Type)
-        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, types: types.assets, pages: types.pages, page: types.page })
+        return res.status(200).send({ status: statuses.TYPES_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, types: types.assets, pages: types.pages, page: types.page })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

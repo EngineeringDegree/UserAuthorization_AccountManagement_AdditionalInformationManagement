@@ -83,9 +83,9 @@ router.patch('/', async (req, res) => {
             if (decks.length == 0) {
                 await generateBasicDecks(req.body.email, cardsInPack)
             }
-            return res.status(200).send({ status: 'PACK OPENED', code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
+            return res.status(200).send({ status: statuses.PACK_OPENED, code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
         }
-        return res.status(404).send({ status: 'PACK NOT FOUND', code: 404, action: 'PACK NOT FOUND POPUP' })
+        return res.status(404).send({ status: statuses.PACK_NOT_FOUND, code: 404, action: actions.PACK_NOT_FOUND_POPUP })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

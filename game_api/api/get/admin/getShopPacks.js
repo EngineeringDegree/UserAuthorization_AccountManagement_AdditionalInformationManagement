@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
     if (res.locals.user.data) {
         const packs = await filterAsset(req.query.records, req.query.packName, req.query.page, Shop_Pack)
-        return res.status(200).send({ status: 'SHOP PACKS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, packs: packs.assets, pages: packs.pages, page: packs.page })
+        return res.status(200).send({ status: statuses.SHOP_PACKS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, packs: packs.assets, pages: packs.pages, page: packs.page })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

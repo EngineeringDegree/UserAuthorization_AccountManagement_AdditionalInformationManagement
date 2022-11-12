@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         await createEffect(req.body)
-        return res.status(200).send({ status: 'EFFECT CREATED', code: 200, token: res.locals.user.data.token })
+        return res.status(200).send({ status: statuses.EFFECT_CREATED, code: 200, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

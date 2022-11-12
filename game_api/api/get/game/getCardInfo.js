@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         return res.status(200).send({ status: statuses.OK, code: 200, card: card, quantity: req.query.quantity })
     }
 
-    return res.status(404).send({ status: 'CARD NOT FOUND', code: 404, action: 'CARD NOT FOUND POPUP' })
+    return res.status(404).send({ status: statuses.CARD_NOT_FOUND, code: 404, action: actions.CARD_NOT_FOUND_POPUP })
 })
 
 function validate(req) {

@@ -19,16 +19,16 @@ router.get('/', async (req, res) => {
                 await createInvitationalGift(req.query.email)
             } else {
                 if (res.locals.user.data.token) {
-                    return res.status(303).send({ status: 'OPEN PACKS FIRST', action: 'REDIRECT TO PACKS PAGE', token: res.locals.user.data.token, code: 303 })
+                    return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, action: actions.REDIRECT_TO_PACKS_PAGE, token: res.locals.user.data.token, code: 303 })
                 }
 
-                return res.status(303).send({ status: 'OPEN PACKS FIRST', action: 'REDIRECT TO PACKS PAGE', code: 303 })
+                return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, action: actions.REDIRECT_TO_PACKS_PAGE, code: 303 })
             }
             if (res.locals.user.data.token) {
-                return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', token: res.locals.user.data.token, code: 303 })
+                return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, action: actions.REDIRECT_TO_PACKS_PAGE, token: res.locals.user.data.token, code: 303 })
             }
 
-            return res.status(303).send({ status: 'FIRST PACKS CREATED', action: 'REDIRECT TO PACKS PAGE', code: 303 })
+            return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, action: actions.REDIRECT_TO_PACKS_PAGE, code: 303 })
         }
 
         let decksToReturn = []

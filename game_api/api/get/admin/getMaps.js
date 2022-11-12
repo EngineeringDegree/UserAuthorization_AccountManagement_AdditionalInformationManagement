@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
     if (res.locals.user.data) {
         const maps = await filterAsset(req.query.records, req.query.mapName, req.query.page, Map)
-        return res.status(200).send({ status: 'MAP LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, maps: maps.assets, pages: maps.pages, page: maps.page })
+        return res.status(200).send({ status: statuses.MAPS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, maps: maps.assets, pages: maps.pages, page: maps.page })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

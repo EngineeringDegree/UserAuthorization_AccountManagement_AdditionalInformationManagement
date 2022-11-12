@@ -18,10 +18,10 @@ router.post('/', async (req, res) => {
     if (res.locals.user.data) {
         const mapCreated = await createMap(req.body)
         if (mapCreated) {
-            return res.status(200).send({ status: 'MAP CREATED', code: 200, token: res.locals.user.data.token })
+            return res.status(200).send({ status: statuses.MAP_CREATED, code: 200, token: res.locals.user.data.token })
         }
 
-        return res.status(400).send({ status: 'BAD SIZE', code: 400, action: 'FOCUS ON SIZE' })
+        return res.status(400).send({ status: statuses.BAD_SIZE, code: 400, action: actions.FOCUS_ON_SIZE })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

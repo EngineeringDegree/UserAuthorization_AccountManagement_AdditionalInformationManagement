@@ -27,13 +27,13 @@ router.get('/', async (req, res) => {
                     return res.status(200).send({ status: statuses.OK, code: 200, deck: deck, token: res.locals.user.data.token, nation: nation.name })
                 }
 
-                return res.status(404).send({ status: statuses.NATION_NOT_FOUND, code: 404, action: 'NATION NOT FOUND POPUP' })
+                return res.status(404).send({ status: statuses.NATION_NOT_FOUND, code: 404, action: actions.NATION_NOT_FOUND_POPUP })
             }
 
-            return res.status(401).send({ status: 'DECK IS NOT YOURS', code: 401, action: 'NOT AN OWNER POPUP' })
+            return res.status(401).send({ status: statuses.DECK_IS_NOT_YOURS, code: 401, action: actions.NOT_AN_OWNER_POPUP })
         }
 
-        return res.status(404).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: 'DECK NOT FOUND' })
+        return res.status(404).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: actions.DECK_NOT_FOUND })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

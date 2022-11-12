@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
     if (res.locals.user.data) {
         const cards = await filterAsset(req.query.records, req.query.cardName, req.query.page, Card)
-        return res.status(200).send({ status: 'CARDS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
+        return res.status(200).send({ status: statuses.CARDS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

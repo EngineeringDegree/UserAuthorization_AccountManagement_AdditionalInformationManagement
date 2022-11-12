@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         await createNation(req.body)
-        return res.status(200).send({ status: 'NATION CREATED', code: 200, token: res.locals.user.data.token })
+        return res.status(200).send({ status: statuses.NATION_CREATED, code: 200, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

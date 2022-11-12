@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
             return res.status(200).send({ status: statuses.OK, code: 200, cards: cardsFiltered, token: res.locals.user.data.token })
         }
 
-        return res.status(404).send({ status: 'CARDS NOT FOUND', code: 404, action: 'CARDS NOT FOUND POPUP' })
+        return res.status(404).send({ status: statuses.CARDS_NOT_FOUND, code: 404, action: actions.CARDS_NOT_FOUND_POPUP })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

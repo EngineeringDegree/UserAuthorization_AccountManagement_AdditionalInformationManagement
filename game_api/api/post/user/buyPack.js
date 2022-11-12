@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
                             return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
                         }
 
-                        return res.status(404).send({ status: 'THAT NATION IS NOT TURNED ON', code: 404, action: 'REFUND' })
+                        return res.status(404).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 404, action: actions.REFUND })
                     }
 
 
@@ -95,7 +95,7 @@ router.post('/', async (req, res) => {
                             return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
                         }
 
-                        return res.status(404).send({ status: 'CARDS IN NATION NOT FOUND', code: 404, action: 'REFUND' })
+                        return res.status(404).send({ status: statuses.CARDS_IN_NATION_NOT_FOUND, code: 404, action: actions.REFUND })
                     }
 
                     let cardsChoosen = []
@@ -120,14 +120,14 @@ router.post('/', async (req, res) => {
                     }
                     await createPack(cardsChoosen, req.body.email, pack.nation, pack.name)
 
-                    return res.status(200).send({ status: 'PACK BOUGHT', code: 200 })
+                    return res.status(200).send({ status: statuses.PACK_BOUGHT, code: 200 })
                 }
-                return res.status(400).send({ status: 'INSUFFICIENT FUNDS', code: 400, action: 'INSUFFICIENT FUNDS POPUP' })
+                return res.status(400).send({ status: statuses.INSUFFICIENT_FUNDS, code: 400, action: actions.INSUFFICIENT_FUNDS_POPUP })
             }
 
-            return res.status(404).send({ status: 'SHOP PACK NOT FOUND', code: 404 })
+            return res.status(404).send({ status: statuses.SHOP_PACK_NOT_FOUND, code: 404 })
         }
-        return res.status(401).send({ status: 'ACCOUNT NOT CONFIRMED', code: 401 })
+        return res.status(401).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 401 })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })

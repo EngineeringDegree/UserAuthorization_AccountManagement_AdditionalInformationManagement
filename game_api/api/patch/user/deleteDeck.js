@@ -47,15 +47,15 @@ router.patch('/', async (req, res) => {
                     }
                 }
 
-                return res.status(200).send({ status: 'DECK REMOVED', code: 200, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decksToReturn })
+                return res.status(200).send({ status: statuses.DECK_REMOVED, code: 200, action: actions.CHANGE_DECK_LIST_ACCORDINGLY, decks: decksToReturn })
             }
 
-            return res.status(401).send({ status: 'YOU ARE NOT AN OWNER', code: 404, action: 'REDIRECT TO MAIN SCREEN' })
+            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 404, action: actions.REDIRECT_TO_MAIN_SCREEN })
         }
     }
 
     decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
-    return res.status(401).send({ status: 'DECK NOT FOUND, YOU CANNOT DELETE IT', code: 404, action: 'CHANGE DECK LIST ACCORDINGLY', decks: decks })
+    return res.status(401).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: actions.CHANGE_DECK_LIST_ACCORDINGLY, decks: decks })
 })
 
 /**

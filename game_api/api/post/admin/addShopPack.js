@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 
     if (res.locals.user.data) {
         await createPack(req.body)
-        return res.status(200).send({ status: 'MAP CREATED', code: 200, token: res.locals.user.data.token })
+        return res.status(200).send({ status: statuses.SHOP_PACK_CREATED, code: 200, token: res.locals.user.data.token })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
