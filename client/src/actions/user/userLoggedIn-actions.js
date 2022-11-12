@@ -13,7 +13,7 @@ export const responses = {
  * Dispatch request for checking if logged in.
  * @param {string} email to check.
  * @param {string} token to check.
- * @param {*} refreshToken to check.
+ * @param {string} refreshToken to check.
  * @returns dispatch function for reducer.
  */
 export function checkUserLoggedIn(email, token, refreshToken) {
@@ -24,7 +24,6 @@ export function checkUserLoggedIn(email, token, refreshToken) {
     return async function (dispatch) {
         if (!email || !token || !refreshToken) {
             dispatch(checkIfLoggedError({ response: responses.NO_TOKENS_EMAIL }))
-            alert('Email, token or refreshToken not specified.')
             return
         }
 

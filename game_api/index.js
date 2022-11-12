@@ -19,10 +19,7 @@ const sockets = require('./api/sockets/sockets')
 const { startMatchmaking } = require('./utils/matchmaking/matchmaking')
 
 // Get middleware
-const mainPageView = require('./api/get/views/mainPageView')
 const signInView = require('./api/get/views/signInView')
-const error404View = require('./api/get/views/error404View')
-const logoutView = require('./api/get/views/logoutView')
 const registeredView = require('./api/get/views/registeredView')
 const getUsersView = require('./api/get/views/getUsersView')
 const getUserView = require('./api/get/views/getUserView')
@@ -147,11 +144,9 @@ sockets(io)
 // Routes
 
 // Get
-app.use('/', mainPageView)
 app.use('/play', playView)
 app.use('/game/:id', gameView)
 app.use('/sign-in', signInView)
-app.use('/logout', logoutView)
 app.use('/registered', registeredView)
 app.use('/manage', manageView)
 app.use('/manage/card', manageCardView)

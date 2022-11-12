@@ -14,14 +14,14 @@ const { statuses } = require('./utils/enums/status')
 const { actions } = require('./utils/enums/action')
 
 // Get middleware
+const mainView = require('./api/get/views/index')
+const changePasswordView = require('./api/get/views/changePasswordView')
+
 const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
 const checkIfUserExists = require('./api/get/user/checkIfUserExists')
 const getUsers = require('./api/get/user/getUsers')
 const getUser = require('./api/get/user/getUser')
 const authorizeAccount = require('./api/get/user/authorize')
-const mainView = require('./api/get/views/index')
-const error404View = require('./api/get/views/error404')
-const changePasswordView = require('./api/get/views/changePasswordView')
 const checkIfAdminLoggedIn = require('./api/get/admin/checkIfLoggedIn')
 const checkIfHasAdminPremisions = require('./api/get/admin/checkIfUserHasAdminPremisions')
 const isOwner = require('./api/get/user/isOwner')

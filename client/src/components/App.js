@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Routes } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import socketIOClient from 'socket.io-client'
 import HeaderWrapper from './header/HeaderWrapper'
+import FooterWrapper from './footer/FooterWrapper'
+import SignInWrapper from './signIn/SignInWrapper'
+import LogoutWrapper from './logout/LogoutWrapper'
 import { time } from '../utils/enum/time'
 import { menuElements } from '../utils/menu/menuElements'
 import { connect } from 'react-redux'
@@ -27,7 +30,7 @@ class App extends Component {
       refreshToken: window.localStorage.getItem('refreshToken')
     }
 
-    setInterval(this.checkSocketState.bind(this), time.SECOND)
+    setInterval(this.checkSocketState.bind(this), time.MILISECCOND_50)
   }
 
   /**
@@ -50,7 +53,7 @@ class App extends Component {
    * Check socket state every second. 
    */
   checkSocketState() {
-    if (!this.state.lastSocketState) {
+    if (!this.state.lastSocketState && this.state.tries < 2) {
       this.setState({
         tries: this.state.tries + 1
       })
@@ -68,6 +71,18 @@ class App extends Component {
         tries: tries
       })
     }
+
+    if (this.state.email !== window.localStorage.getItem('email') || this.state.token !== window.localStorage.getItem('token') || this.state.refreshToken !== window.localStorage.getItem('refreshToken')) {
+      if (window.localStorage.getItem('email') != null && window.localStorage.getItem('token') != null && window.localStorage.getItem('refreshToken')) {
+        this.props.checkUserLoggedIn(window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken'))
+      }
+
+      this.setState({
+        email: window.localStorage.getItem('email'),
+        token: window.localStorage.getItem('token'),
+        refreshToken: window.localStorage.getItem('refreshToken')
+      })
+    }
   }
 
   /**
@@ -78,6 +93,14 @@ class App extends Component {
   filterMenuElements(that) {
     let menuElements = that.state.menuElements
     if (that.props.userLoggedIn.response === responses.REQUESTING_ACCOUNT_AUTHORIZATION || that.props.userLoggedIn.response === responses.NO_TOKENS_EMAIL || that.props.userLoggedIn.status === responses.USER_NOT_AUTHORIZED || !that.state.socket.connected) {
+      menuElements = menuElements.filter((e) => {
+        return !e.loggedIn
+      })
+
+      return menuElements
+    }
+
+    if (window.localStorage.getItem('email') == null || window.localStorage.getItem('token') == null || window.localStorage.getItem('refreshToken') == null) {
       menuElements = menuElements.filter((e) => {
         return !e.loggedIn
       })
@@ -112,7 +135,10 @@ class App extends Component {
       <Router>
         <HeaderWrapper menuElements={menuToDisplay} />
         <Routes>
+          <Route path='/sign-in' element={<SignInWrapper />} />
+          <Route path='/logout' element={<LogoutWrapper authStateSetter={this.setState} />} />
         </Routes>
+        <FooterWrapper />
       </Router>
     )
   }
