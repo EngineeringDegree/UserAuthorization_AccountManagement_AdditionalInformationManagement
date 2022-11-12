@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router } from "react-router-dom"
+import { BrowserRouter as Router, Routes } from "react-router-dom"
 import socketIOClient from 'socket.io-client'
+import HeaderWrapper from './header/HeaderWrapper'
 import { time } from '../utils/enum/time'
+import { menuElements } from '../utils/menu/menuElements'
 
 /**
  * Returns switch with whole app. Entrance point.
@@ -12,7 +14,8 @@ class App extends Component {
     this.state = {
       socket: socketIOClient(process.env.REACT_APP_GAME_API, { 'transports': ['websocket'], 'force new connection': true }),
       lastSocketState: false,
-      tries: 0
+      tries: 0,
+      menuElements: menuElements
     }
 
     setInterval(this.checkSocketState.bind(this), time.SECOND)
@@ -48,7 +51,9 @@ class App extends Component {
   render() {
     return (
       <Router>
-
+        <HeaderWrapper menuElements={this.state.menuElements} isServerUp={this.state.lastSocketState} />
+        <Routes>
+        </Routes>
       </Router>
     )
   }
