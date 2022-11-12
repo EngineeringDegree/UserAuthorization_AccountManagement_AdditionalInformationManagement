@@ -7,7 +7,7 @@ const { Card_Type } = require('../../../models/card_type')
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: 'LOGOUT' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
     }
 
     let breadcrumb = [

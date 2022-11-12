@@ -130,7 +130,7 @@ router.post('/', async (req, res) => {
         return res.status(401).send({ status: 'ACCOUNT NOT CONFIRMED', code: 401 })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

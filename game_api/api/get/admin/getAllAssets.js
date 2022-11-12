@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         return res.status(200).send({ status: 'ALL RETURNED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, types: types, effects: effects, nations: nations })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 module.exports = router

@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
         return res.status(404).send({ status: 'DECK NOT FOUND', code: 404, action: 'DECK NOT FOUND' })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 function validate(req) {

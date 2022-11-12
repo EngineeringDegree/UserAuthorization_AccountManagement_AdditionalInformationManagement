@@ -12,7 +12,7 @@ This middleware sends Shop Packs according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: 'LOGOUT' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
     }
 
     if (res.locals.user.data) {
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
         return res.status(200).send({ status: 'SHOP PACKS LISTED', code: 200, action: 'LOGIN', token: res.locals.user.data.token, packs: packs.assets, pages: packs.pages, page: packs.page })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**
