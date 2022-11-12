@@ -3,69 +3,45 @@ const Joi = require('joi')
 const router = express.Router()
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 Checks if user exists
 */
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
-    let data
     if (error) {
-        data = {
-            text: 'Bad data',
-            code: 400,
-            status: 'BAD DATA'
-        }
-        return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     const user = await User.findOne({ email: req.query.email })
-    if (user) {
-        const accessToken = await Token.findOne({ owner: user.email, token: req.query.accessToken, type: process.env.ACCESS })
-        if (accessToken) {
-            if (!user.confirmed) {
-                const filter = {
-                    _id: user._id
-                }
-                const update = {
-                    confirmed: true
-                }
-                try {
-                    const result = await User.updateOne(filter, update)
-                    data = {
-                        text: 'Address confirmed',
-                        code: 200,
-                        status: 'ACCOUNT CONFIRMED'
-                    }
-                } catch (e) {
-                    data = {
-                        text: 'Something went wrong',
-                        code: 500,
-                        status: 'ACCOUNT NOT CONFIRMED'
-                    }
-                }
-            } else {
-                data = {
-                    text: 'Address already confirmed',
-                    code: 400,
-                    status: 'ACCOUNT ALREADY CONFIRMED'
-                }
-            }
-        } else {
-            data = {
-                text: 'Bad token',
-                code: 400,
-                status: 'BAD TOKEN'
-            }
-        }
-    } else {
-        data = {
-            text: 'User not found',
-            code: 404,
-            status: 'USER NOT FOUND'
-        }
+    if (!user) {
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
     }
-    return res.status(data.code).render('pages/authorize', { data: data, address: process.env.CLASH_OF_MYTHS })
+
+    const accessToken = await Token.findOne({ owner: user.email, token: req.query.accessToken, type: process.env.ACCESS })
+    if (!accessToken) {
+        return res.status(400).send({ status: statuses.BAD_TOKEN, code: 400, action: actions.BAD_TOKEN_POPUP })
+    }
+
+    if (user.confirmed) {
+        return res.status(400).send({ status: statuses.ACCOUNT_ALREADY_CONFIRMED, code: 400, action: actions.ACCOUNT_ALREADY_CONFIRMED_POPUP })
+    }
+
+    const filter = {
+        _id: user._id
+    }
+    const update = {
+        confirmed: true
+    }
+
+    try {
+        const result = await User.updateOne(filter, update)
+        return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, action: actions.ACCOUNT_CONFIRMED_POPUP })
+    } catch (e) {
+        return res.status(500).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP })
+    }
 })
 
 /**

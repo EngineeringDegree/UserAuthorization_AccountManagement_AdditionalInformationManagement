@@ -4,6 +4,8 @@ const Joi = require('joi')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for changing user username
 router.patch('/', async (req, res) => {

@@ -3,6 +3,8 @@ const Joi = require('joi')
 const router = express.Router()
 const { User } = require('../../../models/user')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware checks if can matchmake two players. If can it returns info about users
@@ -10,24 +12,24 @@ This middleware checks if can matchmake two players. If can it returns info abou
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA })
     }
 
     if (req.query.gameApiSecret != process.env.GAME_API_SECRET) {
-        return res.status(401).send({ status: 'BAD SECRET KEY', code: 401, action: 'BAD SECRET KEY' })
+        return res.status(401).send({ status: statuses.BAD_SECRET_KEY, code: 401, action: actions.BAD_SECRET_KEY })
     }
 
     const user1 = await User.findOne({ email: req.query.player1 })
     const user2 = await User.findOne({ email: req.query.player2 })
     if (!user1 || !user2) {
-        return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND })
     }
 
     if (checkIfBanned(user1) || checkIfBanned(user2)) {
-        return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'USER IS BANNED' })
+        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.USER_IS_BANNED })
     }
 
-    return res.status(200).send({ status: 'USERS FOUND', code: 200, action: 'USERS FOUND', user1: user1._id, user2: user2._id })
+    return res.status(200).send({ status: statuses.USERS_FOUND, code: 200, action: actions.USERS_FOUND, user1: user1._id, user2: user2._id })
 })
 
 /**

@@ -8,12 +8,11 @@ var playersToMatchmake = []
 /**
  * Matchmake function which send socket signal to needed sockets and creates a game
  * @param {object} io server secured
- * @param {object} ioNotSecure server not secured
  * @param {string} gameType for settings
  * @param {number} moveTime for settings how long move will take
  * @param {number} turnLimit for settings how long will game take
  */
-const matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
+const matchmake = (io, gameType, moveTime, turnLimit) => {
     let playersToSort = playersToMatchmake
     playersToMatchmake = []
     playersToSort.sort((a, b) => {
@@ -31,11 +30,7 @@ const matchmake = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
 
         playersToSort[i - 1].pared = true
         playersToSort[i].pared = true
-        if (io) {
-            generateGame(playersToSort[i - 1], playersToSort[i], gameType, moveTime, turnLimit, io)
-        } else {
-            generateGame(playersToSort[i - 1], playersToSort[i], gameType, moveTime, turnLimit, ioNotSecure)
-        }
+        generateGame(playersToSort[i - 1], playersToSort[i], gameType, moveTime, turnLimit, io)
     }
 
     for (let i = 0; i < playersToSort.length; i++) {
@@ -284,14 +279,13 @@ const removePlayerById = (id) => {
 /**
  * Starts matchmaking system on the server
  * @param {object} io sockets
- * @param {object} ioNotSecure sockets
  * @param {string} gameType for settings
  * @param {number} moveTime for settings how long move will take
  * @param {number} turnLimit for settings how long will game take
  */
-const startMatchmaking = (io, ioNotSecure, gameType, moveTime, turnLimit) => {
+const startMatchmaking = (io, gameType, moveTime, turnLimit) => {
     setInterval(() => {
-        matchmake(io, ioNotSecure, gameType, moveTime, turnLimit)
+        matchmake(io, gameType, moveTime, turnLimit)
     }, process.env.MATCHMAKE_TIME_CHECK)
 }
 

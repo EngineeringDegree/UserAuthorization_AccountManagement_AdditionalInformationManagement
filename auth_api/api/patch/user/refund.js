@@ -4,6 +4,8 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware checks if user has good credentials on his side and subtracts funds for user

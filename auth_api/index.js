@@ -10,6 +10,8 @@ const http = require('http')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const config = require('config')
+const { statuses } = require('./utils/enums/status')
+const { actions } = require('./utils/enums/action')
 
 // Get middleware
 const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
@@ -43,17 +45,17 @@ const register = require('./api/post/user/register')
 // Put middleware
 
 // Express and socketio initialization for http and https requests
-var app = express()
-
+let app = express()
+let server
 if (process.env.MODE == "live") {
-    var server = https.createServer({
+    server = https.createServer({
         key: fs.readFileSync(process.env.KEY, 'utf8'),
         cert: fs.readFileSync(process.env.CERT, 'utf8'),
         ca: fs.readFileSync(process.env.CA, 'utf8')
     }, app)
+} else {
+    server = http.createServer(app)
 }
-
-var serverNotSecure = http.createServer(app)
 
 // Checking if private key of the server is present
 if (!config.get('PrivateKey')) {
@@ -78,6 +80,7 @@ app.set('view engine', 'ejs')
 app.use('/', mainView)
 app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/password/change', changePasswordView)
+
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 app.use('/get/admin/premisions', checkIfHasAdminPremisions)
 app.use('/get/users', getUsers)
@@ -105,16 +108,8 @@ app.use('/post/register', register)
 // Put
 
 // Other endpoints
-app.use('*', error404View)
+app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404, action: actions.NOT_FOUND_POPUP }))
 
-// Run servers
-
-// HTTPS
-if (process.env.MODE == "live") {
-    const PORT = process.env.PORT
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-}
-
-//HTTP
-const PORT_NOT_SECURE = process.env.PORT_NOT_SECURE
-serverNotSecure.listen(PORT_NOT_SECURE, () => console.log(`Server running on port ${PORT_NOT_SECURE}`))
+// Run server
+const PORT = process.env.PORT
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))

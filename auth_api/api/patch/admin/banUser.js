@@ -4,18 +4,20 @@ const Joi = require('joi')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for banning user
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'BAD DATA POPUP' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
     const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (user.admin) {
             if (checkIfBanned(user)) {
-                return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+                return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
             }
 
             let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
@@ -26,7 +28,7 @@ router.patch('/', async (req, res) => {
                     try {
                         userToBan = await User.findOne({ _id: req.body.id })
                     } catch (e) {
-                        return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+                        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
                     }
                     if (userToBan) {
                         const filter = {
@@ -48,20 +50,20 @@ router.patch('/', async (req, res) => {
                         try {
                             await User.updateOne(filter, update)
                         } catch (e) {
-                            return res.status(500).send({ status: 'USER NOT BANNED', code: 500, action: 'SOMETHING WENT WRONG POPUP' })
+                            return res.status(500).send({ status: statuses.USER_NOT_BANNED, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP })
                         }
-                        return res.status(200).send({ status: 'USER BANNED', code: 200, token: check, communicate: 'User has been banned succesfully!' })
+                        return res.status(200).send({ status: statuses.USER_BANNED, code: 200, token: check, action: actions.USER_BAN_SUCCESS_POPUP })
                     }
-                    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
+                    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
                 }
-                return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+                return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
             }
 
             let userToBan = undefined
             try {
                 userToBan = await User.findOne({ _id: req.body.id })
             } catch (e) {
-                return res.status(404).send({ status: "USER NOT FOUND", code: 404, action: "GO TO USERS" })
+                return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
             }
             if (userToBan) {
                 const filter = {
@@ -83,16 +85,16 @@ router.patch('/', async (req, res) => {
                 try {
                     await User.updateOne(filter, update)
                 } catch (e) {
-                    return res.status(500).send({ status: 'USER NOT BANNED', code: 500, action: 'SOMETHING WENT WRONG POPUP' })
+                    return res.status(500).send({ status: statuses.USER_NOT_BANNED, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP })
                 }
-                return res.status(200).send({ status: 'USER BANNED', code: 200, communicate: 'User has been banned succesfully!' })
+                return res.status(200).send({ status: statuses.USER_BANNED, code: 200, action: actions.USER_BAN_SUCCESS_POPUP })
             }
-            return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'USER NOT FOUND' })
+            return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
         }
-        return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

@@ -5,6 +5,8 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware checks if user has good credentials on his side.
@@ -15,33 +17,33 @@ User sends to this middleware email, token, refreshToken. Works for admin.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
     }
 
     const user = await User.findOne({ email: req.query.email })
     if (!user) {
-        return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
     }
 
     if (!user.admin) {
-        return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
 
     let check = checkToken(user.email, req.query.token, process.env.AUTHORIZATION)
-    if (!check) {
-        check = await askNewToken(user.email, req.query.refreshToken, user._id)
-        if (check) {
-            return res.status(200).send({ status: 'ADMIN', code: 200, action: 'ADMIN', token: check })
-        }
-
-        return res.status(401).send({ status: 'ADMIN NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+    if (check) {
+        return res.status(200).send({ status: statuses.ADMIN, code: 200, action: actions.ADMIN, token: req.query.token })
     }
 
-    return res.status(200).send({ status: 'ADMIN', code: 200, action: 'ADMIN', token: req.query.token })
+    check = await askNewToken(user.email, req.query.refreshToken, user._id)
+    if (!check) {
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+    }
+
+    return res.status(200).send({ status: statuses.ADMIN, code: 200, action: actions.ADMIN, token: check })
 })
 
 /**

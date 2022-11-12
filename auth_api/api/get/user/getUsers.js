@@ -4,6 +4,8 @@ const Joi = require('joi')
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 Middleware which sends users specified in parameters. 
@@ -11,13 +13,13 @@ Middleware which sends users specified in parameters.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400 })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.query.email })
     if (user) {
         if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
         }
         let check = await checkToken(user.email, req.query.token, process.env.AUTHORIZATION)
         if (!check) {
@@ -25,22 +27,22 @@ router.get('/', async (req, res) => {
             if (check) {
                 const users = await getUsers(req)
                 if (user.admin) {
-                    return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", token: check, users: users })
+                    return res.status(200).send({ status: statuses.USERS_FOUND, action: actions.USERS_FOUND_AND_SHOW_BANHAMMER, code: 200, token: check, users: users })
                 }
 
-                return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", token: check, users: users })
+                return res.status(200).send({ status: statuses.USERS_FOUND, action: actions.SHOW_USERS, code: 200, token: check, users: users })
             }
-            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
         }
         const users = await getUsers(req)
         if (user.admin) {
-            return res.status(200).send({ status: "USERS FOUND", action: "USERS FOUND AND SHOW BANHAMMER", users: users })
+            return res.status(200).send({ status: statuses.USERS_FOUND, action: actions.USERS_FOUND_AND_SHOW_BANHAMMER, code: 200, users: users })
         }
 
-        return res.status(200).send({ status: "USERS FOUND", action: "SHOW USERS", users: users })
+        return res.status(200).send({ status: statuses.USERS_FOUND, action: actions.SHOW_USERS, code: 200, users: users })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

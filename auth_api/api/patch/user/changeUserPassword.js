@@ -5,6 +5,8 @@ const Joi = require('joi')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 const salt = 10
 
 // Middleware for changing user username

@@ -4,6 +4,8 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware checks if user has good credentials on his side and subtracts funds for user
@@ -11,17 +13,17 @@ This middleware checks if user has good credentials on his side and subtracts fu
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: 'BAD DATA', code: 400, action: 'LOGOUT' })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
     if (req.body.gameApiSecret != process.env.GAME_API_SECRET) {
-        return res.status(401).send({ status: 'YOU CANNOT START YOUR OWN BUY CALL', code: 401, action: 'LOGOUT' })
+        return res.status(401).send({ status: statuses.YOU_CANNOT_START_YOUR_OWN_BUY_CALL, code: 401, action: actions.BAD_OPERATION_POPUP })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
-            return res.status(401).send({ status: 'USER IS BANNED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
         }
         let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
@@ -29,20 +31,20 @@ router.patch('/', async (req, res) => {
             if (check) {
                 if (user.funds >= req.body.price) {
                     await changeUserFunds(user.funds, req.body.price, user._id)
-                    return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
+                    return res.status(200).send({ status: statuses.BOUGHT, code: 200, action: actions.BOUGHT_POPUP })
                 }
-                return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
+                return res.status(401).send({ status: statuses.INSUFFICIENT_FUNDS, code: 401, action: actions.INSUFFICIENT_FUNDS_POPUP })
             }
-            return res.status(401).send({ status: 'USER NOT AUTHORIZED', code: 401, action: 'LOGOUT' })
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
         }
         if (user.funds >= req.body.price) {
             await changeUserFunds(user.funds, req.body.price, user._id)
-            return res.status(200).send({ status: 'BOUGHT', code: 200, action: 'BOUGHT' })
+            return res.status(200).send({ status: statuses.BOUGHT, code: 200, action: actions.BOUGHT_POPUP })
         }
-        return res.status(401).send({ status: 'INSUFFICIENT FUNDS', code: 401, action: 'INSUFFICIENT FUNDS POPUP' })
+        return res.status(401).send({ status: statuses.INSUFFICIENT_FUNDS, code: 401, action: actions.INSUFFICIENT_FUNDS_POPUP })
     }
 
-    return res.status(404).send({ status: 'USER NOT FOUND', code: 404, action: 'LOGOUT' })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
 })
 
 /**

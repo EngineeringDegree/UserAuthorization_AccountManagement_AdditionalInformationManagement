@@ -8,6 +8,8 @@ const _ = require('lodash')
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
+const { statuses } = require('../../../utils/enums/status')
+const { actions } = require('../../../utils/enums/action')
 
 // Middleware for login user
 router.patch('/', async (req, res) => {

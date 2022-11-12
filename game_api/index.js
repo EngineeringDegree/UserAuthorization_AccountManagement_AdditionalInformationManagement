@@ -11,10 +11,11 @@ const http = require('http')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const config = require('config')
+const { actions } = require('./utils/enums/action')
+const { statuses } = require('./utils/enums/status')
 
 // Own modules imports
 const sockets = require('./api/sockets/sockets')
-const { checkIfUrlNeedsSockets } = require('./utils/socket/socket_checkIfUrlNeedSocket')
 const { startMatchmaking } = require('./utils/matchmaking/matchmaking')
 
 // Get middleware
@@ -55,6 +56,7 @@ const modifyTypeView = require('./api/get/views/modifyTypeView')
 const modifyFieldView = require('./api/get/views/modifyFieldView')
 const gameView = require('./api/get/views/gameView')
 const cannotGenerateGame = require('./api/get/views/cannotGenerateGameView')
+
 const getMaps = require('./api/get/admin/getMaps')
 const getCards = require('./api/get/admin/getCards')
 const getFields = require('./api/get/admin/getFields')
@@ -109,21 +111,18 @@ const authorizeAdmin = require('./utils/auth/authorizeAdmin')
 
 // Express and socketio initialization for http and https requests
 var app = express()
-
+let server
 if (process.env.MODE == "live") {
-    var server = https.createServer({
+    server = https.createServer({
         key: fs.readFileSync(process.env.KEY, 'utf8'),
         cert: fs.readFileSync(process.env.CERT, 'utf8'),
         ca: fs.readFileSync(process.env.CA, 'utf8')
     }, app)
+} else {
+    server = http.createServer(app)
 }
 
-var serverNotSecure = http.createServer(app)
-var ioNotSecure = socketio(serverNotSecure)
-
-if (process.env.MODE == "live") {
-    var io = socketio(server)
-}
+let io = socketio(server)
 
 // Checking if private key of the server is present
 if (!config.get('PrivateKey')) {
@@ -143,26 +142,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('view engine', 'ejs')
 
 // Websocket endpoints initialization
-if (process.env.MODE == "live") {
-    sockets(io)
-}
-sockets(ioNotSecure)
+sockets(io)
 
 // Routes
-app.use(function (req, res, next) {
-    var originalUrl = req.originalUrl.split('?')
-    if (originalUrl.length > 0) {
-        if (checkIfUrlNeedsSockets(originalUrl[0])) {
-            if (process.env.MODE == "live") {
-                res.locals.io = io
-            }
-
-            res.locals.ioNotSecure = ioNotSecure
-        }
-    }
-
-    next()
-})
 
 // Get
 app.use('/', mainPageView)
@@ -201,6 +183,7 @@ app.use('/manage/effects', effectView)
 app.use('/manage/nations', nationView)
 app.use('/manage/types', typeView)
 app.use('/cannotGenerateGame', cannotGenerateGame)
+
 app.use('/get/card', getCardInfo)
 app.use('/manage/get/cards', authorizeAdmin, getCards)
 app.use('/manage/get/maps', authorizeAdmin, getMaps)
@@ -250,16 +233,11 @@ app.use('/check/deck/sync', authorizeUser, deckSync)
 app.use('/check/card/sync', authorizeUser, cardSync)
 
 // Other endpoints
-app.use('*', error404View)
+app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404, action: actions.NOT_FOUND_POPUP }))
 
 // Run matchmaking server
-startMatchmaking(io, ioNotSecure, 'Ranked', 60000, 100)
+startMatchmaking(io, 'Ranked', 60000, 100)
 
-// HTTPS
-if (process.env.MODE == "live") {
-    const PORT = process.env.PORT
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-}
-//HTTP
-const PORT_NOT_SECURE = process.env.PORT_NOT_SECURE
-serverNotSecure.listen(PORT_NOT_SECURE, () => console.log(`Server running on port ${PORT_NOT_SECURE}`))
+// Run server
+const PORT = process.env.PORT
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
