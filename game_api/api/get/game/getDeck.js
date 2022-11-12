@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
             return res.status(401).send({ status: 'DECK IS NOT YOURS', code: 401, action: 'NOT AN OWNER POPUP' })
         }
 
-        return res.status(404).send({ status: 'DECK NOT FOUND', code: 404, action: 'DECK NOT FOUND' })
+        return res.status(404).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: 'DECK NOT FOUND' })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
