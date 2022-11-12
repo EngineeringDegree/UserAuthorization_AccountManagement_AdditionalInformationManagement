@@ -1,0 +1,40 @@
+@import "vars.scss";
+
+*,
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.error {
+    color: $errorColor;
+}
+
+.red-border {
+    border: 2px solid $errorColor;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.map-overlay {
+    border: 1px solid #000;
+    color: $errorColor;
+    font-weight: bold;
+}
+
+.cube-overlay {
+    top: 0;
+}
+
+.field-to-place {
+    width: 100px;
+    height: max-content;
+    min-height: 100px;
+}
+
+.spawnpoint {
+    background: rgba(#E1AB2C, 0.4);
+}

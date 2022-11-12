@@ -1,0 +1,40 @@
+*,
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.error {
+  color: #ff0000;
+}
+
+.red-border {
+  border: 2px solid #ff0000;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.map-overlay {
+  border: 1px solid #000;
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.cube-overlay {
+  top: 0;
+}
+
+.field-to-place {
+  width: 100px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  min-height: 100px;
+}
+
+.spawnpoint {
+  background: rgba(225, 171, 44, 0.4);
+}/*# sourceMappingURL=styles.css.map */
