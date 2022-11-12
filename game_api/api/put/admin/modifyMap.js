@@ -24,17 +24,17 @@ router.put('/', async (req, res) => {
         if (map) {
             const sizeToSave = filterMapSize(req.body.size)
             if (!sizeToSave) {
-                return res.status(400).send({ status: 'BAD SIZE DATA', code: 404, action: 'FOCUS ON SIZE FIELD' })
+                return res.status(400).send({ status: statuses.BAD_SIZE_DATA, code: 404, action: actions.FOCUS_ON_SIZE_FIELD })
             }
 
             const goodFields = await checkIfFieldsAreOkay(req.body.fields, req.body.size)
             if (!goodFields) {
-                return res.status(400).send({ status: 'BAD FIELDS', code: 404, action: actions.RELOAD })
+                return res.status(400).send({ status: statuses.BAD_FIELDS, code: 404, action: actions.RELOAD })
             }
 
             const goodStartingPostions = checkIfStartingPositionsAreOkay(req.body.startingPositions, req.body.size)
             if (!goodStartingPostions) {
-                return res.status(400).send({ status: 'BAD STARTING POSITIONS', code: 404, action: actions.RELOAD })
+                return res.status(400).send({ status: statuses.BAD_STARTING_POSITIONS, code: 404, action: actions.RELOAD })
             }
 
             const filter = {
@@ -53,11 +53,11 @@ router.put('/', async (req, res) => {
             try {
                 await Map.updateOne(filter, update)
             } catch (e) {
-                return res.status(500).send({ status: 'MAP NOT MODIFIED', code: 500, action: 'TRY LATER POPUP' })
+                return res.status(500).send({ status: statuses.NOT_MODIFIED, code: 500, action: actions.TRY_LATER_POPUP })
             }
-            return res.status(200).send({ status: 'MAP MODIFIED', code: 200, token: res.locals.user.data.token })
+            return res.status(200).send({ status: statuses.MODIFIED, code: 200, token: res.locals.user.data.token })
         }
-        return res.status(404).send({ status: 'MAP NOT FOUND', code: 404, action: 'GO TO MAPS' })
+        return res.status(404).send({ status: statuses.NOT_FOUND, code: 404 })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
