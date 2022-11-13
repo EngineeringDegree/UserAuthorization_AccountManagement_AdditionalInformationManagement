@@ -29,32 +29,32 @@ const AuthorizeWrapper = () => {
                 if (text !== "Authorized") {
                     setText("Authorized")
                 }
-                break
+                return
             case 400:
                 if (text !== "Bad request. No email or accessToken specified.") {
                     setText("Bad request. No email or accessToken specified.")
                 }
-                break
+                return
             case 401:
                 if (text !== "Bad access token.") {
                     setText("Bad access token.")
                 }
-                break
+                return
             case 404:
                 if (text !== "User not found.") {
                     setText("User not found.")
                 }
-                break
+                return
             case 406:
                 if (text !== "User account was already confirmed.") {
                     setText("User account was already confirmed.")
                 }
-                break
+                return
             case 500:
                 if (text !== "Something went wrong. Try again later.") {
                     setText("Something went wrong. Try again later.")
                 }
-                break
+                return
             default:
                 return
         }

@@ -17,7 +17,27 @@ const UserProfileWrapper = () => {
     const [admin, setAdmin] = useState(false)
     const [request, setRequest] = useState(false)
     const [verified, setVerified] = useState(false)
+    const [justEntered, setJustEntered] = useState(true)
     const [error, setError] = useState('')
+    const [confirmed, setConfirmed] = useState(false)
+    const [userAdmin, setUserAdmin] = useState(false)
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [userId, setUserID] = useState('')
+
+    const userInfoPack = {
+        confirmed,
+        userAdmin,
+        username,
+        email,
+        password,
+        setPassword,
+        setEmail,
+        setUsername,
+        setUserAdmin,
+        setConfirmed
+    }
 
     const id = params.id
     if (lastId !== id) {
@@ -32,6 +52,7 @@ const UserProfileWrapper = () => {
     if (!request) {
         setRequest(true)
         dispatch(getUser(id, window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken')))
+        setJustEntered(false)
     }
 
     useSelector((state) => {
@@ -44,23 +65,42 @@ const UserProfileWrapper = () => {
                 case 401:
                 case 404:
                     let el = document.getElementById('link-to-click-on-bad')
-                    if (el && lastId === id) {
+                    if (el && !justEntered) {
                         el.click()
                     }
-                    break
+                    return
                 case 406:
                     if (error !== "User you requested has not been found.") {
                         setError("User you requested has not been found.")
                     }
-                    break
+                    return
                 default:
                     return
             }
-            return
         }
 
         if (!verified) {
             setVerified(true)
+
+            if (confirmed !== state.getUserReducer.confirmed) {
+                setConfirmed(state.getUserReducer.confirmed)
+            }
+
+            if (userAdmin !== state.getUserReducer.admin) {
+                setUserAdmin(state.getUserReducer.admin)
+            }
+
+            if (username !== state.getUserReducer.username) {
+                setUsername(state.getUserReducer.username)
+            }
+
+            if (email !== state.getUserReducer.email) {
+                setEmail(state.getUserReducer.email)
+            }
+
+            if (userId !== state.getUserReducer.id) {
+                setUserID(state.getUserReducer.id)
+            }
         }
 
         if (admin !== state.getUserReducer.isAdmin) {
@@ -85,7 +125,7 @@ const UserProfileWrapper = () => {
         <div>
             <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
             User profile wrapper for user {id}
-            <UserInfoWrapper owner={owner} admin={admin} verified={verified} />
+            <UserInfoWrapper owner={owner} admin={admin} verified={verified} userInfoPack={userInfoPack} />
             <CardsWrapper owner={owner} verified={verified} />
         </div>
     )

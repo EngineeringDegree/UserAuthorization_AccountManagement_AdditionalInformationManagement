@@ -70,29 +70,29 @@ const RegisterWrapper = () => {
                 if (el && !justEntered) {
                     el.click()
                 }
-                break
+                return
             case 400:
                 if (error !== 'Bad request') {
                     setError('Bad request')
                 }
-                break;
+                return
             case 401:
                 if (error !== 'Passwords do not match!') {
                     setError('Passwords do not match!')
                 }
-                break;
+                return
             case 406:
                 if (error !== 'User with that email already exists!') {
                     setError('User with that email already exists!')
                 }
-                break;
+                return
             case 500:
                 if (error !== 'Something went wrong. Try again later!') {
                     setError('Something went wrong. Try again later!')
                 }
-                break;
+                return
             default:
-                break
+                return
         }
     })
 
@@ -149,8 +149,8 @@ const RegisterWrapper = () => {
             return
         }
 
-        setJustEntered(false)
         dispatch(register(email, username, password, repeatPassword))
+        setJustEntered(false)
     }
 
     return (

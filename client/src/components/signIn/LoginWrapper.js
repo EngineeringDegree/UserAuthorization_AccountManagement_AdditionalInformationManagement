@@ -49,20 +49,20 @@ const LoginWrapper = () => {
                 if (el && !justEntered) {
                     el.click()
                 }
-                break
+                return
             case 400:
                 if (error !== 'Bad request') {
                     setError('Bad request')
                 }
-                break
+                return
             case 401:
             case 404:
                 if (error !== 'Bad email or password') {
                     setError('Bad email or password')
                 }
-                break
+                return
             default:
-                break
+                return
         }
     })
 
@@ -93,8 +93,8 @@ const LoginWrapper = () => {
             return
         }
 
-        setJustEntered(false)
         dispatch(login(email, password))
+        setJustEntered(false)
     }
 
     return (

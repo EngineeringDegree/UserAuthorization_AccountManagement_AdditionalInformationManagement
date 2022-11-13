@@ -11,6 +11,7 @@ const UserCardsWrapper = (props) => {
     const [gettingCards, setGettingCards] = useState(false)
     const [gotCards, setGotCards] = useState(false)
     const [error, setError] = useState('')
+    const [justEntered, setJustEntered] = useState(true)
     const dispatch = useDispatch()
 
     useSelector((state) => {
@@ -23,27 +24,35 @@ const UserCardsWrapper = (props) => {
                 if (error !== 'Bad data provided.') {
                     setError('Bad data provided.')
                 }
-                break
+                return
             case 401:
             case 404:
                 let el = document.getElementById('link-to-click-on-bad')
-                if (el) {
+                if (el && !justEntered) {
                     el.click()
                 }
-                break
+                return
             case 406:
                 if (cards.length !== 0) {
                     setCards([])
                 }
-                break
-            default:
                 return
+            default:
+                break
         }
 
         if (!gotCards) {
             setGotCards(true)
-            console.log(state.getCardsReducer.cards)
-            // set cards here
+            let cards = []
+            let cardsToFilter = state.getCardsReducer.cards
+            for (let i = 0; i < cardsToFilter.length; i++) {
+                cards.push(
+                    <div key={cardsToFilter[i].card._id}>
+                        {cardsToFilter[i].card.name} - {cardsToFilter[i].quantity}
+                    </div>
+                )
+            }
+            setCards(cards)
         }
     })
 
@@ -56,6 +65,7 @@ const UserCardsWrapper = (props) => {
         if (!gettingCards) {
             setGettingCards(true)
             dispatch(getUserCards(window.localStorage.getItem('id'), window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken')))
+            setJustEntered(false)
         }
     }
 
