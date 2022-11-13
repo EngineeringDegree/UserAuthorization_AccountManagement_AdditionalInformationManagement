@@ -7,10 +7,11 @@ import { useDispatch, useSelector, connect } from 'react-redux'
 const UserCardsWrapper = (props) => {
     const [cards, setCards] = useState([])
     const [gettingCards, setGettingCards] = useState(false)
+    const [gotCards, setGotCards] = useState(false)
     const dispatch = useDispatch()
 
     useSelector((state) => {
-        console.log(state)
+        // console.log(state)
     })
 
     let cardsContainer = undefined
@@ -18,7 +19,7 @@ const UserCardsWrapper = (props) => {
         cardsContainer = <p>Verifying if you are an user and admin.</p>
     } else if (!props.owner) {
         cardsContainer = <p>You are not verified as an owner of this account therefore you are not able to see this user cards.</p>
-    } else {
+    } else if (props.owner && props.verified) {
         if (!gettingCards) {
             setGettingCards(true)
             // get cards
@@ -29,7 +30,7 @@ const UserCardsWrapper = (props) => {
         <div>
             User cards
             {cardsContainer}
-            {cards}
+            {(cards.length === 0) ? ((gotCards) ? `No cards found` : `Getting cards`) : cards}
         </div>
     )
 }

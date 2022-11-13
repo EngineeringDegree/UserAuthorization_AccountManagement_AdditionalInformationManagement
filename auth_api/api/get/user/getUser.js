@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
             try {
                 userToFind = await User.findOne({ _id: req.query.id })
             } catch (e) {
-                return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
+                return res.status(406).send({ status: statuses.USER_NOT_FOUND, code: 406, action: actions.GO_TO_USERS })
             }
             if (userToFind) {
                 if (user.email == userToFind.email) {
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 
                 return res.status(200).send({ status: statuses.USER_FOUND, code: 200, action: actions.DISPLAY_USER_INFO, token: check, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
             }
-            return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
+            return res.status(406).send({ status: statuses.USER_NOT_FOUND, code: 406, action: actions.GO_TO_USERS })
         }
         return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
     try {
         userToFind = await User.findOne({ _id: req.query.id })
     } catch (e) {
-        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
+        return res.status(406).send({ status: statuses.USER_NOT_FOUND, code: 406, action: actions.GO_TO_USERS })
     }
     if (userToFind) {
         if (user.email == userToFind.email) {
@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
         }
         return res.status(200).send({ status: statuses.USER_FOUND, code: 200, action: actions.DISPLAY_USER_INFO, username: userToFind.username, id: userToFind._id, email: userToFind.email, confirmed: userToFind.confirmed, admin: userToFind.admin, isAdmin: user.admin })
     }
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.GO_TO_USERS })
+    return res.status(406).send({ status: statuses.USER_NOT_FOUND, code: 406, action: actions.GO_TO_USERS })
 })
 
 /**

@@ -24,6 +24,7 @@ const RegisterWrapper = () => {
     const [ppError, setPPError] = useState(false)
     const [error, setError] = useState('')
     const [reqeustSent, setRequestSent] = useState(false)
+    const [justEntered, setJustEntered] = useState(true)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -64,6 +65,12 @@ const RegisterWrapper = () => {
         }
 
         switch (state.userRegister.code) {
+            case 200:
+                let el = document.getElementById('link-to-click-on-succes')
+                if (el && !justEntered) {
+                    el.click()
+                }
+                break
             case 400:
                 if (error !== 'Bad request') {
                     setError('Bad request')
@@ -142,6 +149,7 @@ const RegisterWrapper = () => {
             return
         }
 
+        setJustEntered(false)
         dispatch(register(email, username, password, repeatPassword))
     }
 

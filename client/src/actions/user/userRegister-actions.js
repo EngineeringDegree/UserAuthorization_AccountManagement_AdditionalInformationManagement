@@ -34,9 +34,6 @@ export function register(email, username, password, repeatPassword) {
             const address = process.env.REACT_APP_AUTH_API + `post/register`
             response = await axios.post(address, postBody)
             dispatch(registerSuccess(response.data))
-
-            // Redirecting to main page. Should do it some other way (without reload) but currently out of ideas. To change. 
-            window.location.pathname = '/'
         } catch (e) {
             if (e.code === "ERR_NETWORK") {
                 dispatch(registerError(e.message))

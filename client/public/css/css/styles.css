@@ -37,4 +37,8 @@ body {
 
 .spawnpoint {
   background: rgba(225, 171, 44, 0.4);
+}
+
+.hidden {
+  visibility: hidden;
 }/*# sourceMappingURL=styles.css.map */
