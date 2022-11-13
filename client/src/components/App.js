@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import socketIOClient from 'socket.io-client'
 import HeaderWrapper from './header/HeaderWrapper'
 import MainWrapper from './main/MainWrapper'
+import UserProfileWrapper from './userProfile/UserProfileWrapper'
 import SignInWrapper from './signIn/SignInWrapper'
 import LogoutWrapper from './logout/LogoutWrapper'
 import FooterWrapper from './footer/FooterWrapper'
@@ -125,6 +126,7 @@ class App extends Component {
         <HeaderWrapper menuElements={menuToDisplay} />
         <Routes>
           <Route path='/' element={<MainWrapper />} />
+          <Route path='/users/:id' element={<UserProfileWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />
