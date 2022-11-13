@@ -6,7 +6,6 @@ import Input from '../common/Input'
  * Wrapper for user informations
  */
 const UserInfoWrapper = (props) => {
-    console.log(props.userInfoPack)
 
     return (
         <div>
