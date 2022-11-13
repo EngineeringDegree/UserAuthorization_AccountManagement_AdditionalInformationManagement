@@ -41,15 +41,6 @@ class App extends Component {
   }
 
   /**
-   * When state in component update. 
-   */
-  componentDidUpdate() {
-    if (!this.state.lastSocketState && this.state.tries === 1) {
-      alert(`Couldn't connect to server. Try again later.`)
-    }
-  }
-
-  /**
    * Check socket state every second. 
    */
   checkSocketState() {
@@ -61,10 +52,6 @@ class App extends Component {
 
     if (this.state.socket.connected !== this.state.lastSocketState) {
       const tries = (this.state.socket.connected ? 0 : this.state.tries)
-
-      if (this.state.socket.connected) {
-        alert(`Connected to server.`)
-      }
 
       this.setState({
         lastSocketState: this.state.socket.connected,

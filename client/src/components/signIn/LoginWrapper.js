@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
-import { redirect } from "react-router-dom"
 import Input from "./Input"
 import { notEmpty, isEmail } from "../../utils/signIn/inputChecks"
 import { login } from '../../actions/user/userLogin-actions'
@@ -17,27 +16,6 @@ const LoginWrapper = () => {
     const [error, setError] = useState('')
     const dispatch = useDispatch()
 
-    const redirectOnLogin = useSelector((state) => {
-        switch (state.userLogin.code) {
-            case 200:
-                return true
-            case 400:
-                if (error !== 'Bad data') {
-                    setError('Bad data')
-                }
-                break
-            case 401:
-            case 404:
-                if (error !== 'Bad login or password') {
-                    setError('Bad login or password')
-                }
-            default:
-                if (error !== '') {
-                    setError('')
-                }
-        }
-    })
-
     useEffect(() => {
         setEmailError('')
     }, [email])
@@ -46,36 +24,51 @@ const LoginWrapper = () => {
         setPasswordError('')
     }, [password])
 
+    useSelector((state) => {
+        console.log(state.userLogin)
+        switch (state.userLogin.code) {
+            case 400:
+                if (error !== 'Bad request') {
+                    setError('Bad request')
+                }
+                break;
+            case 401:
+            case 404:
+                if (error !== 'Bad email or password') {
+                    setError('Bad email or password')
+                }
+                break;
+            default:
+                break
+        }
+    })
+
     /**
      * Sends request to backend if all data was formatted correctly.
      */
     const loginClick = () => {
-        let error = false
+        setError('')
+        let err = false
         if (!notEmpty(email)) {
             setEmailError('Email cannot be empty!')
-            error = true
+            err = true
         }
 
         if (notEmpty(email) && !isEmail(email)) {
             setEmailError('This field must be an email!')
-            error = true
+            err = true
         }
 
         if (!notEmpty(password)) {
             setPasswordError('Password cannot be empty!')
-            error = true
+            err = true
         }
 
-        if (error) {
+        if (err) {
             return
         }
 
         dispatch(login(email, password))
-    }
-
-    if (redirectOnLogin) {
-        // console.log("redirect")
-        // return redirect('/')
     }
 
     return (

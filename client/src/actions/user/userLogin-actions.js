@@ -29,6 +29,9 @@ export function login(email, password) {
             const address = process.env.REACT_APP_AUTH_API + `patch/login`
             response = await axios.patch(address, patchBody)
             dispatch(loginSuccess(response.data))
+
+            // Redirecting to main page. Should do it some other way (without reload) but currently out of ideas. To change. 
+            window.location.pathname = '/'
         } catch (e) {
             dispatch(loginError(e.response.data))
         }
