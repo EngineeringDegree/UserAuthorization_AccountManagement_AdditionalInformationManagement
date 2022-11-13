@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import socketIOClient from 'socket.io-client'
 import HeaderWrapper from './header/HeaderWrapper'
-import FooterWrapper from './footer/FooterWrapper'
+import MainWrapper from './main/MainWrapper'
 import SignInWrapper from './signIn/SignInWrapper'
 import LogoutWrapper from './logout/LogoutWrapper'
+import FooterWrapper from './footer/FooterWrapper'
 import { time } from '../utils/enum/time'
 import { menuElements } from '../utils/menu/menuElements'
 import { connect } from 'react-redux'
 import { checkUserLoggedIn, responses } from '../actions/user/userLoggedIn-actions'
+import AuthorizeWrapper from './authorize/AuthorizeWrapper'
 
 /**
  * Returns switch with whole app. Entrance point.
@@ -122,6 +124,8 @@ class App extends Component {
       <Router>
         <HeaderWrapper menuElements={menuToDisplay} />
         <Routes>
+          <Route path='/' element={<MainWrapper />} />
+          <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />
         </Routes>

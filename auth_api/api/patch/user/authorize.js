@@ -9,24 +9,24 @@ const { actions } = require('../../../utils/enums/action')
 /*
 Checks if user exists
 */
-router.get('/', async (req, res) => {
-    const { error } = validate(req.query)
+router.patch('/', async (req, res) => {
+    const { error } = validate(req.body)
     if (error) {
         return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
-    const user = await User.findOne({ email: req.query.email })
+    const user = await User.findOne({ email: req.body.email })
     if (!user) {
         return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
     }
 
-    const accessToken = await Token.findOne({ owner: user.email, token: req.query.accessToken, type: process.env.ACCESS })
+    const accessToken = await Token.findOne({ owner: user.email, token: req.body.accessToken, type: process.env.ACCESS })
     if (!accessToken) {
-        return res.status(400).send({ status: statuses.BAD_TOKEN, code: 400, action: actions.BAD_TOKEN_POPUP })
+        return res.status(401).send({ status: statuses.BAD_TOKEN, code: 401, action: actions.BAD_TOKEN_POPUP })
     }
 
     if (user.confirmed) {
-        return res.status(400).send({ status: statuses.ACCOUNT_ALREADY_CONFIRMED, code: 400, action: actions.ACCOUNT_ALREADY_CONFIRMED_POPUP })
+        return res.status(406).send({ status: statuses.ACCOUNT_ALREADY_CONFIRMED, code: 406, action: actions.ACCOUNT_ALREADY_CONFIRMED_POPUP })
     }
 
     const filter = {

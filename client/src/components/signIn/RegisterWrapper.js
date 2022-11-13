@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
-import Input from "./Input"
+import Input from "../common/Input"
 import { notEmpty, isEmail, isTrue, equals } from "../../utils/signIn/inputChecks"
 import { register, responses } from '../../actions/user/userRegister-actions'
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
