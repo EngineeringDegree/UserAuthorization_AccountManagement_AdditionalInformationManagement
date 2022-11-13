@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector, connect } from 'react-redux'
 import UserInfoWrapper from "./UserInfoWrapper"
-import UserCardsWrapper from "./UserCardsWrapper"
+import CardsWrapper from "../cards/CardsWrapper"
 import { getUser, responses } from "../../actions/user/getUser-actions"
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
@@ -86,7 +86,7 @@ const UserProfileWrapper = () => {
             <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
             User profile wrapper for user {id}
             <UserInfoWrapper owner={owner} admin={admin} verified={verified} />
-            <UserCardsWrapper owner={owner} verified={verified} />
+            <CardsWrapper owner={owner} verified={verified} />
         </div>
     )
 }

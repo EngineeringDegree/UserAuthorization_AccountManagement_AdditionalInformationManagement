@@ -10,6 +10,7 @@ const UserCardsWrapper = (props) => {
     const [cards, setCards] = useState([])
     const [gettingCards, setGettingCards] = useState(false)
     const [gotCards, setGotCards] = useState(false)
+    const [error, setError] = useState('')
     const dispatch = useDispatch()
 
     useSelector((state) => {
@@ -19,22 +20,31 @@ const UserCardsWrapper = (props) => {
 
         switch (state.getCardsReducer.code) {
             case 400:
+                if (error !== 'Bad data provided.') {
+                    setError('Bad data provided.')
+                }
+                break
             case 401:
             case 404:
+                let el = document.getElementById('link-to-click-on-bad')
+                if (el) {
+                    el.click()
+                }
+                break
             case 406:
                 if (cards.length !== 0) {
                     setCards([])
                 }
-                break;
+                break
             default:
                 return
         }
 
         if (!gotCards) {
             setGotCards(true)
+            console.log(state.getCardsReducer.cards)
+            // set cards here
         }
-
-        console.log(state.getCardsReducer)
     })
 
     let cardsContainer = undefined
