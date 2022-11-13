@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
 import Input from "./Input"
 import { notEmpty, isEmail } from "../../utils/signIn/inputChecks"
-import { login } from '../../actions/user/userLogin-actions'
+import { login, responses } from '../../actions/user/userLogin-actions'
+import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
  * LoginWrapper object to display
@@ -14,6 +15,7 @@ const LoginWrapper = () => {
     const [password, setPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [error, setError] = useState('')
+    const [reqeustSent, setRequestSent] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -25,7 +27,21 @@ const LoginWrapper = () => {
     }, [password])
 
     useSelector((state) => {
-        console.log(state.userLogin)
+        if (state.userLogin.response === responses.CHECKING_CREDENTIALS || checkIfEmptyObject(state.userLogin)) {
+            return
+        }
+
+        if (reqeustSent) {
+            setRequestSent(false)
+        }
+
+        if (state.userLogin === 'Network Error') {
+            if (error !== 'Network Error. Try again later.') {
+                setError('Network Error. Try again later.')
+            }
+            return
+        }
+
         switch (state.userLogin.code) {
             case 400:
                 if (error !== 'Bad request') {
@@ -47,6 +63,7 @@ const LoginWrapper = () => {
      * Sends request to backend if all data was formatted correctly.
      */
     const loginClick = () => {
+        setRequestSent(true)
         setError('')
         let err = false
         if (!notEmpty(email)) {
@@ -65,6 +82,7 @@ const LoginWrapper = () => {
         }
 
         if (err) {
+            setRequestSent(false)
             return
         }
 
@@ -75,7 +93,7 @@ const LoginWrapper = () => {
         <div>
             <Input label="Email" classes="email standard-input login-email" type="text" value={email} setter={setEmail} error={emailError} />
             <Input label="Password" classes="password standard-input login-password" type="password" value={password} setter={setPassword} error={passwordError} />
-            <button onClick={loginClick}>Login</button>
+            <button onClick={loginClick} disabled={reqeustSent}>Login</button>
             {error}
         </div>
     )

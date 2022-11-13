@@ -33,7 +33,11 @@ export function login(email, password) {
             // Redirecting to main page. Should do it some other way (without reload) but currently out of ideas. To change. 
             window.location.pathname = '/'
         } catch (e) {
-            dispatch(loginError(e.response.data))
+            if (e.code === "ERR_NETWORK") {
+                dispatch(loginError(e.message))
+            } else {
+                dispatch(loginError(e.response.data))
+            }
         }
     }
 

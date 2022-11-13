@@ -14,9 +14,6 @@ const { statuses } = require('./utils/enums/status')
 const { actions } = require('./utils/enums/action')
 
 // Get middleware
-const mainView = require('./api/get/views/index')
-const changePasswordView = require('./api/get/views/changePasswordView')
-
 const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
 const checkIfUserExists = require('./api/get/user/checkIfUserExists')
 const getUsers = require('./api/get/user/getUsers')
@@ -77,9 +74,6 @@ app.set('view engine', 'ejs')
 // Routes
 
 // Get
-app.use('/', mainView)
-app.use('/password/change', changePasswordView)
-
 app.use('/get/checkIfLoggedIn', checkIfLoggedIn)
 app.use('/get/admin/checkIfLoggedIn', checkIfAdminLoggedIn)
 app.use('/get/admin/premisions', checkIfHasAdminPremisions)

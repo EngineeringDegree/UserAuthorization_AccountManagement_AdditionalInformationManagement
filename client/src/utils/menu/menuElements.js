@@ -37,7 +37,7 @@ export const menuElements = [
     },
     {
         name: 'My Profile',
-        address: '/users/user',
+        address: '/users',
         admin: false,
         loggedIn: true,
     },
