@@ -20,12 +20,12 @@ router.post('/', async (req, res) => {
     }
 
     if (req.body.password != req.body.repeatPassword) {
-        return res.status(400).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 400, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
+        return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
-        return res.status(400).send({ status: statuses.USER_FOUND, code: 400, action: actions.USER_EXISTS_POPUP })
+        return res.status(406).send({ status: statuses.USER_FOUND, code: 406, action: actions.USER_EXISTS_POPUP })
     }
 
     let data
@@ -98,7 +98,7 @@ async function putAdmin(body) {
     } catch (e) { }
 
     if (newUser._id) {
-        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 
     return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
@@ -161,7 +161,7 @@ async function putUser(body) {
     } catch (e) { }
 
     if (newUser._id) {
-        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, id: newUser._id, funds: 0 }
+        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 
     return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
@@ -177,7 +177,8 @@ function validate(req) {
         email: Joi.string().email().required(),
         username: Joi.string().max(50).required(),
         password: Joi.string().required(),
-        repeatPassword: Joi.string().required()
+        repeatPassword: Joi.string().required(),
+        authorizationAddress: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

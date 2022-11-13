@@ -32,7 +32,7 @@ const isTrue = (value) => {
  * @returns true if equals, false if not.
  */
 const equals = (val1, val2) => {
-    return val1 == val2
+    return val1 === val2
 }
 
 module.exports = {

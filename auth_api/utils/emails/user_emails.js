@@ -4,8 +4,8 @@ const _ = require('lodash')
 const { EmailLog } = require('../../models/email_logs')
 
 /**
- * Sends an email email to which user changed
- * @param {object} data contains email and authorization token 
+ * Sends an email email to which user changed.
+ * @param {object} data contains email, authorization token and address to redirect. 
  */
 async function sendConfirmationEmail(data) {
     if (data.code != 200) {
@@ -26,7 +26,7 @@ async function sendConfirmationEmail(data) {
         from: process.env.CONFIRMATION_EMAIL,
         to: data.email,
         subject: `${process.env.GAME_NAME} email confirmation`,
-        html: `<p>Please confirm your email by clicking this <a href="${process.env.SERVER_ADDRESS}authorize?email=${data.email}&accessToken=${data.accessToken}">link</a>.</p>`
+        html: `<p>Please confirm your email by clicking this <a href="${data.authorizationAddress}?email=${data.email}&accessToken=${data.accessToken}">link</a>.</p>`
     }
 
     transporter.sendMail(mailOptions, function (error, info) {

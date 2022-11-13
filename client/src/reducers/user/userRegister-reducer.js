@@ -1,9 +1,9 @@
 import {
-    LOGIN_ERROR,
-    LOGIN_REQUEST,
-    LOGIN_SUCCESS,
+    REGISTER_ERROR,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
     responses
-} from '../../actions/user/userLogin-actions'
+} from '../../actions/user/userRegister-actions'
 
 /**
  * Changes current state for logging in.
@@ -11,13 +11,13 @@ import {
  * @param {object} action current action dispatched with data.
  * @returns new state.
  */
-export default function loginReducer(state = {}, action) {
+export default function registerReducer(state = {}, action) {
     switch (action.type) {
-        case LOGIN_REQUEST:
+        case REGISTER_REQUEST:
             return {
                 response: responses.CHECKING_CREDENTIALS
             }
-        case LOGIN_SUCCESS:
+        case REGISTER_SUCCESS:
             window.localStorage.setItem('token', action.payload.token)
             window.localStorage.setItem('refreshToken', action.payload.refreshToken)
             window.localStorage.setItem('email', action.payload.email)
@@ -26,7 +26,7 @@ export default function loginReducer(state = {}, action) {
             window.localStorage.setItem('funds', action.payload.funds)
 
             return (action.payload)
-        case LOGIN_ERROR:
+        case REGISTER_ERROR:
             return (action.payload)
         default:
             return state

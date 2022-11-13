@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
-import { useDispatch, connect } from 'react-redux'
+import { useDispatch, useSelector, connect } from 'react-redux'
 import Input from "./Input"
 import { notEmpty, isEmail, isTrue, equals } from "../../utils/signIn/inputChecks"
+import { register, responses } from '../../actions/user/userRegister-actions'
+import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
  * RegisterWrapper object to display
@@ -45,6 +47,51 @@ const RegisterWrapper = () => {
         setPPError('')
     }, [pp])
 
+    useSelector((state) => {
+        if (state.userRegister.response === responses.REGISTERERING || checkIfEmptyObject(state.userRegister)) {
+            return
+        }
+
+        if (reqeustSent) {
+            setRequestSent(false)
+        }
+
+        if (state.userRegister === 'Network Error') {
+            if (error !== 'Network Error. Try again later.') {
+                setError('Network Error. Try again later.')
+            }
+            return
+        }
+
+        switch (state.userRegister.code) {
+            case 400:
+                if (error !== 'Bad request') {
+                    setError('Bad request')
+                }
+                break;
+            case 401:
+                if (error !== 'Passwords do not match!') {
+                    setError('Passwords do not match!')
+                }
+                break;
+            case 406:
+                if (error !== 'User with that email already exists!') {
+                    setError('User with that email already exists!')
+                }
+                break;
+            case 500:
+                if (error !== 'Something went wrong. Try again later!') {
+                    setError('Something went wrong. Try again later!')
+                }
+                break;
+            default:
+                break
+        }
+    })
+
+    /**
+     * Tries to register user.
+     */
     const registerClick = () => {
         setRequestSent(true)
         setError('')
@@ -94,6 +141,8 @@ const RegisterWrapper = () => {
             setRequestSent(false)
             return
         }
+
+        dispatch(register(email, username, password, repeatPassword))
     }
 
     return (
@@ -112,10 +161,10 @@ const RegisterWrapper = () => {
 
 const mapStateToProps = (state) => {
     return {
-
+        registerReducer: state.registerReducer
     }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { register }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterWrapper)

@@ -81,7 +81,7 @@ class App extends Component {
     let menuElements = that.state.menuElements
     if (that.props.userLoggedIn.response === responses.REQUESTING_ACCOUNT_AUTHORIZATION || that.props.userLoggedIn.response === responses.NO_TOKENS_EMAIL || that.props.userLoggedIn.status === responses.USER_NOT_AUTHORIZED || !that.state.socket.connected) {
       menuElements = menuElements.filter((e) => {
-        return !e.loggedIn
+        return !e.loggedIn || e.alwaysVisible
       })
 
       return menuElements
@@ -89,7 +89,7 @@ class App extends Component {
 
     if (window.localStorage.getItem('email') == null || window.localStorage.getItem('token') == null || window.localStorage.getItem('refreshToken') == null) {
       menuElements = menuElements.filter((e) => {
-        return !e.loggedIn
+        return !e.loggedIn || e.alwaysVisible
       })
 
       return menuElements
@@ -103,13 +103,13 @@ class App extends Component {
 
     if (that.props.userLoggedIn.admin) {
       menuElements = menuElements.filter((e) => {
-        return e.loggedIn
+        return e.loggedIn || e.alwaysVisible
       })
       return menuElements
     }
 
     menuElements = menuElements.filter((e) => {
-      return (!e.admin && e.loggedIn)
+      return (!e.admin && e.loggedIn) || e.alwaysVisible
     })
 
     return menuElements

@@ -35,7 +35,7 @@ router.patch('/', async (req, res) => {
                 return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
             }
 
-            sendConfirmationEmail({ email: req.body.newEmail, accessToken: accessToken.token })
+            sendConfirmationEmail({ email: req.body.newEmail, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
             return res.status(200).send({ status: statuses.EMAIL_CHANGED, code: 200, email: req.body.newEmail, action: actions.EMAIL_CHANGED_POPUP })
         }
         return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
@@ -100,6 +100,7 @@ function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         newEmail: Joi.string().email().required(),
+        authorizationAddress: Joi.string().required(),
         password: Joi.string().required()
     })
     const validation = schema.validate(req)
