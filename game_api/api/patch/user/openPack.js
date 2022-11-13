@@ -37,7 +37,7 @@ router.patch('/', async (req, res) => {
                 await Pack.updateOne(filter, update)
             } catch (e) { }
             const cardsInPack = pack.cards
-            const userCards = await UserCard.findOne({ owner: req.body.email })
+            const userCards = await UserCard.findOne({ owner: req.body.userId })
             if (userCards) {
                 let cards = userCards.cards
                 for (let i = 0; i < cardsInPack.length; i++) {
@@ -71,7 +71,7 @@ router.patch('/', async (req, res) => {
                 }
 
                 let newCardsCollection = new UserCard(_.pick({
-                    owner: req.body.email,
+                    owner: req.body.userId,
                     cards: cards
                 }, ['owner', 'cards']))
                 try {
@@ -79,9 +79,9 @@ router.patch('/', async (req, res) => {
                 } catch (e) { }
             }
 
-            let decks = await Deck.find({ owner: req.body.email })
+            let decks = await Deck.find({ owner: req.body.userId })
             if (decks.length == 0) {
-                await generateBasicDecks(req.body.email, cardsInPack)
+                await generateBasicDecks(req.body.userId, cardsInPack)
             }
             return res.status(200).send({ status: statuses.PACK_OPENED, code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
         }
@@ -94,7 +94,7 @@ router.patch('/', async (req, res) => {
 /**
  * Generates decks for user which didn't have any from basic cards.
  * 
- * @param {string} owner email of deck owner 
+ * @param {string} owner id of deck owner 
  * @param {array} cards array of card objects to generate decks from
  */
 async function generateBasicDecks(owner, cards) {
@@ -184,6 +184,7 @@ async function generateBasicDecks(owner, cards) {
  */
 function validate(req) {
     const schema = Joi.object({
+        userId: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),

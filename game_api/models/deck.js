@@ -35,7 +35,7 @@ function validateDeck(deck) {
         nation: Joi.string().required(),
         cards: Joi.array().required(),
         strength: Joi.number().required(),
-        owner: Joi.string().email().required(),
+        owner: Joi.string().required(),
         deleted: Joi.boolean().required()
     })
     const validation = schema.validate(deck)

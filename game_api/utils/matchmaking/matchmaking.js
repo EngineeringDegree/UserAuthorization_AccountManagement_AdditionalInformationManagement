@@ -238,7 +238,7 @@ const generateGame = async (player1, player2, gameType, moveTime, turnLimit, io)
  */
 const addPlayer = (player) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
-        if (playersToMatchmake[i].id == player.id || playersToMatchmake[i].email == player.email) {
+        if (playersToMatchmake[i].id == player.id || playersToMatchmake[i].email == player.email || playersToMatchmake[i].userId == player.userId) {
             return false
         }
     }
@@ -248,12 +248,12 @@ const addPlayer = (player) => {
 
 /**
  * Removes player from the array of matchmaking players
- * @param {string} email 
+ * @param {string} id 
  * @returns boolean if success
  */
-const removePlayer = (email) => {
+const removePlayer = (id) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
-        if (playersToMatchmake[i].email == email) {
+        if (playersToMatchmake[i].userId == id) {
             playersToMatchmake.splice(i, 1)
             return true
         }
@@ -266,7 +266,7 @@ const removePlayer = (email) => {
  * @param {string} id to remove 
  * @returns boolean if success
  */
-const removePlayerById = (id) => {
+const removePlayerBySocketId = (id) => {
     for (let i = 0; i < playersToMatchmake.length; i++) {
         if (playersToMatchmake[i].id == id) {
             playersToMatchmake.splice(i, 1)
@@ -289,5 +289,5 @@ const startMatchmaking = (io, gameType, moveTime, turnLimit) => {
     }, process.env.MATCHMAKE_TIME_CHECK)
 }
 
-module.exports = { startMatchmaking, addPlayer, removePlayer, removePlayerById }
+module.exports = { startMatchmaking, addPlayer, removePlayer, removePlayerBySocketId }
 

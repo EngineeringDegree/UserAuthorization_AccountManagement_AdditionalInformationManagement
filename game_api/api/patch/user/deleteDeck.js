@@ -13,14 +13,14 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
     }
 
-    let decks = await Deck.find({ owner: req.body.email, deleted: false })
+    let decks = await Deck.find({ owner: req.body.id, deleted: false })
     if (decks.length > 1) {
         let deck = undefined
         try {
             deck = await Deck.findOne({ _id: req.body.deckId })
         } catch (e) { }
         if (deck) {
-            if (deck.owner == req.body.email) {
+            if (deck.owner == req.body.id) {
                 const filter = {
                     _id: deck._id
                 }
@@ -31,7 +31,7 @@ router.patch('/', async (req, res) => {
                 try {
                     await Deck.updateOne(filter, update)
                 } catch (e) { }
-                decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
+                decks = await Deck.find({ owner: req.body.id, deleted: false }).select('_id name nation')
                 let decksToReturn = []
                 for (let i = 0; i < decks.length; i++) {
                     let nation = undefined
@@ -54,7 +54,7 @@ router.patch('/', async (req, res) => {
         }
     }
 
-    decks = await Deck.find({ owner: req.body.email, deleted: false }).select('_id name nation')
+    decks = await Deck.find({ owner: req.body.id, deleted: false }).select('_id name nation')
     return res.status(401).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: actions.CHANGE_DECK_LIST_ACCORDINGLY, decks: decks })
 })
 
@@ -65,6 +65,7 @@ router.patch('/', async (req, res) => {
  */
 function validate(req) {
     const schema = Joi.object({
+        id: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),

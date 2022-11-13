@@ -27,7 +27,7 @@ const Pack = mongoose.model('Pack', new mongoose.Schema({
 
 function validatePack(pack) {
     const schema = Joi.object({
-        owner: Joi.string().email().required(),
+        owner: Joi.string().required(),
         cards: Joi.array().required(),
         nation: Joi.string().required(),
         packName: Joi.string().required(),

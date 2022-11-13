@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
                             })
                         }
                     }
-                    await createPack(cardsChoosen, req.body.email, pack.nation, pack.name)
+                    await createPack(cardsChoosen, req.body.userId, pack.nation, pack.name)
 
                     return res.status(200).send({ status: statuses.PACK_BOUGHT, code: 200 })
                 }
@@ -161,6 +161,7 @@ async function createPack(cards, owner, nation, packName) {
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
+        userId: Joi.string().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         id: Joi.string().required()

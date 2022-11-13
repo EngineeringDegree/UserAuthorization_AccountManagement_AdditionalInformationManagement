@@ -75,7 +75,7 @@ router.delete('/', async (req, res) => {
             return res.status(400).send({ status: statuses.NOT_SYNCHRONIZED, code: 400, token: res.locals.user.data.token, action: actions.RELOAD })
         }
 
-        const userCards = await UserCard.findOne({ owner: req.body.email })
+        const userCards = await UserCard.findOne({ owner: req.body.id })
         const prepared = req.body.deck.cards.cardsPrepared
         let q = 0
         for (let i = 0; i < prepared.length; i++) {
@@ -108,6 +108,7 @@ router.delete('/', async (req, res) => {
  */
 function validate(req) {
     const schema = Joi.object({
+        id: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),

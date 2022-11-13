@@ -38,7 +38,7 @@ router.put('/', async (req, res) => {
         if (!deckNation) {
             return res.status(401).send({ status: statuses.THIS_NATION_HAS_BEEN_TURNED_OFF, code: 401, action: actions.RELOAD })
         }
-        const userCards = await UserCard.findOne({ owner: req.body.email })
+        const userCards = await UserCard.findOne({ owner: req.body.userId })
         for (let i = 0; i < req.body.cards.length; i++) {
             let card = undefined
             try {
@@ -72,7 +72,7 @@ router.put('/', async (req, res) => {
 
 
         }
-        if (deck.owner == req.body.email) {
+        if (deck.owner == req.body.userId) {
             const filter = {
                 _id: deck._id
             }
@@ -101,6 +101,7 @@ router.put('/', async (req, res) => {
  */
 function validate(req) {
     const schema = Joi.object({
+        userId: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),

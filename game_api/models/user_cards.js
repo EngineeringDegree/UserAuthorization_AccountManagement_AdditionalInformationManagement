@@ -16,7 +16,7 @@ const UserCard = mongoose.model('UserCard', new mongoose.Schema({
 
 function validateUserCard(userCard) {
     const schema = Joi.object({
-        owner: Joi.string().email().required(),
+        owner: Joi.string().required(),
         cards: Joi.array().required()
     })
     const validation = schema.validate(userCard)

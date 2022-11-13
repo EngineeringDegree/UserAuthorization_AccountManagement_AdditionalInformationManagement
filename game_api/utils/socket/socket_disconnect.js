@@ -1,4 +1,4 @@
-const { removePlayerById } = require('../matchmaking/matchmaking')
+const { removePlayerBySocketId } = require('../matchmaking/matchmaking')
 
 /**
  * Logic which handles disconnection of user from socketio server
@@ -6,7 +6,7 @@ const { removePlayerById } = require('../matchmaking/matchmaking')
  * @param {object} socket which lost connection/disconnected 
  */
 const disconnect = (io, socket) => {
-    removePlayerById(socket.id)
+    removePlayerBySocketId(socket.id)
 }
 
 module.exports = disconnect

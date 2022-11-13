@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
                 deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             } catch (e) { }
             if (deck) {
-                if (deck.owner == req.body.email) {
+                if (deck.owner == req.body.id) {
                     let nation = undefined
                     try {
                         nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
                         return res.status(401).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 401, action: actions.CHANGE_DECKS_LIST })
                     }
                     let strength = 0
-                    const userCards = await UserCard.findOne({ owner: req.body.email })
+                    const userCards = await UserCard.findOne({ owner: req.body.id })
                     for (let i = 0; i < deck.cards.length; i++) {
                         let card = undefined
                         try {
@@ -71,13 +71,13 @@ router.post('/', async (req, res) => {
                         } catch (e) { }
                     }
 
-                    const rating = await Rating.findOne({ owner: req.body.email, nation: deck.nation })
+                    const rating = await Rating.findOne({ owner: req.body.id, nation: deck.nation })
                     let userRating = 1500
                     if (rating) {
                         userRating = rating.rating
                     } else {
                         let newRating = new Rating(_.pick({
-                            owner: req.body.email,
+                            owner: req.body.id,
                             nation: deck.nation,
                             rating: 1500
                         }, ['owner', 'nation', 'rating']))
@@ -91,6 +91,7 @@ router.post('/', async (req, res) => {
                         id: req.body.socketId,
                         userDeck: req.body.userDeck,
                         email: req.body.email,
+                        userId: req.body.id,
                         strength: strength,
                         userRating: userRating,
                         pared: false
@@ -120,6 +121,7 @@ router.post('/', async (req, res) => {
 function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
+        id: Joi.string().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required(),
         socketId: Joi.string().required(),

@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
             deck = await Deck.findOne({ _id: req.query.id })
         } catch (e) { }
         if (deck) {
-            if (deck.owner == req.query.email) {
+            if (deck.owner == req.query.userId) {
                 const nation = await Card_Nation.findOne({ _id: deck.nation })
                 if (nation) {
                     let strength = await checkDeckStrengthAndUpdate(deck._id)
@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
 function validate(req) {
     const schema = Joi.object({
         id: Joi.string().required(),
+        userId: Joi.string().required(),
         email: Joi.string().email().required(),
         token: Joi.string().required(),
         refreshToken: Joi.string().required()
