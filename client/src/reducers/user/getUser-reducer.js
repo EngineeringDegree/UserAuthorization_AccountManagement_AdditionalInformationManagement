@@ -3,7 +3,7 @@ import {
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
     responses
-} from '../../actions/user/getUser-actions.js.js'
+} from '../../actions/user/getUser-actions'
 
 /**
  * Changes current state for checking if is owner.

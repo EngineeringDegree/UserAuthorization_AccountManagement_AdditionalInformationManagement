@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector, connect } from 'react-redux'
 import UserInfoWrapper from "./UserInfoWrapper"
 import UserCardsWrapper from "./UserCardsWrapper"
-import { getUser, responses } from "../../actions/user/getUser-actions.js.js"
+import { getUser, responses } from "../../actions/user/getUser-actions"
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
@@ -43,10 +43,14 @@ const UserProfileWrapper = () => {
             switch (state.getUserReducer.code) {
                 case 401:
                 case 404:
-                    window.location.pathname = '/logout'
+                    let el = document.getElementById('link-to-click-on-bad')
+                    if (el && lastId === id) {
+                        el.click()
+                    }
+                    break
                 case 406:
-                    if (error !== "User you request has not been found.") {
-                        setError("User you request has not been found.")
+                    if (error !== "User you requested has not been found.") {
+                        setError("User you requested has not been found.")
                     }
                     break
                 default:
@@ -69,7 +73,6 @@ const UserProfileWrapper = () => {
     })
 
     if (error !== "") {
-        console.log("Not found")
         return (
             <div>
                 {error}
@@ -80,6 +83,7 @@ const UserProfileWrapper = () => {
 
     return (
         <div>
+            <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
             User profile wrapper for user {id}
             <UserInfoWrapper owner={owner} admin={admin} verified={verified} />
             <UserCardsWrapper owner={owner} verified={verified} />

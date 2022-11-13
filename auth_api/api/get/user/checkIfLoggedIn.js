@@ -30,14 +30,14 @@ router.get('/', async (req, res) => {
 
     let check = await checkToken(user.email, req.query.token, process.env.AUTHORIZATION)
     if (check) {
-        return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, admin: user.admin, funds: user.funds, confirmed: user.confirmed })
+        return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, admin: user.admin, funds: user.funds, confirmed: user.confirmed, email: user.email, id: user._id })
     }
 
     check = await askNewToken(user.email, req.query.refreshToken, user._id)
     if (!check) {
         return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }
-    return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, token: check, admin: user.admin, funds: user.funds, confirmed: user.confirmed })
+    return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, token: check, admin: user.admin, funds: user.funds, confirmed: user.confirmed, email: user.email, id: user._id })
 })
 
 /**

@@ -4,6 +4,7 @@ import loginReducer from './user/userLogin-reducer'
 import registerReducer from './user/userRegister-reducer'
 import authReducer from './user/userAuthorize-reducer'
 import getUserReducer from './user/getUser-reducer'
+import getCardsReducer from './cards/getCards-reducer'
 
 /**
  * Combines all reducers.
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     userLogin: loginReducer,
     userRegister: registerReducer,
     authReducer: authReducer,
-    getUserReducer: getUserReducer
+    getUserReducer: getUserReducer,
+    getCardsReducer: getCardsReducer
 })
 
 export default rootReducer

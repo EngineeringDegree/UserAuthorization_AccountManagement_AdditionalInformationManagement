@@ -9,26 +9,28 @@ export const responses = {
 
 /**
  * Dispatch request for logging in.
+ * @param {string} id to check.
  * @param {string} email to check.
- * @param {string} accessToken to check.
+ * @param {string} token to check.
+ * @param {string} refreshToken to check.
  * @returns dispatch function for reducer.
  */
-export function getCards(email, accessToken) {
+export function getUserCards(id, email, token, refreshToken) {
     /**
      * Main dispatch function returned.
      */
     return async function (dispatch) {
-        dispatch(getCardsRequest())
+        dispatch(request())
         let response
         try {
-            const address = process.env.REACT_APP_GAME_API + `patch/authorize`
+            const address = process.env.REACT_APP_GAME_API + `get/user/cards/info?id=${id}&email=${email}&token=${token}&refreshToken=${refreshToken}`
             response = await axios.get(address)
-            dispatch(getCardsSuccess(response.data))
+            dispatch(success(response.data))
         } catch (e) {
             if (e.code === "ERR_NETWORK") {
-                dispatch(getCardsError(e.message))
+                dispatch(error(e.message))
             } else {
-                dispatch(getCardsError(e.response.data))
+                dispatch(error(e.response.data))
             }
         }
     }
@@ -36,7 +38,7 @@ export function getCards(email, accessToken) {
     /**
      * @returns dispatch object
      */
-    function authRequest() {
+    function request() {
         return {
             type: GET_CARDS_REQUEST
         }
@@ -45,7 +47,7 @@ export function getCards(email, accessToken) {
     /**
      * @returns dispatch object
      */
-    function authSuccess(res) {
+    function success(res) {
         return {
             type: GET_CARDS_SUCCESS,
             payload: res
@@ -55,7 +57,7 @@ export function getCards(email, accessToken) {
     /**
      * @returns dispatch object
      */
-    function authError(res) {
+    function error(res) {
         return {
             type: GET_CARDS_ERROR,
             payload: res

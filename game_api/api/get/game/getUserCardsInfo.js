@@ -14,6 +14,10 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
+        if (res.locals.user.data.id !== req.query.id) {
+            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 401, action: actions.NOT_AN_OWNER_POPUP })
+        }
+
         const cardsObj = await UserCard.findOne({ owner: req.query.id })
         if (cardsObj) {
             const cards = cardsObj.cards
@@ -53,7 +57,7 @@ router.get('/', async (req, res) => {
             return res.status(200).send({ status: statuses.OK, code: 200, cards: cardsFiltered, token: res.locals.user.data.token })
         }
 
-        return res.status(404).send({ status: statuses.CARDS_NOT_FOUND, code: 404, action: actions.CARDS_NOT_FOUND_POPUP })
+        return res.status(406).send({ status: statuses.CARDS_NOT_FOUND, code: 406, action: actions.CARDS_NOT_FOUND_POPUP })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
