@@ -10,9 +10,9 @@ const Input = (props) => {
 
     let input = undefined
     if (props.type === 'checkbox') {
-        input = <input className={classes} type={props.type} checked={props.checked} onChange={(e) => { props.setter(e.target.checked) }} />
+        input = <input className={classes} type={props.type} disabled={props.disabled} checked={props.checked} onChange={(e) => { props.setter(e.target.checked) }} />
     } else {
-        input = <input className={classes} type={props.type} value={props.value} onChange={(e) => { props.setter(e.target.value) }} />
+        input = <input className={classes} type={props.type} disabled={props.disabled} value={props.value} onChange={(e) => { props.setter(e.target.value) }} />
     }
 
     return (

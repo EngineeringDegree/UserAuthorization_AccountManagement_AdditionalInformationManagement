@@ -34,7 +34,7 @@ router.patch('/', async (req, res) => {
 
     const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })
     let newToken = new Token(_.pick({
-        owner: user.email,
+        owner: user._id,
         type: process.env.AUTHORIZATION,
         token: token,
         issuedAt: new Date()
@@ -45,7 +45,7 @@ router.patch('/', async (req, res) => {
 
     const refreshToken = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '60d' })
     newToken = new Token(_.pick({
-        owner: user.email,
+        owner: user._id,
         type: process.env.REFRESH,
         token: refreshToken,
         issuedAt: new Date()

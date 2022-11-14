@@ -18,6 +18,9 @@ export default function authReducer(state = {}, action) {
                 response: responses.AUTHORIZING
             }
         case AUTH_SUCCESS:
+            if (action.payload.token) {
+                window.localStorage.setItem('token', action.payload.token)
+            }
             return (action.payload)
         case AUTH_ERROR:
             return (action.payload)

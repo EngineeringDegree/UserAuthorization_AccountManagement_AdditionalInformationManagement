@@ -23,24 +23,24 @@ router.patch('/', async (req, res) => {
             return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
         }
 
-        let check = await checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
+        let check = await checkToken(user._id, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.email, req.body.refreshToken, user._id)
+            check = await checkToken(user._id, req.body.refreshToken, user._id)
             if (check) {
-                const accessToken = await Token.findOne({ owner: user.email, type: process.env.ACCESS })
+                const accessToken = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
                 if (!accessToken) {
                     return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
                 }
-                sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token })
+                sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
                 return res.status(200).send({ status: statuses.PASSWORD_EMAIL_SENT, code: 200, username: req.body.newUsername, token: check })
             }
             return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
         }
-        const accessToken = await Token.findOne({ owner: user.email, type: process.env.ACCESS })
+        const accessToken = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
         if (!accessToken) {
             return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
         }
-        sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token })
+        sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
         return res.status(200).send({ status: statuses.PASSWORD_EMAIL_SENT, code: 200, username: req.body.newUsername })
     }
 
@@ -56,7 +56,8 @@ function validate(req) {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         token: Joi.string().required(),
-        refreshToken: Joi.string().required()
+        refreshToken: Joi.string().required(),
+        authorizationAddress: Joi.string().required()
     })
     const validation = schema.validate(req)
     return validation

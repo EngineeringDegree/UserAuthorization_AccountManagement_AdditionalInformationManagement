@@ -64,40 +64,39 @@ async function putAdmin(body) {
         return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
     }
 
-    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
-    let newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.AUTHORIZATION,
-        token: token,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
-    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
-    newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.REFRESH,
-        token: refreshToken,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
-    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
-    newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.ACCESS,
-        token: accessToken,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
     if (newUser._id) {
+        const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
+        let newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.AUTHORIZATION,
+            token: token,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
+
+        const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
+        newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.REFRESH,
+            token: refreshToken,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
+
+        const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
+        newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.ACCESS,
+            token: accessToken,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
         return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 

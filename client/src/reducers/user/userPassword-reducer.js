@@ -1,28 +1,28 @@
 import {
-    GET_USER_ERROR,
-    GET_USER_REQUEST,
-    GET_USER_SUCCESS,
+    NEW_PASSWORD_ERROR,
+    NEW_PASSWORD_REQUEST,
+    NEW_PASSWORD_SUCCESS,
     responses
-} from '../../actions/user/getUser-actions'
+} from '../../actions/user/userPassword-actions'
 
 /**
- * Changes current state for checking if is owner.
+ * Changes current state for changing password.
  * @param {object} state current state from previous action.
  * @param {object} action current action dispatched with data.
  * @returns new state.
  */
-export default function getUserReducer(state = {}, action) {
+export default function passwordReducer(state = {}, action) {
     switch (action.type) {
-        case GET_USER_REQUEST:
+        case NEW_PASSWORD_REQUEST:
             return {
-                response: responses.GETTING_USER
+                response: responses.ASKING_FOR_NEW_PASSWORD
             }
-        case GET_USER_SUCCESS:
+        case NEW_PASSWORD_SUCCESS:
             if (action.payload.token) {
                 window.localStorage.setItem('token', action.payload.token)
             }
             return (action.payload)
-        case GET_USER_ERROR:
+        case NEW_PASSWORD_ERROR:
             return (action.payload)
         default:
             return state

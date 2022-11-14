@@ -40,7 +40,7 @@ async function sendConfirmationEmail(data) {
 
 /**
  * Sends an email with password change link
- * @param {object} data contains email and authorization token of process
+ * @param {object} data contains email, address of client endpoint to utilize and authorization token of process
  */
 async function sendPasswordChangeEmail(data) {
     const transporter = nodemailer.createTransport({
@@ -57,7 +57,7 @@ async function sendPasswordChangeEmail(data) {
         from: process.env.CONFIRMATION_EMAIL,
         to: data.email,
         subject: `${process.env.GAME_NAME} email confirmation`,
-        html: `<p>Change your password <a href="${process.env.SERVER_ADDRESS}password/change?email=${data.email}&accessToken=${data.accessToken}">here</a>.</p>`
+        html: `<p>Change your password <a href="${data.authorizationAddress}?email=${data.email}&accessToken=${data.accessToken}">here</a>.</p>`
     }
 
     transporter.sendMail(mailOptions, function (error, info) {

@@ -25,20 +25,20 @@ router.patch('/', async (req, res) => {
 
         const pass = await bcrypt.compare(req.body.password, user.password)
         if (pass) {
-            const alreadyExists = await changeUserEmail(user._id, req.body.newEmail, user.email)
+            const alreadyExists = await changeUserEmail(user._id, req.body.newEmail)
             if (alreadyExists) {
                 return res.status(409).send({ status: statuses.EMAIL_ALREADY_REGISTERED, code: 409, action: actions.EMAIL_ALREADY_TAKEN_POPUP })
             }
 
-            const accessToken = await Token.findOne({ owner: req.body.newEmail, type: process.env.ACCESS })
+            const accessToken = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
             if (!accessToken) {
-                return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
+                return res.status(406).send({ status: statuses.NO_ACCESS_TOKEN, code: 406, action: actions.NO_ACCESS_TOKEN_POPUP })
             }
 
             sendConfirmationEmail({ email: req.body.newEmail, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
             return res.status(200).send({ status: statuses.EMAIL_CHANGED, code: 200, email: req.body.newEmail, action: actions.EMAIL_CHANGED_POPUP })
         }
-        return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
+        return res.status(403).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 403, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
@@ -50,27 +50,9 @@ router.patch('/', async (req, res) => {
  * @param {string} email new email of an user 
  * @param {string} oldEmail of an user 
  */
-async function changeUserEmail(id, email, oldEmail) {
+async function changeUserEmail(id, email) {
     const user = await User.findOne({ email: email })
     if (user) {
-        return true
-    }
-
-    const accessToken = await Token.findOne({ owner: oldEmail, type: process.env.ACCESS })
-    if (!accessToken) {
-        return true
-    }
-
-    const tokenFilter = {
-        _id: accessToken._id
-    }
-    const tokenUpdate = {
-        owner: email
-    }
-
-    try {
-        await Token.updateOne(tokenFilter, tokenUpdate)
-    } catch (e) {
         return true
     }
 

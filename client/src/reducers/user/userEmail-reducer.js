@@ -1,28 +1,29 @@
 import {
-    GET_USER_ERROR,
-    GET_USER_REQUEST,
-    GET_USER_SUCCESS,
+    CHANGE_EMAIL_ERROR,
+    CHANGE_EMAIL_REQUEST,
+    CHANGE_EMAIL_SUCCESS,
     responses
-} from '../../actions/user/getUser-actions'
+} from '../../actions/user/userEmail-actions'
 
 /**
- * Changes current state for checking if is owner.
+ * Changes current state for changin email.
  * @param {object} state current state from previous action.
  * @param {object} action current action dispatched with data.
  * @returns new state.
  */
-export default function getUserReducer(state = {}, action) {
+export default function emailReducer(state = {}, action) {
     switch (action.type) {
-        case GET_USER_REQUEST:
+        case CHANGE_EMAIL_REQUEST:
             return {
-                response: responses.GETTING_USER
+                response: responses.CHANGING_EMAIL
             }
-        case GET_USER_SUCCESS:
+        case CHANGE_EMAIL_SUCCESS:
             if (action.payload.token) {
                 window.localStorage.setItem('token', action.payload.token)
             }
+            window.localStorage.setItem('email', action.payload.email)
             return (action.payload)
-        case GET_USER_ERROR:
+        case CHANGE_EMAIL_ERROR:
             return (action.payload)
         default:
             return state

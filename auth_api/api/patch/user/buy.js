@@ -25,9 +25,9 @@ router.patch('/', async (req, res) => {
         if (checkIfBanned(user)) {
             return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
         }
-        let check = checkToken(user.email, req.body.token, process.env.AUTHORIZATION)
+        let check = checkToken(user._id, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await askNewToken(user.email, req.body.refreshToken, user._id)
+            check = await checkToken(user._id, req.body.refreshToken, user._id)
             if (check) {
                 if (user.funds >= req.body.price) {
                     await changeUserFunds(user.funds, req.body.price, user._id)

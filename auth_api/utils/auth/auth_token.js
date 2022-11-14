@@ -5,13 +5,13 @@ const { Token } = require('../../models/token')
 
 /**
  * Check if tokens are valid
- * @param {string} email of owner
+ * @param {string} id of owner
  * @param {string} token token sent from user to server
  * @param {string} type of token
  * @returns true if good, false if bad
  */
-const checkToken = async (email, token, type) => {
-    const dbToken = await Token.findOne({ owner: email, token: token, type: type })
+const checkToken = async (id, token, type) => {
+    const dbToken = await Token.findOne({ owner: id, token: token, type: type })
     if (!dbToken) {
         return false
     }
@@ -29,16 +29,16 @@ const checkToken = async (email, token, type) => {
 
 /**
  * Asks for new token based on refresh token
- * @param {string} email of owner
+ * @param {string} id of owner
  * @param {string} token token sent from user to server
  * @param {string} userId of owner
  * @returns token or false
  */
-const askNewToken = async (email, token, userId) => {
-    if (await checkToken(email, token, process.env.REFRESH)) {
+const askNewToken = async (id, token, userId) => {
+    if (await checkToken(id, token, process.env.REFRESH)) {
         const token = jwt.sign({ _id: userId }, config.get('PrivateKey'), { expiresIn: '1h' })
         let newToken = new Token(_.pick({
-            owner: email,
+            owner: id,
             type: process.env.AUTHORIZATION,
             token: token,
             issuedAt: new Date()

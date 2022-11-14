@@ -20,7 +20,7 @@ router.patch('/', async (req, res) => {
         return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
     }
 
-    const accessToken = await Token.findOne({ owner: user.email, token: req.body.accessToken, type: process.env.ACCESS })
+    const accessToken = await Token.findOne({ owner: user._id, token: req.body.accessToken, type: process.env.ACCESS })
     if (!accessToken) {
         return res.status(401).send({ status: statuses.BAD_TOKEN, code: 401, action: actions.BAD_TOKEN_POPUP })
     }

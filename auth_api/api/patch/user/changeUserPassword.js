@@ -29,7 +29,7 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 400, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
     }
 
-    const token = await Token.findOne({ owner: req.body.email, type: process.env.ACCESS })
+    const token = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
     if (!token) {
         return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
     }

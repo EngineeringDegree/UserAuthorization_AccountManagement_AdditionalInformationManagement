@@ -3,7 +3,12 @@ import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector, connect } from 'react-redux'
 import UserInfoWrapper from "./UserInfoWrapper"
 import CardsWrapper from "../cards/CardsWrapper"
-import { getUser, responses } from "../../actions/user/getUser-actions"
+import { getUser, responses as getUserResponses } from "../../actions/user/getUser-actions"
+import { changeUsername, responses as userUsernameResponses } from "../../actions/user/userUsername-actions"
+import { changePassword, responses as userPasswordResponses } from "../../actions/user/userPassword-actions"
+import { changeEmail, responses as userEmailResponses } from "../../actions/user/userEmail-actions"
+import { changeConfirmed, responses as userConfirmedResponses } from "../../actions/user/userConfirmed-actions"
+import { changeAdmin, responses as userAdminResponses } from "../../actions/user/userAdmin-actions"
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
@@ -17,14 +22,28 @@ const UserProfileWrapper = () => {
     const [admin, setAdmin] = useState(false)
     const [request, setRequest] = useState(false)
     const [verified, setVerified] = useState(false)
+    const [afterFirstRequest, setAfterFirstRequest] = useState(false)
     const [justEntered, setJustEntered] = useState(true)
     const [error, setError] = useState('')
+    const [currentUsernameError, setCurrentUsernameError] = useState('')
+    const [currentEmailError, setCurrentEmailError] = useState('')
+    const [currentPasswordError, setCurrentPasswordError] = useState('')
+    const [currentConfirmedError, setCurrentConfirmedError] = useState('')
+    const [currentAdminError, setCurrentAdminError] = useState('')
     const [confirmed, setConfirmed] = useState(false)
     const [userAdmin, setUserAdmin] = useState(false)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userId, setUserID] = useState('')
+
+    const askForNewEmail = () => {
+        dispatch(changeEmail(email, password))
+    }
+
+    const askForNewPassword = () => {
+        dispatch(changePassword())
+    }
 
     const userInfoPack = {
         confirmed,
@@ -36,8 +55,28 @@ const UserProfileWrapper = () => {
         setEmail,
         setUsername,
         setUserAdmin,
-        setConfirmed
+        setConfirmed,
+        askForNewEmail,
+        askForNewPassword
     }
+
+    useEffect(() => {
+        if (afterFirstRequest) {
+            dispatch(changeUsername(username))
+        }
+    }, [username])
+
+    useEffect(() => {
+        if (afterFirstRequest) {
+            dispatch(changeConfirmed(confirmed, id))
+        }
+    }, [confirmed])
+
+    useEffect(() => {
+        if (afterFirstRequest) {
+            dispatch(changeAdmin(userAdmin, id))
+        }
+    }, [admin])
 
     const id = params.id
     if (lastId !== id) {
@@ -47,6 +86,7 @@ const UserProfileWrapper = () => {
     useEffect(() => {
         setRequest(false)
         setVerified(false)
+        setAfterFirstRequest(false)
     }, [lastId])
 
     if (!request) {
@@ -56,7 +96,7 @@ const UserProfileWrapper = () => {
     }
 
     useSelector((state) => {
-        if (checkIfEmptyObject(state.getUserReducer) || responses.GETTING_USER === state.getUserReducer.response) {
+        if (checkIfEmptyObject(state.getUserReducer) || getUserResponses.GETTING_USER === state.getUserReducer.response) {
             return
         }
 
@@ -101,15 +141,18 @@ const UserProfileWrapper = () => {
             if (userId !== state.getUserReducer.id) {
                 setUserID(state.getUserReducer.id)
             }
+
+            if (admin !== state.getUserReducer.isAdmin) {
+                setAdmin(state.getUserReducer.isAdmin)
+            }
+
+            if (owner !== (state.getUserReducer.email === window.localStorage.getItem("email"))) {
+                setOwner(state.getUserReducer.email === window.localStorage.getItem("email"))
+            }
+
+            setAfterFirstRequest(true)
         }
 
-        if (admin !== state.getUserReducer.isAdmin) {
-            setAdmin(state.getUserReducer.isAdmin)
-        }
-
-        if (owner !== (state.getUserReducer.email === window.localStorage.getItem("email"))) {
-            setOwner(state.getUserReducer.email === window.localStorage.getItem("email"))
-        }
     })
 
     if (error !== "") {
@@ -123,6 +166,11 @@ const UserProfileWrapper = () => {
 
     return (
         <div>
+            {currentUsernameError}
+            {currentPasswordError}
+            {currentEmailError}
+            {currentConfirmedError}
+            {currentAdminError}
             <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
             User profile wrapper for user {id}
             <UserInfoWrapper owner={owner} admin={admin} verified={verified} userInfoPack={userInfoPack} />
@@ -133,10 +181,15 @@ const UserProfileWrapper = () => {
 
 const mapStateToProps = (state) => {
     return {
-        getUserReducer: state.getUserReducer
+        getUserReducer: state.getUserReducer,
+        username: state.username,
+        password: state.password,
+        email: state.email,
+        confirmed: state.confirmed,
+        admin: state.admin
     }
 }
 
-const mapDispatchToProps = { getUser }
+const mapDispatchToProps = { getUser, changeAdmin, changeConfirmed, changeEmail, changePassword, changeUsername }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileWrapper)
