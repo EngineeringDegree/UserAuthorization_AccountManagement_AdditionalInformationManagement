@@ -4,6 +4,7 @@ import { useDispatch, useSelector, connect } from 'react-redux'
 import UserInfoWrapper from "./UserInfoWrapper"
 import CardsWrapper from "../cards/CardsWrapper"
 import { getUser, responses as getUserResponses } from "../../actions/user/getUser-actions"
+import { notEmpty, isEmail, isTrue, equals } from "../../utils/signIn/inputChecks"
 import { changeUsername, responses as userUsernameResponses } from "../../actions/user/userUsername-actions"
 import { changePassword, responses as userPasswordResponses } from "../../actions/user/userPassword-actions"
 import { changeEmail, responses as userEmailResponses } from "../../actions/user/userEmail-actions"
@@ -28,8 +29,6 @@ const UserProfileWrapper = () => {
     const [currentUsernameError, setCurrentUsernameError] = useState('')
     const [currentEmailError, setCurrentEmailError] = useState('')
     const [currentPasswordError, setCurrentPasswordError] = useState('')
-    const [currentConfirmedError, setCurrentConfirmedError] = useState('')
-    const [currentAdminError, setCurrentAdminError] = useState('')
     const [confirmed, setConfirmed] = useState(false)
     const [userAdmin, setUserAdmin] = useState(false)
     const [username, setUsername] = useState('')
@@ -38,12 +37,40 @@ const UserProfileWrapper = () => {
     const [userId, setUserID] = useState('')
 
     const askForNewEmail = () => {
+        let err = false
+        if (!notEmpty(password)) {
+            setCurrentPasswordError('You must provide password!')
+            err = true
+        }
+
+        if (!notEmpty(email)) {
+            setCurrentEmailError('You must provide new email!')
+            err = true
+        }
+
+        if (!isEmail(email)) {
+            setCurrentEmailError('Email field must be email!')
+            err = true
+        }
+
+        if (err) {
+            return
+        }
+
         dispatch(changeEmail(email, password))
     }
+
+    useSelector((state) => {
+        console.log(state.email)
+    })
 
     const askForNewPassword = () => {
         dispatch(changePassword())
     }
+
+    useSelector((state) => {
+        console.log(state.password)
+    })
 
     const userInfoPack = {
         confirmed,
@@ -51,6 +78,12 @@ const UserProfileWrapper = () => {
         username,
         email,
         password,
+        currentUsernameError,
+        currentEmailError,
+        currentPasswordError,
+        setCurrentUsernameError,
+        setCurrentPasswordError,
+        setCurrentEmailError,
         setPassword,
         setEmail,
         setUsername,
@@ -62,9 +95,18 @@ const UserProfileWrapper = () => {
 
     useEffect(() => {
         if (afterFirstRequest) {
+            if (!notEmpty(username)) {
+                setCurrentUsernameError('Your name cannot be empty!')
+                return
+            }
+
             dispatch(changeUsername(username))
         }
     }, [username])
+
+    useSelector((state) => {
+        console.log(state.username)
+    })
 
     useEffect(() => {
         if (afterFirstRequest) {
@@ -72,11 +114,19 @@ const UserProfileWrapper = () => {
         }
     }, [confirmed])
 
+    useSelector((state) => {
+        console.log(state.confirmed)
+    })
+
     useEffect(() => {
         if (afterFirstRequest) {
             dispatch(changeAdmin(userAdmin, id))
         }
     }, [admin])
+
+    useSelector((state) => {
+        console.log(state.admin)
+    })
 
     const id = params.id
     if (lastId !== id) {
@@ -166,11 +216,6 @@ const UserProfileWrapper = () => {
 
     return (
         <div>
-            {currentUsernameError}
-            {currentPasswordError}
-            {currentEmailError}
-            {currentConfirmedError}
-            {currentAdminError}
             <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
             User profile wrapper for user {id}
             <UserInfoWrapper owner={owner} admin={admin} verified={verified} userInfoPack={userInfoPack} />

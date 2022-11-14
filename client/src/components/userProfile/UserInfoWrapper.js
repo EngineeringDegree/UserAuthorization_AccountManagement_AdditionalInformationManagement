@@ -7,9 +7,9 @@ const UserInfoWrapper = (props) => {
     let jsxToReturn = []
     if (props.owner) {
         jsxToReturn = [
-            <Input label="Username" key="username" classes="username standard-input change-username" type="text" value={props.userInfoPack.username} setter={props.userInfoPack.setUsername} />,
-            <Input label="Password" key="password" classes="password standard-input change-password" type="password" value={props.userInfoPack.password} setter={props.userInfoPack.setPassword} />,
-            <Input label="Email" key="email" classes="email standard-input change-email" type="text" value={props.userInfoPack.email} setter={props.userInfoPack.setEmail} />,
+            <Input label="Username" key="username" classes="username standard-input change-username" type="text" value={props.userInfoPack.username} setter={props.userInfoPack.setUsername} error={props.userInfoPack.currentUsernameError} errorSetter={props.userInfoPack.setCurrentUsernameError} />,
+            <Input label="Password" key="password" classes="password standard-input change-password" type="password" value={props.userInfoPack.password} setter={props.userInfoPack.setPassword} error={props.userInfoPack.currentPasswordError} errorSetter={props.userInfoPack.setCurrentPasswordError} />,
+            <Input label="Email" key="email" classes="email standard-input change-email" type="text" value={props.userInfoPack.email} setter={props.userInfoPack.setEmail} error={props.userInfoPack.currentEmailError} errorSetter={props.userInfoPack.setCurrentEmailError} />,
             <button key="change-email" onClick={props.userInfoPack.askForNewEmail}>Change email</button>,
             <button key="new-password" onClick={props.userInfoPack.askForNewPassword}>Ask for new password</button>
         ]

@@ -27,27 +27,6 @@ const RegisterWrapper = () => {
     const [justEntered, setJustEntered] = useState(true)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        setEmailError('')
-    }, [email])
-
-    useEffect(() => {
-        setUsernameError('')
-    }, [username])
-
-    useEffect(() => {
-        setPasswordError('')
-        setRepeatPasswordError('')
-    }, [password, repeatPassword])
-
-    useEffect(() => {
-        setTACError('')
-    }, [tac])
-
-    useEffect(() => {
-        setPPError('')
-    }, [pp])
-
     useSelector((state) => {
         if (state.userRegister.response === responses.REGISTERERING || checkIfEmptyObject(state.userRegister)) {
             return
@@ -155,12 +134,12 @@ const RegisterWrapper = () => {
 
     return (
         <div>
-            <Input label="Email" classes="email standard-input register-email" type="text" value={email} setter={setEmail} error={emailError} />
-            <Input label="Username" classes="username standard-input register-username" type="text" value={username} setter={setUsername} error={usernameError} />
-            <Input label="Password" classes="password standard-input register-password" type="password" value={password} setter={setPassword} error={passwordError} />
-            <Input label="Repeat Password" classes="repeat-password standard-input register-repeat-password" type="password" value={repeatPassword} setter={setRepeatPassword} error={repeatPasswordError} />
-            <Input label="Terms and Conditions" classes="tac standard-input register-tac" type="checkbox" checked={tac} setter={setTAC} error={tacError} />
-            <Input label="Privacy Policy" classes="pp standard-input register-pp" type="checkbox" checked={pp} setter={setPP} error={ppError} />
+            <Input label="Email" classes="email standard-input register-email" type="text" value={email} setter={setEmail} error={emailError} errorSetter={setEmailError} />
+            <Input label="Username" classes="username standard-input register-username" type="text" value={username} setter={setUsername} error={usernameError} errorSetter={setUsernameError} />
+            <Input label="Password" classes="password standard-input register-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
+            <Input label="Repeat Password" classes="repeat-password standard-input register-repeat-password" type="password" value={repeatPassword} setter={setRepeatPassword} error={repeatPasswordError} errorSetter={setRepeatPasswordError} />
+            <Input label="Terms and Conditions" classes="tac standard-input register-tac" type="checkbox" checked={tac} setter={setTAC} error={tacError} errorSetter={setTACError} />
+            <Input label="Privacy Policy" classes="pp standard-input register-pp" type="checkbox" checked={pp} setter={setPP} error={ppError} errorSetter={setPPError} />
             <button onClick={registerClick} disabled={reqeustSent}>Register</button>
             {error}
         </div>

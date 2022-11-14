@@ -19,14 +19,6 @@ const LoginWrapper = () => {
     const [justEntered, setJustEntered] = useState(true)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        setEmailError('')
-    }, [email])
-
-    useEffect(() => {
-        setPasswordError('')
-    }, [password])
-
     useSelector((state) => {
         if (state.userLogin.response === responses.CHECKING_CREDENTIALS || checkIfEmptyObject(state.userLogin)) {
             return
@@ -69,7 +61,7 @@ const LoginWrapper = () => {
     /**
      * Sends request to backend if all data was formatted correctly.
      */
-    const loginClick = () => {
+    const loginClickFunc = () => {
         setRequestSent(true)
         setError('')
         let err = false
@@ -99,9 +91,9 @@ const LoginWrapper = () => {
 
     return (
         <div>
-            <Input label="Email" classes="email standard-input login-email" type="text" value={email} setter={setEmail} error={emailError} />
-            <Input label="Password" classes="password standard-input login-password" type="password" value={password} setter={setPassword} error={passwordError} />
-            <button onClick={loginClick} disabled={reqeustSent}>Login</button>
+            <Input label="Email" classes="email standard-input login-email" type="text" value={email} setter={setEmail} error={emailError} errorSetter={setEmailError} />
+            <Input label="Password" classes="password standard-input login-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
+            <button onClick={loginClickFunc} disabled={reqeustSent}>Login</button>
             {error}
         </div>
     )
