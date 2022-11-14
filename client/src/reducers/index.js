@@ -3,6 +3,7 @@ import checkIfLoggedInReducer from './user/checkIfLoggedIn-reducer'
 import loginReducer from './user/userLogin-reducer'
 import usernameReducer from './user/userUsername-reducer'
 import passwordReducer from './user/userPassword-reducer'
+import setPasswordReducer from './user/setUserPassword-reducer'
 import emailReducer from './user/userEmail-reducer'
 import confirmedReducer from './user/userConfirmed-reducer'
 import adminReducer from './user/userAdmin-reducer'
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     password: passwordReducer,
     email: emailReducer,
     confirmed: confirmedReducer,
-    admin: adminReducer
+    admin: adminReducer,
+    setPassword: setPasswordReducer
 })
 
 export default rootReducer

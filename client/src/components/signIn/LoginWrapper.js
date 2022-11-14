@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
 import Input from "../common/Input"
 import { notEmpty, isEmail } from "../../utils/signIn/inputChecks"

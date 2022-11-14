@@ -5,6 +5,7 @@ import HeaderWrapper from './header/HeaderWrapper'
 import MainWrapper from './main/MainWrapper'
 import UserProfileWrapper from './userProfile/UserProfileWrapper'
 import SignInWrapper from './signIn/SignInWrapper'
+import NewPasswordWrapper from './authorize/NewPasswordWrapper'
 import LogoutWrapper from './logout/LogoutWrapper'
 import FooterWrapper from './footer/FooterWrapper'
 import { time } from '../utils/enum/time'
@@ -126,6 +127,7 @@ class App extends Component {
         <HeaderWrapper menuElements={menuToDisplay} />
         <Routes>
           <Route path='/' element={<MainWrapper />} />
+          <Route path='/changePassword' element={<NewPasswordWrapper />} />
           <Route path='/users/:id' element={<UserProfileWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
