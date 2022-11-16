@@ -44,6 +44,9 @@ const UserCardsWrapper = (props) => {
         if (!gotCards) {
             setGotCards(true)
             let cards = []
+            if (!state.getCardsReducer.cards) {
+                return
+            }
             let cardsToFilter = state.getCardsReducer.cards
             for (let i = 0; i < cardsToFilter.length; i++) {
                 cards.push(
