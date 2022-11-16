@@ -64,7 +64,7 @@ async function putAdmin(body) {
     }
 
     if (newUser._id) {
-        const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
+        const token = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'), { expiresIn: '1h' })
         let newToken = new Token(_.pick({
             owner: newUser._id,
             type: process.env.AUTHORIZATION,
@@ -75,7 +75,7 @@ async function putAdmin(body) {
             await newToken.save()
         } catch (e) { }
 
-        const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
+        const refreshToken = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'), { expiresIn: '60d' })
         newToken = new Token(_.pick({
             owner: newUser._id,
             type: process.env.REFRESH,
@@ -86,7 +86,7 @@ async function putAdmin(body) {
             await newToken.save()
         } catch (e) { }
 
-        const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
+        const accessToken = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'))
         newToken = new Token(_.pick({
             owner: newUser._id,
             type: process.env.ACCESS,
@@ -125,40 +125,39 @@ async function putUser(body) {
         return { status: statuses.SOMETHING_WENT_WRONG, code: 500 }
     }
 
-    const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
-    let newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.AUTHORIZATION,
-        token: token,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
-    const refreshToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '60d' })
-    newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.REFRESH,
-        token: refreshToken,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
-    const accessToken = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'))
-    newToken = new Token(_.pick({
-        owner: body.email,
-        type: process.env.ACCESS,
-        token: accessToken,
-        issuedAt: new Date()
-    }, ['owner', 'type', 'token', 'issuedAt']))
-    try {
-        await newToken.save()
-    } catch (e) { }
-
     if (newUser._id) {
+        const token = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'), { expiresIn: '1h' })
+        let newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.AUTHORIZATION,
+            token: token,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
+
+        const refreshToken = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'), { expiresIn: '60d' })
+        newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.REFRESH,
+            token: refreshToken,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
+
+        const accessToken = jwt.sign({ _id: newUser._id }, config.get('PrivateKey'))
+        newToken = new Token(_.pick({
+            owner: newUser._id,
+            type: process.env.ACCESS,
+            token: accessToken,
+            issuedAt: new Date()
+        }, ['owner', 'type', 'token', 'issuedAt']))
+        try {
+            await newToken.save()
+        } catch (e) { }
         return { status: statuses.OK, code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 
