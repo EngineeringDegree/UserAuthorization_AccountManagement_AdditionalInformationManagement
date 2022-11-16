@@ -4,7 +4,6 @@ const Joi = require('joi')
 const { Card_Nation } = require('../../../models/card_nation')
 const { filterAsset } = require('../../../utils/filter/filter')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends nations according to parameters if user is admin

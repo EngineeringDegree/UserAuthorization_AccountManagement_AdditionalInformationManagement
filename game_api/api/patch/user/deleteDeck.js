@@ -4,13 +4,12 @@ const Joi = require('joi')
 const { Deck } = require('../../../models/deck')
 const { Card_Nation } = require('../../../models/card_nation')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for deleteing decks
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     let decks = await Deck.find({ owner: req.body.id, deleted: false })
@@ -47,15 +46,15 @@ router.patch('/', async (req, res) => {
                     }
                 }
 
-                return res.status(200).send({ status: statuses.DECK_REMOVED, code: 200, action: actions.CHANGE_DECK_LIST_ACCORDINGLY, decks: decksToReturn })
+                return res.status(200).send({ status: statuses.DECK_REMOVED, code: 200, decks: decksToReturn })
             }
 
-            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 404, action: actions.REDIRECT_TO_MAIN_SCREEN })
+            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 404 })
         }
     }
 
     decks = await Deck.find({ owner: req.body.id, deleted: false }).select('_id name nation')
-    return res.status(401).send({ status: statuses.DECK_NOT_FOUND, code: 404, action: actions.CHANGE_DECK_LIST_ACCORDINGLY, decks: decks })
+    return res.status(401).send({ status: statuses.DECK_NOT_FOUND, code: 404, decks: decks })
 })
 
 /**

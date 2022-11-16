@@ -11,7 +11,6 @@ const { Rating } = require('../../../models/rating')
 const { Card_Nation } = require('../../../models/card_nation')
 const { UserCard } = require('../../../models/user_cards')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin
@@ -35,7 +34,7 @@ router.post('/', async (req, res) => {
                         nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
                     } catch (e) { }
                     if (!nation) {
-                        return res.status(401).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 401, action: actions.CHANGE_DECKS_LIST })
+                        return res.status(401).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 401 })
                     }
                     let strength = 0
                     const userCards = await UserCard.findOne({ owner: req.body.id })
@@ -45,15 +44,15 @@ router.post('/', async (req, res) => {
                             card = await Card.findOne({ _id: deck.cards[i]._id, readyToUse: true })
                         } catch (e) { }
                         if (!card) {
-                            return res.status(401).send({ status: statuses.THAT_CARD_IS_TURNED_OFF, code: 401, action: actions.DISPLAY_CHANGE_YOUR_DECK_POPUP })
+                            return res.status(401).send({ status: statuses.THAT_CARD_IS_TURNED_OFF, code: 401 })
                         }
 
                         if (!card.nation.includes(deck.nation)) {
-                            return res.status(401).send({ status: statuses.NATION_NOT_FOUND_IN_CARD, code: 401, action: actions.DISPLAY_CHANGE_YOUR_DECK_POPUP })
+                            return res.status(401).send({ status: statuses.NATION_NOT_FOUND_IN_CARD, code: 401 })
                         }
 
                         if (!checkIfUserHasCard(card, userCards, deck.cards[i].quantity)) {
-                            return res.status(401).send({ status: statuses.USER_DO_NOT_HAVE_CARD, code: 401, action: actions.DISPLAY_CHANGE_YOUR_DECK_POPUP })
+                            return res.status(401).send({ status: statuses.USER_DO_NOT_HAVE_CARD, code: 401 })
                         }
                         strength += calculateCardsStrength(card, deck.cards[i].quantity)
                     }
@@ -98,17 +97,17 @@ router.post('/', async (req, res) => {
                     })
 
                     if (success) {
-                        return res.status(200).send({ status: statuses.OK, code: 200, action: actions.JOIN_QUEUE, token: res.locals.user.data.token })
+                        return res.status(200).send({ status: statuses.OK, code: 200, token: res.locals.user.data.token })
                     }
 
                     return res.status(500).send({ status: statuses.SOMETHING_WENT_WRONG, code: 500, token: res.locals.user.data.token })
                 }
-                return res.status(401).send({ status: statuses.THAT_IS_NOT_YOUR_DECK, code: 401, action: actions.RELOAD_PAGE })
+                return res.status(401).send({ status: statuses.THAT_IS_NOT_YOUR_DECK, code: 401 })
             }
-            return res.status(404).send({ status: statuses.THAT_DECK_DOES_NOT_EXISTS, code: 404, action: actions.RELOAD_PAGE })
+            return res.status(404).send({ status: statuses.THAT_DECK_DOES_NOT_EXISTS, code: 404 })
         }
 
-        return res.status(401).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 401, action: actions.ACCOUNT_NOT_CONFIRMED_POPUP })
+        return res.status(401).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 401 })
     }
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 400 })
 })

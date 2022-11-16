@@ -9,13 +9,12 @@ const { Deck } = require('../../../models/deck')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for opening pack, patching user card collection and creating basic deck if there isn't something like that
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -23,7 +22,7 @@ router.patch('/', async (req, res) => {
         try {
             pack = await Pack.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
         }
         if (pack) {
             const filter = {
@@ -85,7 +84,7 @@ router.patch('/', async (req, res) => {
             }
             return res.status(200).send({ status: statuses.PACK_OPENED, code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
         }
-        return res.status(404).send({ status: statuses.PACK_NOT_FOUND, code: 404, action: actions.PACK_NOT_FOUND_POPUP })
+        return res.status(404).send({ status: statuses.PACK_NOT_FOUND, code: 404 })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })

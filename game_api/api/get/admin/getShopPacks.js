@@ -4,7 +4,6 @@ const Joi = require('joi')
 const { Shop_Pack } = require('../../../models/shop_pack')
 const { filterAsset } = require('../../../utils/filter/filter')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends Shop Packs according to parameters if user is admin

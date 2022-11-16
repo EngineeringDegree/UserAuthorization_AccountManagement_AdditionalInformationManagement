@@ -4,7 +4,6 @@ const { Card_Type } = require('../../../models/card_type')
 const { Card_Nation } = require('../../../models/card_nation')
 const { Card_Effect } = require('../../../models/card_effect')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin

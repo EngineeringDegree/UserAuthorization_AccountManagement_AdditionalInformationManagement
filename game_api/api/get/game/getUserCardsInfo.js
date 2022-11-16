@@ -5,17 +5,16 @@ const { UserCard } = require('../../../models/user_cards')
 const { Card_Nation } = require('../../../models/card_nation')
 const { Card } = require('../../../models/card')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
         if (res.locals.user.data.id !== req.query.id) {
-            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 401, action: actions.NOT_AN_OWNER_POPUP })
+            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_OWNER, code: 401 })
         }
 
         const cardsObj = await UserCard.findOne({ owner: req.query.id })
@@ -57,7 +56,7 @@ router.get('/', async (req, res) => {
             return res.status(200).send({ status: statuses.OK, code: 200, cards: cardsFiltered, token: res.locals.user.data.token })
         }
 
-        return res.status(406).send({ status: statuses.CARDS_NOT_FOUND, code: 406, action: actions.CARDS_NOT_FOUND_POPUP })
+        return res.status(406).send({ status: statuses.CARDS_NOT_FOUND, code: 406 })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })

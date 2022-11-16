@@ -6,13 +6,12 @@ const { Map } = require('../../../models/map')
 const { filterMapSize } = require('../../../utils/filter/filterMapSize')
 const { checkIfFieldsAreOkay, checkIfStartingPositionsAreOkay } = require('../../../utils/map/check')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for creating a card
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -21,7 +20,7 @@ router.post('/', async (req, res) => {
             return res.status(200).send({ status: statuses.MAP_CREATED, code: 200, token: res.locals.user.data.token })
         }
 
-        return res.status(400).send({ status: statuses.BAD_SIZE, code: 400, action: actions.FOCUS_ON_SIZE })
+        return res.status(400).send({ status: statuses.BAD_SIZE, code: 400 })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })

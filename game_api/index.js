@@ -5,13 +5,11 @@ require('dotenv').config()
 const express = require('express')
 const cors = require("cors")
 const socketio = require('socket.io')
-const path = require('path')
 const https = require('https')
 const http = require('http')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const config = require('config')
-const { actions } = require('./utils/enums/action')
 const { statuses } = require('./utils/enums/status')
 
 // Own modules imports
@@ -100,8 +98,6 @@ mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true
 // Use Cors and parse all requests to be a json string, use public folder as static files, set view engine to ejs   
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.join(__dirname, 'public')))
-app.set('view engine', 'ejs')
 
 // Websocket endpoints initialization
 sockets(io)
@@ -158,7 +154,7 @@ app.use('/check/deck/sync', authorizeUser, deckSync)
 app.use('/check/card/sync', authorizeUser, cardSync)
 
 // Other endpoints
-app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404, action: actions.NOT_FOUND_POPUP }))
+app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404 }))
 
 // Run matchmaking server
 startMatchmaking(io, 'Ranked', 60000, 100)

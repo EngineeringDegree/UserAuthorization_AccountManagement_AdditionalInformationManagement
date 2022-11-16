@@ -9,13 +9,12 @@ const { Pack } = require('../../../models/packs')
 const { Card_Nation } = require('../../../models/card_nation')
 const { Shop_Pack } = require('../../../models/shop_pack')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for creating a deck
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -37,7 +36,7 @@ router.post('/', async (req, res) => {
 
                     funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/funds`, patchObject)
                 } catch (e) {
-                    return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                    return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code })
                 }
                 if (funds.data) {
                     const cards = await Card.find({ readyToUse: true })
@@ -59,10 +58,10 @@ router.post('/', async (req, res) => {
 
                             funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
                         } catch (e) {
-                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code })
                         }
 
-                        return res.status(404).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 404, action: actions.REFUND })
+                        return res.status(404).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 404 })
                     }
 
 
@@ -92,10 +91,10 @@ router.post('/', async (req, res) => {
 
                             funds = await axios.patch(`${process.env.AUTH_SERVER}/patch/user/refund`, patchObject)
                         } catch (e) {
-                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+                            return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code })
                         }
 
-                        return res.status(404).send({ status: statuses.CARDS_IN_NATION_NOT_FOUND, code: 404, action: actions.REFUND })
+                        return res.status(404).send({ status: statuses.CARDS_IN_NATION_NOT_FOUND, code: 404 })
                     }
 
                     let cardsChoosen = []

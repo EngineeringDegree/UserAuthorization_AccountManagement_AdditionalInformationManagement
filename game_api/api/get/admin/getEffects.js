@@ -4,7 +4,6 @@ const Joi = require('joi')
 const { Card_Effect } = require('../../../models/card_effect')
 const { filterAsset } = require('../../../utils/filter/filter')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends effects according to parameters if user is admin

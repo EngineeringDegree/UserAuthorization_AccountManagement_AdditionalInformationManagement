@@ -3,13 +3,12 @@ const router = express.Router()
 const Joi = require('joi')
 const { Card_Effect } = require('../../../models/card_effect')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for putting effects
 router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -17,7 +16,7 @@ router.put('/', async (req, res) => {
         try {
             effect = await Card_Effect.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
         }
         if (effect) {
             const filter = {
@@ -46,7 +45,7 @@ router.put('/', async (req, res) => {
             try {
                 await Card_Effect.updateOne(filter, update)
             } catch (e) {
-                return res.status(500).send({ status: statuses.NOT_MODIFIED, code: 500, action: actions.TRY_LATER_POPUP })
+                return res.status(500).send({ status: statuses.NOT_MODIFIED, code: 500 })
             }
             return res.status(200).send({ status: statuses.MODIFIED, code: 200, token: res.locals.user.data.token })
         }

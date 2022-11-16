@@ -4,7 +4,6 @@ const Joi = require('joi')
 const _ = require('lodash')
 const axios = require('axios')
 const { statuses } = require('../enums/status')
-const { actions } = require('../enums/action')
 
 router.use('/', async (req, res, next) => {
     let authBody = {
@@ -28,14 +27,14 @@ router.use('/', async (req, res, next) => {
     }
     const { error } = validate(authBody)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     let user = undefined
     try {
         user = await axios.get(`${process.env.AUTH_SERVER}/get/admin/premisions?email=${authBody.email}&token=${authBody.token}&refreshToken=${authBody.refreshToken}`)
     } catch (e) {
-        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code, action: e.response.data.action })
+        return res.status(e.response.data.code).send({ status: e.response.data.status, code: e.response.data.code })
     }
 
     res.locals.user = user

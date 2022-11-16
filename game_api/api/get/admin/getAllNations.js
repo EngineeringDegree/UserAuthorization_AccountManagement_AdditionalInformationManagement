@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { Card_Nation } = require('../../../models/card_nation')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends cards according to parameters if user is admin

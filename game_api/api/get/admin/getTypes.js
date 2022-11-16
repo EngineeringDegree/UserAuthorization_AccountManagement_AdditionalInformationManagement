@@ -4,7 +4,6 @@ const Joi = require('joi')
 const { Card_Type } = require('../../../models/card_type')
 const { filterAsset } = require('../../../utils/filter/filter')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends types according to parameters if user is admin

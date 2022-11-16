@@ -4,7 +4,6 @@ const Joi = require('joi')
 const { Map } = require('../../../models/map')
 const { filterAsset } = require('../../../utils/filter/filter')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware sends maps according to parameters if user is admin

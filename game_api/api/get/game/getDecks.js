@@ -9,12 +9,11 @@ const { Pack } = require('../../../models/packs')
 const { Card } = require('../../../models/card')
 const { Card_Nation } = require('../../../models/card_nation')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -25,16 +24,16 @@ router.get('/', async (req, res) => {
                 await createInvitationalGift(req.query.id)
             } else {
                 if (res.locals.user.data.token) {
-                    return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, action: actions.REDIRECT_TO_PACKS_PAGE, token: res.locals.user.data.token, code: 303 })
+                    return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, token: res.locals.user.data.token, code: 303 })
                 }
 
-                return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, action: actions.REDIRECT_TO_PACKS_PAGE, code: 303 })
+                return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, code: 303 })
             }
             if (res.locals.user.data.token) {
-                return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, action: actions.REDIRECT_TO_PACKS_PAGE, token: res.locals.user.data.token, code: 303 })
+                return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, token: res.locals.user.data.token, code: 303 })
             }
 
-            return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, action: actions.REDIRECT_TO_PACKS_PAGE, code: 303 })
+            return res.status(303).send({ status: statuses.FIRST_PACKS_CREATED, code: 303 })
         }
 
         let decksToReturn = []
