@@ -12,15 +12,15 @@ This middleware sends cards according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
         const cards = await filterAsset(req.query.records, req.query.cardName, req.query.page, Card)
-        return res.status(200).send({ status: statuses.CARDS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
+        return res.status(200).send({ status: statuses.CARDS_LISTED, code: 200, token: res.locals.user.data.token, cards: cards.assets, pages: cards.pages, page: cards.page })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

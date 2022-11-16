@@ -15,7 +15,7 @@ const { actions } = require('../../../utils/enums/action')
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -122,7 +122,7 @@ router.post('/', async (req, res) => {
 
                     return res.status(200).send({ status: statuses.PACK_BOUGHT, code: 200 })
                 }
-                return res.status(400).send({ status: statuses.INSUFFICIENT_FUNDS, code: 400, action: actions.INSUFFICIENT_FUNDS_POPUP })
+                return res.status(400).send({ status: statuses.INSUFFICIENT_FUNDS, code: 400 })
             }
 
             return res.status(404).send({ status: statuses.SHOP_PACK_NOT_FOUND, code: 404 })
@@ -130,7 +130,7 @@ router.post('/', async (req, res) => {
         return res.status(401).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 401 })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

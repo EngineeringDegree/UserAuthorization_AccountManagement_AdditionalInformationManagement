@@ -4,14 +4,12 @@ require('dotenv').config()
 // Imports with needed variable
 const express = require('express')
 const cors = require("cors")
-const path = require('path')
 const https = require('https')
 const http = require('http')
 const mongoose = require('mongoose')
 const fs = require('fs')
 const config = require('config')
 const { statuses } = require('./utils/enums/status')
-const { actions } = require('./utils/enums/action')
 
 // Get middleware
 const checkIfLoggedIn = require('./api/get/user/checkIfLoggedIn')
@@ -68,8 +66,6 @@ mongoose.connect(process.env.DATABASE_CONNECTION_STRING, { useNewUrlParser: true
 // Use Cors and parse all requests to be a json string, use public folder as static files, set view engine to ejs   
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.join(__dirname, 'public')))
-app.set('view engine', 'ejs')
 
 // Routes
 
@@ -102,7 +98,7 @@ app.use('/post/register', register)
 // Put
 
 // Other endpoints
-app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404, action: actions.NOT_FOUND_POPUP }))
+app.use('*', (req, res) => res.status(404).send({ status: statuses.NOT_FOUND, code: 404 }))
 
 // Run server
 const PORT = process.env.PORT

@@ -5,40 +5,39 @@ const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for changing user confirmation status
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (!user.admin) {
-            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_ADMIN, code: 401, action: actions.LOGOUT })
+            return res.status(401).send({ status: statuses.YOU_ARE_NOT_AN_ADMIN, code: 401 })
         }
 
         if (checkIfBanned(user)) {
-            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
+            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401 })
         }
 
         let check = checkToken(user._id, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await checkToken(user._id, req.body.refreshToken, user._id)
+            check = await askNewToken(user._id, req.body.refreshToken, user._id)
             if (check) {
                 await changeUserConfirmed(req.body.user, req.body.confirmed)
-                return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, confirmed: req.body.confirmed, token: check, action: actions.ACCOUNT_CONFIRMED_POPUP })
+                return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, confirmed: req.body.confirmed, token: check })
             }
-            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
         }
 
         await changeUserConfirmed(req.body.user, req.body.confirmed)
-        return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, confirmed: req.body.confirmed, action: actions.ACCOUNT_CONFIRMED_POPUP })
+        return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, confirmed: req.body.confirmed })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

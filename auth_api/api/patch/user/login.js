@@ -9,27 +9,26 @@ const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for login user
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: statuses.USER_BANNED, code: 401, action: actions.USER_IS_BANNED })
+        return res.status(401).send({ status: statuses.USER_BANNED, code: 401 })
     }
 
     const pass = await bcrypt.compare(req.body.password, user.password)
     if (!pass) {
-        return res.status(401).send({ status: statuses.BAD_DATA, code: 401, action: actions.BAD_PASSWORD_POPUP })
+        return res.status(401).send({ status: statuses.BAD_DATA, code: 401 })
     }
 
     const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'), { expiresIn: '1h' })

@@ -19,7 +19,7 @@ This middleware sends cards according to parameters if user is admin
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -84,7 +84,7 @@ router.post('/', async (req, res) => {
                         try {
                             await newRating.save()
                         } catch (e) {
-                            return res.status(500).send({ status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP, token: res.locals.user.data.token })
+                            return res.status(500).send({ status: statuses.SOMETHING_WENT_WRONG, code: 500, token: res.locals.user.data.token })
                         }
                     }
                     const success = addPlayer({
@@ -101,7 +101,7 @@ router.post('/', async (req, res) => {
                         return res.status(200).send({ status: statuses.OK, code: 200, action: actions.JOIN_QUEUE, token: res.locals.user.data.token })
                     }
 
-                    return res.status(500).send({ status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP, token: res.locals.user.data.token })
+                    return res.status(500).send({ status: statuses.SOMETHING_WENT_WRONG, code: 500, token: res.locals.user.data.token })
                 }
                 return res.status(401).send({ status: statuses.THAT_IS_NOT_YOUR_DECK, code: 401, action: actions.RELOAD_PAGE })
             }
@@ -110,7 +110,7 @@ router.post('/', async (req, res) => {
 
         return res.status(401).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 401, action: actions.ACCOUNT_NOT_CONFIRMED_POPUP })
     }
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 400, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 400 })
 })
 
 /**

@@ -8,43 +8,42 @@ const { sendPasswordChangeEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 // Middleware for changing user username
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
         if (checkIfBanned(user)) {
-            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
+            return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401 })
         }
 
         let check = await checkToken(user._id, req.body.token, process.env.AUTHORIZATION)
         if (!check) {
-            check = await checkToken(user._id, req.body.refreshToken, user._id)
+            check = await askNewToken(user._id, req.body.refreshToken, user._id)
             if (check) {
                 const accessToken = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
                 if (!accessToken) {
-                    return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
+                    return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404 })
                 }
                 sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
                 return res.status(200).send({ status: statuses.PASSWORD_EMAIL_SENT, code: 200, username: req.body.newUsername, token: check })
             }
-            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
         }
         const accessToken = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
         if (!accessToken) {
-            return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404, action: actions.NO_ACCESS_TOKEN_POPUP })
+            return res.status(401).send({ status: statuses.NO_ACCESS_TOKEN, code: 404 })
         }
         sendPasswordChangeEmail({ email: user.email, accessToken: accessToken.token, authorizationAddress: req.body.authorizationAddress })
         return res.status(200).send({ status: statuses.PASSWORD_EMAIL_SENT, code: 200, username: req.body.newUsername })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

@@ -12,15 +12,15 @@ This middleware sends fields according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
         const fields = await filterAsset(req.query.records, req.query.fieldName, req.query.page, Map_Field)
-        return res.status(200).send({ status: statuses.FIELDS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, fields: fields.assets, pages: fields.pages, page: fields.page })
+        return res.status(200).send({ status: statuses.FIELDS_LISTED, code: 200, token: res.locals.user.data.token, fields: fields.assets, pages: fields.pages, page: fields.page })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

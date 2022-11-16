@@ -5,7 +5,6 @@ const { User } = require('../../../models/user')
 const { checkToken, askNewToken } = require('../../../utils/auth/auth_token')
 const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 This middleware checks if user has good credentials on his side.
@@ -16,33 +15,34 @@ User sends to this middleware email, token, refreshToken. Works for admin.
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.query.email })
     if (!user) {
-        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
+        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401 })
     }
 
     if (!user.admin) {
-        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
     }
 
     let check = checkToken(user._id, req.query.token, process.env.AUTHORIZATION)
     if (check) {
-        return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, email: user.email, id: user._id })
+        check = await askNewToken(user._id, req.query.refreshToken, user._id)
+        if (!check) {
+            return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
+        }
+
+        return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, email: user.email, id: user._id, token: check })
     }
 
-    check = await checkToken(user._id, req.query.refreshToken, user._id)
-    if (!check) {
-        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
-    }
 
-    return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, action: actions.LOGIN, token: check, email: user.email, id: user._id })
+    return res.status(200).send({ status: statuses.USER_LOGGED_IN, code: 200, email: user.email, id: user._id })
 })
 
 /**

@@ -9,23 +9,22 @@ const { sendConfirmationEmail } = require('../../../utils/emails/user_emails')
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 const salt = 10
 
 // Middleware to registration
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (req.body.password != req.body.repeatPassword) {
-        return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
+        return res.status(401).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 401 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (user) {
-        return res.status(406).send({ status: statuses.USER_FOUND, code: 406, action: actions.USER_EXISTS_POPUP })
+        return res.status(406).send({ status: statuses.USER_FOUND, code: 406 })
     }
 
     let data
@@ -61,7 +60,7 @@ async function putAdmin(body) {
     try {
         await newUser.save()
     } catch (e) {
-        return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
+        return { status: statuses.SOMETHING_WENT_WRONG, code: 500 }
     }
 
     if (newUser._id) {
@@ -97,10 +96,10 @@ async function putAdmin(body) {
         try {
             await newToken.save()
         } catch (e) { }
-        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
+        return { status: statuses.OK, code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 
-    return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
+    return { status: statuses.SOMETHING_WENT_WRONG, code: 500 }
 }
 
 /**
@@ -123,7 +122,7 @@ async function putUser(body) {
     try {
         await newUser.save()
     } catch (e) {
-        return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
+        return { status: statuses.SOMETHING_WENT_WRONG, code: 500 }
     }
 
     const token = jwt.sign({ email: body.email, username: body.username }, config.get('PrivateKey'), { expiresIn: '1h' })
@@ -160,10 +159,10 @@ async function putUser(body) {
     } catch (e) { }
 
     if (newUser._id) {
-        return { status: statuses.OK, code: 200, action: actions.REGISTERED_POPUP, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
+        return { status: statuses.OK, code: 200, token, refreshToken, accessToken, username: body.username, email: body.email, authorizationAddress: body.authorizationAddress, id: newUser._id, funds: 0 }
     }
 
-    return { status: statuses.SOMETHING_WENT_WRONG, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP }
+    return { status: statuses.SOMETHING_WENT_WRONG, code: 500 }
 }
 
 /**

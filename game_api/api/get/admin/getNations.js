@@ -12,15 +12,15 @@ This middleware sends nations according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
         const nations = await filterAsset(req.query.records, req.query.nationName, req.query.page, Card_Nation)
-        return res.status(200).send({ status: statuses.NATIONS_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, nations: nations.assets, pages: nations.pages, page: nations.page })
+        return res.status(200).send({ status: statuses.NATIONS_LISTED, code: 200, token: res.locals.user.data.token, nations: nations.assets, pages: nations.pages, page: nations.page })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

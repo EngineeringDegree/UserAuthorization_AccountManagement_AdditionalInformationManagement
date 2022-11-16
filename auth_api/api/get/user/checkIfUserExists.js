@@ -3,7 +3,6 @@ const Joi = require('joi')
 const router = express.Router()
 const { User } = require('../../../models/user')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 Checks if user exists

@@ -29,7 +29,7 @@ router.use('/', async (req, res, next) => {
 
     const { error } = validate(authBody)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     let user = undefined

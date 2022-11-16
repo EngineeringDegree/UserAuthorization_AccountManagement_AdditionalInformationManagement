@@ -6,40 +6,39 @@ const { checkIfBanned } = require('../../../utils/auth/auth_bans')
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 const salt = 10
 
 // Middleware for changing user username
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
     }
 
     if (checkIfBanned(user)) {
-        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401, action: actions.LOGOUT })
+        return res.status(401).send({ status: statuses.USER_IS_BANNED, code: 401 })
     }
 
     if (req.body.password != req.body.repeatPassword) {
-        return res.status(400).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 400, action: actions.PASSWORDS_DO_NOT_MATCH_POPUP })
+        return res.status(400).send({ status: statuses.PASSWORDS_DO_NOT_MATCH, code: 400 })
     }
 
     const token = await Token.findOne({ owner: user._id, type: process.env.ACCESS })
     if (!token) {
-        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
     }
 
     if (token.token != req.body.accessToken) {
-        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401, action: actions.LOGOUT })
+        return res.status(401).send({ status: statuses.USER_NOT_AUTHORIZED, code: 401 })
     }
 
     await changeUserPassword(user._id, req.body.password)
-    return res.status(200).send({ status: statuses.PASSWORD_CHANGED, code: 200, action: actions.PASSWORD_CHANGED_POPUP })
+    return res.status(200).send({ status: statuses.PASSWORD_CHANGED, code: 200 })
 })
 
 /**

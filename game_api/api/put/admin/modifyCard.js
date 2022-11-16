@@ -13,7 +13,7 @@ const { actions } = require('../../../utils/enums/action')
 router.put('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -21,7 +21,7 @@ router.put('/', async (req, res) => {
         try {
             card = await Card.findOne({ _id: req.body.id })
         } catch (e) {
-            return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+            return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
         }
         if (card) {
 
@@ -61,7 +61,7 @@ router.put('/', async (req, res) => {
         return res.status(404).send({ status: statuses.NOT_FOUND, code: 404, action: actions.GO_TO_CARDS })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

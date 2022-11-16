@@ -17,7 +17,7 @@ This middleware sends cards according to parameters if user is admin
 router.delete('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
@@ -98,7 +98,7 @@ router.delete('/', async (req, res) => {
         }
         return res.status(200).send({ status: statuses.OK, code: 200, token: res.locals.user.data.token })
     }
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 400, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 400 })
 })
 
 /**

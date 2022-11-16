@@ -4,7 +4,6 @@ const router = express.Router()
 const { User } = require('../../../models/user')
 const { Token } = require('../../../models/token')
 const { statuses } = require('../../../utils/enums/status')
-const { actions } = require('../../../utils/enums/action')
 
 /*
 Checks if user exists
@@ -12,21 +11,21 @@ Checks if user exists
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.USER_NOT_FOUND_POPUP })
+        return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
     }
 
     const accessToken = await Token.findOne({ owner: user._id, token: req.body.accessToken, type: process.env.ACCESS })
     if (!accessToken) {
-        return res.status(401).send({ status: statuses.BAD_TOKEN, code: 401, action: actions.BAD_TOKEN_POPUP })
+        return res.status(401).send({ status: statuses.BAD_TOKEN, code: 401 })
     }
 
     if (user.confirmed) {
-        return res.status(406).send({ status: statuses.ACCOUNT_ALREADY_CONFIRMED, code: 406, action: actions.ACCOUNT_ALREADY_CONFIRMED_POPUP })
+        return res.status(406).send({ status: statuses.ACCOUNT_ALREADY_CONFIRMED, code: 406 })
     }
 
     const filter = {
@@ -38,9 +37,9 @@ router.patch('/', async (req, res) => {
 
     try {
         const result = await User.updateOne(filter, update)
-        return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200, action: actions.ACCOUNT_CONFIRMED_POPUP })
+        return res.status(200).send({ status: statuses.ACCOUNT_CONFIRMED, code: 200 })
     } catch (e) {
-        return res.status(500).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 500, action: actions.SOMETHING_WENT_WRONG_POPUP })
+        return res.status(500).send({ status: statuses.ACCOUNT_NOT_CONFIRMED, code: 500 })
     }
 })
 

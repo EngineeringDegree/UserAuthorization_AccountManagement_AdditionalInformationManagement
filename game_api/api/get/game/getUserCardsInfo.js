@@ -10,7 +10,7 @@ const { actions } = require('../../../utils/enums/action')
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
         return res.status(406).send({ status: statuses.CARDS_NOT_FOUND, code: 406, action: actions.CARDS_NOT_FOUND_POPUP })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

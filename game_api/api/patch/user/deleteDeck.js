@@ -10,7 +10,7 @@ const { actions } = require('../../../utils/enums/action')
 router.patch('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     let decks = await Deck.find({ owner: req.body.id, deleted: false })

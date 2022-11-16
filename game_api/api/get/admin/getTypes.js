@@ -12,15 +12,15 @@ This middleware sends types according to parameters if user is admin
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.LOGOUT })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
     if (res.locals.user.data) {
         const types = await filterAsset(req.query.records, req.query.typeName, req.query.page, Card_Type)
-        return res.status(200).send({ status: statuses.TYPES_LISTED, code: 200, action: actions.LOGIN, token: res.locals.user.data.token, types: types.assets, pages: types.pages, page: types.page })
+        return res.status(200).send({ status: statuses.TYPES_LISTED, code: 200, token: res.locals.user.data.token, types: types.assets, pages: types.pages, page: types.page })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**

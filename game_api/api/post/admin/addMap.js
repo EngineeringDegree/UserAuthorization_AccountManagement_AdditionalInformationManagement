@@ -12,7 +12,7 @@ const { actions } = require('../../../utils/enums/action')
 router.post('/', async (req, res) => {
     const { error } = validate(req.body)
     if (error) {
-        return res.status(400).send({ status: statuses.BAD_DATA, code: 400, action: actions.BAD_DATA_POPUP })
+        return res.status(400).send({ status: statuses.BAD_DATA, code: 400_POPUP })
     }
 
     if (res.locals.user.data) {
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ status: statuses.BAD_SIZE, code: 400, action: actions.FOCUS_ON_SIZE })
     }
 
-    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404, action: actions.LOGOUT })
+    return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })
 })
 
 /**
