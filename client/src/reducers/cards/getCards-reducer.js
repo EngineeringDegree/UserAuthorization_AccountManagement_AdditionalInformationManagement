@@ -18,6 +18,9 @@ export default function getCardsReducer(state = {}, action) {
                 response: responses.GETTING_CARDS
             }
         case GET_CARDS_SUCCESS:
+            if (action.payload.token) {
+                window.localStorage.setItem('token', action.payload.token)
+            }
             return (action.payload)
         case GET_CARDS_ERROR:
             return (action.payload)
