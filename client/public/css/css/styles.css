@@ -68,12 +68,21 @@ footer {
 }
 
 .standard-link, .standard-link a {
-  color: #5C9EAD;
+  color: #E39774;
   text-decoration: none;
 }
 
 .bg-light {
   background-color: #EEEEEE;
+}
+
+.title {
+  color: #326273;
+}
+
+.card {
+  width: 100%;
+  max-width: 280px;
 }
 
 @media (max-width: 991px) {

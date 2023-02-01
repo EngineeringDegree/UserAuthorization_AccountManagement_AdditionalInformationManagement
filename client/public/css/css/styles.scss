@@ -76,6 +76,15 @@ footer {
     background-color: $lightBgColor;
 }
 
+.title {
+    color: $titleColor;
+}
+
+.card {
+    width: 100%;
+    max-width: 280px;
+}
+
 @media (max-width: 991px){
     .d-mobile {
         display: block;
