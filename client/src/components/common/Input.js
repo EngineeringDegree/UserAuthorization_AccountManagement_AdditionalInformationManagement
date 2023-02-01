@@ -3,20 +3,15 @@
  * @returns input JSX.
  */
 const Input = (props) => {
-    let classes = props.classes
-    if (props.error !== '' && props.error) {
-        classes += ' red-border'
-    }
-
-    let input = undefined
+    let classes = props.classes, input = undefined
     if (props.type === 'checkbox') {
-        input = <input className={classes} type={props.type} disabled={props.disabled} checked={props.checked} onClick={() => {
+        input = <input className="d-block" type={props.type} disabled={props.disabled} checked={props.checked} onClick={() => {
             if (props.errorSetter) {
                 props.errorSetter('')
             }
         }} onChange={(e) => { props.setter(e.target.checked) }} />
     } else {
-        input = <input className={classes} type={props.type} disabled={props.disabled} value={props.value} onFocus={() => {
+        input = <input className="d-block" type={props.type} disabled={props.disabled} value={props.value} onFocus={() => {
             if (props.errorSetter) {
                 props.errorSetter('')
             }
@@ -24,7 +19,7 @@ const Input = (props) => {
     }
 
     return (
-        <div>
+        <div className={classes}>
             <label>
                 {props.label}
                 {input}

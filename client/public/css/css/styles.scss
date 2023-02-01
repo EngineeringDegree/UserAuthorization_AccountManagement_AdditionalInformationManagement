@@ -7,12 +7,18 @@ body {
     padding: 0;
 }
 
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .error {
     color: $errorColor;
 }
 
 .red-border {
-    border: 2px solid $errorColor;
+    color: 2px solid $errorColor;
 }
 
 .clickable {
@@ -20,7 +26,7 @@ body {
 }
 
 .map-overlay {
-    border: 1px solid #000;
+    border: 1px solid $blackColor;
     color: $errorColor;
     font-weight: bold;
 }
@@ -36,9 +42,93 @@ body {
 }
 
 .spawnpoint {
-    background: rgba(#E1AB2C, 0.4);
+    background: $spawnpoint;
 }
 
 .hidden {
     visibility: hidden;
+}
+
+.main-nav {
+    max-height: 96px;
+    overflow-y: visible;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.navbar-light .navbar-toggler {
+    color: $blackColor;
+    border-color: transparent;
+}
+
+.d-mobile {
+    display: none;
+}
+
+.standard-link, .standard-link a {
+    color: $linkColor;
+    text-decoration: none;
+}
+
+.bg-light {
+    background-color: $lightBgColor;
+}
+
+.title {
+    color: $titleColor;
+}
+
+.card {
+    width: 100%;
+    max-width: 280px;
+}
+
+.standard-btn {
+    background-color: $lightBgColor;
+    color: $blackColor;
+    padding: 5px 30px;
+    border: 0px;
+    transition: 300ms;
+}
+
+.standard-btn:hover {
+    background-color: $linkColor;
+    color: $whiteColor;
+    padding: 5px 30px;
+    border: 0px;
+}
+
+.orange-text {
+    color: $linkColor;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+.standard-input {
+    label {
+        color: $linkColor;
+    }
+
+    max-width: 300px;
+    width: 280px;
+    margin: 20px auto;
+
+    input {
+        width: 280px;
+        border-top: 0px;
+        border-left: 0px;
+        border-right: 0px;
+        border-bottom: 2px solid $titleColor;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 991px){
+    .d-mobile {
+        display: block;
+    }
 }

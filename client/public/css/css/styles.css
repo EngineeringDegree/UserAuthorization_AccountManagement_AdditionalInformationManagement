@@ -5,12 +5,18 @@ body {
   padding: 0;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .error {
   color: #ff0000;
 }
 
 .red-border {
-  border: 2px solid #ff0000;
+  color: 2px solid #ff0000;
 }
 
 .clickable {
@@ -36,9 +42,91 @@ body {
 }
 
 .spawnpoint {
-  background: rgba(225, 171, 44, 0.4);
+  background: rgba(227, 151, 116, 0.4);
 }
 
 .hidden {
   visibility: hidden;
+}
+
+.main-nav {
+  max-height: 96px;
+  overflow-y: visible;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.navbar-light .navbar-toggler {
+  color: #000;
+  border-color: transparent;
+}
+
+.d-mobile {
+  display: none;
+}
+
+.standard-link, .standard-link a {
+  color: #E39774;
+  text-decoration: none;
+}
+
+.bg-light {
+  background-color: #EEEEEE;
+}
+
+.title {
+  color: #326273;
+}
+
+.card {
+  width: 100%;
+  max-width: 280px;
+}
+
+.standard-btn {
+  background-color: #EEEEEE;
+  color: #000;
+  padding: 5px 30px;
+  border: 0px;
+  transition: 300ms;
+}
+
+.standard-btn:hover {
+  background-color: #E39774;
+  color: #fff;
+  padding: 5px 30px;
+  border: 0px;
+}
+
+.orange-text {
+  color: #E39774;
+}
+
+.logo {
+  max-width: 150px;
+}
+
+.standard-input {
+  max-width: 300px;
+  width: 280px;
+  margin: 20px auto;
+}
+.standard-input label {
+  color: #E39774;
+}
+.standard-input input {
+  width: 280px;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 2px solid #326273;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 991px) {
+  .d-mobile {
+    display: block;
+  }
 }/*# sourceMappingURL=styles.css.map */

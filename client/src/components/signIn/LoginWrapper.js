@@ -7,9 +7,10 @@ import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
  * LoginWrapper object to display
+ * @param {object} props
  * @returns jsx of the Login wrapper
  */
-const LoginWrapper = () => {
+const LoginWrapper = (props) => {
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const [password, setPassword] = useState('')
@@ -37,9 +38,8 @@ const LoginWrapper = () => {
 
         switch (state.userLogin.code) {
             case 200:
-                let el = document.getElementById('link-to-click-on-succes')
-                if (el && !justEntered) {
-                    el.click()
+                if (props.successLink && !justEntered) {
+                    props.successLink.current.click()
                 }
                 return
             case 400:
@@ -90,11 +90,11 @@ const LoginWrapper = () => {
     }
 
     return (
-        <div>
+        <div className="text-center">
             <Input label="Email" classes="email standard-input login-email" type="text" value={email} setter={setEmail} error={emailError} errorSetter={setEmailError} />
             <Input label="Password" classes="password standard-input login-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
-            <button onClick={loginClickFunc} disabled={reqeustSent}>Login</button>
-            {error}
+            <button className="standard-btn" onClick={loginClickFunc} disabled={reqeustSent}>Login</button>
+            <p className="orange-text my-4">{error}</p>
         </div>
     )
 }
