@@ -90,11 +90,11 @@ const LoginWrapper = (props) => {
     }
 
     return (
-        <div>
+        <div className="text-center">
             <Input label="Email" classes="email standard-input login-email" type="text" value={email} setter={setEmail} error={emailError} errorSetter={setEmailError} />
             <Input label="Password" classes="password standard-input login-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
-            <button onClick={loginClickFunc} disabled={reqeustSent}>Login</button>
-            {error}
+            <button className="standard-btn" onClick={loginClickFunc} disabled={reqeustSent}>Login</button>
+            <p className="orange-text my-4">{error}</p>
         </div>
     )
 }

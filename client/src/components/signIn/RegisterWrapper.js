@@ -133,15 +133,15 @@ const RegisterWrapper = (props) => {
     }
 
     return (
-        <div>
+        <div className="text-center">
             <Input label="Email" classes="email standard-input register-email" type="text" value={email} setter={setEmail} error={emailError} errorSetter={setEmailError} />
             <Input label="Username" classes="username standard-input register-username" type="text" value={username} setter={setUsername} error={usernameError} errorSetter={setUsernameError} />
             <Input label="Password" classes="password standard-input register-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
             <Input label="Repeat Password" classes="repeat-password standard-input register-repeat-password" type="password" value={repeatPassword} setter={setRepeatPassword} error={repeatPasswordError} errorSetter={setRepeatPasswordError} />
             <Input label="Terms and Conditions" classes="tac standard-input register-tac" type="checkbox" checked={tac} setter={setTAC} error={tacError} errorSetter={setTACError} />
             <Input label="Privacy Policy" classes="pp standard-input register-pp" type="checkbox" checked={pp} setter={setPP} error={ppError} errorSetter={setPPError} />
-            <button onClick={registerClick} disabled={reqeustSent}>Register</button>
-            {error}
+            <button className="standard-btn" onClick={registerClick} disabled={reqeustSent}>Register</button>
+            <p className="orange-text my-4">{error}</p>
         </div>
     )
 }

@@ -18,7 +18,7 @@ body {
 }
 
 .red-border {
-    border: 2px solid $errorColor;
+    color: 2px solid $errorColor;
 }
 
 .clickable {
@@ -83,6 +83,48 @@ footer {
 .card {
     width: 100%;
     max-width: 280px;
+}
+
+.standard-btn {
+    background-color: $lightBgColor;
+    color: $blackColor;
+    padding: 5px 30px;
+    border: 0px;
+    transition: 300ms;
+}
+
+.standard-btn:hover {
+    background-color: $linkColor;
+    color: $whiteColor;
+    padding: 5px 30px;
+    border: 0px;
+}
+
+.orange-text {
+    color: $linkColor;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+.standard-input {
+    label {
+        color: $linkColor;
+    }
+
+    max-width: 300px;
+    width: 280px;
+    margin: 20px 0px;
+
+    input {
+        width: 280px;
+        border-top: 0px;
+        border-left: 0px;
+        border-right: 0px;
+        border-bottom: 2px solid $titleColor;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 991px){
