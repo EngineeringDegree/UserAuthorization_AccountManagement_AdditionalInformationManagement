@@ -7,9 +7,10 @@ import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 
 /**
  * RegisterWrapper object to display
+ * @param {object} props
  * @returns jsx of the Register wrapper
  */
-const RegisterWrapper = () => {
+const RegisterWrapper = (props) => {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -45,9 +46,8 @@ const RegisterWrapper = () => {
 
         switch (state.userRegister.code) {
             case 200:
-                let el = document.getElementById('link-to-click-on-succes')
-                if (el && !justEntered) {
-                    el.click()
+                if (props.successLink && !justEntered) {
+                    props.successLink.current.click()
                 }
                 return
             case 400:
