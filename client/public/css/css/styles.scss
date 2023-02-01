@@ -67,6 +67,15 @@ footer {
     display: none;
 }
 
+.standard-link, .standard-link a {
+    color: $linkColor;
+    text-decoration: none;
+}
+
+.bg-light {
+    background-color: $lightBgColor;
+}
+
 @media (max-width: 991px){
     .d-mobile {
         display: block;
