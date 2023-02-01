@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import "material-icons/iconfont/material-icons.css"
 import { Link } from "react-router-dom"
 import MenuWrapper from "../menu/MenuWrapper"
 import Logo from "../header/Logo"
+import Hamburger from 'hamburger-react'
 
 /**
  * HeaderWrapper object to display
@@ -10,13 +10,17 @@ import Logo from "../header/Logo"
  * @returns jsx of the header wrapper
  */
 const HeaderWrapper = (props) => {
-    const [collapsed, setCollapsed] = useState(true)
+    const [collapsed, setCollapsed] = useState(false)
 
+    /**
+     * Sets class for menu wrapper div.
+     * @returns string of class.
+     */
     const setClassName = () => {
         if (collapsed) {
-            return "collapse navbar-collapse justify-content-end"
-        } else {
             return "navbar-collapse justify-content-end bg-light"
+        } else {
+            return "collapse navbar-collapse justify-content-end"
         }
     }
 
@@ -26,17 +30,9 @@ const HeaderWrapper = (props) => {
                 <Logo />
             </Link>
 
-            <button onClick={() => setCollapsed(!collapsed)} className="navbar-toggler mx-4" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                {(collapsed) ?
-                    <span className="material-icons">
-                        menu
-                    </span>
-                    :
-                    <span className="material-icons">
-                        close
-                    </span>
-                }
-            </button>
+            <div className="mx-4">
+                <Hamburger toggled={collapsed} toggle={setCollapsed} size={30} />
+            </div>
 
             <div className={setClassName()} id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto px-4">
