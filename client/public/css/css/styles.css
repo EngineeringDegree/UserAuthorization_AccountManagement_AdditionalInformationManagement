@@ -41,4 +41,9 @@ body {
 
 .hidden {
   visibility: hidden;
+}
+
+.main-nav {
+  max-height: 88px;
+  overflow-y: visible;
 }/*# sourceMappingURL=styles.css.map */

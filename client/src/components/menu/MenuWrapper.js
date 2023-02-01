@@ -6,21 +6,35 @@ import { Link } from "react-router-dom"
  * @returns jsx of the menu wrapper
  */
 const MenuWrapper = (props) => {
-    const menuElements = []
-    for (let i = 0; i < props.menuElements.length; i++) {
-        if (props.menuElements[i].name === 'My Profile' && window.localStorage.getItem('id')) {
-            menuElements.push(<Link to={props.menuElements[i].address + '/' + window.localStorage.getItem('id')} key={props.menuElements[i].name}>{props.menuElements[i].name}</Link>)
-            continue
+
+    /**
+     * Creates menu elements to display.
+     * @returns Menu elements jsx.
+     */
+    const createMenuElements = () => {
+        let menuElements = []
+
+        for (let i = 0; i < props.menuElements.length; i++) {
+            if (props.menuElements[i].name === 'My Profile' && window.localStorage.getItem('id')) {
+                menuElements.push(
+                    <li className="nav-link" key={props.menuElements[i].name}>
+                        <Link to={props.menuElements[i].address + '/' + window.localStorage.getItem('id')}>{props.menuElements[i].name}</Link>
+                    </li>
+                )
+                continue
+            }
+
+            menuElements.push(
+                <li className="nav-link" key={props.menuElements[i].name}>
+                    <Link to={props.menuElements[i].address}>{props.menuElements[i].name}</Link>
+                </li>
+            )
         }
 
-        menuElements.push(<Link to={props.menuElements[i].address} key={props.menuElements[i].name}>{props.menuElements[i].name}</Link>)
+        return menuElements
     }
 
-    return (
-        <div className="d-flex">
-            {menuElements}
-        </div>
-    )
+    return createMenuElements()
 }
 
 export default MenuWrapper
