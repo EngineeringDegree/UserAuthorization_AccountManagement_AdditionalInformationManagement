@@ -17,7 +17,7 @@ const MenuWrapper = (props) => {
         for (let i = 0; i < props.menuElements.length; i++) {
             if (props.menuElements[i].name === 'My Profile' && window.localStorage.getItem('id')) {
                 menuElements.push(
-                    <li className="nav-link" key={props.menuElements[i].name}>
+                    <li className="nav-link menu-element standard-link" key={props.menuElements[i].name}>
                         <Link to={props.menuElements[i].address + '/' + window.localStorage.getItem('id')}>{props.menuElements[i].name}</Link>
                     </li>
                 )
@@ -25,7 +25,7 @@ const MenuWrapper = (props) => {
             }
 
             menuElements.push(
-                <li className="nav-link" key={props.menuElements[i].name}>
+                <li className="nav-link menu-element standard-link" key={props.menuElements[i].name}>
                     <Link to={props.menuElements[i].address}>{props.menuElements[i].name}</Link>
                 </li>
             )

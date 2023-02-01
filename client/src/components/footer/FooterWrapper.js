@@ -4,9 +4,9 @@
  */
 const FooterWrapper = () => {
     return (
-        <div>
-            Footer
-        </div>
+        <footer className="bg-light text-center py-4">
+            Created by <a href="https://github.com/MadejaMaciej" target="_blank" className="standard-link">Maciej Madejczyk</a>
+        </footer>
     )
 }
 

@@ -30,7 +30,7 @@ const HeaderWrapper = (props) => {
                 <Logo />
             </Link>
 
-            <div className="mx-4">
+            <div className="d-mobile mx-4">
                 <Hamburger toggled={collapsed} toggle={setCollapsed} size={30} />
             </div>
 

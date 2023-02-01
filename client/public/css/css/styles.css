@@ -5,6 +5,12 @@ body {
   padding: 0;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .error {
   color: #ff0000;
 }
@@ -44,6 +50,25 @@ body {
 }
 
 .main-nav {
-  max-height: 88px;
+  max-height: 96px;
   overflow-y: visible;
+}
+
+footer {
+  margin-top: auto;
+}
+
+.navbar-light .navbar-toggler {
+  color: #000;
+  border-color: transparent;
+}
+
+.d-mobile {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .d-mobile {
+    display: block;
+  }
 }/*# sourceMappingURL=styles.css.map */
