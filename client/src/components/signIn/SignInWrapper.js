@@ -13,7 +13,7 @@ const SignInWrapper = () => {
     return (
         <div>
             <Link ref={linkRef} to="/" className="hidden" id="link-to-click-on-succes"></Link>
-            <div className="d-flex my-4 justify-content-around">
+            <div className="d-lg-flex my-4 justify-content-around">
                 <LoginWrapper successLink={linkRef} />
                 <RegisterWrapper successLink={linkRef} />
             </div>

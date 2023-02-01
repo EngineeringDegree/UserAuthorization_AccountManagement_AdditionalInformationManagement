@@ -111,7 +111,7 @@ footer {
 .standard-input {
   max-width: 300px;
   width: 280px;
-  margin: 20px 0px;
+  margin: 20px auto;
 }
 .standard-input label {
   color: #E39774;
