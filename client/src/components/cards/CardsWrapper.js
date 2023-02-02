@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
 import { getUserCards, responses } from '../../actions/cards/getCards-actions'
 import { checkIfEmptyObject } from '../../utils/object/checkIfObject'
+import Card from "./Card"
 
 /**
  * Wrapper for user informations
@@ -33,6 +34,9 @@ const UserCardsWrapper = (props) => {
                 }
                 return
             case 406:
+                if (!gotCards) {
+                    setGotCards(true)
+                }
                 if (cards.length !== 0) {
                     setCards([])
                 }
@@ -50,33 +54,32 @@ const UserCardsWrapper = (props) => {
             let cardsToFilter = state.getCardsReducer.cards
             for (let i = 0; i < cardsToFilter.length; i++) {
                 cards.push(
-                    <div key={cardsToFilter[i].card._id}>
-                        {cardsToFilter[i].card.name} - {cardsToFilter[i].quantity}
-                    </div>
+                    <Card key={cardsToFilter[i].card._id} quantity={cardsToFilter[i].quantity} name={cardsToFilter[i].card.name} type={cardsToFilter[i].card.type[0]} description={cardsToFilter[i].card.description} attack={cardsToFilter[i].card.attack} mobility={cardsToFilter[i].card.mobility} vision={cardsToFilter[i].card.vision} defense={cardsToFilter[i].card.defense} />
                 )
             }
             setCards(cards)
         }
     })
 
-    let cardsContainer = undefined
-    if (!props.verified) {
-        cardsContainer = <p>Verifying if you are an user and admin.</p>
-    } else if (!props.owner) {
-        cardsContainer = <p>You are not verified as an owner of this account therefore you are not able to see this user cards.</p>
-    } else if (props.owner && props.verified) {
-        if (!gettingCards) {
-            setGettingCards(true)
-            dispatch(getUserCards(window.localStorage.getItem('id'), window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken')))
-            setJustEntered(false)
-        }
+    if (!gettingCards) {
+        setGettingCards(true)
+        dispatch(getUserCards(window.localStorage.getItem('id'), window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken')))
+        setJustEntered(false)
     }
 
     return (
-        <div>
-            User cards
-            {cardsContainer}
-            {(cards.length === 0) ? ((gotCards) ? `No cards found` : `Getting cards`) : cards}
+        <div className="text-center">
+            <h2 className="title my-4 text-center">User cards</h2>
+            <div className="d-flex justify-content-between flex-wrap">
+                {(cards.length === 0) ?
+                    ((gotCards) ?
+                        <p className="mx-auto orange-text">No cards found</p>
+                        :
+                        <p className="mx-auto orange-text">Getting cards</p>
+                    )
+                    :
+                    cards}
+            </div>
         </div>
     )
 }

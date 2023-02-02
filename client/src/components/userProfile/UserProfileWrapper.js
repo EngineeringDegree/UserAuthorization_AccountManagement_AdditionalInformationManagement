@@ -217,9 +217,12 @@ const UserProfileWrapper = () => {
     return (
         <div>
             <Link to="/logout" className="hidden" id="link-to-click-on-bad"></Link>
-            User profile wrapper for user {id}
             <UserInfoWrapper owner={owner} admin={admin} verified={verified} userInfoPack={userInfoPack} />
-            <CardsWrapper owner={owner} verified={verified} />
+            {(owner) ?
+                <CardsWrapper />
+                :
+                <></>
+            }
         </div>
     )
 }

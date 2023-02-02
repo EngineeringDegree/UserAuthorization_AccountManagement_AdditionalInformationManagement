@@ -1,4 +1,4 @@
-import { Shield, Visibility, Colorize, DirectionsRun } from "@mui/icons-material"
+import { Shield, Visibility, Colorize, DirectionsRun, Filter1 } from "@mui/icons-material"
 
 /**
  * Prepares jsx for a card to display.
@@ -9,7 +9,7 @@ const Card = (props) => {
 
     return (
         <div className="card mx-auto mb-4">
-            <img src="/img/card.jpg" className="card-img-top" alt="card" />
+            <img src={props.image} className="card-img-top" alt="card" />
             <div className="card-body d-flex flex-column">
                 <div className="d-flex justify-content-between">
                     <h5 className="card-title">{props.name}</h5>
@@ -33,6 +33,13 @@ const Card = (props) => {
                         <Shield />
                         <p className="card-attr">{props.defense}</p>
                     </div>
+                    {(props.quantity) ?
+                        <div>
+                            <Filter1 />
+                            <p className="card-attr">{props.quantity}</p>
+                        </div>
+                        :
+                        <></>}
                 </div>
             </div>
         </div>

@@ -108,6 +108,10 @@ footer {
   max-width: 150px;
 }
 
+.flex-wrap {
+  flex-flow: wrap;
+}
+
 .standard-input {
   max-width: 300px;
   width: 280px;

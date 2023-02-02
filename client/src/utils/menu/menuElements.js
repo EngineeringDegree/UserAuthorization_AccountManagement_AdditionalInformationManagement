@@ -10,7 +10,7 @@ export const menuElements = [
         name: 'Play',
         address: '/play',
         admin: false,
-        loggedIn: true,
+        loggedIn: false,
         alwaysVisible: false
     },
     {
