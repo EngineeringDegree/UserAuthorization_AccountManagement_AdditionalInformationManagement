@@ -92,7 +92,6 @@ const NewPasswordWrapper = () => {
 
     return (
         <div className="text-center">
-            {email} - {accessToken}
             <Input label="Password" classes="password standard-input register-password" type="password" value={password} setter={setPassword} error={passwordError} errorSetter={setPasswordError} />
             <Input label="Repeat Password" classes="repeat-password standard-input register-repeat-password" type="password" value={repeatPassword} setter={setRepeatPassword} error={repeatPasswordError} errorSetter={setRepeatPasswordError} />
             <button className="my-4 standard-btn" onClick={registerClick} disabled={reqeustSent}>Change Password</button>
