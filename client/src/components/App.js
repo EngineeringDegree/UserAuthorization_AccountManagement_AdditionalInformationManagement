@@ -8,6 +8,7 @@ import SignInWrapper from './signIn/SignInWrapper'
 import NewPasswordWrapper from './authorize/NewPasswordWrapper'
 import LogoutWrapper from './logout/LogoutWrapper'
 import FooterWrapper from './footer/FooterWrapper'
+import AllUsersWrapper from './users/AllUsersWrapper'
 import { time } from '../utils/enum/time'
 import { menuElements } from '../utils/menu/menuElements'
 import { connect } from 'react-redux'
@@ -128,6 +129,7 @@ class App extends Component {
         <Routes>
           <Route path='/' element={<MainWrapper />} />
           <Route path='/changePassword' element={<NewPasswordWrapper />} />
+          <Route path='/users' element={<AllUsersWrapper />} />
           <Route path='/users/:id' element={<UserProfileWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />

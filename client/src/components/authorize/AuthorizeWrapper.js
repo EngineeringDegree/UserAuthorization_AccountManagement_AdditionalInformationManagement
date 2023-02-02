@@ -61,8 +61,9 @@ const AuthorizeWrapper = () => {
     })
 
     return (
-        <div>
-            {text} - {email} - {accessToken}
+        <div className="text-center">
+            <h2 className="title my-4 text-center">Authorization status</h2>
+            <p className="mx-auto orange-text">{text}</p>
         </div>
     )
 }
