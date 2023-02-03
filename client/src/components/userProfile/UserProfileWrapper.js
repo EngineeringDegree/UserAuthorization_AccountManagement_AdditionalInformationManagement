@@ -208,8 +208,8 @@ const UserProfileWrapper = () => {
     if (error !== "") {
         return (
             <div>
-                {error}
-                <p>Go back to main screen <Link to="/">here</Link></p>
+                <p className="orange-font">{error}</p>
+                <p className="orange-font">Go back to main screen <Link to="/">here</Link></p>
             </div>
         )
     }
