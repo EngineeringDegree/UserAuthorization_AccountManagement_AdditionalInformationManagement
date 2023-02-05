@@ -116,6 +116,10 @@ footer {
   margin: 0px 20px;
 }
 
+.card-attr {
+  text-align: center;
+}
+
 .standard-input {
   max-width: 300px;
   width: 280px;

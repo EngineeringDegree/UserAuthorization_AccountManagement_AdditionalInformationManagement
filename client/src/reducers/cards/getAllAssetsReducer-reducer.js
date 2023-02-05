@@ -1,22 +1,22 @@
 import {
-    ADD_NATION_ERROR,
-    ADD_NATION_REQUEST,
-    ADD_NATION_SUCCESS,
+    GET_ASSETS_ERROR,
+    GET_ASSETS_REQUEST,
+    GET_ASSETS_SUCCESS,
     responses
-} from '../../actions/cards/addNation-actions'
+} from '../../actions/cards/getAllAssets-actions'
 
-export default function addNationReducer(state = {}, action) {
+export default function getAllAssetsReducer(state = {}, action) {
     switch (action.type) {
-        case ADD_NATION_REQUEST:
+        case GET_ASSETS_REQUEST:
             return {
-                response: responses.ADDING_NATION
+                response: responses.GETTING_ASSETS
             }
-        case ADD_NATION_SUCCESS:
+        case GET_ASSETS_SUCCESS:
             if (action.payload.token) {
                 window.localStorage.setItem('token', action.payload.token)
             }
             return (action.payload)
-        case ADD_NATION_ERROR:
+        case GET_ASSETS_ERROR:
             return (action.payload)
         default:
             return state

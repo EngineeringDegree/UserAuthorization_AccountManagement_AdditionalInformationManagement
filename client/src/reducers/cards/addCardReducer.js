@@ -1,22 +1,22 @@
 import {
-    ADD_NATION_ERROR,
-    ADD_NATION_REQUEST,
-    ADD_NATION_SUCCESS,
+    ADD_CARD_ERROR,
+    ADD_CARD_REQUEST,
+    ADD_CARD_SUCCESS,
     responses
-} from '../../actions/cards/addNation-actions'
+} from '../../actions/cards/addCard-actions'
 
-export default function addNationReducer(state = {}, action) {
+export default function addCardReducer(state = {}, action) {
     switch (action.type) {
-        case ADD_NATION_REQUEST:
+        case ADD_CARD_REQUEST:
             return {
-                response: responses.ADDING_NATION
+                response: responses.ADDING_CARD
             }
-        case ADD_NATION_SUCCESS:
+        case ADD_CARD_SUCCESS:
             if (action.payload.token) {
                 window.localStorage.setItem('token', action.payload.token)
             }
             return (action.payload)
-        case ADD_NATION_ERROR:
+        case ADD_CARD_ERROR:
             return (action.payload)
         default:
             return state
