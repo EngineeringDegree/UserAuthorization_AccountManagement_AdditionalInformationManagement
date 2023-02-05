@@ -14,6 +14,7 @@ import { menuElements } from '../utils/menu/menuElements'
 import { connect } from 'react-redux'
 import { checkUserLoggedIn, responses } from '../actions/user/userLoggedIn-actions'
 import AuthorizeWrapper from './authorize/AuthorizeWrapper'
+import ManageWrapper from './manage/ManageWrapper'
 
 /**
  * Returns switch with whole app. Entrance point.
@@ -127,6 +128,7 @@ class App extends Component {
           <Route path='/changePassword' element={<NewPasswordWrapper />} />
           <Route path='/users' element={<AllUsersWrapper />} />
           <Route path='/users/:id' element={<UserProfileWrapper />} />
+          <Route path='/manage' element={<ManageWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />

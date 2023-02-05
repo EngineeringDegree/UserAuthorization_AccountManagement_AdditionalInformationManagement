@@ -121,12 +121,12 @@ const AllUsersWrapper = (props) => {
                         :
                         (users.length === 0) ?
                             <div>
-                                <ListingMenu page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
+                                <ListingMenu name="Username" page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
                                 <p className="orange-text text-center">No users found</p>
                             </div>
                             :
                             <div className="control-box users-control-box">
-                                <ListingMenu page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
+                                <ListingMenu name="Username" page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
                                 <p className="orange-text text-center">{successMessage}</p>
                                 <Users users={users} status={status} banCertainUser={banCertainUser} />
                                 <PageMenu page={page} setPage={setPage} pages={pages} setPages={setPages} />
