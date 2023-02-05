@@ -20,6 +20,7 @@ const AllUsersWrapper = (props) => {
     const [pages, setPages] = useState(1)
     const [recordPerPage, setRecordsPerPage] = useState(10)
     const [status, setStatus] = useState(undefined)
+    const [usernameChanged, setUsernameChanged] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -30,7 +31,12 @@ const AllUsersWrapper = (props) => {
     useEffect(() => {
         dispatch(getUsers(window.localStorage.getItem("email"), window.localStorage.getItem("token"), window.localStorage.getItem("refreshToken"), recordPerPage, username, page))
         setLoading(true)
-    }, [username, recordPerPage, page])
+    }, [recordPerPage, page])
+
+    useEffect(() => {
+        dispatch(getUsers(window.localStorage.getItem("email"), window.localStorage.getItem("token"), window.localStorage.getItem("refreshToken"), recordPerPage, username, page))
+        setUsernameChanged(true)
+    }, [username])
 
     useSelector((state) => {
         if (checkIfEmptyObject(state.users) || responses.GETTING_USERS === state.users.response) {
@@ -50,8 +56,9 @@ const AllUsersWrapper = (props) => {
             }
         }
 
-        if (loading) {
+        if (loading || usernameChanged) {
             setLoading(false)
+            setUsernameChanged(false)
             setUsers(state.users.users)
             setPage(state.users.page)
             setPages(state.users.pages)
@@ -83,7 +90,10 @@ const AllUsersWrapper = (props) => {
                         <p className="orange-text">{error}</p>
                         :
                         (users.length === 0) ?
-                            <p className="orange-text text-center">No users found</p>
+                            <div>
+                                <ListingMenu page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
+                                <p className="orange-text text-center">No users found</p>
+                            </div>
                             :
                             <div className="control-box users-control-box">
                                 <ListingMenu page={page} setPage={setPage} pages={pages} setPages={setPages} username={username} setUsername={setUsername} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />

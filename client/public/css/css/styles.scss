@@ -93,7 +93,7 @@ footer {
     transition: 300ms;
 }
 
-.standard-btn:hover {
+.standard-btn:hover:enabled {
     background-color: $linkColor;
     color: $whiteColor;
     padding: 5px 30px;
