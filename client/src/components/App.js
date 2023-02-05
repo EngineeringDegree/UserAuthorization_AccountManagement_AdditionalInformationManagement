@@ -31,7 +31,6 @@ class App extends Component {
       socket: socketIOClient(process.env.REACT_APP_GAME_API, { 'transports': ['websocket'], 'force new connection': true }),
       lastSocketState: false,
       tries: 0,
-      // menuElements: menuElements,
       email: window.localStorage.getItem('email'),
       token: window.localStorage.getItem('token'),
       refreshToken: window.localStorage.getItem('refreshToken')
