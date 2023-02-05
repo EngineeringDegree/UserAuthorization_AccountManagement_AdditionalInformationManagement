@@ -9,15 +9,12 @@ export const responses = {
 
 /**
  * Dispatch request for getting user.
- * @param {string} email to check.
- * @param {string} token to check.
- * @param {string} refreshToken to check.
  * @param {number} records
  * @param {string} username
  * @param {number} page
  * @returns dispatch function for reducer.
  */
-export function getUsers(email, token, refreshToken, records, username, page) {
+export function getUsers(records, username, page) {
     /**
      * Main dispatch function returned.
      */
@@ -25,7 +22,7 @@ export function getUsers(email, token, refreshToken, records, username, page) {
         dispatch(request())
         let response
         try {
-            const address = process.env.REACT_APP_AUTH_API + `get/users?email=${email}&token=${token}&refreshToken=${refreshToken}&records=${records}&username=${username}&page=${page}`
+            const address = process.env.REACT_APP_AUTH_API + `get/users?email=${window.localStorage.getItem("email")}&token=${window.localStorage.getItem("token")}&refreshToken=${window.localStorage.getItem("refreshToken")}&records=${records}&username=${username}&page=${page}`
             response = await axios.get(address)
             dispatch(success(response.data))
         } catch (e) {

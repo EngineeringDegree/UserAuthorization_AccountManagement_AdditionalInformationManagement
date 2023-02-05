@@ -6,13 +6,13 @@ export const menuElements = [
         loggedIn: false,
         alwaysVisible: true
     },
-    {
-        name: 'Play',
-        address: '/play',
-        admin: false,
-        loggedIn: false,
-        alwaysVisible: false
-    },
+    // {
+    //     name: 'Play',
+    //     address: '/play',
+    //     admin: false,
+    //     loggedIn: false,
+    //     alwaysVisible: false
+    // },
     {
         name: 'Users',
         address: '/users',

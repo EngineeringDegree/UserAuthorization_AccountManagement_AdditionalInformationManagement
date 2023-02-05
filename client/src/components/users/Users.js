@@ -22,7 +22,7 @@ const Users = (props) => {
                         <Link to={toProfile} className="standard-link">
                             <div className="justify-content-between d-lg-flex">
                                 <p className="orange-text align-self-center my-0">{props.users[i].username}</p>
-                                <Banhammer id={props.users[i].id} banUser={props.banUser} />
+                                <Banhammer id={props.users[i].id} banCertainUser={props.banCertainUser} />
                             </div>
 
                         </Link>

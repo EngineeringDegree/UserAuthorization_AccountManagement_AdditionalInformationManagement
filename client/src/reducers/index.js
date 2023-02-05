@@ -12,6 +12,7 @@ import authReducer from './user/userAuthorize-reducer'
 import getUserReducer from './user/getUser-reducer'
 import getCardsReducer from './cards/getCards-reducer'
 import getUsersReducer from './users/getUsers-reducer'
+import banUserReducer from './user/userBan-reducer'
 
 /**
  * Combines all reducers.
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     confirmed: confirmedReducer,
     admin: adminReducer,
     setPassword: setPasswordReducer,
-    users: getUsersReducer
+    users: getUsersReducer,
+    userBanned: banUserReducer
 })
 
 export default rootReducer

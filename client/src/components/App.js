@@ -65,10 +65,6 @@ class App extends Component {
     }
 
     if (this.state.email !== window.localStorage.getItem('email') || this.state.token !== window.localStorage.getItem('token') || this.state.refreshToken !== window.localStorage.getItem('refreshToken')) {
-      if (window.localStorage.getItem('email') != null && window.localStorage.getItem('token') != null && window.localStorage.getItem('refreshToken')) {
-        this.props.checkUserLoggedIn(window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken'))
-      }
-
       this.setState({
         email: window.localStorage.getItem('email'),
         token: window.localStorage.getItem('token'),

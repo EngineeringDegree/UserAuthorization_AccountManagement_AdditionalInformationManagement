@@ -33,7 +33,7 @@ const Banhammer = (props) => {
      */
     const sendBanRequest = () => {
         if (time !== "" && props.id && reason !== "") {
-            props.banUser(props.id, reason, time)
+            props.banCertainUser(props.id, reason, time)
         }
     }
 
