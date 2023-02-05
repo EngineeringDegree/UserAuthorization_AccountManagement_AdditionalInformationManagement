@@ -12,7 +12,7 @@ const GovernPossibilities = (props) => {
         <div className="manage wrapper">
             <h2 className="title my-4 text-center">{props.pageName}</h2>
             <div className="boxes-wrapper mx-auto">
-                <div className="text-center">
+                <div className="text-center my-4">
                     <Link to={"/manage"} className={"standard-link"}>
                         <button className="standard-btn">
                             Back
