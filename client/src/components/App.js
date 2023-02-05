@@ -208,6 +208,27 @@ class App extends Component {
               toEdit={"/manage/fields/edit"}
             />
           } />
+          <Route path='/manage/effects/add' element={<ManageWrapper />} />
+          <Route path='/manage/effects/edit' element={<ManageWrapper />} />
+          <Route path='/manage/effects/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/nations/add' element={<ManageWrapper />} />
+          <Route path='/manage/nations/edit' element={<ManageWrapper />} />
+          <Route path='/manage/nations/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/types/add' element={<ManageWrapper />} />
+          <Route path='/manage/types/edit' element={<ManageWrapper />} />
+          <Route path='/manage/types/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/cards/add' element={<ManageWrapper />} />
+          <Route path='/manage/cards/edit' element={<ManageWrapper />} />
+          <Route path='/manage/cards/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/maps/add' element={<ManageWrapper />} />
+          <Route path='/manage/maps/edit' element={<ManageWrapper />} />
+          <Route path='/manage/maps/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/packs/add' element={<ManageWrapper />} />
+          <Route path='/manage/packs/edit' element={<ManageWrapper />} />
+          <Route path='/manage/packs/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/fields/add' element={<ManageWrapper />} />
+          <Route path='/manage/fields/edit' element={<ManageWrapper />} />
+          <Route path='/manage/fields/edit/:id' element={<ManageWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />
