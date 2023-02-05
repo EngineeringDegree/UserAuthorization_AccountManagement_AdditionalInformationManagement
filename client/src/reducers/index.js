@@ -15,6 +15,7 @@ import getUsersReducer from './users/getUsers-reducer'
 import banUserReducer from './user/userBan-reducer'
 import addEffectReducer from './cards/addEffectReducer'
 import addTypeReducer from './cards/addTypeReducer'
+import addNationReducer from './cards/addNationReducer'
 
 /**
  * Combines all reducers.
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
     users: getUsersReducer,
     userBanned: banUserReducer,
     addEffectReducer: addEffectReducer,
-    addTypeReducer: addTypeReducer
+    addTypeReducer: addTypeReducer,
+    addNationReducer: addNationReducer
 })
 
 export default rootReducer

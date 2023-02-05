@@ -8,7 +8,7 @@ export const responses = {
 }
 
 /**
- * Dispatch request for getting user.
+ * Dispatch request for getting users page.
  * @param {number} records
  * @param {string} username
  * @param {number} page

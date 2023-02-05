@@ -25,7 +25,7 @@ const AddTypesWrapper = () => {
     const [charge, setCharge] = useState(false)
     const [message, setMessage] = useState("")
 
-    const createEffect = () => {
+    const createType = () => {
         dispatch(addType(name, description, mobility, defence, attack, vision, buffNearbyAllies, debuffNearbyEnemies, stunImmunity, scareImmunity, silenceImmunity, charge))
     }
 
@@ -109,7 +109,7 @@ const AddTypesWrapper = () => {
                     <Input label="Charge" classes="standard-input" type="checkbox" checked={charge} setter={setCharge} />
                 </div>
                 <div className='text-center my-4'>
-                    <button className="standard-btn" onClick={createEffect}>
+                    <button className="standard-btn" onClick={createType}>
                         Create new type
                     </button>
                 </div>
