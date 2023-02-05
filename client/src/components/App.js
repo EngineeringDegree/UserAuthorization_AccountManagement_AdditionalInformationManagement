@@ -184,7 +184,7 @@ class App extends Component {
               pageName={"Types"}
               nameAdd={"Add new type"}
               descriptionAdd={"Add new type to use it in card."}
-              toAdd={"/manage/type/add"}
+              toAdd={"/manage/types/add"}
               nameEdit={"Edit type"}
               descriptionEdit={"Edit existing type."}
               toEdit={"/manage/types/edit"}
@@ -240,12 +240,12 @@ class App extends Component {
           <Route path='/manage/nations/add' element={<AddNationsWrapper />} />
           <Route path='/manage/nations/edit' element={<ListNationsWrapper />} />
           <Route path='/manage/nations/edit/:id' element={<EditNationsWrapper />} />
-          <Route path='/manage/types/add' element={<AddCardsWrapper />} />
-          <Route path='/manage/types/edit' element={<ListCardsWrapper />} />
-          <Route path='/manage/types/edit/:id' element={<EditCardsWrapper />} />
-          <Route path='/manage/cards/add' element={<AddTypesWrapper />} />
-          <Route path='/manage/cards/edit' element={<ListTypesWrapper />} />
-          <Route path='/manage/cards/edit/:id' element={<EditTypesWrapper />} />
+          <Route path='/manage/types/add' element={<AddTypesWrapper />} />
+          <Route path='/manage/types/edit' element={<ListTypesWrapper />} />
+          <Route path='/manage/types/edit/:id' element={<EditTypesWrapper />} />
+          <Route path='/manage/cards/add' element={<AddCardsWrapper />} />
+          <Route path='/manage/cards/edit' element={<ListCardsWrapper />} />
+          <Route path='/manage/cards/edit/:id' element={<EditCardsWrapper />} />
           <Route path='/manage/maps/add' element={<AddMapsWrapper />} />
           <Route path='/manage/maps/edit' element={<ListMapsWrapper />} />
           <Route path='/manage/maps/edit/:id' element={<EditMapsWrapper />} />
