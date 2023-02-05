@@ -37,6 +37,12 @@ import ListMapsWrapper from './maps/ListMapsWrapper'
 import AddFieldsWrapper from './maps/AddFieldsWrapper'
 import EditFieldsWrapper from './maps/EditFieldsWrapper'
 import ListFieldsWrapper from './maps/ListFieldsWrapper'
+import ShopWrapper from './shop/ShopWrapper'
+import PacksWrapper from './packs/PacksWrapper'
+import ManageDeckWrapper from './deck/ManageDeckWrapper'
+import AddDeckWrapper from './deck/AddDeckWrapper'
+import EditDeckWrapper from './deck/EditDeckWrapper'
+import ListDeckWrapper from './deck/ListDeckWrapper'
 
 /**
  * Returns switch with whole app. Entrance point.
@@ -249,6 +255,12 @@ class App extends Component {
           <Route path='/manage/fields/add' element={<AddFieldsWrapper />} />
           <Route path='/manage/fields/edit' element={<ListFieldsWrapper />} />
           <Route path='/manage/fields/edit/:id' element={<EditFieldsWrapper />} />
+          <Route path='/shop' element={<ShopWrapper />} />
+          <Route path='/packs' element={<PacksWrapper />} />
+          <Route path='/decks' element={<ManageDeckWrapper />} />
+          <Route path='/decks/add' element={<AddDeckWrapper />} />
+          <Route path='/decks/edit' element={<ListDeckWrapper />} />
+          <Route path='/decks/edit/:id' element={<EditDeckWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />
