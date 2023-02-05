@@ -129,8 +129,38 @@ footer {
   margin-bottom: 10px;
 }
 
+.box {
+  border: 2px solid #326273;
+}
+
+.user-box {
+  width: 100%;
+  max-width: 880px;
+}
+
 @media (max-width: 991px) {
   .d-mobile {
     display: block;
+  }
+  .user-box {
+    width: calc(100% - 40px);
+    text-align: center;
+  }
+  .ban-btn {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .mobile-center {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .change-reason {
+    max-width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .change-reason input {
+    width: 100%;
   }
 }/*# sourceMappingURL=styles.css.map */

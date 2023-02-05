@@ -131,8 +131,44 @@ footer {
     }
 }
 
+.box {
+    border: 2px solid $titleColor;
+}
+
+.user-box {
+    width: 100%;
+    max-width: 880px;
+}
+
 @media (max-width: 991px){
     .d-mobile {
         display: block;
+    }
+
+    .user-box {
+        width: calc(100% - 40px);
+        text-align: center;
+    }
+
+    .ban-btn {
+        display: block;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .mobile-center {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .change-reason {
+        max-width: 100%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+
+        input {
+            width: 100%;
+        }
     }
 }

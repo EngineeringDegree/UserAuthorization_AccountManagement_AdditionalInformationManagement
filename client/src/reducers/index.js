@@ -11,6 +11,7 @@ import registerReducer from './user/userRegister-reducer'
 import authReducer from './user/userAuthorize-reducer'
 import getUserReducer from './user/getUser-reducer'
 import getCardsReducer from './cards/getCards-reducer'
+import getUsersReducer from './users/getUsers-reducer'
 
 /**
  * Combines all reducers.
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     email: emailReducer,
     confirmed: confirmedReducer,
     admin: adminReducer,
-    setPassword: setPasswordReducer
+    setPassword: setPasswordReducer,
+    users: getUsersReducer
 })
 
 export default rootReducer
