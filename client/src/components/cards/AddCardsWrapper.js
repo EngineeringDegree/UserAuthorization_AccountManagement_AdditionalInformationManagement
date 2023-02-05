@@ -7,6 +7,7 @@ import { checkIfEmptyObject } from '../../utils/object/checkIfObject'
 import { LoadingButton } from '@mui/lab'
 import { getAllAssets, responses as allAssetsResponse } from '../../actions/cards/getAllAssets-actions'
 import { addCard, responses } from '../../actions/cards/addCard-actions'
+import mongoose from 'mongoose'
 
 /**
  * Adding card logic.
@@ -25,14 +26,11 @@ const AddCardsWrapper = () => {
     const [basicDeck, setBasicDeck] = useState(0)
     const [message, setMessage] = useState("")
     const [type, setType] = useState([])
+    const [displayType, setDisplayType] = useState([])
     const [nation, setNation] = useState([])
     const [effects, setEffects] = useState([])
     const [loadingAssets, setLoadingAssets] = useState(false)
-    const [assets, setAssets] = useState({
-        types: [],
-        nations: [],
-        effects: []
-    })
+    const [assets, setAssets] = useState({})
 
     useEffect(() => {
         dispatch(getAllAssets())
@@ -40,7 +38,7 @@ const AddCardsWrapper = () => {
     }, [])
 
     const createCard = () => {
-        dispatch(addCard(name, description, image, mobility, defence, attack, vision, resources, nation, effects, assets))
+        dispatch(addCard(name, description, image, mobility, defence, attack, vision, resources, nation, effects, type, basicDeck))
     }
 
     useSelector((state) => {
@@ -52,7 +50,7 @@ const AddCardsWrapper = () => {
         switch (state.getAllAssetsReducer.code) {
             case 200:
                 if (loadingAssets) {
-                    console.log(state.getAllAssetsReducer)
+                    setAssets(state.getAllAssetsReducer)
                     setLoadingAssets(false)
                 }
                 break
@@ -101,6 +99,129 @@ const AddCardsWrapper = () => {
         }
     })
 
+    const effectCheckLogic = (id) => {
+        let effectsCopy = [...effects]
+
+        let found = false
+        for (let i = 0; i < effectsCopy.length; i++) {
+            if (mongoose.Types.ObjectId(effectsCopy[i]).equals(mongoose.Types.ObjectId(id))) {
+                found = true
+                continue
+            }
+        }
+
+        if (found) {
+            const index = effectsCopy.indexOf(id)
+            if (index > -1) {
+                effectsCopy.splice(index, 1)
+                setEffects(effectsCopy)
+            }
+        } else {
+            effectsCopy.push(id)
+            setEffects(effectsCopy)
+        }
+    }
+
+    const createEffectsCheckboxes = () => {
+        if (!assets.effects) {
+            return
+        }
+
+        let effectsCopy = [...assets.effects]
+        let jsx = []
+        for (let i = 0; i < effectsCopy.length; i++) {
+            jsx.push(
+                <Input key={effectsCopy[i]._id} label={effectsCopy[i].name} classes="standard-input" type="checkbox" setter={() => effectCheckLogic(effectsCopy[i]._id)} />
+            )
+        }
+
+        return jsx
+    }
+
+    const typeCheckLogic = (id, name) => {
+        let arr = [...type]
+        let arr2 = [...displayType]
+
+        let found = false, it
+        for (let i = 0; i < arr.length; i++) {
+            if (mongoose.Types.ObjectId(arr[i]).equals(mongoose.Types.ObjectId(id))) {
+                it = i
+                found = true
+                continue
+            }
+        }
+
+        if (found) {
+            if (it > -1) {
+                arr.splice(it, 1)
+                arr2.splice(it, 1)
+                setType(arr)
+                setDisplayType(arr2)
+            }
+        } else {
+            arr.push(id)
+            arr2.push(name)
+            setType(arr)
+            setDisplayType(arr2)
+        }
+    }
+
+    const createTypesCheckboxes = () => {
+        if (!assets.types) {
+            return
+        }
+
+        let arr = [...assets.types]
+        let jsx = []
+        for (let i = 0; i < arr.length; i++) {
+            jsx.push(
+                <Input key={arr[i]._id} label={arr[i].name} classes="standard-input" type="checkbox" setter={() => typeCheckLogic(arr[i]._id, arr[i].name)} />
+            )
+        }
+
+        return jsx
+    }
+
+    const nationCheckLogic = (id) => {
+        let arr = [...nation]
+
+        let found = false
+        for (let i = 0; i < arr.length; i++) {
+            if (mongoose.Types.ObjectId(arr[i]).equals(mongoose.Types.ObjectId(id))) {
+                found = true
+                continue
+            }
+        }
+
+        if (found) {
+            const index = arr.indexOf(id)
+            if (index > -1) {
+                arr.splice(index, 1)
+                setNation(arr)
+            }
+        } else {
+            arr.push(id)
+            setNation(arr)
+        }
+    }
+
+    const createNationsCheckboxes = () => {
+        if (!assets.nations) {
+            return
+        }
+
+        let arr = [...assets.nations]
+        let jsx = []
+        for (let i = 0; i < arr.length; i++) {
+            jsx.push(
+                <Input key={arr[i]._id} label={arr[i].name} classes="standard-input" type="checkbox" setter={() => nationCheckLogic(arr[i]._id)} />
+            )
+        }
+
+        return jsx
+    }
+
+
     return (
         <div className="manage wrapper">
             <h2 className="title my-4 text-center">Add new card</h2>
@@ -113,7 +234,7 @@ const AddCardsWrapper = () => {
                     </Link>
                 </div>
                 <h5 className="title my-4 text-center">Card view</h5>
-                <Card image={image} name={name} type={(type.length === 0) ? "Unknown" : type[0]} description={description} attack={attack} mobility={mobility} vision={vision} defense={defence} quantity={basicDeck} />
+                <Card image={image} name={name} type={(type.length === 0) ? "Unknown" : displayType[0]} description={description} attack={attack} mobility={mobility} vision={vision} defense={defence} quantity={basicDeck} />
 
                 <h5 className="title my-4 text-center">Basic informations</h5>
                 <div className='d-lg-flex'>
@@ -122,7 +243,7 @@ const AddCardsWrapper = () => {
                     <Input label="Card image" classes="standard-input" type="text" value={image} setter={setImage} />
                 </div>
 
-                <h5 className="title my-4 text-center">Deck vise informations</h5>
+                <h5 className="title my-4 text-center">Deck wise informations</h5>
                 <div className='d-lg-flex'>
                     <Input label="Card resources" classes="standard-input" type="text" value={resources} setter={setResources} />
                     <Input label="Cards in basic deck" classes="standard-input" type="text" value={basicDeck} setter={setBasicDeck} />
@@ -145,9 +266,20 @@ const AddCardsWrapper = () => {
                             <LoadingButton loading={true}> Loading </LoadingButton>
                         </div>
                         :
-                        
-                        <></>
-                        /* Types, nations effects */
+                        <div className='d-lg-flex mx-auto'>
+                            <div>
+                                <h6 className="title my-4 text-center">Card skills (effects)</h6>
+                                {createEffectsCheckboxes()}
+                            </div>
+                            <div>
+                                <h6 className="title my-4 text-center">Card nations</h6>
+                                {createNationsCheckboxes()}
+                            </div>
+                            <div>
+                                <h6 className="title my-4 text-center">Card type</h6>
+                                {createTypesCheckboxes()}
+                            </div>
+                        </div>
                     }
                 </div>
 

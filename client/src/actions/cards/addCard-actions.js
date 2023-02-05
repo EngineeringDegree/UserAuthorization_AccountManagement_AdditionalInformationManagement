@@ -7,7 +7,7 @@ export const responses = {
     ADDING_CARD: "ADDING CARD"
 }
 
-export function addCard(name, description, image, mobility, defence, attack, vision, resources, nation, effects, assets) {
+export function addCard(name, description, image, mobility, defence, attack, vision, resources, nation, effects, type, basicDeck) {
     /**
      * Main dispatch function returned.
      */
@@ -21,13 +21,14 @@ export function addCard(name, description, image, mobility, defence, attack, vis
             description,
             image,
             mobility,
-            defence,
+            defense: defence,
             attack,
             vision,
             resources,
             nation,
             effects,
-            assets
+            type,
+            basicDeck
         }
 
         let response
