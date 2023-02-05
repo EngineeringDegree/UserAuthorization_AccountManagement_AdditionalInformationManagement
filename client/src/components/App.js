@@ -16,6 +16,27 @@ import { checkUserLoggedIn, responses } from '../actions/user/userLoggedIn-actio
 import AuthorizeWrapper from './authorize/AuthorizeWrapper'
 import ManageWrapper from './manage/ManageWrapper'
 import GovernPossibilities from './manage/GovernPossibilities'
+import AddEffectsWrapper from './cards/AddEffectsWrapper'
+import EditEffectsWrapper from './cards/EditEffectsWrapper'
+import ListEffectsWrapper from './cards/ListEffectsWrapper'
+import AddNationsWrapper from './cards/AddNationsWrapper'
+import EditNationsWrapper from './cards/EditNationsWrapper'
+import ListNationsWrapper from './cards/ListNationsWrapper'
+import AddCardsWrapper from './cards/AddCardsWrapper'
+import EditCardsWrapper from './cards/EditCardsWrapper'
+import ListCardsWrapper from './cards/ListCardsWrapper'
+import AddTypesWrapper from './cards/AddTypesWrapper'
+import EditTypesWrapper from './cards/EditTypesWrapper'
+import ListTypesWrapper from './cards/ListTypesWrapper'
+import AddPacksWrapper from './packs/AddPacksWrapper'
+import EditPacksWrapper from './packs/EditPacksWrapper'
+import ListPacksWrapper from './packs/ListPacksWrapper'
+import AddMapsWrapper from './maps/AddMapsWrapper'
+import EditMapsWrapper from './maps/EditMapsWrapper'
+import ListMapsWrapper from './maps/ListMapsWrapper'
+import AddFieldsWrapper from './maps/AddFieldsWrapper'
+import EditFieldsWrapper from './maps/EditFieldsWrapper'
+import ListFieldsWrapper from './maps/ListFieldsWrapper'
 
 /**
  * Returns switch with whole app. Entrance point.
@@ -207,27 +228,27 @@ class App extends Component {
               toEdit={"/manage/fields/edit"}
             />
           } />
-          <Route path='/manage/effects/add' element={<ManageWrapper />} />
-          <Route path='/manage/effects/edit' element={<ManageWrapper />} />
-          <Route path='/manage/effects/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/nations/add' element={<ManageWrapper />} />
-          <Route path='/manage/nations/edit' element={<ManageWrapper />} />
-          <Route path='/manage/nations/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/types/add' element={<ManageWrapper />} />
-          <Route path='/manage/types/edit' element={<ManageWrapper />} />
-          <Route path='/manage/types/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/cards/add' element={<ManageWrapper />} />
-          <Route path='/manage/cards/edit' element={<ManageWrapper />} />
-          <Route path='/manage/cards/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/maps/add' element={<ManageWrapper />} />
-          <Route path='/manage/maps/edit' element={<ManageWrapper />} />
-          <Route path='/manage/maps/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/packs/add' element={<ManageWrapper />} />
-          <Route path='/manage/packs/edit' element={<ManageWrapper />} />
-          <Route path='/manage/packs/edit/:id' element={<ManageWrapper />} />
-          <Route path='/manage/fields/add' element={<ManageWrapper />} />
-          <Route path='/manage/fields/edit' element={<ManageWrapper />} />
-          <Route path='/manage/fields/edit/:id' element={<ManageWrapper />} />
+          <Route path='/manage/effects/add' element={<AddEffectsWrapper />} />
+          <Route path='/manage/effects/edit' element={<ListEffectsWrapper />} />
+          <Route path='/manage/effects/edit/:id' element={<EditEffectsWrapper />} />
+          <Route path='/manage/nations/add' element={<AddNationsWrapper />} />
+          <Route path='/manage/nations/edit' element={<ListNationsWrapper />} />
+          <Route path='/manage/nations/edit/:id' element={<EditNationsWrapper />} />
+          <Route path='/manage/types/add' element={<AddCardsWrapper />} />
+          <Route path='/manage/types/edit' element={<ListCardsWrapper />} />
+          <Route path='/manage/types/edit/:id' element={<EditCardsWrapper />} />
+          <Route path='/manage/cards/add' element={<AddTypesWrapper />} />
+          <Route path='/manage/cards/edit' element={<ListTypesWrapper />} />
+          <Route path='/manage/cards/edit/:id' element={<EditTypesWrapper />} />
+          <Route path='/manage/maps/add' element={<AddMapsWrapper />} />
+          <Route path='/manage/maps/edit' element={<ListMapsWrapper />} />
+          <Route path='/manage/maps/edit/:id' element={<EditMapsWrapper />} />
+          <Route path='/manage/packs/add' element={<AddPacksWrapper />} />
+          <Route path='/manage/packs/edit' element={<EditPacksWrapper />} />
+          <Route path='/manage/packs/edit/:id' element={<ListPacksWrapper />} />
+          <Route path='/manage/fields/add' element={<AddFieldsWrapper />} />
+          <Route path='/manage/fields/edit' element={<ListFieldsWrapper />} />
+          <Route path='/manage/fields/edit/:id' element={<EditFieldsWrapper />} />
           <Route path='/authorizeAccount' element={<AuthorizeWrapper />} />
           <Route path='/sign-in' element={<SignInWrapper />} />
           <Route path='/logout' element={<LogoutWrapper />} />
