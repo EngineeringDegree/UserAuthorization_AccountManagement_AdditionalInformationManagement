@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom"
 import Input from '../common/Input'
+import { useDispatch, useSelector, connect } from 'react-redux'
+import { addEffect, responses } from '../../actions/cards/addEffect-actions'
+import { checkIfEmptyObject } from '../../utils/object/checkIfObject'
 
 /**
  * Adding effects logic.
  * @returns adding effects jsx
  */
 const AddEffectsWrapper = () => {
+    const dispatch = useDispatch()
     const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
     const [cost, setCost] = useState("0/0/0/0")
     const [mobility, setMobility] = useState(0)
     const [defence, setDefence] = useState(0)
@@ -25,8 +30,42 @@ const AddEffectsWrapper = () => {
     const [message, setMessage] = useState("")
 
     const createEffect = () => {
-
+        dispatch(addEffect(name, description, cost, mobility, defence, attack, vision, canUseOn, cooldown, duration, stunImmunity, scareImmunity, silenceImmunity, stun, scare, silence))
     }
+
+    useSelector((state) => {
+        if (state.addEffectReducer.response === responses.ADDING_EFFECT || checkIfEmptyObject(state.addEffectReducer)) {
+            return
+        }
+
+        if (state.addEffectReducer === 'Network Error') {
+            if (message !== 'Network Error. Try again later.') {
+                setMessage('Network Error. Try again later.')
+            }
+            return
+        }
+
+        switch (state.addEffectReducer.code) {
+            case 200:
+                if (message !== 'Effect added.') {
+                    setMessage('Effect added.')
+                }
+                return
+            case 400:
+                if (message !== 'Bad request. Check if all fields are filled properly.') {
+                    setMessage('Bad request. Check if all fields are filled properly.')
+                }
+                return
+            case 401:
+            case 404:
+                if (message !== 'You are not an admin. You cannot add effect!') {
+                    setMessage('You are not an admin. You cannot add effect!')
+                }
+                return
+            default:
+                return
+        }
+    })
 
     return (
         <div className="manage wrapper">
@@ -43,10 +82,11 @@ const AddEffectsWrapper = () => {
                 <h5 className="title my-4 text-center">Basic informations</h5>
                 <div className='d-lg-flex'>
                     <Input label="Effect name" classes="effect standard-input" type="text" value={name} setter={setName} />
+                    <Input label="Effect description" classes="description standard-input" type="text" value={description} setter={setDescription} />
                     <Input label="Effect cost" classes="cost standard-input" type="text" value={cost} setter={setCost} />
-                    <Input label="Effect can be used on" classes="canUseOn standard-input" type="number" value={canUseOn} setter={setCanUseOn} />
                 </div>
                 <div className='d-lg-flex'>
+                    <Input label="Effect can be used on" classes="canUseOn standard-input" type="number" value={canUseOn} setter={setCanUseOn} />
                     <Input label="Effect cooldown" classes="cooldown standard-input" type="number" value={cooldown} setter={setCooldown} />
                     <Input label="Effect duration" classes="duration standard-input" type="number" value={duration} setter={setDuration} />
                 </div>
@@ -80,9 +120,17 @@ const AddEffectsWrapper = () => {
                     </button>
                 </div>
             </div>
-            <p className='orange-text my-4'>{message}</p>
+            <p className='orange-text my-4 text-center'>{message}</p>
         </div>
     )
 }
 
-export default AddEffectsWrapper
+const mapStateToProps = (state) => {
+    return {
+        addEffectReducer: state.addEffectReducer
+    }
+}
+
+const mapDispatchToProps = { addEffect }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddEffectsWrapper)
