@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 import { getUsers, responses } from "../../actions/users/getUsers-actions"
 import { banUser, responses as banUserResponse } from "../../actions/user/userBan-actions"
 import { LoadingButton } from '@mui/lab'
+import { Link } from "react-router-dom"
 import Users from "./Users"
 import ListingMenu from "../common/ListingMenu"
 import PageMenu from "../common/PageMenu"
@@ -13,6 +14,7 @@ import PageMenu from "../common/PageMenu"
  * @param {object} props 
  */
 const AllUsersWrapper = (props) => {
+    const linkRef = useRef()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [successMessage, setSuccessMessage] = useState("")
@@ -48,8 +50,10 @@ const AllUsersWrapper = (props) => {
 
         if (state.users.code !== 200) {
             switch (state.users.code) {
-                case 401:
                 case 404:
+                    linkRef.current.click()
+                    return
+                case 401:
                 case 406:
                 default:
                     if (error !== "Something went wrong.") {
@@ -74,10 +78,12 @@ const AllUsersWrapper = (props) => {
             return
         }
 
-        if (state.users.code !== 200) {
+        if (state.userBanned.code !== 200) {
             switch (state.users.code) {
-                case 401:
                 case 404:
+                    linkRef.current.click()
+                    return
+                case 401:
                 case 406:
                 default:
                     if (error !== "Something went wrong.") {
@@ -109,6 +115,7 @@ const AllUsersWrapper = (props) => {
 
     return (
         <div>
+            <Link to={"/logout"} style={{ display: "none" }} ref={linkRef}></Link>
             <h2 className="title my-4 text-center">Users list</h2>
             <div className="box user-box mx-auto my-4 p-4">
                 {(loading) ?
