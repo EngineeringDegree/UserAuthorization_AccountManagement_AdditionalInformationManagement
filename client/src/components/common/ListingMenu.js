@@ -30,7 +30,7 @@ const ListingMenu = (props) => {
         <div className="d-lg-flex">
             <Input label="Username" classes="username standard-input change-username" type="text" value={props.username} setter={props.setUsername} error={""} errorSetter={() => { }} />
             <PageMenu page={props.page} setPage={props.setPage} pages={props.pages} setPages={props.setPages} />
-            <div className="align-self-center">
+            <div className="align-self-center mb-4">
                 <p className="orange-text">Records</p>
                 <select className="d-block mobile-center" onChange={(e) => props.setRecordsPerPage(e.target.value)} value={props.recordPerPage}>
                     {options.map((option) => (

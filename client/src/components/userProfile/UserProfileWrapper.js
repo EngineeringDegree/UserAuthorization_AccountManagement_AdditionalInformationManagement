@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector, connect } from 'react-redux'
 import UserInfoWrapper from "./UserInfoWrapper"
@@ -35,6 +35,7 @@ const UserProfileWrapper = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userId, setUserID] = useState('')
+    const [previousUsername, setPreviousUsername] = useState('')
 
     const askForNewEmail = () => {
         let err = false
@@ -60,17 +61,9 @@ const UserProfileWrapper = () => {
         dispatch(changeEmail(email, password))
     }
 
-    useSelector((state) => {
-        console.log(state.email)
-    })
-
     const askForNewPassword = () => {
         dispatch(changePassword())
     }
-
-    useSelector((state) => {
-        console.log(state.password)
-    })
 
     const userInfoPack = {
         confirmed,
@@ -100,13 +93,13 @@ const UserProfileWrapper = () => {
                 return
             }
 
-            dispatch(changeUsername(username))
+            if (window.localStorage.getItem("username") !== username && previousUsername !== "") {
+                dispatch(changeUsername(username))
+            }
+
+            setPreviousUsername(username)
         }
     }, [username])
-
-    useSelector((state) => {
-        console.log(state.username)
-    })
 
     useEffect(() => {
         if (afterFirstRequest) {
@@ -114,19 +107,11 @@ const UserProfileWrapper = () => {
         }
     }, [confirmed])
 
-    useSelector((state) => {
-        console.log(state.confirmed)
-    })
-
     useEffect(() => {
         if (afterFirstRequest) {
             dispatch(changeAdmin(userAdmin, id))
         }
     }, [admin])
-
-    useSelector((state) => {
-        console.log(state.admin)
-    })
 
     const id = params.id
     if (lastId !== id) {

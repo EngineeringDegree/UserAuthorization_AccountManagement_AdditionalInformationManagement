@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
             if (check) {
                 const users = await getUsers(req)
                 if (user.admin) {
-                    return res.status(200).send({ status: statuses.USERS_FOUND_AND_SHOW_BANHAMMER, code: 200, token: check, users: users, users: users.users, pages: users.pages, page: users.page })
+                    return res.status(200).send({ status: statuses.USERS_FOUND_AND_SHOW_BANHAMMER, code: 200, token: check, users: users.users, pages: users.pages, page: users.page })
                 }
 
                 return res.status(200).send({ status: statuses.USERS_FOUND, code: 200, token: check, users: users, users: users.users, pages: users.pages, page: users.page })
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
             return res.status(200).send({ status: statuses.USERS_FOUND_AND_SHOW_BANHAMMER, code: 200, users: users.users, pages: users.pages, page: users.page })
         }
 
-        return res.status(200).send({ status: statuses.USERS_FOUND, code: 200, users: users, users: users.users, pages: users.pages, page: users.page })
+        return res.status(200).send({ status: statuses.USERS_FOUND, code: 200, users: users.users, pages: users.pages, page: users.page })
     }
 
     return res.status(404).send({ status: statuses.USER_NOT_FOUND, code: 404 })

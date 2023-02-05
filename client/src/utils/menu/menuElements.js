@@ -16,7 +16,7 @@ export const menuElements = [
     {
         name: 'Users',
         address: '/users',
-        admin: true,
+        admin: false,
         loggedIn: true,
         alwaysVisible: false
     },

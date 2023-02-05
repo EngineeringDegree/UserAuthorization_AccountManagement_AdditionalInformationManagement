@@ -29,13 +29,15 @@ const Users = (props) => {
                     </div >
                 )
             } else {
-                <div key={props.users[i].id}>
-                    <Link to={toProfile} className="standard-link">
-                        <div className="justify-content-between d-flex">
-                            <p className="orange-text">{props.users[i].username}</p>
-                        </div>
-                    </Link>
-                </div >
+                jsx.push(
+                    <div key={props.users[i].id}>
+                        <Link to={toProfile} className="standard-link">
+                            <div className="justify-content-between d-flex">
+                                <p className="orange-text">{props.users[i].username}</p>
+                            </div>
+                        </Link>
+                    </div >
+                )
             }
         }
 
