@@ -13,9 +13,9 @@ const MainWrapper = () => {
             <p>You can as well collect cards, make best deck in the world or just govern your account.</p>
             <p className="mb-5">Here are some interesting cards:</p>
             <div className="d-lg-flex justify-content-around">
-                <Card name={"Test"} type={"Cavalary"} description={"This is my test description for this funny card."} attack={5} mobility={5} vision={5} defense={1} image={"/img/card.jpg"} />
-                <Card name={"Test2"} type={"Shielder"} description={"This is my test description for this funny card."} attack={5} mobility={5} vision={5} defense={1} image={"/img/card.jpg"} />
-                <Card name={"Test3"} type={"Scout"} description={"This is my test description."} attack={2} mobility={7} vision={8} defense={1} image={"/img/card.jpg"} />
+                <Card name={"Zeus"} type={"Mage"} description={"Powerfull greek king of the thunder and other gods."} attack={6} mobility={4} vision={6} defense={3} image={"/img/zeus.png"} />
+                <Card name={"Hippeis"} type={"Cavalary"} description={"Greek cavalary unit. Quick and powerfull in attack and scouting but not so great in defense."} attack={5} mobility={8} vision={5} defense={1} image={"/img/greek_cavalary.png"} />
+                <Card name={"Loki"} type={"Assasin"} description={"Nordic god of mischief. Great mobility and vision. Unique dissapearing skill."} attack={3} mobility={7} vision={8} defense={1} image={"/img/loki.png"} />
             </div>
         </div>
     )
