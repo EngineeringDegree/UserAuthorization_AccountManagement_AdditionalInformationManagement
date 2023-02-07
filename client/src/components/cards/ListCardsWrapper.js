@@ -4,7 +4,7 @@ import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
 import { getRecords, responses } from "../../actions/cards/getCardsRecords-actions"
 import { LoadingButton } from '@mui/lab'
 import { Link } from "react-router-dom"
-import Lisiting from "./Listing"
+import Lisiting from "../common/Listing"
 import ListingMenu from "../common/ListingMenu"
 import PageMenu from "../common/PageMenu"
 
