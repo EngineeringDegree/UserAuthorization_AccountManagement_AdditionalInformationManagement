@@ -18,6 +18,9 @@ import addTypeReducer from './cards/addTypeReducer'
 import addNationReducer from './cards/addNationReducer'
 import getAllAssetsReducer from './cards/getAllAssetsReducer-reducer'
 import addCardReducer from './cards/addCardReducer'
+import getEffectsReducer from './cards/getEffects-reducer'
+import getNationsReducer from './cards/getNations-reducer'
+import getTypesReducer from './cards/getTypes-reducer'
 
 /**
  * Combines all reducers.
@@ -41,7 +44,10 @@ const rootReducer = combineReducers({
     addTypeReducer: addTypeReducer,
     addNationReducer: addNationReducer,
     getAllAssetsReducer: getAllAssetsReducer,
-    addCardReducer: addCardReducer
+    addCardReducer: addCardReducer,
+    effects: getEffectsReducer,
+    nations: getNationsReducer,
+    types: getTypesReducer
 })
 
 export default rootReducer

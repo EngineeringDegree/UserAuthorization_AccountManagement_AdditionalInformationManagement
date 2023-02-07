@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     if (error) {
         return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
-
+    
     if (res.locals.user.data) {
         const effects = await filterAsset(req.query.records, req.query.effectName, req.query.page, Card_Effect)
         return res.status(200).send({ status: statuses.EFFECTS_LISTED, code: 200, token: res.locals.user.data.token, effects: effects.assets, pages: effects.pages, page: effects.page })
