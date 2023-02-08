@@ -67,7 +67,7 @@ const AddPacksWrapper = () => {
                 <h5 className="title my-4 text-center">Basic informations</h5>
                 <div className='d-lg-flex'>
                     <Input label="Name" classes="standard-input" type="text" value={name} setter={setName} />
-                    <div class="standard-input">
+                    <div className="standard-input">
                         <select value={nation} onChange={(e) => setNation(e.target.value)}>
                         {
                             createNationSelectFromBackend()
