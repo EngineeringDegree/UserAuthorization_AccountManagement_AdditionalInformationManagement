@@ -79,7 +79,7 @@ const EditPacksWrapper = () => {
             <h2 className="title my-4 text-center">Change shop pack</h2>
             <div className="boxes-wrapper mx-auto">
                 <div className="text-center my-4">
-                    <Link to={"/manage/nations"} className={"standard-link"}>
+                    <Link to={"/manage/packs/edit"} className={"standard-link"}>
                         <button className="standard-btn">
                             Back
                         </button>
