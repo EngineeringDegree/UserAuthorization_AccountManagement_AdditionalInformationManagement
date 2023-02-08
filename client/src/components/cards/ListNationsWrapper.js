@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector, connect } from 'react-redux'
 import { checkIfEmptyObject } from "../../utils/object/checkIfObject"
-import { getRecords, responses } from "../../actions/cards//getNations-actions"
+import { getRecords, responses } from "../../actions/cards/getNations-actions"
 import { LoadingButton } from '@mui/lab'
 import { Link } from "react-router-dom"
 import Lisiting from "../common/Listing"

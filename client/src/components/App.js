@@ -217,10 +217,10 @@ class App extends Component {
               pageName={"Shop Packs"}
               nameAdd={"Add new shop pack"}
               descriptionAdd={"Add new shop pack to let user buy it in shop."}
-              toAdd={"/manage/shopPacks/add"}
+              toAdd={"/manage/packs/add"}
               nameEdit={"Edit shop pack"}
               descriptionEdit={"Edit existing shop pack."}
-              toEdit={"/manage/effshopPacksects/edit"}
+              toEdit={"/manage/packs/edit"}
             />
           } />
           <Route path='/manage/fields' element={
@@ -250,8 +250,8 @@ class App extends Component {
           <Route path='/manage/maps/edit' element={<ListMapsWrapper />} />
           <Route path='/manage/maps/edit/:id' element={<EditMapsWrapper />} />
           <Route path='/manage/packs/add' element={<AddPacksWrapper />} />
-          <Route path='/manage/packs/edit' element={<EditPacksWrapper />} />
-          <Route path='/manage/packs/edit/:id' element={<ListPacksWrapper />} />
+          <Route path='/manage/packs/edit' element={<ListPacksWrapper />} />
+          <Route path='/manage/packs/edit/:id' element={<EditPacksWrapper />} />
           <Route path='/manage/fields/add' element={<AddFieldsWrapper />} />
           <Route path='/manage/fields/edit' element={<ListFieldsWrapper />} />
           <Route path='/manage/fields/edit/:id' element={<EditFieldsWrapper />} />
