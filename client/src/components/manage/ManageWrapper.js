@@ -16,12 +16,12 @@ const ManageWrapper = () => {
                 </div>
                 <div className=" justify-content-between d-lg-flex">
                     <Management name={"Cards"} description={"Manage cards avaiable in game."} to={"/manage/cards"} />
-                    <Management name={"Maps "} description={"Manage maps for users to play on."} to={"/manage/maps"} />
+                    {/* <Management name={"Maps "} description={"Manage maps for users to play on."} to={"/manage/maps"} /> */}
                     <Management name={"Shop packs"} description={"Manage packs avaiable in shop."} to={"/manage/packs"} />
                 </div>
-                <div className=" justify-content-between d-lg-flex">
-                    <Management name={"Map fields"} description={"Manage fields from which map is created."} to={"/manage/fields"} />
-                </div>
+                {/* <div className=" justify-content-between d-lg-flex"> */}
+                {/* <Management name={"Map fields"} description={"Manage fields from which map is created."} to={"/manage/fields"} /> */}
+                {/* </div> */}
             </div>
         </div>
     )
