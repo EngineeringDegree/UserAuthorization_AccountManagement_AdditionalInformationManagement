@@ -38,6 +38,7 @@ const LoginWrapper = (props) => {
 
         switch (state.userLogin.code) {
             case 200:
+                window.location.pathname = "/"
                 if (props.successLink && !justEntered) {
                     props.successLink.current.click()
                 }

@@ -48,10 +48,11 @@ import ListDeckWrapper from './deck/ListDeckWrapper'
  * Returns switch with whole app. Entrance point.
  */
 class App extends Component {
+
   /**
    * When components mounts tree.
    * @param {object} props passed from parent. 
-   */
+  */
   constructor(props) {
     super(props)
     this.state = {
@@ -64,6 +65,10 @@ class App extends Component {
     }
 
     setInterval(this.checkSocketState.bind(this), time.MILISECCOND_50)
+  }
+
+  checkIfLoggedIn() {
+    this.props.checkUserLoggedIn(window.localStorage.getItem('email'), window.localStorage.getItem('token'), window.localStorage.getItem('refreshToken'))
   }
 
   /**
@@ -108,7 +113,7 @@ class App extends Component {
    */
   filterMenuElements(that) {
     let menuToReturn = menuElements
-    if (that.props.userLoggedIn.response === responses.REQUESTING_ACCOUNT_AUTHORIZATION || that.props.userLoggedIn.response === responses.NO_TOKENS_EMAIL || that.props.userLoggedIn.status === responses.USER_NOT_AUTHORIZED || !that.state.socket.connected) {
+    if (window.localStorage.getItem('email') == null || window.localStorage.getItem('token') == null || window.localStorage.getItem('refreshToken') == null) {
       menuToReturn = menuToReturn.filter((e) => {
         return !e.loggedIn || e.alwaysVisible
       })
@@ -123,13 +128,6 @@ class App extends Component {
       return menuToReturn
     }
 
-    if (window.localStorage.getItem('email') == null || window.localStorage.getItem('token') == null || window.localStorage.getItem('refreshToken') == null) {
-      menuToReturn = menuToReturn.filter((e) => {
-        return !e.loggedIn || e.alwaysVisible
-      })
-
-      return menuToReturn
-    }
 
     if (that.props.userLoggedIn.token && that.props.userLoggedIn.token !== window.localStorage.getItem('token')) {
       that.setState({
@@ -137,6 +135,13 @@ class App extends Component {
       })
     }
 
+    if (that.props.userLoggedIn.response === responses.REQUESTING_ACCOUNT_AUTHORIZATION || that.props.userLoggedIn.response === responses.NO_TOKENS_EMAIL || that.props.userLoggedIn.status === responses.USER_NOT_AUTHORIZED || !that.state.socket.connected) {
+      menuToReturn = menuToReturn.filter((e) => {
+        return !e.loggedIn || e.alwaysVisible
+      })
+
+      return menuToReturn
+    }
 
     menuToReturn = menuToReturn.filter((e) => {
       return (!e.admin && e.loggedIn) || e.alwaysVisible

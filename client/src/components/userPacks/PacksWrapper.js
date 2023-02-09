@@ -61,9 +61,11 @@ const PacksWrapper = () => {
         let jsx = []
 
         for (let i = 0; i < openedCards.length; i++) {
-            jsx.push(
-                <Card key={openedCards[i]._id} image={openedCards[i].cardDetails.image} name={openedCards[i].cardDetails.name} description={openedCards[i].cardDetails.description} attack={openedCards[i].cardDetails.attack} mobility={openedCards[i].cardDetails.mobility} defense={openedCards[i].cardDetails.defense} vision={openedCards[i].cardDetails.vision} quantity={openedCards[i].basicDeck} />
-            )
+            if (openedCards[i].cardDetails) {
+                jsx.push(
+                    <Card key={openedCards[i]._id} image={openedCards[i].cardDetails.image} name={openedCards[i].cardDetails.name} description={openedCards[i].cardDetails.description} attack={openedCards[i].cardDetails.attack} mobility={openedCards[i].cardDetails.mobility} defense={openedCards[i].cardDetails.defense} vision={openedCards[i].cardDetails.vision} quantity={openedCards[i].basicDeck} />
+                )
+            }
         }
 
         return jsx

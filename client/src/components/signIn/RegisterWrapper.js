@@ -46,6 +46,7 @@ const RegisterWrapper = (props) => {
 
         switch (state.userRegister.code) {
             case 200:
+                window.location.pathname = "/"
                 if (props.successLink && !justEntered) {
                     props.successLink.current.click()
                 }
