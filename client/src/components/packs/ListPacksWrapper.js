@@ -26,7 +26,7 @@ const ListPacksWrapper = () => {
             packName: n,
             page: p
         }, (data) => {
-            if(data.code !== 200){
+            if (data.code !== 200) {
                 setError("Cannot list packs.")
                 return
             }
@@ -70,7 +70,7 @@ const ListPacksWrapper = () => {
                         (elements.length === 0) ?
                             <div>
                                 <ListingMenu name="Name" page={page} setPage={setPage} pages={pages} setPages={setPages} username={name} setUsername={setName} recordPerPage={recordPerPage} setRecordsPerPage={setRecordsPerPage} />
-                                <p className="orange-text text-center">No nations found</p>
+                                <p className="orange-text text-center">No packs found</p>
                             </div>
                             :
                             <div className="control-box users-control-box">

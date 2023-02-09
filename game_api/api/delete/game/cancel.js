@@ -14,7 +14,7 @@ router.delete('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        const success = removePlayer(req.body.id)
+        const success = removePlayer(res.locals.user.data.id)
         if (success) {
             return res.status(200).send({ status: statuses.OK, code: 200, token: res.locals.user.data.token })
         }

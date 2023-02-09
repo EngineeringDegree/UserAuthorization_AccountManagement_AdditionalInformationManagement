@@ -12,14 +12,14 @@ router.patch('/', async (req, res) => {
         return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 
-    let decks = await Deck.find({ owner: req.body.id, deleted: false })
+    let decks = await Deck.find({ owner: res.locals.user.data.id, deleted: false })
     if (decks.length > 1) {
         let deck = undefined
         try {
             deck = await Deck.findOne({ _id: req.body.deckId })
         } catch (e) { }
         if (deck) {
-            if (deck.owner == req.body.id) {
+            if (deck.owner == res.locals.user.data.id) {
                 const filter = {
                     _id: deck._id
                 }
@@ -30,7 +30,7 @@ router.patch('/', async (req, res) => {
                 try {
                     await Deck.updateOne(filter, update)
                 } catch (e) { }
-                decks = await Deck.find({ owner: req.body.id, deleted: false }).select('_id name nation')
+                decks = await Deck.find({ owner: res.locals.user.data.id, deleted: false }).select('_id name nation')
                 let decksToReturn = []
                 for (let i = 0; i < decks.length; i++) {
                     let nation = undefined
@@ -53,7 +53,7 @@ router.patch('/', async (req, res) => {
         }
     }
 
-    decks = await Deck.find({ owner: req.body.id, deleted: false }).select('_id name nation')
+    decks = await Deck.find({ owner: res.locals.user.data.id, deleted: false }).select('_id name nation')
     return res.status(401).send({ status: statuses.DECK_NOT_FOUND, code: 404, decks: decks })
 })
 

@@ -9,6 +9,7 @@ const { statuses } = require('../../../utils/enums/status')
 router.get('/', async (req, res) => {
     const { error } = validate(req.query)
     if (error) {
+        console.log(error)
         return res.status(400).send({ status: statuses.BAD_DATA, code: 400 })
     }
 

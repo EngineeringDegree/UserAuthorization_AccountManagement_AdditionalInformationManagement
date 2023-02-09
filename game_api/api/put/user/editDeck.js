@@ -37,7 +37,7 @@ router.put('/', async (req, res) => {
         if (!deckNation) {
             return res.status(401).send({ status: statuses.THIS_NATION_HAS_BEEN_TURNED_OFF, code: 401 })
         }
-        const userCards = await UserCard.findOne({ owner: req.body.userId })
+        const userCards = await UserCard.findOne({ owner: res.locals.user.data.id })
         for (let i = 0; i < req.body.cards.length; i++) {
             let card = undefined
             try {
@@ -71,7 +71,7 @@ router.put('/', async (req, res) => {
 
 
         }
-        if (deck.owner == req.body.userId) {
+        if (deck.owner == res.locals.user.data.id) {
             const filter = {
                 _id: deck._id
             }

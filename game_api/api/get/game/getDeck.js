@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     if (res.locals.user.data) {
         let deck = undefined
         try {
-            deck = await Deck.findOne({ _id: req.query.id })
+            deck = await Deck.findOne({ _id: req.query.id, owner: res.locals.user.data.id })
         } catch (e) { }
         if (deck) {
             if (deck.owner == req.query.userId) {

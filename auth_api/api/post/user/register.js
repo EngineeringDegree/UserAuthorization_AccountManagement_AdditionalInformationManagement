@@ -55,7 +55,7 @@ async function putAdmin(body) {
         confirmed: false,
         admin: true,
         bans: [],
-        funds: 0
+        funds: 1000
     }, ['username', 'email', 'password', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()
@@ -117,7 +117,7 @@ async function putUser(body) {
         confirmed: false,
         admin: false,
         bans: [],
-        funds: 0
+        funds: 1000
     }, ['username', 'email', 'password', 'confirmed', 'admin', 'bans', 'funds']))
     try {
         await newUser.save()

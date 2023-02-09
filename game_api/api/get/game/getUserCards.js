@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        const cardsObj = await UserCard.findOne({ owner: req.query.id })
+        const cardsObj = await UserCard.findOne({ owner: res.locals.user.data.id })
         if (cardsObj) {
             if (res.locals.user.data.token) {
                 return res.status(200).send({ status: statuses.OK, code: 200, cards: cardsObj.cards, token: res.locals.user.data.token })

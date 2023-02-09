@@ -17,11 +17,11 @@ router.get('/', async (req, res) => {
     }
 
     if (res.locals.user.data) {
-        const decks = await Deck.find({ owner: req.query.id, deleted: false }).select('_id name nation strength')
+        const decks = await Deck.find({ owner: res.locals.user.data.id, deleted: false }).select('_id name nation strength')
         if (decks.length == 0) {
-            const packs = await Pack.find({ owner: req.query.id })
+            const packs = await Pack.find({ owner: res.locals.user.data.id })
             if (packs.length == 0) {
-                await createInvitationalGift(req.query.id)
+                await createInvitationalGift(res.locals.user.data.id)
             } else {
                 if (res.locals.user.data.token) {
                     return res.status(303).send({ status: statuses.OPEN_PACKS_FIRST, token: res.locals.user.data.token, code: 303 })

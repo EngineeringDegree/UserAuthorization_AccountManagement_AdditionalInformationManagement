@@ -1,9 +1,24 @@
+import React, { useEffect } from "react"
 import Card from "../cards/Card"
+import { game_api } from '../../utils/api/api'
 
 /**
  * Wraps all main screen elements.
  */
 const MainWrapper = () => {
+
+    useEffect(() => {
+        game_api("get/user/decks", "GET", {
+            id: "1",
+            email: window.localStorage.getItem("email"),
+            token: window.localStorage.getItem("token"),
+            refreshToken: window.localStorage.getItem("refreshToken")
+        }, (data) => {
+            if (data.status === "FIRST PACKS CREATED") {
+                alert("You have received invitational gift. Go to your packs situated in menu and open it to receive you first free cards.")
+            }
+        })
+    }, [])
 
     return (
         <div className="text-center p-4">

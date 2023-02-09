@@ -117,7 +117,7 @@ router.post('/', async (req, res) => {
                             })
                         }
                     }
-                    await createPack(cardsChoosen, req.body.userId, pack.nation, pack.name)
+                    await createPack(cardsChoosen, res.locals.user.data.id, pack.nation, pack.name)
 
                     return res.status(200).send({ status: statuses.PACK_BOUGHT, code: 200 })
                 }

@@ -26,7 +26,7 @@ router.delete('/', async (req, res) => {
             return res.status(404).send({ status: statuses.NATION_NOT_FOUND, code: 404, token: res.locals.user.data.token })
         }
 
-        const userCards = await UserCard.findOne({ owner: req.body.id })
+        const userCards = await UserCard.findOne({ owner: res.locals.user.data.id })
         const prepared = req.body.deck.cards.cardsPrepared
         let q = 0
         for (let i = 0; i < prepared.length; i++) {

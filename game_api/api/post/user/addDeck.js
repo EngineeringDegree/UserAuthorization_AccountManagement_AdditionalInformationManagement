@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
         if (!deckNation) {
             return res.status(401).send({ status: statuses.THIS_NATION_HAS_BEEN_TURNED_OFF, code: 401 })
         }
-        const userCards = await UserCard.findOne({ owner: req.body.id })
+        const userCards = await UserCard.findOne({ owner: res.locals.user.data.id })
         for (let i = 0; i < req.body.cards.length; i++) {
             let card = undefined
             try {
@@ -67,7 +67,7 @@ router.post('/', async (req, res) => {
             }
 
         }
-        await createDeck({ name: req.body.name, nation: req.body.nation, cards: req.body.cards }, strength, req.body.id)
+        await createDeck({ name: req.body.name, nation: req.body.nation, cards: req.body.cards }, strength, res.locals.user.data.id)
         return res.status(200).send({ status: statuses.DECK_CREATED, code: 200, token: res.locals.user.data.token })
     }
 

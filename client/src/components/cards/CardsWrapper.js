@@ -54,7 +54,7 @@ const UserCardsWrapper = (props) => {
             let cardsToFilter = state.getCardsReducer.cards
             for (let i = 0; i < cardsToFilter.length; i++) {
                 cards.push(
-                    <Card key={cardsToFilter[i].card._id} image={cardsToFilter[i].card.image} quantity={cardsToFilter[i].quantity} name={cardsToFilter[i].card.name} type={cardsToFilter[i].card.type[0]} description={cardsToFilter[i].card.description} attack={cardsToFilter[i].card.attack} mobility={cardsToFilter[i].card.mobility} vision={cardsToFilter[i].card.vision} defense={cardsToFilter[i].card.defense} />
+                    <Card key={cardsToFilter[i].card._id} image={cardsToFilter[i].card.image} quantity={cardsToFilter[i].quantity} name={cardsToFilter[i].card.name} description={cardsToFilter[i].card.description} attack={cardsToFilter[i].card.attack} mobility={cardsToFilter[i].card.mobility} vision={cardsToFilter[i].card.vision} defense={cardsToFilter[i].card.defense} />
                 )
             }
             setCards(cards)

@@ -36,10 +36,14 @@ router.patch('/', async (req, res) => {
                 await Pack.updateOne(filter, update)
             } catch (e) { }
             const cardsInPack = pack.cards
-            const userCards = await UserCard.findOne({ owner: req.body.userId })
+            const userCards = await UserCard.findOne({ owner: res.locals.user.data.id })
             if (userCards) {
                 let cards = userCards.cards
                 for (let i = 0; i < cardsInPack.length; i++) {
+                    const c = await Card.findOne({ _id: cardsInPack[i]._id })
+                    if (c) {
+                        cardsInPack[i].cardDetails = c
+                    }
                     let foundInCollection = false
                     for (let j = 0; j < cards.length; j++) {
                         if (cardsInPack[i]._id.equals(cards[j]._id)) {
@@ -70,7 +74,7 @@ router.patch('/', async (req, res) => {
                 }
 
                 let newCardsCollection = new UserCard(_.pick({
-                    owner: req.body.userId,
+                    owner: res.locals.user.data.id,
                     cards: cards
                 }, ['owner', 'cards']))
                 try {
@@ -78,9 +82,9 @@ router.patch('/', async (req, res) => {
                 } catch (e) { }
             }
 
-            let decks = await Deck.find({ owner: req.body.userId })
+            let decks = await Deck.find({ owner: res.locals.user.data.id })
             if (decks.length == 0) {
-                await generateBasicDecks(req.body.userId, cardsInPack)
+                await generateBasicDecks(res.locals.user.data.id, cardsInPack)
             }
             return res.status(200).send({ status: statuses.PACK_OPENED, code: 200, token: res.locals.user.data.token, id: pack._id, cards: cardsInPack })
         }

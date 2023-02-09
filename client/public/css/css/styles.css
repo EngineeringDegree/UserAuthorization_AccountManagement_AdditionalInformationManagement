@@ -35,7 +35,6 @@ body {
 
 .field-to-place {
   width: 100px;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   min-height: 100px;
@@ -144,6 +143,11 @@ footer {
 .user-box {
   width: 100%;
   max-width: 880px;
+}
+
+.shop-record {
+  border: 1px solid #326273;
+  padding: 20px;
 }
 
 @media (max-width: 991px) {

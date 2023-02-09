@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
                 deck = await Deck.findOne({ _id: req.body.userDeck, deleted: false })
             } catch (e) { }
             if (deck) {
-                if (deck.owner == req.body.id) {
+                if (deck.owner == res.locals.user.data.id) {
                     let nation = undefined
                     try {
                         nation = await Card_Nation.findOne({ _id: deck.nation, readyToUse: true })
@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
                         return res.status(401).send({ status: statuses.THAT_NATION_IS_TURNED_OFF, code: 401 })
                     }
                     let strength = 0
-                    const userCards = await UserCard.findOne({ owner: req.body.id })
+                    const userCards = await UserCard.findOne({ owner: res.locals.user.data.id })
                     for (let i = 0; i < deck.cards.length; i++) {
                         let card = undefined
                         try {
@@ -70,13 +70,13 @@ router.post('/', async (req, res) => {
                         } catch (e) { }
                     }
 
-                    const rating = await Rating.findOne({ owner: req.body.id, nation: deck.nation })
+                    const rating = await Rating.findOne({ owner: res.locals.user.data.id, nation: deck.nation })
                     let userRating = 1500
                     if (rating) {
                         userRating = rating.rating
                     } else {
                         let newRating = new Rating(_.pick({
-                            owner: req.body.id,
+                            owner: res.locals.user.data.id,
                             nation: deck.nation,
                             rating: 1500
                         }, ['owner', 'nation', 'rating']))
@@ -90,7 +90,7 @@ router.post('/', async (req, res) => {
                         id: req.body.socketId,
                         userDeck: req.body.userDeck,
                         email: req.body.email,
-                        userId: req.body.id,
+                        userId: res.locals.user.data.id,
                         strength: strength,
                         userRating: userRating,
                         pared: false
